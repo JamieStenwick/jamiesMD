@@ -1,1 +1,0 @@
-/usr/bin/c++ -g -Wl,--dependency-file=CMakeFiles/jamiesMD.dir/link.d CMakeFiles/jamiesMD.dir/src/main.cpp.o CMakeFiles/jamiesMD.dir/src/Simulator.cpp.o CMakeFiles/jamiesMD.dir/src/CudaKernels.cu.o -o jamiesMD   -L/usr/local/cuda/targets/x86_64-linux/lib/stubs  -L/usr/local/cuda/targets/x86_64-linux/lib  -lcudadevrt -lcudart_static -lrt -lpthread -ldl

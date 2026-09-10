@@ -1,3 +1,0 @@
-/home/jamie/Code/jamiesMD/build/CMakeFiles/jamiesMD.dir
-/home/jamie/Code/jamiesMD/build/CMakeFiles/edit_cache.dir
-/home/jamie/Code/jamiesMD/build/CMakeFiles/rebuild_cache.dir
