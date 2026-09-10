@@ -16,7 +16,7 @@
                 // "-I./source/includes", for providing a search directory for header files
                 "${fileDirname}\\**.cpp", // for compiling all files in a directory "${file}",
                 "-o",
-                "${fileDirname}\\${fileBasenameNoExtension}.exe"
+                "${fileDirname}\\${fileBasenameNoExtension}"
             ],
             "options": {
                 "cwd": "/usr/bin"

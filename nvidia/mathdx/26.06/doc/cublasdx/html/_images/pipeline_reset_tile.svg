@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="940" height="410" viewBox="0 0 940 410" role="img" aria-labelledby="title desc" style="background: transparent; color-scheme: light dark;">
+  <title id="title">Persistent pipeline reset_tile state flow</title>
+  <desc id="desc">A persistent pipelined GEMM kernel creates one tile pipeline, executes a tile, optionally resets it to the next valid tile, and destroys it once.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#76b900"/></marker>
+    <style><![CDATA[
+      .box { fill: #ffffff; fill: light-dark(#ffffff, #111827); stroke: #1f2937; stroke: light-dark(#1f2937, #76b900); stroke-width: 1.5; }
+      .state { fill: #f3f7ec; fill: light-dark(#f3f7ec, #13220c); stroke: #76b900; stroke: light-dark(#76b900, #93d85b); stroke-width: 1.5; }
+      .action { fill: #eef6ff; fill: light-dark(#eef6ff, #0f1d2e); stroke: #2563eb; stroke: light-dark(#2563eb, #60a5fa); stroke-width: 1.4; }
+      .end { fill: #fff7ed; fill: light-dark(#fff7ed, #25190b); stroke: #f97316; stroke: light-dark(#f97316, #fb923c); stroke-width: 1.4; }
+      .text { fill: #111827; fill: light-dark(#111827, #f9fafb); font: 15px Arial, sans-serif; }
+      .small { fill: #374151; fill: light-dark(#374151, #d1d5db); font: 12px Arial, sans-serif; }
+      .label { fill: #111827; fill: light-dark(#111827, #f9fafb); font: bold 15px Arial, sans-serif; }
+      .line { stroke: #76b900; stroke-width: 2.2; fill: none; marker-end: url(#arrow); }
+      .loop { stroke: #2563eb; stroke: light-dark(#2563eb, #60a5fa); stroke-width: 2; fill: none; marker-end: url(#arrow); }
+    ]]></style>
+  </defs>
+
+  <rect x="28" y="18" width="326" height="34" rx="8" class="box"/>
+  <text x="191" y="41" text-anchor="middle" class="label">Persistent pipelined GEMM tile flow</text>
+
+  <rect x="54" y="96" width="158" height="74" rx="9" class="state"/>
+  <text x="133" y="123" text-anchor="middle" class="text">construct once</text>
+  <text x="133" y="145" text-anchor="middle" class="small">get_tile(smem, row, col)</text>
+
+  <rect x="274" y="96" width="150" height="74" rx="9" class="action"/>
+  <text x="349" y="123" text-anchor="middle" class="text">execute tile</text>
+  <text x="349" y="145" text-anchor="middle" class="small">pipeline stages + epilogue</text>
+  <path d="M 212 133 L 269 133" class="line"/>
+
+  <rect x="486" y="96" width="158" height="74" rx="9" class="action"/>
+  <text x="565" y="123" text-anchor="middle" class="text">advance schedule</text>
+  <text x="565" y="145" text-anchor="middle" class="small">compute next row, col</text>
+  <path d="M 424 133 L 481 133" class="line"/>
+
+  <rect x="706" y="96" width="160" height="74" rx="9" class="end"/>
+  <text x="786" y="123" text-anchor="middle" class="text">valid next tile?</text>
+  <text x="786" y="145" text-anchor="middle" class="small">bounds and scheduling check</text>
+  <path d="M 644 133 L 701 133" class="line"/>
+
+  <rect x="486" y="250" width="158" height="74" rx="9" class="state"/>
+  <text x="565" y="277" text-anchor="middle" class="text">reset_tile</text>
+  <text x="565" y="299" text-anchor="middle" class="small">reuse same object</text>
+  <path d="M 786 170 C 786 224 654 224 612 248" class="loop"/>
+  <path d="M 486 287 C 356 290 348 210 348 175" class="loop"/>
+
+  <rect x="706" y="250" width="160" height="74" rx="9" class="end"/>
+  <text x="786" y="277" text-anchor="middle" class="text">destroy once</text>
+  <text x="786" y="299" text-anchor="middle" class="small">leave persistent loop</text>
+  <path d="M 786 170 L 786 245" class="line"/>
+
+  <rect x="54" y="246" width="286" height="82" rx="9" class="box"/>
+  <text x="197" y="274" text-anchor="middle" class="label">Do not create in each loop iteration</text>
+  <text x="197" y="299" text-anchor="middle" class="small">tile_pipeline has a destructive constructor</text>
+  <text x="197" y="318" text-anchor="middle" class="small">and destructor; use reset_tile instead.</text>
+</svg>

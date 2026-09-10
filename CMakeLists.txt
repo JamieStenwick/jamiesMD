@@ -14,6 +14,15 @@ add_executable(jamiesMD
     src/CudaKernels.cu
 )
 
+find_package(mathdx REQUIRED COMPONENTS curanddx CONFIG PATHS "nvidia/mathdx/26.06/")
+target_link_libraries(jamiesMD PRIVATE mathdx::curanddx)
+
+set_target_properties(
+    jamiesMD
+    PROPERTIES
+    CUDA_ARCHITECTURES 86
+)
+
 target_include_directories(jamiesMD PRIVATE
     ${CMAKE_SOURCE_DIR}/include
 )

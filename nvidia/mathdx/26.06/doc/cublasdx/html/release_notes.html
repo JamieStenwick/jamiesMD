@@ -1,0 +1,1036 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Release Notes &#8212; cuBLASDx</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
+    <link rel="stylesheet" type="text/css" href="_static/diagram.css?v=21e9147c" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
+
+
+
+    <script src="_static/documentation_options.js?v=26f1c5af"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'release_notes';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://docs.nvidia.com/cuda/cublasdx/_static/switcher.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.7.1';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+
+    <link rel="icon" href="_static/nvidia.ico"/>
+
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Software License Agreement" href="license.html" />
+    <link rel="prev" title="Examples" href="examples.html" />
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.7.1" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+
+
+  </head>
+
+  <body data-default-mode="">
+
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="cuBLASDx - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="cuBLASDx - Home"/>
+  
+  
+    <p class="title logo__title">cuBLASDx</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="cuBLASDx - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="cuBLASDx - Home"/>
+  
+  
+    <p class="title logo__title">cuBLASDx</p>
+  
+</a>
+
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Table of Contents">
+  <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
+  <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Documentation Home</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="requirements_func.html">Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="using_cublasdx.html">Using cuBLASDx GEMM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="using_pipelines.html">Using Pipelined GEMM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="using_trsm.html">Using cuBLASDx TRSM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance.html">Achieving High Performance</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="api/operators.html">Operators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/traits.html">Traits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/shared_methods.html">Input / Output Format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/gemm_methods.html">GEMM Execution Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/trsm_methods.html">TRSM Execution Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/pipeline.html">Pipeline Creation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/other_methods.html">Other Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/other_tensors.html">Tensor Manipulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/other_shared.html">Shared Memory Management</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Python</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="python_bindings.html">cuBLASDx Python Bindings</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="examples_learning_path.html">Learning Path Through Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/NVIDIA/CUDALibrarySamples/tree/main/MathDx/cuBLASDx">GitHub Samples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">MathDx</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/cublasdx-downloads">cuBLASDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/cufftdx-downloads">cuFFTDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/cusolverdx-downloads">cuSolverDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/curanddx-downloads">cuRANDDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/nvcompdx-downloads">nvCOMPDx</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Release Notes</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="release-notes">
+<span id="release-notes-label"></span><h1>Release Notes<a class="headerlink" href="#release-notes" title="Link to this heading">#</a></h1>
+<p>This section summarizes significant changes, new features, performance improvements, and known issues. Unless otherwise noted, listed issues
+should not impact functionality. When functionality is affected, a workaround is provided if available.</p>
+<section id="release-notes-0-7-1">
+<span id="id1"></span><h2>0.7.1<a class="headerlink" href="#release-notes-0-7-1" title="Link to this heading">#</a></h2>
+<p>Patch release mainly fixing multi-stage <code class="docutils literal notranslate"><span class="pre">TMEM</span></code> accumulators bug and TRSM <code class="docutils literal notranslate"><span class="pre">NVRTC</span></code> compatibility.</p>
+<section id="resolved-issues">
+<span id="release-notes-0-7-1-resolved-issues"></span><h3>Resolved Issues<a class="headerlink" href="#resolved-issues" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Fixed a bug affecting multi-atom, multi-stage <code class="docutils literal notranslate"><span class="pre">TMEM</span></code> accumulators (for example <code class="docutils literal notranslate"><span class="pre">M</span> <span class="pre">=</span> <span class="pre">256</span></code>), where the accumulator was not sized for the full multi-M footprint across stages.</p></li>
+<li><p>Fixed a TRSM incompatibility under <code class="docutils literal notranslate"><span class="pre">NVRTC</span></code> and added a TRSM <code class="docutils literal notranslate"><span class="pre">NVRTC</span></code> example.</p></li>
+<li><p>Added missing documentation for the <code class="docutils literal notranslate"><span class="pre">reduce_and_store()</span></code> functionality.</p></li>
+</ul>
+</section>
+</section>
+<section id="release-notes-0-7-0">
+<span id="id2"></span><h2>0.7.0<a class="headerlink" href="#release-notes-0-7-0" title="Link to this heading">#</a></h2>
+<p>Release updating the pipelined GEMM API and adding support for flexible-precision floating-point emulation.</p>
+<section id="new-features">
+<span id="release-notes-0-7-0-new-features"></span><h3>New Features<a class="headerlink" href="#new-features" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Pipelined GEMM creation now reports recoverable failures through <code class="docutils literal notranslate"><span class="pre">cublasdx::pipeline_error</span></code> instead of requiring users to rely on assertions.
+<code class="docutils literal notranslate"><span class="pre">pipeline_error::code</span></code> identifies cuBLASDx validation failures or <code class="docutils literal notranslate"><span class="pre">cuda</span></code> for CUDA-only failures, while
+<code class="docutils literal notranslate"><span class="pre">pipeline_error::get_cuda_error()</span></code> reports CUDA runtime failures from allocation or preprocessing paths.</p></li>
+<li><p>cuBLASDx now supports flexible-precision floating-point emulation through the <code class="docutils literal notranslate"><span class="pre">RequiredMantissaBits&lt;&gt;</span></code> operator. Existing FP64 descriptors
+can enable emulation with no kernel code changes by adding <code class="docutils literal notranslate"><span class="pre">RequiredMantissaBits&lt;&gt;</span></code> to the descriptor. Even without loss of precision this
+technique can provide speedups up to 2x on B200 and 16x on RTX Pro SE Blackwell, with further speedups available by decreasing the mantissa requirement.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RequiredMantissaBits&lt;&gt;</span></code> descriptors can use the pipelined GEMM path with either <code class="docutils literal notranslate"><span class="pre">cublasdx::internal_accumulator</span></code>
+or <code class="docutils literal notranslate"><span class="pre">cublasdx::reusable_accumulator</span></code>. The emulation pipeline manages temporary device storage on the host side and
+passes a regular device pipeline handle to kernels. This storage requires device memory allocations and deallocations
+on the order of the combined size of the A and B input matrices.</p></li>
+<li><p>Several Blackwell optimizations were added, including 3-way warp specialization and TMEM multi-staging. These optimizations allow efficient
+persistent kernel construction with staged asynchronous <code class="docutils literal notranslate"><span class="pre">SMEM_LOAD</span></code> and <code class="docutils literal notranslate"><span class="pre">MMA</span></code> work before the single epilogue stage for each output tile.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">CUBLASDX_SKIP_IF_NOT_APPLICABLE_SM()</span></code> macro to skip kernel compilation for unintended device architectures, reducing compilation time and the final binary size. See <a class="reference internal" href="api/operators.html#sm-operator-label"><span class="std std-ref">SM</span></a> for details.</p></li>
+</ul>
+</section>
+<section id="breaking-changes">
+<span id="release-notes-0-7-0-breaking-changes"></span><h3>Breaking Changes<a class="headerlink" href="#breaking-changes" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">suggest_device_pipeline</span></code> was renamed to <code class="docutils literal notranslate"><span class="pre">suggest_pipeline</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">make_device_pipeline</span></code> was renamed to <code class="docutils literal notranslate"><span class="pre">make_pipeline</span></code>.</p></li>
+<li><p>The pipeline result-storage option names changed from <code class="docutils literal notranslate"><span class="pre">internal_accumulation</span></code> and <code class="docutils literal notranslate"><span class="pre">external_accumulation</span></code> to
+<code class="docutils literal notranslate"><span class="pre">internal_accumulator</span></code> and <code class="docutils literal notranslate"><span class="pre">reusable_accumulator</span></code>. Use <code class="docutils literal notranslate"><span class="pre">reusable_accumulator</span></code> when user code owns the accumulator.</p></li>
+<li><p>Pipeline creation now returns <code class="docutils literal notranslate"><span class="pre">cublasdx::detail::expected&lt;host_pipeline,</span> <span class="pre">pipeline_error&gt;</span></code>. The host pipeline owns any host-side resources,
+and kernels should receive <code class="docutils literal notranslate"><span class="pre">pipeline-&gt;get_device_handle()</span></code> instead of <code class="docutils literal notranslate"><span class="pre">pipeline.value()</span></code>.</p></li>
+<li><p>If emulation preprocessing fails after cuBLASDx validation succeeds, <code class="docutils literal notranslate"><span class="pre">pipeline_error::code</span></code> is
+<code class="docutils literal notranslate"><span class="pre">pipeline_error_code::cuda</span></code> and the CUDA status is available through <code class="docutils literal notranslate"><span class="pre">pipeline_error::get_cuda_error()</span></code>.</p></li>
+</ul>
+</section>
+<section id="updated-usage-patterns">
+<span id="release-notes-0-7-0-updated-usage-patterns"></span><h3>Updated Usage Patterns<a class="headerlink" href="#updated-usage-patterns" title="Link to this heading">#</a></h3>
+<ul>
+<li><p>The recommended pipeline creation idiom is now:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span><span class="w"> </span><span class="n">pipeline</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">suggest_pipeline</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;</span><span class="p">(</span><span class="n">global_a</span><span class="p">,</span><span class="w"> </span><span class="n">global_b</span><span class="p">);</span>
+<span class="k">if</span><span class="p">(</span><span class="k">not</span><span class="w"> </span><span class="n">pipeline</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="k">const</span><span class="o">&amp;</span><span class="w"> </span><span class="n">error</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pipeline</span><span class="p">.</span><span class="n">error</span><span class="p">();</span>
+<span class="w">    </span><span class="c1">// Handle error.code and error.get_cuda_error().</span>
+<span class="p">}</span>
+
+<span class="k">auto</span><span class="w"> </span><span class="n">shared_memory_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">make_shared_storage_calculator</span><span class="p">()</span>
+<span class="w">                              </span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">pipeline</span><span class="o">-&gt;</span><span class="n">buffer_alignment</span><span class="p">(),</span><span class="w"> </span><span class="n">pipeline</span><span class="o">-&gt;</span><span class="n">buffer_size</span><span class="p">())</span>
+<span class="w">                              </span><span class="p">.</span><span class="n">get</span><span class="p">();</span>
+
+<span class="n">kernel</span><span class="o">&lt;&lt;&lt;</span><span class="n">grid</span><span class="p">,</span><span class="w"> </span><span class="n">pipeline</span><span class="o">-&gt;</span><span class="n">get_block_dim</span><span class="p">(),</span><span class="w"> </span><span class="n">shared_memory_size</span><span class="o">&gt;&gt;&gt;</span><span class="p">(</span>
+<span class="w">    </span><span class="n">pipeline</span><span class="o">-&gt;</span><span class="n">get_device_handle</span><span class="p">(),</span><span class="w"> </span><span class="p">...);</span>
+</pre></div>
+</div>
+</li>
+<li><p>When using the manual <code class="docutils literal notranslate"><span class="pre">reusable_accumulator</span></code> flow, call <code class="docutils literal notranslate"><span class="pre">tile_pipeline.finish_accumulation()</span></code> after
+<code class="docutils literal notranslate"><span class="pre">tile_pipeline.execute(accumulator)</span></code> and before reading accumulator results. Call it with the same thread scope as
+<code class="docutils literal notranslate"><span class="pre">tile_pipeline.execute(accumulator)</span></code>; do not guard it with <code class="docutils literal notranslate"><span class="pre">if(accumulator.is_thread_active())</span></code> because internal
+warp-specialization may require broader participation. The <code class="docutils literal notranslate"><span class="pre">tile_pipeline.epilogue(accumulator,</span> <span class="pre">functor)</span></code>
+convenience path calls <code class="docutils literal notranslate"><span class="pre">finish_accumulation()</span></code> internally.</p></li>
+<li><p>Descriptors using <code class="docutils literal notranslate"><span class="pre">WithPipeline()</span></code> must retrieve accumulators from the per-tile pipeline with
+<code class="docutils literal notranslate"><span class="pre">tile_pipeline.get_accumulator()</span></code>. Descriptor-level accumulator retrieval is only valid for regular, non-pipelined
+tile execution.</p></li>
+</ul>
+</section>
+</section>
+<section id="release-notes-0-6-0">
+<span id="id3"></span><h2>0.6.0<a class="headerlink" href="#release-notes-0-6-0" title="Link to this heading">#</a></h2>
+<p>Major release adding triangular solve (TRSM), raising the minimum required CUDA Toolkit to 13.0, and removing Volta GPU support.</p>
+<section id="release-notes-0-6-0-new-features">
+<span id="id4"></span><h3>New Features<a class="headerlink" href="#release-notes-0-6-0-new-features" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><a class="reference internal" href="api/operators.html#function-operator-trsm-label"><span class="std std-ref">Triangular solve</span></a> (<code class="docutils literal notranslate"><span class="pre">function::TRSM</span></code>): block-level, in-place solver for <span class="math notranslate nohighlight">\(A \times X = B\)</span> or <span class="math notranslate nohighlight">\(X \times A = B\)</span>, operating on shared memory.</p>
+<ul>
+<li><p>New operators required to describe a TRSM problem:</p>
+<ul>
+<li><p><a class="reference internal" href="api/operators.html#side-operator-label"><span class="std std-ref">Side</span></a> — whether the triangular matrix appears on the left or right.</p></li>
+<li><p><a class="reference internal" href="api/operators.html#fillmode-operator-label"><span class="std std-ref">FillMode</span></a> — which triangle (upper or lower) of <code class="docutils literal notranslate"><span class="pre">A</span></code> holds the data.</p></li>
+<li><p><a class="reference internal" href="api/operators.html#diag-operator-label"><span class="std std-ref">Diag</span></a> — whether the diagonal of <code class="docutils literal notranslate"><span class="pre">A</span></code> is explicitly stored (<code class="docutils literal notranslate"><span class="pre">non_unit</span></code>) or implicitly ones (<code class="docutils literal notranslate"><span class="pre">unit</span></code>).</p></li>
+<li><p><a class="reference internal" href="api/operators.html#batchesperblock-operator-label"><span class="std std-ref">BatchesPerBlock</span></a> — number of independent TRSM instances solved per CUDA block.</p></li>
+</ul>
+</li>
+<li><p>New TRSM traits: <a class="reference internal" href="api/traits.html#side-trait-label"><span class="std std-ref">side_of</span></a>, <a class="reference internal" href="api/traits.html#fillmode-trait-label"><span class="std std-ref">fill_mode_of</span></a>, <a class="reference internal" href="api/traits.html#diagonal-trait-label"><span class="std std-ref">diag_of</span></a>.</p></li>
+<li><p>TRSM requires linking against the pre-built <code class="docutils literal notranslate"><span class="pre">libcublasdx.fatbin</span></code> device-code library and separable CUDA compilation. See the <a class="reference internal" href="installation.html#quick-installation-guide-label"><span class="std std-ref">Quick Installation Guide</span></a> for exact CMake setup.</p></li>
+<li><p>New examples <code class="docutils literal notranslate"><span class="pre">17_trsm/trsm_block</span></code> and <code class="docutils literal notranslate"><span class="pre">17_trsm/trsm_thread</span></code> demonstrate block-level and thread-level TRSM usage.</p></li>
+<li><p>New example <code class="docutils literal notranslate"><span class="pre">18_tensor_transform/trsm_conj_transpose</span></code> demonstrates how to use new transform tensor views with TRSM.</p></li>
+<li><p>New examples <code class="docutils literal notranslate"><span class="pre">19_gemm_batched/batched_gemm_pipeline</span></code> and <code class="docutils literal notranslate"><span class="pre">19_gemm_batched/batched_gemm</span></code> demonstrate how to use GEMM and Pipelined GEMM for batching.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="release-notes-0-6-0-breaking-changes">
+<span id="id5"></span><h3>Breaking Changes<a class="headerlink" href="#release-notes-0-6-0-breaking-changes" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Default CMake target now links the</strong> <code class="docutils literal notranslate"><span class="pre">libcublasdx.fatbin</span></code> <strong>device-code library.</strong> The <code class="docutils literal notranslate"><span class="pre">mathdx::cublasdx</span></code> target now links the
+fatbin automatically on CUDA Toolkit ≥ 13.2, enabling both GEMM and TRSM. This means existing projects
+using <code class="docutils literal notranslate"><span class="pre">mathdx::cublasdx</span></code> must now set <code class="docutils literal notranslate"><span class="pre">CUDA_SEPARABLE_COMPILATION</span> <span class="pre">ON</span></code> and <code class="docutils literal notranslate"><span class="pre">INTERPROCEDURAL_OPTIMIZATION</span> <span class="pre">ON</span></code>
+on consuming targets. Projects that use only GEMM and want to avoid this overhead should switch to the new
+<code class="docutils literal notranslate"><span class="pre">mathdx::cublasdx_no_lto</span></code> target, which is header-only and produces a <code class="docutils literal notranslate"><span class="pre">static_assert</span></code> if TRSM is
+accidentally used. For CUDA Toolkit &lt; 13.2, use <code class="docutils literal notranslate"><span class="pre">mathdx::cublasdx_fatbin</span></code> which explicitly links
+<code class="docutils literal notranslate"><span class="pre">libcublasdx.fatbin</span></code>. See the <a class="reference internal" href="installation.html#quick-installation-guide-label"><span class="std std-ref">Quick Installation Guide</span></a> for details.</p></li>
+<li><p><strong>CUDA Toolkit 12 support removed.</strong> The minimum required version is now CUDA Toolkit 13.0.</p></li>
+<li><p><strong>Volta GPU support removed.</strong> SM70 (<code class="docutils literal notranslate"><span class="pre">sm_70</span></code>) and SM72 (<code class="docutils literal notranslate"><span class="pre">sm_72</span></code>) are no longer supported.</p></li>
+<li><p><strong>Accumulator precision restricted.</strong> The <code class="docutils literal notranslate"><span class="pre">C</span></code> precision in <code class="docutils literal notranslate"><span class="pre">Precision&lt;PA,</span> <span class="pre">PB,</span> <span class="pre">PC&gt;</span></code> is now limited to <code class="docutils literal notranslate"><span class="pre">__half</span></code>, <code class="docutils literal notranslate"><span class="pre">float</span></code>, <code class="docutils literal notranslate"><span class="pre">double</span></code>, <code class="docutils literal notranslate"><span class="pre">int32_t</span></code>, <code class="docutils literal notranslate"><span class="pre">uint32_t</span></code>, <code class="docutils literal notranslate"><span class="pre">int64_t</span></code>, <code class="docutils literal notranslate"><span class="pre">uint64_t</span></code>. Using <code class="docutils literal notranslate"><span class="pre">__nv_bfloat16</span></code>, <code class="docutils literal notranslate"><span class="pre">cublasdx::tfloat32_t</span></code>, <code class="docutils literal notranslate"><span class="pre">__nv_fp8_e4m3</span></code>, <code class="docutils literal notranslate"><span class="pre">__nv_fp8_e5m2</span></code>, <code class="docutils literal notranslate"><span class="pre">int8_t</span></code>, <code class="docutils literal notranslate"><span class="pre">uint8_t</span></code>, <code class="docutils literal notranslate"><span class="pre">int16_t</span></code>, or <code class="docutils literal notranslate"><span class="pre">uint16_t</span></code> as the accumulator now produces a <code class="docutils literal notranslate"><span class="pre">static_assert</span></code>.</p></li>
+</ul>
+</section>
+<section id="release-notes-0-6-0-resolved-issues">
+<span id="id6"></span><h3>Resolved Issues<a class="headerlink" href="#release-notes-0-6-0-resolved-issues" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>SM120</strong> now correctly emits TMA instructions where applicable.</p></li>
+<li><p><strong>SM103 (Blackwell Ultra) integral UTCMMA removed.</strong> Due to a bug cuBLASDx emitted UTCIMMA instructions for SM103, where they are not available.</p></li>
+<li><p>Fixed default pipeline constructor producing incorrect initial state.</p></li>
+<li><p>Fixed misalignment issues in tensor copy operations.</p></li>
+</ul>
+</section>
+</section>
+<section id="release-notes-0-5-1">
+<span id="id7"></span><h2>0.5.1<a class="headerlink" href="#release-notes-0-5-1" title="Link to this heading">#</a></h2>
+<p>Patch release amending heuristics for Ozaki emulation example as well as adding missing operators to performance focused examples (11 and 12)</p>
+</section>
+<section id="release-notes-0-5-0">
+<span id="id8"></span><h2>0.5.0<a class="headerlink" href="#release-notes-0-5-0" title="Link to this heading">#</a></h2>
+<p>Major release adding experimental pipelining API, including support for Hopper and Blackwell features such as <code class="docutils literal notranslate"><span class="pre">TMA</span></code>, <code class="docutils literal notranslate"><span class="pre">WGMMA</span></code> and <code class="docutils literal notranslate"><span class="pre">1SM</span> <span class="pre">UTCMMA</span></code>.</p>
+<section id="release-notes-0-5-0-new-features">
+<span id="id9"></span><h3>New Features<a class="headerlink" href="#release-notes-0-5-0-new-features" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Experimental Pipelining API supporting fusable asynchronous execution starting from global memory</p></li>
+<li><p>Initial support for <code class="docutils literal notranslate"><span class="pre">WGMMA</span></code>, <code class="docutils literal notranslate"><span class="pre">1SM</span> <span class="pre">UTCMMA</span></code>, <code class="docutils literal notranslate"><span class="pre">TMA</span></code> features</p></li>
+<li><p>Updated Ozaki example, providing significant performance upgrade targeted for Blackwell B200 GPU</p></li>
+<li><p>New accumulator API, opaquely handling fragment operations</p></li>
+<li><p>CUDA 13.1 support</p></li>
+</ul>
+</section>
+<section id="id10">
+<h3>Breaking Changes<a class="headerlink" href="#id10" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Suggested layouts can no longer be mixed with non-suggested fragments, and the other way</p></li>
+<li><p>Partitioner API removed, now merged into Accumulator API</p></li>
+<li><p>StaticBlockDim operator moved from <code class="docutils literal notranslate"><span class="pre">cublasdx::experimental</span></code> to <code class="docutils literal notranslate"><span class="pre">cublasdx</span></code> namespace</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Alignment</span></code> operator now is also understood to describe alignment of dynamic leading dimensions (if used)</p></li>
+</ul>
+</section>
+</section>
+<section id="release-notes-0-4-1">
+<span id="id11"></span><h2>0.4.1<a class="headerlink" href="#release-notes-0-4-1" title="Link to this heading">#</a></h2>
+<p>Patch release adding support for CUDA 13</p>
+<section id="release-notes-0-4-1-new-features">
+<span id="id12"></span><h3>New Features<a class="headerlink" href="#release-notes-0-4-1-new-features" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Support for CUDA 13.0</p></li>
+<li><p>Deprecation of CUDA 11.X</p></li>
+<li><p>Support for Thor SM renaming from <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">sm_101</span></code> to <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">sm_110</span></code> starting from CUDA 13.0
+* <strong>Note</strong>: For CUDA 12.9 and older releases, Thor stays labeled as <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">sm_101</span></code></p></li>
+</ul>
+</section>
+</section>
+<section id="release-notes-0-4-0">
+<span id="id13"></span><h2>0.4.0<a class="headerlink" href="#release-notes-0-4-0" title="Link to this heading">#</a></h2>
+<p>Release introducing wider support for suggested layouts and basic Blackwell support.</p>
+<section id="release-notes-0-4-0-new-features">
+<span id="id14"></span><h3>New Features<a class="headerlink" href="#release-notes-0-4-0-new-features" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Suggested layouts support wider range of problem sizes, threadblocks and instructions introducing analytical swizzling heuristics</p></li>
+<li><p>Both suggested and non-suggested layouts now generate <code class="docutils literal notranslate"><span class="pre">ld.matrix</span></code> and <code class="docutils literal notranslate"><span class="pre">st.matrix</span></code> for either 1 (<code class="docutils literal notranslate"><span class="pre">x1</span></code>), 2 (<code class="docutils literal notranslate"><span class="pre">x2</span></code>), or 4 (<code class="docutils literal notranslate"><span class="pre">x4</span></code>) matrices</p></li>
+<li><p>Support for PTX 8.7 superMMA instructions and <code class="docutils literal notranslate"><span class="pre">fma.f32x2</span></code> fused multiply-add instructions.</p></li>
+<li><p>SM100, SM101, SM120 support</p></li>
+<li><p>SM103 and SM121 experimental support</p></li>
+</ul>
+</section>
+<section id="release-notes-0-4-0-breaking-changes">
+<span id="id15"></span><h3>Breaking Changes<a class="headerlink" href="#release-notes-0-4-0-breaking-changes" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>The entire shared memory slicing API has been refactored and generalized to support all Dx libraries.</p></li>
+<li><p>SM72 has been deprecated</p></li>
+</ul>
+</section>
+<section id="known-issues">
+<span id="release-notes-0-4-0-known-issues"></span><h3>Known Issues<a class="headerlink" href="#known-issues" title="Link to this heading">#</a></h3>
+<p>CUDA 12.8.0, 12.8.1 and 12.9.0 have been known to miscompile cuBLASDx 0.3.1 and 0.4.X code with high register pressure when</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Any of the computation types is <code class="docutils literal notranslate"><span class="pre">fp8_e5m2</span></code>, <code class="docutils literal notranslate"><span class="pre">fp8_e4m3</span></code>, <code class="docutils literal notranslate"><span class="pre">fp16</span></code>, <code class="docutils literal notranslate"><span class="pre">bf16</span></code>, or <code class="docutils literal notranslate"><span class="pre">int8</span></code></p></li>
+<li><p>Any of M, N or K (<a class="reference internal" href="api/operators.html#size-operator-label"><span class="std std-ref">Size Operator</span></a>) is not a multiple of 16</p></li>
+<li><p>Custom static leading dimension is used (<a class="reference internal" href="api/operators.html#leadingdimension-operator-label"><span class="std std-ref">LeadingDimension Operator</span></a>)</p></li>
+</ul>
+</div></blockquote>
+<p>These code corruptions may manifest as either incorrect results or <code class="docutils literal notranslate"><span class="pre">illegal</span> <span class="pre">memory</span> <span class="pre">access</span></code> errors.</p>
+<p>To highlight this issue cuBLASDx 0.4.X will <strong>overprotectively hard fail</strong> if these conditions are met.</p>
+<p>If you are using cuBLASDx, and this happens to your code, you can:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Update to the latest CUDA Toolkit and NVCC compiler (12.9.1 is known to work)</p></li>
+<li><p>define the <code class="docutils literal notranslate"><span class="pre">CUBLASDX_IGNORE_NVBUG_5218000_ASSERT</span></code> macro to ignore these assertions and verify correctness of the results.</p></li>
+<li><p>if the case is indeed affected by the bug, adding the <code class="docutils literal notranslate"><span class="pre">-Xptxas</span> <span class="pre">-O1</span></code> flag to the compilation command will limit PTX optimization phase and produce correct binary, although potentially slower.</p></li>
+</ul>
+</div></blockquote>
+</section>
+</section>
+<section id="release-notes-0-3-1">
+<span id="id16"></span><h2>0.3.1<a class="headerlink" href="#release-notes-0-3-1" title="Link to this heading">#</a></h2>
+<p>Minor release with quality of life changes and minor heuristic improvements.</p>
+<section id="release-notes-0-3-1-new-features">
+<span id="id17"></span><h3>New Features<a class="headerlink" href="#release-notes-0-3-1-new-features" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Improved usability, readability and reference in <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">device_gemm_performance</span></code> example.</p></li>
+<li><p>Improved GEMM heuristics for non-suggested executions.</p></li>
+<li><p>Improved safety of mixing suggested and non-suggested layouts and accumulators in execution.</p></li>
+</ul>
+</section>
+</section>
+<section id="release-notes-0-3-0">
+<span id="id18"></span><h2>0.3.0<a class="headerlink" href="#release-notes-0-3-0" title="Link to this heading">#</a></h2>
+<p>The 3rd early access (EA) release of cuBLASDx library brings support for selected integer types, matrix multiplication with results
+stored in registers, and decoupling of computation types from input/output types.</p>
+<section id="release-notes-0-3-0-new-features">
+<span id="id19"></span><h3>New Features<a class="headerlink" href="#release-notes-0-3-0-new-features" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>Register fragment tensor support:</dt><dd><ul>
+<li><p>Added partitioning, predication and transformation tools.</p></li>
+<li><p>Added copying and partitioning utilities for moving data from / into register file buffers.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>New GEMM Register APIs allowing for better performance.</dt><dd><ul>
+<li><p>Using registers to store <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">C</span></code> matrix (result matrix) allows to save on shared memory size and transfers by performing accumulation and input / output in registers.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>Integral types support, including MMA instruction support for integral types.</p></li>
+<li><dl class="simple">
+<dt>Compute precision decoupled from input precision.</dt><dd><ul>
+<li><p>A GEMM function can now accept any input and convert it in registers, saving on memory usage.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>More robust shared memory management tools have been added, enabling construction of efficient pipelined execution.</p></li>
+<li><dl class="simple">
+<dt>The library no longer statically asserts on whether the GEMM problem will fit in shared memory, due to:</dt><dd><ul>
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">A</span></code> and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">B</span></code> can alias or overlap themselves,</p></li>
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">C</span></code> can be entirely in register file, and</p></li>
+<li><p>input precision can be arbitrary, and is not defined by compute precision.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="release-notes-0-3-0-breaking-changes">
+<span id="id20"></span><h3>Breaking Changes<a class="headerlink" href="#release-notes-0-3-0-breaking-changes" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Shared memory slicing and shared memory size utilities are no longer available as <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">BLAS</span></code> methods.</p></li>
+<li><p>Shared memory size trait has been removed from <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">BLAS</span></code> type.</p></li>
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">is_supported</span></code> trait has been removed, and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">is_supported_smem_restrict</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">is_supported_rmem_restrict</span></code> added in its place.</p></li>
+<li><p>The library no longer asserts on whether a size will fit in shared memory, it’s the user’s responsibility now.</p></li>
+</ul>
+</section>
+<section id="release-notes-0-3-0-resolved-issues">
+<span id="id21"></span><h3>Resolved Issues<a class="headerlink" href="#release-notes-0-3-0-resolved-issues" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>cuBLASDx internal versioning definitions have been fixed:
+* <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">CUBLASDX_VERSION_MAJOR</span></code> is now defined as a multiple of 10000 in <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">CUBLASDX_VERSION</span></code> instead of 1000, i.e. <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">CUBLASDX_VERSION_MAJOR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CUBLASDX_VERSION</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">10000</span></code>.
+* <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">CUBLASDX_VERSION_MINOR</span></code> now can have a new maximum of two digits.
+* Since there was no major release there is no extra gap between this and previous version.
+* All definitions can be checked in the file <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cublasdx_version</span><span class="p">.</span><span class="n">hpp</span></code>.</p></li>
+<li><p>Missing traits have been added to follow <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">C</span><span class="o">++</span></code> metaprogramming convention</p></li>
+</ul>
+</section>
+<section id="release-notes-0-3-0-known-issues">
+<span id="id22"></span><h3>Known Issues<a class="headerlink" href="#release-notes-0-3-0-known-issues" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>It’s recommended to use the latest <a class="reference external" href="https://developer.nvidia.com/cuda/toolkit">CUDA Toolkit</a> and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">NVCC</span></code> compiler.</dt><dd><ul>
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">CUDA</span><span class="w"> </span><span class="mf">12.4</span></code> has known edge cases producing incorrect FP8 MMA emulation code on SM90 with register APIs.</p></li>
+<li><dl class="simple">
+<dt><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">CUDA</span><span class="w"> </span><span class="mf">12.1</span></code> has known edge cases of crashing when passing previously named values into 3-value operators.</dt><dd><ul>
+<li><p>e.g. <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Alignment</span><span class="o">&lt;</span><span class="n">varn_name_1</span><span class="p">,</span><span class="w"> </span><span class="n">var_name_2</span><span class="p">,</span><span class="w"> </span><span class="n">var_name_3</span><span class="o">&gt;</span></code> may cause compilation hang, while <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Alignment</span><span class="o">&lt;</span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="mi">8</span><span class="o">&gt;</span></code> will always work.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+</section>
+<section id="release-notes-0-2-0">
+<span id="id23"></span><h2>0.2.0<a class="headerlink" href="#release-notes-0-2-0" title="Link to this heading">#</a></h2>
+<p>The second early access (EA) release of cuBLASDx library brings tensor API, mixed precision, and performance improvements.</p>
+<section id="release-notes-0-2-0-new-features">
+<span id="id24"></span><h3>New Features<a class="headerlink" href="#release-notes-0-2-0-new-features" title="Link to this heading">#</a></h3>
+<ul>
+<li><p>All Device Extensions libraries are bundled together in a single package named <a class="reference external" href="https://developer.nvidia.com/cublasdx-downloads">nvidia-mathdx-24.08.0.tar.gz</a>.</p></li>
+<li><p>Added new tensor-based <a class="reference internal" href="api/gemm_methods.html#block-execute-method-label"><span class="std std-ref">execute(…)</span></a> API:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Improved performance and user-friendly interface for matrices thanks to support for <a class="reference external" href="https://docs.nvidia.com/cutlass/latest/media/docs/cpp/cute/03_tensor.html">CuTe tensor (cute::Tensor)</a>.</p></li>
+<li><p>Helper methods for <a class="reference internal" href="api/other_shared.html#slice-shared-memory-other-label"><span class="std std-ref">slicing shared memory</span></a> between matrices.</p></li>
+<li><p>Easy tensor creation thanks to <a class="reference internal" href="api/other_methods.html#get-layout-other-label"><span class="std std-ref">get_layout_*()</span></a> methods and <a class="reference internal" href="api/other_tensors.html#create-tensor-other-label"><span class="std std-ref">cublasdx::make_tensor</span></a>.</p></li>
+<li><p><a class="reference internal" href="api/other_methods.html#suggest-layout-other-label"><span class="std std-ref">Suggestions for the best layouts for matrices in shared memory</span></a> to improve the performance of both matrix multiplication and global-shared memory I/O operations.</p></li>
+<li><p>Updated <a class="reference internal" href="using_cublasdx.html#intro1-label"><span class="std std-ref">Introduction</span></a> and <a class="reference internal" href="performance.html#high-perf-label"><span class="std std-ref">Achieving High Performance</span></a>.</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><a class="reference internal" href="api/other_tensors.html#copy-tensor-other-label"><span class="std std-ref">cublasdx::copy</span></a> for copying shared and global memory tensors.</p></li>
+<li><p>Added support for mixed precision in <a class="reference internal" href="api/operators.html#precision-operator-label"><span class="std std-ref">Precision</span></a>, especially long requested:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>TensorFloat-32: <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Precision</span><span class="o">&lt;</span><span class="n">tfloat32_t</span><span class="p">,</span><span class="w"> </span><span class="n">tfloat32_t</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="o">&gt;</span></code>, and</p></li>
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Precision</span><span class="o">&lt;</span><span class="n">__half</span><span class="p">,</span><span class="w"> </span><span class="n">__half</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="o">&gt;</span></code>.</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>Support for 8-bit floating-point matrices (<code class="code highlight cpp docutils literal highlight-cpp"><span class="n">__nv_fp8_e4m3</span></code>, and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">__nv_fp8_e5m2</span></code>) and GEMM.</p></li>
+<li><p>Added <a class="reference internal" href="api/operators.html#alignment-operator-label"><span class="std std-ref">Alignment</span></a> operator to provide alignment information. It’s recommended to use 16-byte (128-bit) alignment for better performance.</p></li>
+<li><p><a class="reference internal" href="api/operators.html#transposemode-operator-label"><span class="std std-ref">TransposeMode</span></a> operator is deprecated and replaced with <a class="reference internal" href="api/operators.html#arrangement-operator-label"><span class="std std-ref">Arrangement</span></a> operator.</p></li>
+<li><p><a class="reference internal" href="api/operators.html#transposemode-operator-label"><span class="std std-ref">TransposeMode</span></a> operator (or replacing it <a class="reference internal" href="api/operators.html#arrangement-operator-label"><span class="std std-ref">Arrangement</span></a>) is not longer explicitly needed to define complete BLAS execution.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>The default arrangement is <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">row_major</span></code> for A matrix, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">col_major</span></code> - B , <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">col_major</span></code> - C.</p></li>
+<li><p>The default transpose mode is now <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">transposed</span></code> for A matrix, and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">non</span><span class="o">-</span><span class="n">transposed</span></code> for B.</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</section>
+<section id="release-notes-0-2-0-known-issues">
+<span id="id25"></span><h3>Known Issues<a class="headerlink" href="#release-notes-0-2-0-known-issues" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>It’s recommended to use the latest <a class="reference external" href="https://developer.nvidia.com/cuda/toolkit">CUDA Toolkit</a> and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">NVCC</span></code> compiler.</p></li>
+</ul>
+</section>
+</section>
+<section id="release-notes-0-1-0">
+<span id="id27"></span><h2>0.1.0<a class="headerlink" href="#release-notes-0-1-0" title="Link to this heading">#</a></h2>
+<p>The first early access (EA) release of cuBLASDx library.</p>
+<section id="release-notes-0-1-0-new-features">
+<span id="id28"></span><h3>New Features<a class="headerlink" href="#release-notes-0-1-0-new-features" title="Link to this heading">#</a></h3>
+<ul>
+<li><p>Support for <a class="reference internal" href="api/operators.html#function-operator-gemm-label"><span class="std std-ref">general matrix multiply</span></a>.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Tensor cores support for fp16, fp64, complex fp64 calculations.</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>Support for SM70 - SM90 CUDA architectures.</p></li>
+<li><p>Multiple <a class="reference internal" href="examples.html#examples-label"><span class="std std-ref">examples</span></a> included.</p></li>
+</ul>
+</section>
+<section id="release-notes-0-1-0-known-issues">
+<span id="id29"></span><h3>Known Issues<a class="headerlink" href="#release-notes-0-1-0-known-issues" title="Link to this heading">#</a></h3>
+<ul>
+<li><p>Since CUDA Toolkit 12.2, the NVCC compiler in certain situations reports an incorrect compilation error when the <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">value_type</span></code> type
+of a GEMM description type is used. The problematic code with possible workarounds is presented below:</p>
+<blockquote>
+<div><div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Any GEMM description type</span>
+<span class="k">using</span><span class="w"> </span><span class="n">GEMM</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">decltype</span><span class="p">(</span><span class="n">Size</span><span class="o">&lt;</span><span class="mi">32</span><span class="w"> </span><span class="cm">/* M */</span><span class="p">,</span><span class="w"> </span><span class="mi">32</span><span class="w"> </span><span class="cm">/* N */</span><span class="p">,</span><span class="w"> </span><span class="mi">32</span><span class="w"> </span><span class="cm">/* K */</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">            </span><span class="o">+</span><span class="w"> </span><span class="n">Precision</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">            </span><span class="o">+</span><span class="w"> </span><span class="n">Type</span><span class="o">&lt;</span><span class="n">type</span><span class="o">::</span><span class="n">real</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">            </span><span class="o">+</span><span class="w"> </span><span class="n">TransposeMode</span><span class="o">&lt;</span><span class="n">t_mode</span><span class="w"> </span><span class="cm">/* A */</span><span class="p">,</span><span class="w"> </span><span class="n">t_mode</span><span class="w"> </span><span class="cm">/* B */</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">            </span><span class="o">+</span><span class="w"> </span><span class="n">Function</span><span class="o">&lt;</span><span class="n">function</span><span class="o">::</span><span class="n">MM</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">            </span><span class="o">+</span><span class="w"> </span><span class="n">SM</span><span class="o">&lt;</span><span class="mi">890</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">            </span><span class="o">+</span><span class="w"> </span><span class="n">Block</span><span class="p">());</span>
+<span class="k">using</span><span class="w"> </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">GEMM</span><span class="o">::</span><span class="n">value_type</span><span class="p">;</span><span class="w"> </span><span class="c1">// compilation error</span>
+
+<span class="c1">// Workaround #1</span>
+<span class="k">using</span><span class="w"> </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">decltype</span><span class="p">(</span><span class="n">GEMM</span><span class="p">())</span><span class="o">::</span><span class="n">value_type</span><span class="p">;</span>
+
+<span class="c1">// Workaround #2 (used in cuBLASDx examples)</span>
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span>
+<span class="k">using</span><span class="w"> </span><span class="n">value_type_t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">::</span><span class="n">value_type</span><span class="p">;</span>
+
+<span class="k">using</span><span class="w"> </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">value_type_t</span><span class="o">&lt;</span><span class="n">GEMM</span><span class="o">&gt;</span><span class="p">;</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ul>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="examples.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Examples</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="license.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Software License Agreement</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#release-notes-0-7-1">0.7.1</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#resolved-issues">Resolved Issues</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#release-notes-0-7-0">0.7.0</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#new-features">New Features</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#breaking-changes">Breaking Changes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#updated-usage-patterns">Updated Usage Patterns</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#release-notes-0-6-0">0.6.0</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#release-notes-0-6-0-new-features">New Features</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#release-notes-0-6-0-breaking-changes">Breaking Changes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#release-notes-0-6-0-resolved-issues">Resolved Issues</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#release-notes-0-5-1">0.5.1</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#release-notes-0-5-0">0.5.0</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#release-notes-0-5-0-new-features">New Features</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">Breaking Changes</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#release-notes-0-4-1">0.4.1</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#release-notes-0-4-1-new-features">New Features</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#release-notes-0-4-0">0.4.0</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#release-notes-0-4-0-new-features">New Features</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#release-notes-0-4-0-breaking-changes">Breaking Changes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#known-issues">Known Issues</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#release-notes-0-3-1">0.3.1</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#release-notes-0-3-1-new-features">New Features</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#release-notes-0-3-0">0.3.0</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#release-notes-0-3-0-new-features">New Features</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#release-notes-0-3-0-breaking-changes">Breaking Changes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#release-notes-0-3-0-resolved-issues">Resolved Issues</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#release-notes-0-3-0-known-issues">Known Issues</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#release-notes-0-2-0">0.2.0</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#release-notes-0-2-0-new-features">New Features</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#release-notes-0-2-0-known-issues">Known Issues</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#release-notes-0-1-0">0.1.0</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#release-notes-0-1-0-new-features">New Features</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#release-notes-0-1-0-known-issues">Known Issues</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5"></script>
+
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+<a class="footer-brand logo" href="https://www.nvidia.com">
+  <img src="_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+</a></div>
+      
+        <div class="footer-item">
+
+<div class="footer-links">
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/">Privacy Policy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Your Privacy Choices</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/">Terms of Service</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/accessibility/">Accessibility</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/company-policies/">Corporate Policies</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/product-security/">Product Security</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/contact/">Contact</a>
+  
+  
+  
+</div>
+</div>
+      
+        <div class="footer-item">
+
+
+
+
+  <p class="copyright">
+    
+      Copyright © 2022-2026, NVIDIA Corporation &amp; Affiliates. All rights reserved.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+  </body>
+</html>

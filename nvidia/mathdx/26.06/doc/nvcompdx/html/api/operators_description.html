@@ -1,0 +1,848 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Description Operators &#8212; nvCOMPDx</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
+
+
+
+    <script src="../_static/documentation_options.js?v=64e4dae6"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/operators_description';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://docs.nvidia.com/cuda/nvcompdx/_static/switcher.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.1.4';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+
+    <link rel="icon" href="../_static/nvidia.ico"/>
+
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Execution Operators" href="operators_execution.html" />
+    <link rel="prev" title="Operators" href="operators.html" />
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.1.4" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+
+
+  </head>
+
+  <body data-default-mode="">
+
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="nvCOMPDx - Home"/>
+    <img src="../_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="nvCOMPDx - Home"/>
+  
+  
+    <p class="title logo__title">nvCOMPDx</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="nvCOMPDx - Home"/>
+    <img src="../_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="nvCOMPDx - Home"/>
+  
+  
+    <p class="title logo__title">nvCOMPDx</p>
+  
+</a>
+
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Table of Contents">
+  <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
+  <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Home</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../requirements.html">Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Using nvCOMPDx</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../highperformance.html">Achieving High Performance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../debug.html">Debugging Guide</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="operators.html">Operators</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Description Operators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operators_execution.html">Execution Operators</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="traits.html">Traits</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="traits_description.html">Description Traits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="traits_execution.html">Execution Traits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="traits_other.html">Other Traits</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="methods.html">Execution Method</a></li>
+<li class="toctree-l1"><a class="reference internal" href="methods_other.html">Other Methods</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../examples/intro_example.html">Introduction Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/lz4_examples.html">LZ4 Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/ans_examples.html">ANS Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/example_nvrtc.html">NVRTC + nvJitLink Example</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../release_notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/NVIDIA/CUDALibrarySamples/tree/main/MathDx/">GitHub Samples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../acknowledgements.html">Acknowledgements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">Software License Agreement</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">MathDx</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/nvcompdx-downloads">nvCOMPDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/cusolverdx-downloads">cuSolverDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/cublasdx-downloads">cuBLASDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/cufftdx-downloads">cuFFTDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/curanddx-downloads">cuRANDDx</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="operators.html" class="nav-link">Operators</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Description Operators</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <span class="target" id="description-operators-label"></span><section id="description-operators">
+<h1>Description Operators<a class="headerlink" href="#description-operators" title="Link to this heading">#</a></h1>
+<p>Description operators define the compression/decompression problem we want to solve at compile time.
+Combined with <a class="reference internal" href="operators_execution.html#execution-operators-label"><span class="std std-ref">execution operators</span></a>, they form a complete function descriptor that can be executed on a device.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 25.0%" />
+<col style="width: 50.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Operator</p></th>
+<th class="head"><p>Options/Arguments</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference internal" href="#direction-operator-label"><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Direction</span><span class="o">&lt;</span><span class="n">direction</span><span class="o">&gt;</span></code></a></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">nvcompdx</span><span class="o">::</span><span class="n">direction</span><span class="o">::</span><span class="n">compress</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">nvcompdx</span><span class="o">::</span><span class="n">direction</span><span class="o">::</span><span class="n">decompress</span></code></p></td>
+<td><p>Direction of the operation</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#algorithm-operator-label"><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Algorithm</span><span class="o">&lt;</span><span class="n">algorithm</span><span class="o">&gt;</span></code></a></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">nvcompdx</span><span class="o">::</span><span class="n">algorithm</span><span class="o">::</span><span class="n">ans</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">nvcompdx</span><span class="o">::</span><span class="n">algorithm</span><span class="o">::</span><span class="n">lz4</span></code></p></td>
+<td><p>Algorithm used</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#datatype-operator-label"><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">DataType</span><span class="o">&lt;</span><span class="n">type</span><span class="o">&gt;</span></code></a></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">nvcompdx</span><span class="o">::</span><span class="n">datatype</span><span class="o">::</span><span class="n">uint8</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">nvcompdx</span><span class="o">::</span><span class="n">datatype</span><span class="o">::</span><span class="n">uint16</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">nvcompdx</span><span class="o">::</span><span class="n">datatype</span><span class="o">::</span><span class="n">uint32</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">nvcompdx</span><span class="o">::</span><span class="n">datatype</span><span class="o">::</span><span class="n">float16</span></code></p></td>
+<td><p>The unit in which the (de)compressor interprets the data.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#maxuncompchunksize-operator-label"><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">MaxUncompChunkSize</span><span class="o">&lt;</span><span class="n">ChunkSize</span><span class="o">&gt;</span></code></a></p></td>
+<td><p>non-zero <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">ChunkSize</span></code></p></td>
+<td><p>The maximum uncompressed chunk size to be expected in bytes. Only applicable for compressors.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#sm-operator-label"><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">SM</span><span class="o">&lt;</span><span class="n">CC</span><span class="o">&gt;</span></code></a></p></td>
+<td><p>target architecture <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">CC</span></code></p></td>
+<td><p>Target CUDA architecture for which the nvCOMPDx function should be generated.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Operators are added (in arbitrary order) to construct the operation descriptor type.
+For example, to describe a compression use case with the <strong>ANS</strong> algorithm, with 32KiB raw chunks, 1-byte data type, using the Ampere architecture, one would write:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;nvcompdx.hpp&gt;</span>
+
+<span class="k">using</span><span class="w"> </span><span class="n">COMP</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">decltype</span><span class="p">(</span><span class="n">Algorithm</span><span class="o">&lt;</span><span class="n">algorithm</span><span class="o">::</span><span class="n">ans</span><span class="o">&gt;</span><span class="p">()</span><span class="w"> </span><span class="o">+</span>
+<span class="w">                      </span><span class="n">DataType</span><span class="o">&lt;</span><span class="n">datatype</span><span class="o">::</span><span class="n">uint8</span><span class="o">&gt;</span><span class="p">()</span><span class="w"> </span><span class="o">+</span>
+<span class="w">                      </span><span class="n">Direction</span><span class="o">&lt;</span><span class="n">direction</span><span class="o">::</span><span class="n">compress</span><span class="o">&gt;</span><span class="p">()</span><span class="w"> </span><span class="o">+</span>
+<span class="w">                      </span><span class="n">MaxUncompChunkSize</span><span class="o">&lt;</span><span class="mi">32768</span><span class="o">&gt;</span><span class="p">()</span><span class="w"> </span><span class="o">+</span>
+<span class="w">                      </span><span class="n">SM</span><span class="o">&lt;</span><span class="mi">800</span><span class="o">&gt;</span><span class="p">());</span>
+</pre></div>
+</div>
+<p>Analogously, for the matching decompressor one would write:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;nvcompdx.hpp&gt;</span>
+
+<span class="k">using</span><span class="w"> </span><span class="n">DECOMP</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">decltype</span><span class="p">(</span><span class="n">Algorithm</span><span class="o">&lt;</span><span class="n">algorithm</span><span class="o">::</span><span class="n">ans</span><span class="o">&gt;</span><span class="p">()</span><span class="w"> </span><span class="o">+</span>
+<span class="w">                        </span><span class="n">DataType</span><span class="o">&lt;</span><span class="n">datatype</span><span class="o">::</span><span class="n">uint8</span><span class="o">&gt;</span><span class="p">()</span><span class="w"> </span><span class="o">+</span>
+<span class="w">                        </span><span class="n">Direction</span><span class="o">&lt;</span><span class="n">direction</span><span class="o">::</span><span class="n">decompress</span><span class="o">&gt;</span><span class="p">()</span><span class="w"> </span><span class="o">+</span>
+<span class="w">                        </span><span class="n">SM</span><span class="o">&lt;</span><span class="mi">800</span><span class="o">&gt;</span><span class="p">());</span>
+</pre></div>
+</div>
+<p>Compressors and decompressors require different sets of description operators to be complete.</p>
+<p id="is-compression-description-complete-label">For a compressor descriptor to be complete, the following description operators are required:</p>
+<ul class="simple">
+<li><p>Exactly one <a class="reference internal" href="#direction-operator-label"><span class="std std-ref">Direction Operator</span></a> with the option <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">nvcompdx</span><span class="o">::</span><span class="n">direction</span><span class="o">::</span><span class="n">compression</span></code></p></li>
+<li><p>Exactly one <a class="reference internal" href="#algorithm-operator-label"><span class="std std-ref">Algorithm Operator</span></a></p></li>
+<li><p>Exactly one <a class="reference internal" href="#datatype-operator-label"><span class="std std-ref">Data Type Operator</span></a></p></li>
+<li><p>Exactly one <a class="reference internal" href="#maxuncompchunksize-operator-label"><span class="std std-ref">Maximum Uncompressed Chunk Size Operator</span></a></p></li>
+<li><p>Exactly one <a class="reference internal" href="#sm-operator-label"><span class="std std-ref">SM Operator</span></a></p></li>
+</ul>
+<p id="is-decompression-description-complete-label">For a decompressor descriptor to be complete, the following description operators are required:</p>
+<ul class="simple">
+<li><p>Exactly one <a class="reference internal" href="#direction-operator-label"><span class="std std-ref">Direction Operator</span></a> with the option <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">nvcompdx</span><span class="o">::</span><span class="n">direction</span><span class="o">::</span><span class="n">decompression</span></code></p></li>
+<li><p>Exactly one <a class="reference internal" href="#algorithm-operator-label"><span class="std std-ref">Algorithm Operator</span></a></p></li>
+<li><p>Exactly one <a class="reference internal" href="#datatype-operator-label"><span class="std std-ref">Data Type Operator</span></a></p></li>
+<li><p>Exactly one <a class="reference internal" href="#sm-operator-label"><span class="std std-ref">SM Operator</span></a></p></li>
+</ul>
+<section id="direction-operator">
+<span id="direction-operator-label"></span><h2>Direction Operator<a class="headerlink" href="#direction-operator" title="Link to this heading">#</a></h2>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">nvcompdx</span><span class="o">::</span><span class="n">Direction</span><span class="o">&lt;</span><span class="n">nvcompdx</span><span class="o">::</span><span class="n">direction</span><span class="w"> </span><span class="n">D</span><span class="o">&gt;</span><span class="p">()</span>
+
+<span class="k">namespace</span><span class="w"> </span><span class="nn">nvcompdx</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">enum</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">direction</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">compress</span><span class="p">,</span>
+<span class="w">    </span><span class="n">decompress</span>
+<span class="w">  </span><span class="p">};</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Sets the direction of operation: compression or decompression.
+In an application where both directions are necessary, it might be beneficial to set up a base descriptor type and specialize it later with a direction.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">nvcompdx</span><span class="p">;</span>
+
+<span class="c1">// Base type</span>
+<span class="k">using</span><span class="w"> </span><span class="n">BASE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">decltype</span><span class="p">(...</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">SM</span><span class="o">&lt;</span><span class="mi">800</span><span class="o">&gt;</span><span class="p">());</span>
+
+<span class="c1">// Compression description</span>
+<span class="k">using</span><span class="w"> </span><span class="n">COMP</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">decltype</span><span class="p">(</span><span class="n">BASE</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">Direction</span><span class="o">&lt;</span><span class="n">direction</span><span class="o">::</span><span class="n">compress</span><span class="o">&gt;</span><span class="p">());</span>
+
+<span class="c1">// Decompression description</span>
+<span class="k">using</span><span class="w"> </span><span class="n">DECOMP</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">decltype</span><span class="p">(</span><span class="n">BASE</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">Direction</span><span class="o">&lt;</span><span class="n">direction</span><span class="o">::</span><span class="n">decompress</span><span class="o">&gt;</span><span class="p">());</span>
+</pre></div>
+</div>
+</section>
+<section id="algorithm-operator">
+<span id="algorithm-operator-label"></span><h2>Algorithm Operator<a class="headerlink" href="#algorithm-operator" title="Link to this heading">#</a></h2>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">nvcompdx</span><span class="o">::</span><span class="n">Algorithm</span><span class="o">&lt;</span><span class="n">nvcompdx</span><span class="o">::</span><span class="n">algorithm</span><span class="w"> </span><span class="n">A</span><span class="o">&gt;</span><span class="p">()</span>
+
+<span class="k">namespace</span><span class="w"> </span><span class="nn">nvcompdx</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">enum</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">algorithm</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">ans</span><span class="p">,</span>
+<span class="w">    </span><span class="n">lz4</span><span class="p">,</span>
+<span class="w">  </span><span class="p">};</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Sets the underlying algorithm for compression and decompression.</p>
+<p>nvCOMPDx currently only supports <strong>LZ4</strong> and <strong>ANS</strong>, but these algorithms are interoperable with our main compressor library <a class="reference external" href="https://docs.nvidia.com/cuda/nvcomp/">nvCOMP</a>. Chunks compressed by nvCOMPDx can be decompressed by nvCOMP, and chunks compressed by nvCOMP can be decompressed by nvCOMPDx.</p>
+<p>A detailed description of the <strong>LZ4</strong> compression scheme is available on the <a class="reference external" href="https://github.com/lz4/lz4/blob/dev/doc/lz4_Block_format.md">LZ4 compression GitHub page</a>.</p>
+</section>
+<section id="data-type-operator">
+<span id="datatype-operator-label"></span><h2>Data Type Operator<a class="headerlink" href="#data-type-operator" title="Link to this heading">#</a></h2>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">nvcompdx</span><span class="o">::</span><span class="n">DataType</span><span class="o">&lt;</span><span class="n">nvcompdx</span><span class="o">::</span><span class="n">datatype</span><span class="w"> </span><span class="n">DT</span><span class="o">&gt;</span><span class="p">()</span>
+
+<span class="k">namespace</span><span class="w"> </span><span class="nn">nvcompdx</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">enum</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">datatype</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">uint8</span><span class="p">,</span>
+<span class="w">    </span><span class="n">uint16</span><span class="p">,</span>
+<span class="w">    </span><span class="n">uint32</span><span class="p">,</span>
+<span class="w">    </span><span class="n">float16</span>
+<span class="w">  </span><span class="p">};</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Sets the type of input and output data used during compression and decompression.</p>
+<ul class="simple">
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">uint8</span></code>: Data to be interpreted as consecutive bytes. If the input data type is not included in the options below, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">uint8</span></code> should be selected.</p></li>
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">uint16</span></code>: Data to be interpreted as consecutive shorts (2 bytes). Requires the total number of input bytes per chunk to be divisible by two.</p></li>
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">uint32</span></code>: Data to be interpreted as consecutive integers (4 bytes). Requires the total number of input bytes per chunk to be divisible by four.</p></li>
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">float16</span></code>: Data to be interpreted as consecutive half-precision floats (2 bytes). Requires the total number of input bytes per chunk to be divisible by two. Note that internally nvCOMPDx does not distinguish between different 16-bit floating-point formats and treats them equally.</p></li>
+</ul>
+<p id="datatype-compatibility-matrix-label">The compatible data type - algorithm pairs are listed in the table below:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 33.3%" />
+<col style="width: 66.7%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Algorithm</p></th>
+<th class="head"><p>Data type(s)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">nvcompdx</span><span class="o">::</span><span class="n">algorithm</span><span class="o">::</span><span class="n">ans</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">nvcompdx</span><span class="o">::</span><span class="n">datatype</span><span class="o">::</span><span class="n">uint8</span></code> and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">nvcompdx</span><span class="o">::</span><span class="n">datatype</span><span class="o">::</span><span class="n">float16</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">nvcompdx</span><span class="o">::</span><span class="n">algorithm</span><span class="o">::</span><span class="n">lz4</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">nvcompdx</span><span class="o">::</span><span class="n">datatype</span><span class="o">::</span><span class="n">uint8</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">nvcompdx</span><span class="o">::</span><span class="n">datatype</span><span class="o">::</span><span class="n">uint16</span></code>, and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">nvcompdx</span><span class="o">::</span><span class="n">datatype</span><span class="o">::</span><span class="n">uint32</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="maximum-uncompressed-chunk-size-operator">
+<span id="maxuncompchunksize-operator-label"></span><h2>Maximum Uncompressed Chunk Size Operator<a class="headerlink" href="#maximum-uncompressed-chunk-size-operator" title="Link to this heading">#</a></h2>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">nvcompdx</span><span class="o">::</span><span class="n">MaxUncompChunkSize</span><span class="o">&lt;</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">ChunkSize</span><span class="o">&gt;</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Sets the maximum uncompressed chunk size in bytes that the compressor is expected to receive. Passing an input chunk to the compressor that is larger than the specified <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">ChunkSize</span></code> in this description operator results in undefined behavior.</p>
+<p id="max-uncomp-chunk-size-compatibility-label">Depending on the data type and algorithm, the supported ranges vary as follows:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 25.0%" />
+<col style="width: 25.0%" />
+<col style="width: 25.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Algorithm</p></th>
+<th class="head"><p>Data type</p></th>
+<th class="head"><p>Minimum value (bytes)</p></th>
+<th class="head"><p>Maximum value (bytes)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">nvcompdx</span><span class="o">::</span><span class="n">algorithm</span><span class="o">::</span><span class="n">ans</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">nvcompdx</span><span class="o">::</span><span class="n">datatype</span><span class="o">::</span><span class="n">uint8</span></code></p></td>
+<td><p>1</p></td>
+<td><p>262,144</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">nvcompdx</span><span class="o">::</span><span class="n">algorithm</span><span class="o">::</span><span class="n">ans</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">nvcompdx</span><span class="o">::</span><span class="n">datatype</span><span class="o">::</span><span class="n">float16</span></code></p></td>
+<td><p>2</p></td>
+<td><p>262,144</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">nvcompdx</span><span class="o">::</span><span class="n">algorithm</span><span class="o">::</span><span class="n">lz4</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">nvcompdx</span><span class="o">::</span><span class="n">datatype</span><span class="o">::</span><span class="n">uint8</span></code></p></td>
+<td><p>1</p></td>
+<td><p>16,777,216</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">nvcompdx</span><span class="o">::</span><span class="n">algorithm</span><span class="o">::</span><span class="n">lz4</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">nvcompdx</span><span class="o">::</span><span class="n">datatype</span><span class="o">::</span><span class="n">uint16</span></code></p></td>
+<td><p>2</p></td>
+<td><p>16,777,216</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">nvcompdx</span><span class="o">::</span><span class="n">algorithm</span><span class="o">::</span><span class="n">lz4</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">nvcompdx</span><span class="o">::</span><span class="n">datatype</span><span class="o">::</span><span class="n">uint32</span></code></p></td>
+<td><p>4</p></td>
+<td><p>16,777,216</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The user is free to choose any value within the supported range, but the generally recommended values are:</p>
+<ul class="simple">
+<li><p>16,384 bytes, or 16 KiB</p></li>
+<li><p>32,768 bytes, or 32 KiB</p></li>
+<li><p>65,536 bytes, or 64 KiB</p></li>
+</ul>
+</section>
+<section id="sm-operator">
+<span id="sm-operator-label"></span><h2>SM Operator<a class="headerlink" href="#sm-operator" title="Link to this heading">#</a></h2>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">nvcompdx</span><span class="o">::</span><span class="n">SM</span><span class="o">&lt;</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">CC</span><span class="o">&gt;</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Sets the target architecture <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">CC</span></code> for the underlying compressor and decompressor to use. Generally, it is calculated as <code class="code highlight cpp docutils literal highlight-cpp"><span class="mi">100</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">CC</span><span class="w"> </span><span class="n">major</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">CC</span><span class="w"> </span><span class="n">minor</span></code>, where the abbreviation <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">CC</span></code> stands for Compute Capability.</p>
+<p>Supported architectures by nvCOMPDx are:</p>
+<ul class="simple">
+<li><p>Turing: <code class="code highlight cpp docutils literal highlight-cpp"><span class="mi">750</span></code> (sm_75)</p></li>
+<li><p>Ampere: <code class="code highlight cpp docutils literal highlight-cpp"><span class="mi">800</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="mi">860</span></code> and <code class="code highlight cpp docutils literal highlight-cpp"><span class="mi">870</span></code> (sm_80, sm_86, sm_87)</p></li>
+<li><p>Ada: <code class="code highlight cpp docutils literal highlight-cpp"><span class="mi">890</span></code> (sm_89)</p></li>
+<li><p>Hopper: <code class="code highlight cpp docutils literal highlight-cpp"><span class="mi">900</span></code> (sm_90)</p></li>
+<li><p>Blackwell: <code class="code highlight cpp docutils literal highlight-cpp"><span class="mi">1000</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="mi">1100</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="mi">1030</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="mi">1200</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="mi">1210</span></code> (sm_100, sm_110, sm_103, sm_120, sm_121)</p></li>
+</ul>
+<p>More information can be found on the official NVIDIA website regarding <a class="reference external" href="https://developer.nvidia.com/cuda/gpus">compute capabilities</a>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Starting with nvCOMPDx 0.1.0, support for NVIDIA Xavier Tegra SoC (<code class="code highlight cpp docutils literal highlight-cpp"><span class="n">SM</span><span class="o">&lt;</span><span class="mi">720</span><span class="o">&gt;</span></code> or sm_72) is deprecated.
+Additionally, support for architectures sm_87, sm_103, and sm_121 is experimental in this release.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>When compiling for <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">XYa</span></code> or <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">XYf</span></code> compute capability, use <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">XY0</span></code> in the <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">SM</span></code> operator (see also <a class="reference external" href="https://docs.nvidia.com/cuda/cuda-programming-guide/05-appendices/compute-capabilities.html#feature-availability">CUDA Programming Guide: Feature Availability</a>).</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If the created descriptor type (that includes the <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">SM</span><span class="o">&lt;</span><span class="n">CC</span><span class="o">&gt;</span></code> operator) is passed to a CUDA kernel using a template parameter, adding the compile-time macro <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">NVCOMPDX_SKIP_IF_NOT_APPLICABLE_SM</span><span class="p">()</span></code> to the first line of the CUDA kernel is recommended. This practice avoids kernel compilation for unintended device architectures, thereby reducing compilation time and the final binary size.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;nvcompdx.hpp&gt;</span>
+
+<span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">COMP</span><span class="o">&gt;</span>
+<span class="n">__global__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">user_kernel</span><span class="p">(...)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">NVCOMPDX_SKIP_IF_NOT_APPLICABLE_SM</span><span class="p">(</span><span class="n">COMP</span><span class="p">);</span>
+
+<span class="w">  </span><span class="c1">// rest of the kernel code ...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="operators.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Operators</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="operators_execution.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Execution Operators</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#direction-operator">Direction Operator</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#algorithm-operator">Algorithm Operator</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-type-operator">Data Type Operator</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#maximum-uncompressed-chunk-size-operator">Maximum Uncompressed Chunk Size Operator</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sm-operator">SM Operator</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5"></script>
+
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+<a class="footer-brand logo" href="https://www.nvidia.com">
+  <img src="../_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="../_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+</a></div>
+      
+        <div class="footer-item">
+
+<div class="footer-links">
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/">Privacy Policy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Your Privacy Choices</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/">Terms of Service</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/accessibility/">Accessibility</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/company-policies/">Corporate Policies</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/product-security/">Product Security</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/contact/">Contact</a>
+  
+  
+  
+</div>
+</div>
+      
+        <div class="footer-item">
+
+
+
+
+  <p class="copyright">
+    
+      Copyright © 2024-2026, NVIDIA Corporation &amp; Affiliates. All rights reserved.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,827 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Execution Methods &#8212; cuRANDDx</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
+
+
+
+    <script src="../_static/documentation_options.js?v=53ae9ec8"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/methods';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://docs.nvidia.com/cuda/curanddx/_static/switcher.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.2.4';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+
+    <link rel="icon" href="../_static/nvidia.ico"/>
+
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Introduction Example Using Philox" href="../examples/introduction_philox.html" />
+    <link rel="prev" title="Execution Traits" href="execution_traits.html" />
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.2.4" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+
+
+  </head>
+
+  <body data-default-mode="">
+
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="cuRANDDx - Home"/>
+    <img src="../_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="cuRANDDx - Home"/>
+  
+  
+    <p class="title logo__title">cuRANDDx</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="cuRANDDx - Home"/>
+    <img src="../_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="cuRANDDx - Home"/>
+  
+  
+    <p class="title logo__title">cuRANDDx</p>
+  
+</a>
+
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Table of Contents">
+  <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
+  <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Documentation Home</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../get_started/requirement.html">Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../get_started/installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../get_started/introduction.html">Using cuRANDDx</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../get_started/performance.html">Achieving High Performance</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="operators.html">Operators</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="description_ops.html">Description Operators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="execution_ops.html">Execution Operators</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="traits.html">Traits</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="description_traits.html">Description Traits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="execution_traits.html">Execution Traits</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Execution Methods</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../examples/introduction_philox.html">Introduction Example</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../examples/thread_api.html">Thread API Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../examples/pcg.html">PCG Generator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/philox_random_bits.html">Use Philox Generator to Generate Random Bits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/xorwow_init_and_generate.html">Init State and Generate in Different Kernels</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/mrg_two_distributions.html">Different Distributions Using Skip Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/sobol.html">Quasirandom Generators</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/nvrtc_pcg.html">NVRTC Example</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../release_notes.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/NVIDIA/CUDALibrarySamples/tree/main/MathDx/cuRANDDx">GitHub Samples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">MathDx</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/nvcompdx-downloads">nvCOMPDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/cusolverdx-downloads">cuSolverDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/cublasdx-downloads">cuBLASDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/cufftdx-downloads">cuFFTDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/curanddx-downloads">cuRANDDx</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Execution Methods</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="execution-methods">
+<span id="execution-methods-label"></span><h1>Execution Methods<a class="headerlink" href="#execution-methods" title="Link to this heading">#</a></h1>
+<p>Execution methods are used to run RNG operations as defined by user with cuRANDDx operators.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Current cuRANDDx release only supports execution on CUDA thread level, i.e., thread execution.</p>
+</div>
+<section id="thread-execute-methods">
+<span id="thread-execute-method-label"></span><h2>Thread Execute Methods<a class="headerlink" href="#thread-execute-methods" title="Link to this heading">#</a></h2>
+<p>The thread execution methods are available if the descriptor has been constructed using the <a class="reference internal" href="execution_ops.html#thread-operator-label"><span class="std std-ref">Thread Operator</span></a>
+and <a class="reference internal" href="description_traits.html#israndcompleteexecution-trait-label"><span class="std std-ref">is_complete_rand_execution Trait</span></a> is <code class="code highlight cpp docutils literal highlight-cpp"><span class="nb">true</span></code>.</p>
+<section id="state-initialization">
+<h3>State Initialization<a class="headerlink" href="#state-initialization" title="Link to this heading">#</a></h3>
+<p>States can be initialized either by using <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">init</span><span class="p">(...)</span></code> function, or using the thread execution constructor (refer to <a class="reference internal" href="../examples/xorwow_init_and_generate.html#xorwow"><span class="std std-ref">the example</span></a>).
+The function arguments vary depending on the generator type.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">RNG</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">decltype</span><span class="p">(</span><span class="n">curanddx</span><span class="o">::</span><span class="n">Thread</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">...);</span>
+
+<span class="c1">// Explicit init state function for pseudorandom generators</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">init</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">seed</span><span class="p">,</span>
+<span class="w">          </span><span class="k">const</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">subsequence</span><span class="p">,</span>
+<span class="w">          </span><span class="k">const</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">RNG</span><span class="o">::</span><span class="n">offset_type</span><span class="w"> </span><span class="n">offset</span><span class="p">);</span>
+
+<span class="c1">// Implicit init state function using thread execution constructor for pseudorandom generators</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">RNG</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">seed</span><span class="p">,</span>
+<span class="w">         </span><span class="k">const</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">subsequence</span><span class="p">,</span>
+<span class="w">         </span><span class="k">const</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">RNG</span><span class="o">::</span><span class="n">offset_type</span><span class="w"> </span><span class="n">offset</span><span class="p">);</span>
+
+<span class="c1">// Explicit init function for quasirandom generators</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">init</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">dim</span><span class="p">,</span>
+<span class="w">          </span><span class="k">typename</span><span class="w"> </span><span class="nc">RNG</span><span class="o">::</span><span class="n">direction_vector_type</span><span class="o">*</span><span class="w">      </span><span class="n">direction_vectors</span><span class="p">,</span>
+<span class="w">          </span><span class="k">const</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">RNG</span><span class="o">::</span><span class="n">offset_type</span><span class="w">           </span><span class="n">offset</span><span class="p">,</span>
+<span class="w">          </span><span class="k">const</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">RNG</span><span class="o">::</span><span class="n">scrambled_const_type</span><span class="o">*</span><span class="w"> </span><span class="n">scrambled_consts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">nullptr</span><span class="p">);</span>
+
+<span class="c1">// Implicit init function using thread execution constructor for quasirandom generators</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">RNG</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">dim</span><span class="p">,</span>
+<span class="w">         </span><span class="k">typename</span><span class="w"> </span><span class="nc">RNG</span><span class="o">::</span><span class="n">direction_vector_type</span><span class="o">*</span><span class="w">      </span><span class="n">direction_vectors</span><span class="p">,</span>
+<span class="w">         </span><span class="k">const</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">RNG</span><span class="o">::</span><span class="n">offset_type</span><span class="w">           </span><span class="n">offset</span><span class="p">,</span>
+<span class="w">         </span><span class="k">const</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">RNG</span><span class="o">::</span><span class="n">scrambled_const_type</span><span class="o">*</span><span class="w"> </span><span class="n">scrambled_consts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">nullptr</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="generate-32-bit-pseudo-random-or-quasi-random-numbers">
+<span id="thread-execute-random-bits-generation-method-label"></span><h3>Generate 32-bit Pseudo-random or Quasi-random Numbers<a class="headerlink" href="#generate-32-bit-pseudo-random-or-quasi-random-numbers" title="Link to this heading">#</a></h3>
+<p>Random bits are generated using <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">generate</span><span class="p">()</span></code> or <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">generate4</span><span class="p">()</span></code> functions, depending on the generator type.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">RNG</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">decltype</span><span class="p">(</span><span class="n">curanddx</span><span class="o">::</span><span class="n">Thread</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">...);</span>
+
+<span class="c1">// Generate a single 32-bit pseudo-random or quasi-random number. Supported for all generators except Philox.</span>
+<span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">generate</span><span class="p">();</span>
+
+<span class="c1">// Generate 4 32-bit pseudo-random numbers. Only supported for Philox generator.</span>
+<span class="n">uint4</span><span class="w"> </span><span class="nf">generate4</span><span class="p">();</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>cuRANDDx only supports native Philox4_32 generator in the current release, meaning four values are generated at a time.
+As a result using <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">generate</span><span class="p">()</span></code> function of a descriptor with Philox4_32 generator is not supported and will lead to compilation errors.
+Similarly, using <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">generate4</span><span class="p">()</span></code> function of a descriptor with non-Philox generator will also lead to compilation errors.</p>
+</div>
+</section>
+<section id="random-number-generation-with-distributions">
+<span id="thread-execute-generation-method-label"></span><h3>Random Number Generation With Distributions<a class="headerlink" href="#random-number-generation-with-distributions" title="Link to this heading">#</a></h3>
+<p>Similar to <a class="reference external" href="https://numpy.org/doc/2.1/reference/random/generator.html">Numpy Random Generator</a>, cuRANDDx uses the <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">RNG</span></code> object
+to initialize and manage state, generate random bits, which are then transformed into random values from a specified distribution using a distribution object with its own state.</p>
+<section id="uniform-bits-distribution">
+<h4>Uniform Bits Distribution<a class="headerlink" href="#uniform-bits-distribution" title="Link to this heading">#</a></h4>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Uniform bits distribution</span>
+<span class="c1">// Equivalent to the random bits generated without transformation</span>
+<span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">UIntType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="o">&gt;</span>
+<span class="w">  </span><span class="k">struct</span><span class="w"> </span><span class="nc">uniform_bits</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">using</span><span class="w"> </span><span class="n">result_type</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">UIntType</span><span class="p">;</span>
+<span class="w">      </span><span class="k">using</span><span class="w"> </span><span class="n">result4_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">detail</span><span class="o">::</span><span class="n">make_vector</span><span class="o">&lt;</span><span class="n">UIntType</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="o">&gt;::</span><span class="n">type</span><span class="p">;</span>
+
+<span class="w">      </span><span class="c1">// constructor</span>
+<span class="w">      </span><span class="n">uniform_bits</span><span class="p">();</span>
+
+<span class="w">      </span><span class="c1">// generate a singel value, invalid for Philox</span>
+<span class="w">      </span><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">RNG</span><span class="o">&gt;</span>
+<span class="w">      </span><span class="n">result_type</span><span class="w"> </span><span class="n">generate</span><span class="p">(</span><span class="n">RNG</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rng</span><span class="p">);</span>
+
+<span class="w">      </span><span class="c1">// Only used for Philox</span>
+<span class="w">      </span><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">RNG</span><span class="o">&gt;</span>
+<span class="w">      </span><span class="n">result4_type</span><span class="w"> </span><span class="n">generate4</span><span class="p">(</span><span class="n">RNG</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rng</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The uniform_bits distribution is equivalent to the random bits generated without transformation as shown in <a class="reference internal" href="#thread-execute-random-bits-generation-method-label"><span class="std std-ref">Generate 32-bit Pseudo-random or Quasi-random Numbers</span></a>.</p>
+</div>
+</section>
+<section id="uniform-distribution">
+<h4>Uniform Distribution<a class="headerlink" href="#uniform-distribution" title="Link to this heading">#</a></h4>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Uniform distribution</span>
+<span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">FPType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">float</span><span class="o">&gt;</span><span class="w"> </span><span class="c1">// Only support float and double</span>
+<span class="w">  </span><span class="k">struct</span><span class="w"> </span><span class="nc">uniform</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">using</span><span class="w"> </span><span class="n">result_type</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">FPType</span><span class="p">;</span>
+<span class="w">      </span><span class="k">using</span><span class="w"> </span><span class="n">result2_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">detail</span><span class="o">::</span><span class="n">make_vector</span><span class="o">&lt;</span><span class="n">FPType</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="o">&gt;::</span><span class="n">type</span><span class="p">;</span>
+<span class="w">      </span><span class="k">using</span><span class="w"> </span><span class="n">result4_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">detail</span><span class="o">::</span><span class="n">make_vector</span><span class="o">&lt;</span><span class="n">FPType</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="o">&gt;::</span><span class="n">type</span><span class="p">;</span>
+
+<span class="w">      </span><span class="c1">// constructor</span>
+<span class="w">      </span><span class="n">uniform</span><span class="p">(</span><span class="n">FPType</span><span class="w"> </span><span class="n">min</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">FPType</span><span class="w"> </span><span class="n">max</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+
+<span class="w">      </span><span class="c1">// generate a singel value, invalid for Philox</span>
+<span class="w">      </span><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">RNG</span><span class="o">&gt;</span>
+<span class="w">      </span><span class="n">result_type</span><span class="w"> </span><span class="n">generate</span><span class="p">(</span><span class="n">RNG</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rng</span><span class="p">);</span>
+
+<span class="w">      </span><span class="c1">// generate two values, for example uniform_double2 using Philox</span>
+<span class="w">      </span><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">RNG</span><span class="o">&gt;</span>
+<span class="w">      </span><span class="n">result2_type</span><span class="w"> </span><span class="n">generate2</span><span class="p">(</span><span class="n">RNG</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rng</span><span class="p">);</span>
+
+<span class="w">      </span><span class="c1">// generate four values, for example uniform4 or uniform_double4 using Philox</span>
+<span class="w">      </span><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">RNG</span><span class="o">&gt;</span>
+<span class="w">      </span><span class="n">result4_type</span><span class="w"> </span><span class="n">generate4</span><span class="p">(</span><span class="n">RNG</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rng</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For 32-bit pseudorandom generators, cuRANDDx by default uses a more precise method to compute one double-precision value using two 32-bit values. There is an option to use less precise approach which is compatible with how MRG32K3A generator is implemented in cuRAND host API, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">curandGenerateUniformDouble</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">curandGenerateNormaDouble</span></code>, and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">curandGenerateLogNormalDouble</span></code>. It can be enabled by defining  <code class="docutils literal notranslate"><span class="pre">CURANDDX_MRG_DOUBLE_DISTRIBUTION_CURAND_COMPATIBLE</span></code> preprocessor in your code. Please refer to <a class="reference internal" href="../examples/mrg_two_distributions.html#mrg-two-distribution"><span class="std std-ref">the example</span></a> for detail.</p>
+</div>
+</section>
+<section id="normal-distribution">
+<h4>Normal Distribution<a class="headerlink" href="#normal-distribution" title="Link to this heading">#</a></h4>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Normal distribution with two implementation methods</span>
+<span class="k">enum</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">normal_method</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">icdf</span><span class="p">,</span><span class="w">       </span><span class="c1">// Inverse cumulative distribution function (ICDF), generating one value at a time</span>
+<span class="w">    </span><span class="n">box_muller</span><span class="w">  </span><span class="c1">// Box-Muller method, requiring two input values and generating two output values</span>
+<span class="p">};</span>
+
+<span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">FPType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">float</span><span class="p">,</span><span class="w"> </span><span class="n">normal_method</span><span class="w"> </span><span class="n">Method</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">icdf</span><span class="o">&gt;</span>
+<span class="w">  </span><span class="k">struct</span><span class="w"> </span><span class="nc">normal</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">using</span><span class="w"> </span><span class="n">result_type</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">FPType</span><span class="p">;</span><span class="w"> </span><span class="c1">// Only support float and double</span>
+<span class="w">      </span><span class="k">using</span><span class="w"> </span><span class="n">result2_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">detail</span><span class="o">::</span><span class="n">make_vector</span><span class="o">&lt;</span><span class="n">FPType</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="o">&gt;::</span><span class="n">type</span><span class="p">;</span>
+<span class="w">      </span><span class="k">using</span><span class="w"> </span><span class="n">result4_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">detail</span><span class="o">::</span><span class="n">make_vector</span><span class="o">&lt;</span><span class="n">FPType</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="o">&gt;::</span><span class="n">type</span><span class="p">;</span>
+
+<span class="w">      </span><span class="c1">// constructor</span>
+<span class="w">      </span><span class="n">normal</span><span class="p">(</span><span class="n">FPType</span><span class="w"> </span><span class="n">mean</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">FPType</span><span class="w"> </span><span class="n">stddev</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+
+<span class="w">      </span><span class="c1">// generate a singel value, invalid for Philox or Box-Muller method</span>
+<span class="w">      </span><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">RNG</span><span class="o">&gt;</span>
+<span class="w">      </span><span class="n">result_type</span><span class="w"> </span><span class="n">generate</span><span class="p">(</span><span class="n">RNG</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rng</span><span class="p">);</span>
+
+<span class="w">      </span><span class="c1">// Only for Box-Muller used by non-philox generator</span>
+<span class="w">      </span><span class="c1">// Or Box-Muller used by Philox for two FP64 values</span>
+<span class="w">      </span><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">RNG</span><span class="o">&gt;</span>
+<span class="w">      </span><span class="n">result2_type</span><span class="w"> </span><span class="n">generate2</span><span class="p">(</span><span class="n">RNG</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rng</span><span class="p">);</span>
+
+<span class="w">      </span><span class="c1">// Only for normal4 or normal4_double for Philox, using either ICDF or Box-Muller</span>
+<span class="w">      </span><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">RNG</span><span class="o">&gt;</span>
+<span class="w">      </span><span class="n">result4_type</span><span class="w"> </span><span class="n">generate4</span><span class="p">(</span><span class="n">RNG</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rng</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Box-Muller method requires two input values and generates two values. Therefore, using <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">generate</span><span class="p">()</span></code> function for normal distribution with
+Box-Muller method is not allowed and will lead to compilation errors.</p>
+</div>
+</section>
+<section id="log-normal-distribution">
+<h4>Log-normal Distribution<a class="headerlink" href="#log-normal-distribution" title="Link to this heading">#</a></h4>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// LogNormal distribution with two implementation methods</span>
+<span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">FPType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">float</span><span class="p">,</span><span class="w"> </span><span class="n">normal_method</span><span class="w"> </span><span class="n">Method</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">icdf</span><span class="o">&gt;</span>
+<span class="w">  </span><span class="k">struct</span><span class="w"> </span><span class="nc">log_normal</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">using</span><span class="w"> </span><span class="n">result_type</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">FPType</span><span class="p">;</span><span class="w"> </span><span class="c1">// Only support float and double</span>
+<span class="w">      </span><span class="k">using</span><span class="w"> </span><span class="n">result2_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">detail</span><span class="o">::</span><span class="n">make_vector</span><span class="o">&lt;</span><span class="n">FPType</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="o">&gt;::</span><span class="n">type</span><span class="p">;</span>
+<span class="w">      </span><span class="k">using</span><span class="w"> </span><span class="n">result4_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">detail</span><span class="o">::</span><span class="n">make_vector</span><span class="o">&lt;</span><span class="n">FPType</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="o">&gt;::</span><span class="n">type</span><span class="p">;</span>
+
+<span class="w">      </span><span class="c1">// constructor</span>
+<span class="w">      </span><span class="n">log_normal</span><span class="p">(</span><span class="n">FPType</span><span class="w"> </span><span class="n">mean</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">FPType</span><span class="w"> </span><span class="n">stddev</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+
+<span class="w">      </span><span class="c1">// generate a singel value, invalid for Philox or Box-Muller method</span>
+<span class="w">      </span><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">RNG</span><span class="o">&gt;</span>
+<span class="w">      </span><span class="n">result_type</span><span class="w"> </span><span class="n">generate</span><span class="p">(</span><span class="n">RNG</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rng</span><span class="p">);</span>
+
+<span class="w">      </span><span class="c1">// Only for Box-Muller used by non-philox generator</span>
+<span class="w">      </span><span class="c1">// Or Box-Muller used by Philox for two FP64 values</span>
+<span class="w">      </span><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">RNG</span><span class="o">&gt;</span>
+<span class="w">      </span><span class="n">result2_type</span><span class="w"> </span><span class="n">generate2</span><span class="p">(</span><span class="n">RNG</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rng</span><span class="p">);</span>
+
+<span class="w">      </span><span class="c1">// Only for log_normal4 or log_normal4_double for Philox, using either ICDF or Box-Muller</span>
+<span class="w">      </span><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">RNG</span><span class="o">&gt;</span>
+<span class="w">      </span><span class="n">result4_type</span><span class="w"> </span><span class="n">generate4</span><span class="p">(</span><span class="n">RNG</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rng</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="poisson-distribution">
+<h4>Poisson Distribution<a class="headerlink" href="#poisson-distribution" title="Link to this heading">#</a></h4>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Poisson distribution is a discrete distribution, the output data type is unsigned int</span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">poisson</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">using</span><span class="w"> </span><span class="n">result_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="p">;</span>
+
+<span class="w">      </span><span class="c1">// constructor</span>
+<span class="w">      </span><span class="n">poisson</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">lambda</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+
+<span class="w">      </span><span class="c1">// generate a singel value</span>
+<span class="w">      </span><span class="c1">// cuRANDDx current does not support generating Poisson distribution with Philox4_32 generator</span>
+<span class="w">      </span><span class="n">result_type</span><span class="w"> </span><span class="nf">generate</span><span class="p">(</span><span class="n">RNG</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rng</span><span class="p">);</span>
+
+<span class="w">  </span><span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="skip-functions">
+<h3>Skip Functions<a class="headerlink" href="#skip-functions" title="Link to this heading">#</a></h3>
+<p>The <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">skip_offset</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">skip_subsequence</span></code> and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">skip_sequence</span></code> functions in cuRANDDx are the updated API based on
+<code class="code highlight cpp docutils literal highlight-cpp"><span class="n">skipahead</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">skipahead_sequence</span></code>, and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">skipahead_subsequence</span></code> <a class="reference external" href="https://docs.nvidia.com/cuda/curand/device-api-overview.html#skip-ahead">cuRAND device API</a>, with difference explained in the comments below.</p>
+<p>Users can refer to <a class="reference internal" href="../examples/mrg_two_distributions.html#mrg-two-distribution"><span class="std std-ref">the example</span></a> using the skip functions.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">RNG</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">decltype</span><span class="p">(</span><span class="n">curanddx</span><span class="o">::</span><span class="n">Thread</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">...);</span>
+
+<span class="c1">// Skip offset, valid for all generators except scrambled_sobol32 and scrambled_sobol64</span>
+<span class="c1">// Similar to skipahead() functions in cuRAND device API</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">skip_offset</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">RNG</span><span class="o">::</span><span class="n">offset_type</span><span class="w"> </span><span class="n">n</span><span class="p">);</span>
+
+<span class="c1">// Skip subsequence, valid for pseudorandom generators</span>
+<span class="c1">// Similar to skipahead_subsequence() cuRAND device API for MRG32K3A and skipahead_sequence() for XORWOW and Philox</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">skip_subsequence</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">n</span><span class="p">);</span>
+
+<span class="c1">// Skip sequence, valid for MRG32K3A generator only</span>
+<span class="c1">// Similar to skipahead_sequence() cuRAND device API for MRG32K3A generator</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">skip_sequence</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">n</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="execution_traits.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Execution Traits</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../examples/introduction_philox.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Introduction Example Using Philox</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#thread-execute-methods">Thread Execute Methods</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#state-initialization">State Initialization</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-32-bit-pseudo-random-or-quasi-random-numbers">Generate 32-bit Pseudo-random or Quasi-random Numbers</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#random-number-generation-with-distributions">Random Number Generation With Distributions</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#uniform-bits-distribution">Uniform Bits Distribution</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#uniform-distribution">Uniform Distribution</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#normal-distribution">Normal Distribution</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#log-normal-distribution">Log-normal Distribution</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#poisson-distribution">Poisson Distribution</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#skip-functions">Skip Functions</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5"></script>
+
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+<a class="footer-brand logo" href="https://www.nvidia.com">
+  <img src="../_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="../_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+</a></div>
+      
+        <div class="footer-item">
+
+<div class="footer-links">
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/">Privacy Policy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Your Privacy Choices</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/">Terms of Service</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/accessibility/">Accessibility</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/company-policies/">Corporate Policies</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/product-security/">Product Security</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/contact/">Contact</a>
+  
+  
+  
+</div>
+</div>
+      
+        <div class="footer-item">
+
+
+
+
+  <p class="copyright">
+    
+      Copyright © 2024-2026, NVIDIA Corporation &amp; Affiliates. All rights reserved.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,1046 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Using cuBLASDx TRSM &#8212; cuBLASDx</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
+    <link rel="stylesheet" type="text/css" href="_static/diagram.css?v=21e9147c" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
+
+
+
+    <script src="_static/documentation_options.js?v=26f1c5af"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'using_trsm';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://docs.nvidia.com/cuda/cublasdx/_static/switcher.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.7.1';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+
+    <link rel="icon" href="_static/nvidia.ico"/>
+
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Achieving High Performance" href="performance.html" />
+    <link rel="prev" title="Using Pipelined GEMM" href="using_pipelines.html" />
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.7.1" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+
+
+  </head>
+
+  <body data-default-mode="">
+
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="cuBLASDx - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="cuBLASDx - Home"/>
+  
+  
+    <p class="title logo__title">cuBLASDx</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="cuBLASDx - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="cuBLASDx - Home"/>
+  
+  
+    <p class="title logo__title">cuBLASDx</p>
+  
+</a>
+
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Table of Contents">
+  <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
+  <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Documentation Home</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="requirements_func.html">Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="using_cublasdx.html">Using cuBLASDx GEMM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="using_pipelines.html">Using Pipelined GEMM</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Using cuBLASDx TRSM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance.html">Achieving High Performance</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="api/operators.html">Operators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/traits.html">Traits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/shared_methods.html">Input / Output Format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/gemm_methods.html">GEMM Execution Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/trsm_methods.html">TRSM Execution Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/pipeline.html">Pipeline Creation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/other_methods.html">Other Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/other_tensors.html">Tensor Manipulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/other_shared.html">Shared Memory Management</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Python</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="python_bindings.html">cuBLASDx Python Bindings</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="examples_learning_path.html">Learning Path Through Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="release_notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/NVIDIA/CUDALibrarySamples/tree/main/MathDx/cuBLASDx">GitHub Samples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">MathDx</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/cublasdx-downloads">cuBLASDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/cufftdx-downloads">cuFFTDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/cusolverdx-downloads">cuSolverDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/curanddx-downloads">cuRANDDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/nvcompdx-downloads">nvCOMPDx</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Using cuBLASDx TRSM</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="using-cublasdx-trsm">
+<span id="intro3-label"></span><h1>Using cuBLASDx TRSM<a class="headerlink" href="#using-cublasdx-trsm" title="Link to this heading">#</a></h1>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>In this introduction, we demonstrate how to perform a triangular solve (TRSM) using the cuBLASDx library.
+TRSM solves one of two equations for the unknown matrix <span class="math notranslate nohighlight">\(X\)</span>:</p>
+<ol class="arabic simple">
+<li><p>Left-side: <span class="math notranslate nohighlight">\(A \times X = B\)</span></p></li>
+<li><p>Right-side: <span class="math notranslate nohighlight">\(X \times A = B\)</span></p></li>
+</ol>
+<p>where <code class="docutils literal notranslate"><span class="pre">A</span></code> is a triangular matrix and <code class="docutils literal notranslate"><span class="pre">B</span></code> is overwritten <strong>in-place</strong> with the solution <code class="docutils literal notranslate"><span class="pre">X</span></code>.
+Unlike GEMM, there are no <span class="math notranslate nohighlight">\(\alpha\)</span> / <span class="math notranslate nohighlight">\(\beta\)</span> scalars — the operation is always
+<span class="math notranslate nohighlight">\(B \leftarrow A^{-1} B\)</span> (left) or <span class="math notranslate nohighlight">\(B \leftarrow B A^{-1}\)</span> (right).</p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<img alt="Diagram of left-side and right-side TRSM matrix shapes for A, B, and X." class="dark-light diagram align-center" src="_images/trsm_shapes.svg" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<div class="pst-scrollable-table-container"><table class="table" id="id2">
+<caption><span class="caption-number">Table 2 </span><span class="caption-text">TRSM matrix shapes</span><a class="headerlink" href="#id2" title="Link to this table">#</a></caption>
+<colgroup>
+<col style="width: 18.0%" />
+<col style="width: 22.0%" />
+<col style="width: 20.0%" />
+<col style="width: 20.0%" />
+<col style="width: 20.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Side</p></th>
+<th class="head"><p>Equation</p></th>
+<th class="head"><p>Shape of <code class="docutils literal notranslate"><span class="pre">A</span></code></p></th>
+<th class="head"><p>Shape of <code class="docutils literal notranslate"><span class="pre">B</span></code> / <code class="docutils literal notranslate"><span class="pre">X</span></code></p></th>
+<th class="head"><p>Batched <code class="docutils literal notranslate"><span class="pre">B</span></code> tensor</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">side::left</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">A</span> <span class="pre">*</span> <span class="pre">X</span> <span class="pre">=</span> <span class="pre">B</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">M</span> <span class="pre">x</span> <span class="pre">M</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">M</span> <span class="pre">x</span> <span class="pre">N</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">make_gmem_tensor_batched&lt;ArrangementB&gt;(ptr,</span> <span class="pre">M,</span> <span class="pre">N,</span> <span class="pre">batches)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">side::right</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">X</span> <span class="pre">*</span> <span class="pre">A</span> <span class="pre">=</span> <span class="pre">B</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">N</span> <span class="pre">x</span> <span class="pre">N</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">M</span> <span class="pre">x</span> <span class="pre">N</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">make_gmem_tensor_batched&lt;ArrangementB&gt;(ptr,</span> <span class="pre">M,</span> <span class="pre">N,</span> <span class="pre">batches)</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Size&lt;M,</span> <span class="pre">N&gt;</span></code> always describes the shape of <code class="docutils literal notranslate"><span class="pre">B</span></code> and <code class="docutils literal notranslate"><span class="pre">X</span></code>. Only the square
+dimension of <code class="docutils literal notranslate"><span class="pre">A</span></code> changes with <code class="docutils literal notranslate"><span class="pre">Side</span></code>.</p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>cuBLASDx provides two execution levels for TRSM:</p>
+<ul class="simple">
+<li><p><strong>Block-level</strong> (<code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Block</span><span class="p">()</span></code>): the entire CUDA block cooperates to solve a batch of TRSM instances.
+Data must be staged through shared memory. Best for larger matrices (e.g. M or N ≥ 32) where
+the problem size justifies shared memory traffic.</p></li>
+<li><p><strong>Thread-level</strong> (<code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Thread</span><span class="p">()</span></code>): each CUDA thread independently solves one instance directly from
+global memory. No shared memory is used or required. Best for small matrices (e.g. M, N ≤ 16)
+where many independent instances can be solved in parallel. Thread-level operations are supported for TRSM only.</p></li>
+</ul>
+<p>This section is based on the <code class="docutils literal notranslate"><span class="pre">trsm_block</span></code>, <code class="docutils literal notranslate"><span class="pre">trsm_thread</span></code>, and <code class="docutils literal notranslate"><span class="pre">trsm_conj_transpose</span></code> examples included with cuBLASDx.
+See the <a class="reference internal" href="examples.html#examples-label"><span class="std std-ref">Examples</span></a> section for additional cuBLASDx samples.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>TRSM requires linking against the pre-built</strong> <code class="docutils literal notranslate"><span class="pre">libcublasdx.fatbin</span></code> <strong>device-code library.</strong> Unlike GEMM, the TRSM implementation is
+pre-compiled and linked into the user’s binary at build time via LTO (link-time optimization).
+Without it, a <code class="docutils literal notranslate"><span class="pre">static_assert</span></code> will fire at compile time.
+See the <a class="reference internal" href="installation.html#quick-installation-guide-label"><span class="std std-ref">Quick Installation Guide</span></a> for exact CMake setup.</p>
+</div>
+<section id="defining-the-trsm-operation">
+<h2>Defining The TRSM Operation<a class="headerlink" href="#defining-the-trsm-operation" title="Link to this heading">#</a></h2>
+<p>As with GEMM, a TRSM descriptor is assembled by combining cuBLASDx operators. In addition to the
+common operators (<a class="reference internal" href="api/operators.html#size-operator-label"><span class="std std-ref">Size</span></a>, <a class="reference internal" href="api/operators.html#precision-operator-label"><span class="std std-ref">Precision</span></a>,
+<a class="reference internal" href="api/operators.html#type-operator-label"><span class="std std-ref">Type</span></a>, <a class="reference internal" href="api/operators.html#arrangement-operator-label"><span class="std std-ref">Arrangement</span></a>,
+<a class="reference internal" href="api/operators.html#sm-operator-label"><span class="std std-ref">SM</span></a>, and an execution operator), TRSM supports three additional operators
+(all optional — defaults are shown in parentheses):</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="api/operators.html#side-operator-label"><span class="std std-ref">Side</span></a> — whether <code class="docutils literal notranslate"><span class="pre">A</span></code> appears on the left or right (default: <code class="docutils literal notranslate"><span class="pre">side::left</span></code>).</p></li>
+<li><p><a class="reference internal" href="api/operators.html#fillmode-operator-label"><span class="std std-ref">FillMode</span></a> — which triangle of <code class="docutils literal notranslate"><span class="pre">A</span></code> holds the data; the other
+triangle is never read (default: <code class="docutils literal notranslate"><span class="pre">fill_mode::lower</span></code>).</p></li>
+<li><p><a class="reference internal" href="api/operators.html#diag-operator-label"><span class="std std-ref">Diag</span></a> — <code class="docutils literal notranslate"><span class="pre">non_unit</span></code> means diagonal entries are read from <code class="docutils literal notranslate"><span class="pre">A</span></code>
+as usual; <code class="docutils literal notranslate"><span class="pre">unit</span></code> means the diagonal is treated as all-ones without reading it (the stored
+values are ignored), which is required for unit-triangular matrices in LU factorization
+(default: <code class="docutils literal notranslate"><span class="pre">diag::non_unit</span></code>).</p></li>
+</ul>
+<p><a class="reference internal" href="api/operators.html#size-operator-label"><span class="std std-ref">Size</span></a> for TRSM takes only two dimensions, <code class="docutils literal notranslate"><span class="pre">Size&lt;M,</span> <span class="pre">N&gt;</span></code>:
+<code class="docutils literal notranslate"><span class="pre">M</span></code> rows and <code class="docutils literal notranslate"><span class="pre">N</span></code> columns of the right-hand side matrix <code class="docutils literal notranslate"><span class="pre">B</span></code>.
+The triangular matrix <code class="docutils literal notranslate"><span class="pre">A</span></code> is square: dimension <code class="docutils literal notranslate"><span class="pre">M</span></code> for left-side, dimension <code class="docutils literal notranslate"><span class="pre">N</span></code> for right-side.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cublasdx.hpp&gt;</span>
+<span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">cublasdx</span><span class="p">;</span>
+
+<span class="c1">// Left-side, lower-triangular, non-unit TRSM: A * X = B</span>
+<span class="c1">// A is 32x32, B (and X) is 32x16.</span>
+<span class="k">using</span><span class="w"> </span><span class="n">TRSM</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">decltype</span><span class="p">(</span><span class="n">Size</span><span class="o">&lt;</span><span class="mi">32</span><span class="p">,</span><span class="w"> </span><span class="mi">16</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">                    </span><span class="o">+</span><span class="w"> </span><span class="n">Precision</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">                    </span><span class="o">+</span><span class="w"> </span><span class="n">Type</span><span class="o">&lt;</span><span class="n">type</span><span class="o">::</span><span class="n">real</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">                    </span><span class="o">+</span><span class="w"> </span><span class="n">Function</span><span class="o">&lt;</span><span class="n">function</span><span class="o">::</span><span class="n">TRSM</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">                    </span><span class="o">+</span><span class="w"> </span><span class="n">Side</span><span class="o">&lt;</span><span class="n">side</span><span class="o">::</span><span class="n">left</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">                    </span><span class="o">+</span><span class="w"> </span><span class="n">FillMode</span><span class="o">&lt;</span><span class="n">fill_mode</span><span class="o">::</span><span class="n">lower</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">                    </span><span class="o">+</span><span class="w"> </span><span class="n">Diag</span><span class="o">&lt;</span><span class="n">diag</span><span class="o">::</span><span class="n">non_unit</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">                    </span><span class="o">+</span><span class="w"> </span><span class="n">Arrangement</span><span class="o">&lt;</span><span class="n">col_major</span><span class="p">,</span><span class="w"> </span><span class="n">col_major</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">                    </span><span class="o">+</span><span class="w"> </span><span class="n">SM</span><span class="o">&lt;</span><span class="mi">900</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">                    </span><span class="o">+</span><span class="w"> </span><span class="n">Block</span><span class="p">());</span>
+</pre></div>
+</div>
+</section>
+<section id="block-level-trsm">
+<h2>Block-Level TRSM<a class="headerlink" href="#block-level-trsm" title="Link to this heading">#</a></h2>
+<p>In the block-level API, all threads in a CUDA block cooperate to solve one or more TRSM instances.
+Data for <code class="docutils literal notranslate"><span class="pre">A</span></code> and <code class="docutils literal notranslate"><span class="pre">B</span></code> must be loaded into shared memory before calling <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">execute</span><span class="p">()</span></code>.
+The result (<code class="docutils literal notranslate"><span class="pre">X</span></code>) overwrites <code class="docutils literal notranslate"><span class="pre">B</span></code> in shared memory and must be written back to global memory
+by the caller.</p>
+<section id="defining-the-descriptor">
+<h3>Defining The Descriptor<a class="headerlink" href="#defining-the-descriptor" title="Link to this heading">#</a></h3>
+<p>For a block-level solve, add <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Block</span><span class="p">()</span></code> (and optionally <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">BlockDim</span><span class="o">&lt;</span><span class="n">N</span><span class="o">&gt;</span><span class="p">()</span></code> and
+<code class="code highlight cpp docutils literal highlight-cpp"><span class="n">BatchesPerBlock</span><span class="o">&lt;</span><span class="n">N</span><span class="o">&gt;</span><span class="p">()</span></code>) to the descriptor. If <code class="docutils literal notranslate"><span class="pre">BlockDim</span></code> is not specified, a default value of <code class="docutils literal notranslate"><span class="pre">TRSM::suggested_block_dim</span></code> is used and
+if <code class="docutils literal notranslate"><span class="pre">BatchesPerBlock</span></code> is not specified, a default value of 1 is used.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The kernel must be launched with exactly <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">TRSM</span><span class="o">::</span><span class="n">block_dim</span></code>, which equals <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">BlockDim</span><span class="o">&lt;</span><span class="n">X</span><span class="p">,</span><span class="w"> </span><span class="n">Y</span><span class="p">,</span><span class="w"> </span><span class="n">Z</span><span class="o">&gt;</span></code> if the
+<code class="code highlight cpp docutils literal highlight-cpp"><span class="n">BlockDim</span></code> operator is specified, or <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">TRSM</span><span class="o">::</span><span class="n">suggested_block_dim</span></code> if not. Unlike GEMM, TRSM does not
+allow launching with block dimensions other than specified.</p>
+</div>
+<p>Example descriptor:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cublasdx.hpp&gt;</span>
+<span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">cublasdx</span><span class="p">;</span>
+
+<span class="k">using</span><span class="w"> </span><span class="n">TRSM</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">decltype</span><span class="p">(</span><span class="n">Size</span><span class="o">&lt;</span><span class="mi">64</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">                    </span><span class="o">+</span><span class="w"> </span><span class="n">Precision</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">                    </span><span class="o">+</span><span class="w"> </span><span class="n">Type</span><span class="o">&lt;</span><span class="n">type</span><span class="o">::</span><span class="n">real</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">                    </span><span class="o">+</span><span class="w"> </span><span class="n">Function</span><span class="o">&lt;</span><span class="n">function</span><span class="o">::</span><span class="n">TRSM</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">                    </span><span class="o">+</span><span class="w"> </span><span class="n">Side</span><span class="o">&lt;</span><span class="n">side</span><span class="o">::</span><span class="n">left</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">                    </span><span class="o">+</span><span class="w"> </span><span class="n">FillMode</span><span class="o">&lt;</span><span class="n">fill_mode</span><span class="o">::</span><span class="n">lower</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">                    </span><span class="o">+</span><span class="w"> </span><span class="n">Diag</span><span class="o">&lt;</span><span class="n">diag</span><span class="o">::</span><span class="n">non_unit</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">                    </span><span class="o">+</span><span class="w"> </span><span class="n">Arrangement</span><span class="o">&lt;</span><span class="n">col_major</span><span class="p">,</span><span class="w"> </span><span class="n">col_major</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">                    </span><span class="o">+</span><span class="w"> </span><span class="n">SM</span><span class="o">&lt;</span><span class="mi">900</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">                    </span><span class="o">+</span><span class="w"> </span><span class="n">Block</span><span class="p">()</span>
+<span class="w">                    </span><span class="o">+</span><span class="w"> </span><span class="n">BlockDim</span><span class="o">&lt;</span><span class="mi">64</span><span class="o">&gt;</span><span class="p">());</span>
+</pre></div>
+</div>
+</section>
+<section id="batching-batchesperblock">
+<h3>Batching: BatchesPerBlock<a class="headerlink" href="#batching-batchesperblock" title="Link to this heading">#</a></h3>
+<p>Each TRSM instance is one independent <code class="docutils literal notranslate"><span class="pre">(A,</span> <span class="pre">B)</span></code> pair: a distinct triangular matrix <code class="docutils literal notranslate"><span class="pre">A</span></code>
+and a distinct right-hand side <code class="docutils literal notranslate"><span class="pre">B</span></code>. The <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">BatchesPerBlock</span><span class="o">&lt;</span><span class="n">N</span><span class="o">&gt;</span></code> operator controls how many
+such pairs a single CUDA block processes.  When omitted, it defaults to <code class="docutils literal notranslate"><span class="pre">1</span></code>.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">TRSM</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">decltype</span><span class="p">(</span><span class="n">Size</span><span class="o">&lt;</span><span class="mi">64</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">                    </span><span class="o">+</span><span class="w"> </span><span class="p">...</span>
+<span class="w">                    </span><span class="o">+</span><span class="w"> </span><span class="n">Block</span><span class="p">()</span>
+<span class="w">                    </span><span class="o">+</span><span class="w"> </span><span class="n">BatchesPerBlock</span><span class="o">&lt;</span><span class="mi">1</span><span class="o">&gt;</span><span class="p">());</span><span class="w">  </span><span class="c1">// one instance per block</span>
+</pre></div>
+</div>
+<p>When <code class="docutils literal notranslate"><span class="pre">BatchesPerBlock</span> <span class="pre">&gt;</span> <span class="pre">1</span></code>, the shared-memory tensors passed to <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">execute</span><span class="p">()</span></code> carry a batch
+index as their third dimension; the layouts returned by <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">TRSM</span><span class="o">::</span><span class="n">get_layout_smem_a</span><span class="p">()</span></code> and
+<code class="code highlight cpp docutils literal highlight-cpp"><span class="n">TRSM</span><span class="o">::</span><span class="n">get_layout_smem_b</span><span class="p">()</span></code> automatically include the batch stride.</p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<img alt="Diagram showing how a CUDA block maps to consecutive TRSM batch indices." class="dark-light diagram align-center" src="_images/trsm_batches_per_block.svg" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</section>
+<section id="creating-shared-memory-tensors">
+<h3>Creating Shared Memory Tensors<a class="headerlink" href="#creating-shared-memory-tensors" title="Link to this heading">#</a></h3>
+<p>TRSM works with tensors backed by shared memory. Use <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">shared_memory</span><span class="o">::</span><span class="n">slice</span></code> to partition a
+raw shared-memory buffer into typed, aligned sub-regions — one per matrix.  When an
+<code class="docutils literal notranslate"><span class="pre">(alignment,</span> <span class="pre">layout)</span></code> pair is provided for each sub-region, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">slice</span></code> returns CuTe tensors
+directly (no separate wrapping step needed). The template parameters are the element types of
+each sub-region (both <code class="docutils literal notranslate"><span class="pre">T</span></code> here since <code class="docutils literal notranslate"><span class="pre">A</span></code> and <code class="docutils literal notranslate"><span class="pre">B</span></code> share the same precision):</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">TRSM</span><span class="o">&gt;</span>
+<span class="n">__global__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">trsm_kernel</span><span class="p">(</span><span class="cm">/* global tensors */</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">extern</span><span class="w"> </span><span class="n">__shared__</span><span class="w"> </span><span class="nf">__align__</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">byte</span><span class="w"> </span><span class="n">smem</span><span class="p">[];</span>
+
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">T</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">TRSM</span><span class="o">::</span><span class="n">a_value_type</span><span class="p">;</span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">alignment</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">alignment_of</span><span class="o">&lt;</span><span class="n">TRSM</span><span class="o">&gt;</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// Returns a pair of CuTe tensors backed by shared memory.</span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="p">[</span><span class="n">smem_a</span><span class="p">,</span><span class="w"> </span><span class="n">smem_b</span><span class="p">]</span><span class="w"> </span><span class="o">=</span>
+<span class="w">        </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">shared_memory</span><span class="o">::</span><span class="n">slice</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="o">&gt;</span><span class="p">(</span><span class="n">smem</span><span class="p">,</span>
+<span class="w">                                             </span><span class="n">alignment</span><span class="o">::</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">TRSM</span><span class="o">::</span><span class="n">get_layout_smem_a</span><span class="p">(),</span>
+<span class="w">                                             </span><span class="n">alignment</span><span class="o">::</span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="n">TRSM</span><span class="o">::</span><span class="n">get_layout_smem_b</span><span class="p">());</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The shared memory size required for <code class="docutils literal notranslate"><span class="pre">A</span></code> and <code class="docutils literal notranslate"><span class="pre">B</span></code> can be computed with
+<code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cublasdx</span><span class="o">::</span><span class="n">make_shared_storage_calculator</span></code>:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="n">smem_bytes</span><span class="w"> </span><span class="o">=</span>
+<span class="w">    </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">make_shared_storage_calculator</span><span class="p">()</span>
+<span class="w">        </span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">cublasdx</span><span class="o">::</span><span class="n">alignment_of</span><span class="o">&lt;</span><span class="n">TRSM</span><span class="o">&gt;::</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">T</span><span class="p">),</span><span class="w"> </span><span class="n">TRSM</span><span class="o">::</span><span class="n">get_layout_smem_a</span><span class="p">())</span>
+<span class="w">        </span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">cublasdx</span><span class="o">::</span><span class="n">alignment_of</span><span class="o">&lt;</span><span class="n">TRSM</span><span class="o">&gt;::</span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">T</span><span class="p">),</span><span class="w"> </span><span class="n">TRSM</span><span class="o">::</span><span class="n">get_layout_smem_b</span><span class="p">())</span>
+<span class="w">        </span><span class="p">.</span><span class="n">get</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="executing-block-level-trsm">
+<h3>Executing Block-Level TRSM<a class="headerlink" href="#executing-block-level-trsm" title="Link to this heading">#</a></h3>
+<p>A complete block-level TRSM kernel looks like the following.</p>
+<p><code class="docutils literal notranslate"><span class="pre">cublasdx::make_gmem_tensor_batched&lt;Arrangement&gt;(ptr,</span> <span class="pre">rows,</span> <span class="pre">cols,</span> <span class="pre">batch_count)</span></code> creates a 3D
+global-memory tensor of shape <code class="docutils literal notranslate"><span class="pre">rows</span> <span class="pre">×</span> <span class="pre">cols</span> <span class="pre">×</span> <span class="pre">batch_count</span></code> from a flat device pointer.
+It is a lightweight descriptor that does not copy data and can be created on the host or device.</p>
+<p>Inside the kernel, <code class="docutils literal notranslate"><span class="pre">cublasdx::get_batch(global_tensor,</span> <span class="pre">layout,</span> <span class="pre">batch_idx)</span></code> extracts the tile
+starting at a given batch index, returning a tensor at the appropriate offset. When
+<code class="docutils literal notranslate"><span class="pre">BatchesPerBlock</span> <span class="pre">==</span> <span class="pre">1</span></code> the returned tile is 2D. When <code class="docutils literal notranslate"><span class="pre">BatchesPerBlock</span> <span class="pre">&gt;</span> <span class="pre">1</span></code> the returned tile
+is 3D and covers <code class="docutils literal notranslate"><span class="pre">BatchesPerBlock</span></code> consecutive instances, so the batch index for block
+<code class="docutils literal notranslate"><span class="pre">blockIdx.x</span></code> is <code class="docutils literal notranslate"><span class="pre">blockIdx.x</span> <span class="pre">*</span> <span class="pre">TRSM::batches_per_block</span></code>.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cublasdx.hpp&gt;</span>
+<span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">cublasdx</span><span class="p">;</span>
+
+<span class="k">template</span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">TRSM</span><span class="p">,</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">GlobalTensorA</span><span class="p">,</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">GlobalTensorB</span><span class="o">&gt;</span>
+<span class="c1">// TRSM::max_threads_per_block is the maximum block size this descriptor supports.</span>
+<span class="c1">// Providing it as a launch bound lets the compiler reserve fewer registers per thread,</span>
+<span class="c1">// which can improve occupancy.</span>
+<span class="n">__launch_bounds__</span><span class="p">(</span><span class="n">TRSM</span><span class="o">::</span><span class="n">max_threads_per_block</span><span class="p">)</span>
+<span class="n">__global__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">trsm_block_kernel</span><span class="p">(</span><span class="n">GlobalTensorA</span><span class="w"> </span><span class="n">global_a</span><span class="p">,</span><span class="w"> </span><span class="n">GlobalTensorB</span><span class="w"> </span><span class="n">global_b</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">extern</span><span class="w"> </span><span class="n">__shared__</span><span class="w"> </span><span class="nf">__align__</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">byte</span><span class="w"> </span><span class="n">smem</span><span class="p">[];</span>
+
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">T</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">TRSM</span><span class="o">::</span><span class="n">a_value_type</span><span class="p">;</span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">alignment</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">alignment_of</span><span class="o">&lt;</span><span class="n">TRSM</span><span class="o">&gt;</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// Guard: skip blocks beyond the batch count.</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="n">total_blocks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cute</span><span class="o">::</span><span class="n">size</span><span class="o">&lt;</span><span class="mi">2</span><span class="o">&gt;</span><span class="p">(</span><span class="n">global_a</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">TRSM</span><span class="o">::</span><span class="n">batches_per_block</span><span class="p">;</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">blockIdx</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">total_blocks</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// Extract the per-block tile from the batched global tensors.</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="n">first_batch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">blockIdx</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">TRSM</span><span class="o">::</span><span class="n">batches_per_block</span><span class="p">;</span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">batch_a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">get_batch</span><span class="p">(</span><span class="n">global_a</span><span class="p">,</span><span class="w"> </span><span class="n">TRSM</span><span class="o">::</span><span class="n">get_layout_gmem_a</span><span class="p">(),</span><span class="w"> </span><span class="n">first_batch</span><span class="p">);</span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">batch_b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">get_batch</span><span class="p">(</span><span class="n">global_b</span><span class="p">,</span><span class="w"> </span><span class="n">TRSM</span><span class="o">::</span><span class="n">get_layout_gmem_b</span><span class="p">(),</span><span class="w"> </span><span class="n">first_batch</span><span class="p">);</span>
+
+<span class="w">    </span><span class="c1">// Partition shared memory into A and B tensors.</span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="p">[</span><span class="n">smem_a</span><span class="p">,</span><span class="w"> </span><span class="n">smem_b</span><span class="p">]</span><span class="w"> </span><span class="o">=</span>
+<span class="w">        </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">shared_memory</span><span class="o">::</span><span class="n">slice</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="o">&gt;</span><span class="p">(</span><span class="n">smem</span><span class="p">,</span>
+<span class="w">                                             </span><span class="n">alignment</span><span class="o">::</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">TRSM</span><span class="o">::</span><span class="n">get_layout_smem_a</span><span class="p">(),</span>
+<span class="w">                                             </span><span class="n">alignment</span><span class="o">::</span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="n">TRSM</span><span class="o">::</span><span class="n">get_layout_smem_b</span><span class="p">());</span>
+
+<span class="w">    </span><span class="c1">// Load A and B from global memory into shared memory.</span>
+<span class="w">    </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">copy</span><span class="o">&lt;</span><span class="n">TRSM</span><span class="p">,</span><span class="w"> </span><span class="n">alignment</span><span class="o">::</span><span class="n">a</span><span class="o">&gt;</span><span class="p">(</span><span class="n">batch_a</span><span class="p">,</span><span class="w"> </span><span class="n">smem_a</span><span class="p">);</span>
+<span class="w">    </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">copy</span><span class="o">&lt;</span><span class="n">TRSM</span><span class="p">,</span><span class="w"> </span><span class="n">alignment</span><span class="o">::</span><span class="n">b</span><span class="o">&gt;</span><span class="p">(</span><span class="n">batch_b</span><span class="p">,</span><span class="w"> </span><span class="n">smem_b</span><span class="p">);</span>
+<span class="w">    </span><span class="c1">// copy_wait() blocks until all in-flight asynchronous copies issued by this</span>
+<span class="w">    </span><span class="c1">// block have completed. It must be called before any thread reads smem_a or smem_b.</span>
+<span class="w">    </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">copy_wait</span><span class="p">();</span>
+
+<span class="w">    </span><span class="c1">// Execute TRSM — B is overwritten in-place with X.</span>
+<span class="w">    </span><span class="n">TRSM</span><span class="p">{}.</span><span class="n">execute</span><span class="p">(</span><span class="n">smem_a</span><span class="p">,</span><span class="w"> </span><span class="n">smem_b</span><span class="p">);</span>
+<span class="w">    </span><span class="c1">// __syncthreads() ensures all threads have finished writing smem_b before</span>
+<span class="w">    </span><span class="c1">// the cooperative copy back to global memory begins.</span>
+<span class="w">    </span><span class="n">__syncthreads</span><span class="p">();</span>
+
+<span class="w">    </span><span class="c1">// Write the solution back to global memory.</span>
+<span class="w">    </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">copy</span><span class="o">&lt;</span><span class="n">TRSM</span><span class="p">,</span><span class="w"> </span><span class="n">alignment</span><span class="o">::</span><span class="n">b</span><span class="o">&gt;</span><span class="p">(</span><span class="n">smem_b</span><span class="p">,</span><span class="w"> </span><span class="n">batch_b</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="launching-the-block-level-kernel">
+<h3>Launching The Block-Level Kernel<a class="headerlink" href="#launching-the-block-level-kernel" title="Link to this heading">#</a></h3>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">template</span><span class="o">&lt;</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">Arch</span><span class="o">&gt;</span>
+<span class="kt">void</span><span class="w"> </span><span class="n">trsm_example</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="n">M</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">64</span><span class="p">,</span><span class="w"> </span><span class="n">N</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span>
+<span class="w">    </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="n">num_batches</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1024</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">T</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="kt">float</span><span class="p">;</span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">TRSM</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">decltype</span><span class="p">(</span><span class="n">cublasdx</span><span class="o">::</span><span class="n">Size</span><span class="o">&lt;</span><span class="n">M</span><span class="p">,</span><span class="w"> </span><span class="n">N</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">                        </span><span class="o">+</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">Precision</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">                        </span><span class="o">+</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">Type</span><span class="o">&lt;</span><span class="n">cublasdx</span><span class="o">::</span><span class="n">type</span><span class="o">::</span><span class="n">real</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">                        </span><span class="o">+</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">Function</span><span class="o">&lt;</span><span class="n">cublasdx</span><span class="o">::</span><span class="n">function</span><span class="o">::</span><span class="n">TRSM</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">                        </span><span class="o">+</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">Side</span><span class="o">&lt;</span><span class="n">cublasdx</span><span class="o">::</span><span class="n">side</span><span class="o">::</span><span class="n">left</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">                        </span><span class="o">+</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">FillMode</span><span class="o">&lt;</span><span class="n">cublasdx</span><span class="o">::</span><span class="n">fill_mode</span><span class="o">::</span><span class="n">lower</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">                        </span><span class="o">+</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">Diag</span><span class="o">&lt;</span><span class="n">cublasdx</span><span class="o">::</span><span class="n">diag</span><span class="o">::</span><span class="n">non_unit</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">                        </span><span class="o">+</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">Arrangement</span><span class="o">&lt;</span><span class="n">cublasdx</span><span class="o">::</span><span class="n">col_major</span><span class="p">,</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">col_major</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">                        </span><span class="o">+</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">SM</span><span class="o">&lt;</span><span class="n">Arch</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">                        </span><span class="o">+</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">Block</span><span class="p">()</span>
+<span class="w">                        </span><span class="o">+</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">BlockDim</span><span class="o">&lt;</span><span class="mi">64</span><span class="o">&gt;</span><span class="p">());</span>
+
+<span class="w">    </span><span class="c1">// Build 3D batched global-memory tensors on the host.</span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">global_a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">make_gmem_tensor_batched</span><span class="o">&lt;</span><span class="n">cublasdx</span><span class="o">::</span><span class="n">col_major</span><span class="o">&gt;</span><span class="p">(</span><span class="n">d_A</span><span class="p">,</span><span class="w"> </span><span class="n">M</span><span class="p">,</span><span class="w"> </span><span class="n">M</span><span class="p">,</span><span class="w"> </span><span class="n">num_batches</span><span class="p">);</span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">global_b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">make_gmem_tensor_batched</span><span class="o">&lt;</span><span class="n">cublasdx</span><span class="o">::</span><span class="n">col_major</span><span class="o">&gt;</span><span class="p">(</span><span class="n">d_B</span><span class="p">,</span><span class="w"> </span><span class="n">M</span><span class="p">,</span><span class="w"> </span><span class="n">N</span><span class="p">,</span><span class="w"> </span><span class="n">num_batches</span><span class="p">);</span>
+
+<span class="w">    </span><span class="c1">// Compute required shared memory.</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="n">smem_bytes</span><span class="w"> </span><span class="o">=</span>
+<span class="w">        </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">make_shared_storage_calculator</span><span class="p">()</span>
+<span class="w">            </span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">cublasdx</span><span class="o">::</span><span class="n">alignment_of</span><span class="o">&lt;</span><span class="n">TRSM</span><span class="o">&gt;::</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">T</span><span class="p">),</span><span class="w"> </span><span class="n">TRSM</span><span class="o">::</span><span class="n">get_layout_smem_a</span><span class="p">())</span>
+<span class="w">            </span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">cublasdx</span><span class="o">::</span><span class="n">alignment_of</span><span class="o">&lt;</span><span class="n">TRSM</span><span class="o">&gt;::</span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">T</span><span class="p">),</span><span class="w"> </span><span class="n">TRSM</span><span class="o">::</span><span class="n">get_layout_smem_b</span><span class="p">())</span>
+<span class="w">            </span><span class="p">.</span><span class="n">get</span><span class="p">();</span>
+
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">ga_t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">decltype</span><span class="p">(</span><span class="n">global_a</span><span class="p">);</span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">gb_t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">decltype</span><span class="p">(</span><span class="n">global_b</span><span class="p">);</span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">kernel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">trsm_block_kernel</span><span class="o">&lt;</span><span class="n">TRSM</span><span class="p">,</span><span class="w"> </span><span class="n">ga_t</span><span class="p">,</span><span class="w"> </span><span class="n">gb_t</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="w">    </span><span class="c1">// CUDA limits dynamic shared memory to 48 KB by default on most architectures.</span>
+<span class="w">    </span><span class="c1">// This call raises the limit for this specific kernel to the amount we actually need.</span>
+<span class="w">    </span><span class="n">CUDA_CHECK_AND_EXIT</span><span class="p">(</span><span class="n">cudaFuncSetAttribute</span><span class="p">(</span>
+<span class="w">        </span><span class="n">kernel</span><span class="p">,</span><span class="w"> </span><span class="n">cudaFuncAttributeMaxDynamicSharedMemorySize</span><span class="p">,</span><span class="w"> </span><span class="n">smem_bytes</span><span class="p">));</span>
+
+<span class="w">    </span><span class="c1">// num_batches must be divisible by batches_per_block; pad it before this point if needed.</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="n">num_blocks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">num_batches</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">TRSM</span><span class="o">::</span><span class="n">batches_per_block</span><span class="p">;</span>
+<span class="w">    </span><span class="n">kernel</span><span class="o">&lt;&lt;&lt;</span><span class="n">num_blocks</span><span class="p">,</span><span class="w"> </span><span class="n">TRSM</span><span class="o">::</span><span class="n">block_dim</span><span class="p">,</span><span class="w"> </span><span class="n">smem_bytes</span><span class="o">&gt;&gt;&gt;</span><span class="p">(</span><span class="n">global_a</span><span class="p">,</span><span class="w"> </span><span class="n">global_b</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">CUDA_CHECK_AND_EXIT</span><span class="p">(</span><span class="n">cudaGetLastError</span><span class="p">());</span>
+<span class="w">    </span><span class="n">CUDA_CHECK_AND_EXIT</span><span class="p">(</span><span class="n">cudaDeviceSynchronize</span><span class="p">());</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="thread-level-trsm">
+<h2>Thread-Level TRSM<a class="headerlink" href="#thread-level-trsm" title="Link to this heading">#</a></h2>
+<p>In the thread-level API (<code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Thread</span><span class="p">()</span></code>), each CUDA thread independently solves one TRSM instance.
+Matrices <code class="docutils literal notranslate"><span class="pre">A</span></code> and <code class="docutils literal notranslate"><span class="pre">B</span></code> can be read and written directly from global memory — no shared memory is
+required.</p>
+<section id="id1">
+<h3>Defining The Descriptor<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<p>Replace <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Block</span><span class="p">()</span></code> with <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Thread</span><span class="p">()</span></code> and omit <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">BlockDim</span></code> and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">BatchesPerBlock</span></code>:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cublasdx.hpp&gt;</span>
+<span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">cublasdx</span><span class="p">;</span>
+
+<span class="c1">// Right-side, lower-triangular, non-unit TRSM: X * A = B</span>
+<span class="c1">// A is 12x12, B (and X) is 10x12.</span>
+<span class="k">using</span><span class="w"> </span><span class="n">TRSM</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">decltype</span><span class="p">(</span><span class="n">Size</span><span class="o">&lt;</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">12</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">                    </span><span class="o">+</span><span class="w"> </span><span class="n">Precision</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">                    </span><span class="o">+</span><span class="w"> </span><span class="n">Type</span><span class="o">&lt;</span><span class="n">type</span><span class="o">::</span><span class="n">real</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">                    </span><span class="o">+</span><span class="w"> </span><span class="n">Function</span><span class="o">&lt;</span><span class="n">function</span><span class="o">::</span><span class="n">TRSM</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">                    </span><span class="o">+</span><span class="w"> </span><span class="n">Side</span><span class="o">&lt;</span><span class="n">side</span><span class="o">::</span><span class="n">right</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">                    </span><span class="o">+</span><span class="w"> </span><span class="n">FillMode</span><span class="o">&lt;</span><span class="n">fill_mode</span><span class="o">::</span><span class="n">lower</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">                    </span><span class="o">+</span><span class="w"> </span><span class="n">Diag</span><span class="o">&lt;</span><span class="n">diag</span><span class="o">::</span><span class="n">non_unit</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">                    </span><span class="o">+</span><span class="w"> </span><span class="n">Arrangement</span><span class="o">&lt;</span><span class="n">col_major</span><span class="p">,</span><span class="w"> </span><span class="n">col_major</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">                    </span><span class="o">+</span><span class="w"> </span><span class="n">SM</span><span class="o">&lt;</span><span class="mi">900</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">                    </span><span class="o">+</span><span class="w"> </span><span class="n">Thread</span><span class="p">());</span>
+</pre></div>
+</div>
+</section>
+<section id="executing-thread-level-trsm">
+<h3>Executing Thread-Level TRSM<a class="headerlink" href="#executing-thread-level-trsm" title="Link to this heading">#</a></h3>
+<p>Each thread extracts its own 2D tile from 3D batched global tensors and calls <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">execute</span><span class="p">()</span></code>
+directly on them:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">TRSM</span><span class="p">,</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">GlobalTensorA</span><span class="p">,</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">GlobalTensorB</span><span class="o">&gt;</span>
+<span class="n">__global__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">trsm_thread_kernel</span><span class="p">(</span><span class="n">GlobalTensorA</span><span class="w"> </span><span class="n">global_a</span><span class="p">,</span><span class="w"> </span><span class="n">GlobalTensorB</span><span class="w"> </span><span class="n">global_b</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="n">tid</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="n">blockIdx</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">blockDim</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="n">total_items</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cute</span><span class="o">::</span><span class="n">size</span><span class="o">&lt;</span><span class="mi">2</span><span class="o">&gt;</span><span class="p">(</span><span class="n">global_a</span><span class="p">);</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">tid</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">total_items</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// Each thread gets its own 2D tile.</span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">batch_a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">get_batch</span><span class="p">(</span><span class="n">global_a</span><span class="p">,</span><span class="w"> </span><span class="n">TRSM</span><span class="o">::</span><span class="n">get_layout_gmem_a</span><span class="p">(),</span><span class="w"> </span><span class="n">tid</span><span class="p">);</span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">batch_b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">get_batch</span><span class="p">(</span><span class="n">global_b</span><span class="p">,</span><span class="w"> </span><span class="n">TRSM</span><span class="o">::</span><span class="n">get_layout_gmem_b</span><span class="p">(),</span><span class="w"> </span><span class="n">tid</span><span class="p">);</span>
+
+<span class="w">    </span><span class="c1">// Execute TRSM directly on global memory tensors — no shared memory needed.</span>
+<span class="w">    </span><span class="n">TRSM</span><span class="p">{}.</span><span class="n">execute</span><span class="p">(</span><span class="n">batch_a</span><span class="p">,</span><span class="w"> </span><span class="n">batch_b</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="launching-the-thread-level-kernel">
+<h3>Launching The Thread-Level Kernel<a class="headerlink" href="#launching-the-thread-level-kernel" title="Link to this heading">#</a></h3>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">template</span><span class="o">&lt;</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">Arch</span><span class="o">&gt;</span>
+<span class="kt">void</span><span class="w"> </span><span class="n">trsm_thread_example</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="n">M</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="n">N</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">12</span><span class="p">;</span>
+<span class="w">    </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="n">num_batches</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mi">300</span><span class="p">;</span>
+<span class="w">    </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="n">threads_per_block</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">64</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">T</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="kt">double</span><span class="p">;</span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">TRSM</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">decltype</span><span class="p">(</span><span class="n">cublasdx</span><span class="o">::</span><span class="n">Size</span><span class="o">&lt;</span><span class="n">M</span><span class="p">,</span><span class="w"> </span><span class="n">N</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">                        </span><span class="o">+</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">Precision</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">                        </span><span class="o">+</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">Type</span><span class="o">&lt;</span><span class="n">cublasdx</span><span class="o">::</span><span class="n">type</span><span class="o">::</span><span class="n">real</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">                        </span><span class="o">+</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">Function</span><span class="o">&lt;</span><span class="n">cublasdx</span><span class="o">::</span><span class="n">function</span><span class="o">::</span><span class="n">TRSM</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">                        </span><span class="o">+</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">Side</span><span class="o">&lt;</span><span class="n">cublasdx</span><span class="o">::</span><span class="n">side</span><span class="o">::</span><span class="n">right</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">                        </span><span class="o">+</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">FillMode</span><span class="o">&lt;</span><span class="n">cublasdx</span><span class="o">::</span><span class="n">fill_mode</span><span class="o">::</span><span class="n">lower</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">                        </span><span class="o">+</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">Diag</span><span class="o">&lt;</span><span class="n">cublasdx</span><span class="o">::</span><span class="n">diag</span><span class="o">::</span><span class="n">non_unit</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">                        </span><span class="o">+</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">Arrangement</span><span class="o">&lt;</span><span class="n">cublasdx</span><span class="o">::</span><span class="n">col_major</span><span class="p">,</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">col_major</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">                        </span><span class="o">+</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">SM</span><span class="o">&lt;</span><span class="n">Arch</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">                        </span><span class="o">+</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">Thread</span><span class="p">());</span>
+
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">global_a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">make_gmem_tensor_batched</span><span class="o">&lt;</span><span class="n">cublasdx</span><span class="o">::</span><span class="n">col_major</span><span class="o">&gt;</span><span class="p">(</span><span class="n">d_A</span><span class="p">,</span><span class="w"> </span><span class="n">N</span><span class="p">,</span><span class="w"> </span><span class="n">N</span><span class="p">,</span><span class="w"> </span><span class="n">num_batches</span><span class="p">);</span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">global_b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">make_gmem_tensor_batched</span><span class="o">&lt;</span><span class="n">cublasdx</span><span class="o">::</span><span class="n">col_major</span><span class="o">&gt;</span><span class="p">(</span><span class="n">d_B</span><span class="p">,</span><span class="w"> </span><span class="n">M</span><span class="p">,</span><span class="w"> </span><span class="n">N</span><span class="p">,</span><span class="w"> </span><span class="n">num_batches</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">ga_t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">decltype</span><span class="p">(</span><span class="n">global_a</span><span class="p">);</span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">gb_t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">decltype</span><span class="p">(</span><span class="n">global_b</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="n">num_blocks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">num_batches</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">threads_per_block</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">threads_per_block</span><span class="p">;</span>
+<span class="w">    </span><span class="n">trsm_thread_kernel</span><span class="o">&lt;</span><span class="n">TRSM</span><span class="p">,</span><span class="w"> </span><span class="n">ga_t</span><span class="p">,</span><span class="w"> </span><span class="n">gb_t</span><span class="o">&gt;&lt;&lt;&lt;</span><span class="n">num_blocks</span><span class="p">,</span><span class="w"> </span><span class="n">threads_per_block</span><span class="o">&gt;&gt;&gt;</span><span class="p">(</span><span class="n">global_a</span><span class="p">,</span><span class="w"> </span><span class="n">global_b</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">CUDA_CHECK_AND_EXIT</span><span class="p">(</span><span class="n">cudaGetLastError</span><span class="p">());</span>
+<span class="w">    </span><span class="n">CUDA_CHECK_AND_EXIT</span><span class="p">(</span><span class="n">cudaDeviceSynchronize</span><span class="p">());</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="tensor-views-and-conjugate-transpose">
+<span id="trsm-tensor-views-label"></span><h2>Tensor Views And Conjugate Transpose<a class="headerlink" href="#tensor-views-and-conjugate-transpose" title="Link to this heading">#</a></h2>
+<p>The <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">TransposeMode</span></code> operator is <strong>deprecated</strong> and does <strong>not</strong> work with TRSM. To express
+transposition or conjugation for TRSM matrices, use the <a class="reference internal" href="api/other_methods.html#tensor-views-label"><span class="std std-ref">tensor view wrappers</span></a> provided by cuBLASDx instead.</p>
+<p>Tensor views are lazy descriptors that reinterpret or transform the elements of an existing tensor
+on access without copying data. Simply wrap the shared-memory (or global-memory for
+thread-level) tensor before passing it to <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">execute</span><span class="p">()</span></code>:</p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<img alt="Diagram showing how TRSM tensor views affect the triangular FillMode interpretation." class="dark-light diagram align-center" src="_images/trsm_tensor_views.svg" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Solve A^H * X = B  (conjugate-transpose of A):</span>
+<span class="n">TRSM</span><span class="p">{}.</span><span class="n">execute</span><span class="p">(</span><span class="n">cublasdx</span><span class="o">::</span><span class="n">conj_transpose_view</span><span class="p">(</span><span class="n">smem_a</span><span class="p">),</span><span class="w"> </span><span class="n">smem_b</span><span class="p">);</span>
+
+<span class="c1">// Solve A^T * X = B  (transpose only):</span>
+<span class="n">TRSM</span><span class="p">{}.</span><span class="n">execute</span><span class="p">(</span><span class="n">cublasdx</span><span class="o">::</span><span class="n">transpose_view</span><span class="p">(</span><span class="n">smem_a</span><span class="p">),</span><span class="w"> </span><span class="n">smem_b</span><span class="p">);</span>
+
+<span class="c1">// Solve A * X = B  (no transformation, default):</span>
+<span class="n">TRSM</span><span class="p">{}.</span><span class="n">execute</span><span class="p">(</span><span class="n">smem_a</span><span class="p">,</span><span class="w"> </span><span class="n">smem_b</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The four available tensor view functions are:</p>
+<ul class="simple">
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cublasdx</span><span class="o">::</span><span class="n">transpose_view</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span></code> — swaps rows and columns (lazy, no data copy).</p></li>
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cublasdx</span><span class="o">::</span><span class="n">conjugate_view</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span></code> — negates imaginary parts on access; no-op for real types.</p></li>
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cublasdx</span><span class="o">::</span><span class="n">conj_transpose_view</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span></code> — Hermitian adjoint (<span class="math notranslate nohighlight">\(A^H\)</span>); combines the above two.</p></li>
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cublasdx</span><span class="o">::</span><span class="n">make_transform_view</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span><span class="w"> </span><span class="n">functor</span><span class="p">)</span></code> — applies any custom stateless element-wise functor.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Arrangement</span></code> operator in the TRSM descriptor always describes the <strong>storage layout</strong> of
+the data in memory, regardless of any tensor view applied at the call site. <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">FillMode</span></code>
+describes which triangle of <code class="docutils literal notranslate"><span class="pre">A</span></code> is read <strong>after</strong> applying the tensor view passed to
+<code class="code highlight cpp docutils literal highlight-cpp"><span class="n">execute</span><span class="p">()</span></code>. For example, if storage is lower-triangular but the call uses
+<code class="code highlight cpp docutils literal highlight-cpp"><span class="n">conj_transpose_view</span><span class="p">(</span><span class="n">smem_a</span><span class="p">)</span></code>, the descriptor should describe the triangle visible through
+that view.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">TransposeMode</span></code> operator is deprecated since cuBLASDx 0.2.0 and is <strong>not supported</strong> for
+TRSM.  Using it with TRSM will result in a compile-time error.  Use <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Arrangement</span></code> together
+with tensor views as shown above.</p>
+</div>
+</section>
+<section id="compilation">
+<h2>Compilation<a class="headerlink" href="#compilation" title="Link to this heading">#</a></h2>
+<p>TRSM requires linking against the pre-built <code class="docutils literal notranslate"><span class="pre">libcublasdx.fatbin</span></code> device-code library in addition to the standard cuBLASDx includes.
+For instructions on how to compile programs with cuBLASDx TRSM, see the
+<a class="reference internal" href="installation.html#quick-installation-guide-label"><span class="std std-ref">Quick Installation Guide</span></a></p>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="using_pipelines.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Using Pipelined GEMM</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="performance.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Achieving High Performance</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#defining-the-trsm-operation">Defining The TRSM Operation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#block-level-trsm">Block-Level TRSM</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#defining-the-descriptor">Defining The Descriptor</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#batching-batchesperblock">Batching: BatchesPerBlock</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-shared-memory-tensors">Creating Shared Memory Tensors</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#executing-block-level-trsm">Executing Block-Level TRSM</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#launching-the-block-level-kernel">Launching The Block-Level Kernel</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#thread-level-trsm">Thread-Level TRSM</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Defining The Descriptor</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#executing-thread-level-trsm">Executing Thread-Level TRSM</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#launching-the-thread-level-kernel">Launching The Thread-Level Kernel</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tensor-views-and-conjugate-transpose">Tensor Views And Conjugate Transpose</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#compilation">Compilation</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5"></script>
+
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+<a class="footer-brand logo" href="https://www.nvidia.com">
+  <img src="_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+</a></div>
+      
+        <div class="footer-item">
+
+<div class="footer-links">
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/">Privacy Policy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Your Privacy Choices</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/">Terms of Service</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/accessibility/">Accessibility</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/company-policies/">Corporate Policies</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/product-security/">Product Security</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/contact/">Contact</a>
+  
+  
+  
+</div>
+</div>
+      
+        <div class="footer-item">
+
+
+
+
+  <p class="copyright">
+    
+      Copyright © 2022-2026, NVIDIA Corporation &amp; Affiliates. All rights reserved.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+  </body>
+</html>

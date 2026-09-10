@@ -1,0 +1,1076 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Examples &#8212; cuFFTDx</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
+
+
+
+    <script src="_static/documentation_options.js?v=702cf1bd"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'examples';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://docs.nvidia.com/cuda/cufftdx/_static/switcher.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '1.7.3';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+
+    <link rel="icon" href="_static/nvidia.ico"/>
+
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="LTO Examples" href="lto_examples.html" />
+    <link rel="prev" title="cuFFTDx Python Bindings" href="python_bindings.html" />
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="1.7.3" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+
+
+  </head>
+
+  <body data-default-mode="">
+
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="cuFFTDx - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="cuFFTDx - Home"/>
+  
+  
+    <p class="title logo__title">cuFFTDx</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="cuFFTDx - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="cuFFTDx - Home"/>
+  
+  
+    <p class="title logo__title">cuFFTDx</p>
+  
+</a>
+
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Table of Contents">
+  <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
+  <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Documentation home</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="requirements_func.html">Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="introduction1.html">Using cuFFTDx</a></li>
+<li class="toctree-l1"><a class="reference internal" href="introduction2.html">Your Next Custom FFT Kernels</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="cufft_lto/index.html">Using cuFFTDx with cuFFT LTO</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="cufft_lto/augment_with_lto.html">Augment cuFFTDx with LTO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cufft_lto/custom_lto_helper.html">Customize LTO Helper</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="performance.html">Achieving High Performance</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="api/operators.html">Operators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/traits.html">Traits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/methods.html">Execution Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/other_methods.html">Other Methods</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">cuFFT API Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="cufft_api/device_api.html">cuFFT Device API</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Python Bindings</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="python_bindings.html">Python Bindings</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lto_examples.html">LTO Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lto_helper.html">LTO Helper</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="release_notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/NVIDIA/CUDALibrarySamples/tree/main/MathDx/cuFFTDx">GitHub Samples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">MathDx</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/cufftdx-downloads">cuFFTDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/cusolverdx-downloads">cuSolverDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/cublasdx-downloads">cuBLASDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/curanddx-downloads">cuRANDDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/nvcompdx-downloads">nvCOMPDx</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Examples</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="examples">
+<span id="examples-label"></span><h1>Examples<a class="headerlink" href="#examples" title="Link to this heading">#</a></h1>
+<p>The cuFFTDx library provides multiple thread and block-level FFT samples covering all supported precisions
+and types, as well as a few special examples that highlight performance benefits of cuFFTDx.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 18.5%" />
+<col style="width: 18.5%" />
+<col style="width: 25.9%" />
+<col style="width: 37.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Group</p></th>
+<th class="head"><p>Subgroup</p></th>
+<th class="head"><p>Example</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Introduction Examples</p></td>
+<td></td>
+<td><p>introduction_example</p></td>
+<td><p>cuFFTDx API introduction</p></td>
+</tr>
+<tr class="row-odd"><td><p>Simple FFT Examples</p></td>
+<td><p>01_simple_fft_thread</p></td>
+<td><p>simple_fft_thread</p></td>
+<td><p>Complex-to-complex thread FFT</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td></td>
+<td><p>simple_fft_thread_fp16</p></td>
+<td><p>Complex-to-complex thread FFT half-precision</p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p>02_simple_fft_block</p></td>
+<td><p>simple_fft_block</p></td>
+<td><p>Complex-to-complex block FFT</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td></td>
+<td><p>simple_fft_block_shared</p></td>
+<td><p>Complex-to-complex block FFT shared-memory API</p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td></td>
+<td><p>simple_fft_block_std_complex</p></td>
+<td><p>Complex-to-complex block FFT with <code class="docutils literal notranslate"><span class="pre">cuda::std::complex</span></code> as data type</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td></td>
+<td><p>simple_fft_block_half2</p></td>
+<td><p>Complex-to-complex block FFT with <code class="docutils literal notranslate"><span class="pre">__half2</span></code> as data type</p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td></td>
+<td><p>simple_fft_block_fp16</p></td>
+<td><p>Complex-to-complex block FFT half-precision</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td></td>
+<td><p>simple_fft_block_c2r</p></td>
+<td><p>Complex-to-real block FFT</p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td></td>
+<td><p>simple_fft_block_r2c</p></td>
+<td><p>Real-to-complex block FFT</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td></td>
+<td><p>simple_fft_block_c2r_fp16</p></td>
+<td><p>Complex-to-real block FFT half-precision</p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td></td>
+<td><p>simple_fft_block_r2c_fp16</p></td>
+<td><p>Real-to-complex block FFT half-precision</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td></td>
+<td><p>simple_fft_block_cub_io</p></td>
+<td><p>Complex-to-complex block FFT with <code class="docutils literal notranslate"><span class="pre">CUB</span></code> used for loading/storing data</p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td></td>
+<td><p>simple_fft_block_block_dim</p></td>
+<td><p>Complex-to-complex block FFT with custom <code class="docutils literal notranslate"><span class="pre">BlockDim</span></code> operator</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>03_block_fft_performance</p></td>
+<td><p>block_fft_performance</p></td>
+<td><p>Benchmark for C2C block FFT</p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td></td>
+<td><p>block_fft_performance_many</p></td>
+<td><p>Benchmark for C2C/R2C/C2R block FFT</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>04_nvrtc_fft</p></td>
+<td><p>nvrtc_fft_thread</p></td>
+<td><p>Complex-to-complex thread FFT</p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td></td>
+<td><p>nvrtc_fft_block</p></td>
+<td><p>Complex-to-complex block FFT</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td></td>
+<td><p>nvrtc_query_database_fft_block</p></td>
+<td><p>Complex-to-complex block FFT using database queries to get required traits at runtime.</p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p>05_fft_Xd</p></td>
+<td><p>fft_2d</p></td>
+<td><p>Example showing how to perform 2D FP32 C2C FFT with cuFFTDx</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td></td>
+<td><p>fft_2d_single_kernel</p></td>
+<td><p>2D FP32 FFT in a single kernel using Cooperative Groups kernel launch</p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td></td>
+<td><p>fft_2d_r2c_c2r</p></td>
+<td><p>Example showing how to perform 2D FP32 R2C/C2R convolution with cuFFTDx</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td></td>
+<td><p>fft_3d</p></td>
+<td><p>Example showing how to perform 3D FP32 C2C FFT with cuFFTDx</p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td></td>
+<td><p>fft_3d_box_single_block</p></td>
+<td><p>Small 3D FP32 FFT that fits into a single block, each dimension is different</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td></td>
+<td><p>fft_3d_cube_single_block</p></td>
+<td><p>Small 3D (equal dimensions) FP32 FFT that fits into a single block</p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td></td>
+<td><p>fft_2d_single_kernel_block_dim</p></td>
+<td><p>2D FP32 FFT in a single kernel using Cooperative Groups kernel launch with non square block dimensions</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>06_convolution</p></td>
+<td><p>convolution</p></td>
+<td><p>Simplified FFT convolution</p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td></td>
+<td><p>convolution_padded</p></td>
+<td><p>R2C-C2R FFT convolution with optimization and zero padding</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td></td>
+<td><p>convolution_r2c_c2r</p></td>
+<td><p>Simplified R2C-C2R FFT convolution</p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td></td>
+<td><p>convolution_performance</p></td>
+<td><p>Benchmark for FFT convolution using cuFFTDx and cuFFT</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>07_convolution_3d</p></td>
+<td><p>convolution_3d</p></td>
+<td><p>cuFFTDx fused 3D convolution with preprocessing, filtering and postprocessing</p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td></td>
+<td><p>convolution_3d_c2r</p></td>
+<td><p>cuFFTDx fused 3D C2R/R2C FFT convolution</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td></td>
+<td><p>convolution_3d_r2c</p></td>
+<td><p>cuFFTDx fused 3D R2C/C2R FFT convolution</p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td></td>
+<td><p>convolution_3d_padded</p></td>
+<td><p>cuFFTDx fused 3D FFT convolution using zero padding</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td></td>
+<td><p>convolution_3d_padded_r2c</p></td>
+<td><p>cuFFTDx fused 3D R2C/C2R FFT convolution with zero padding</p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p>08_mixed_precision</p></td>
+<td><p>mixed_precision_fft_1d</p></td>
+<td><p>Example showing how to use separate storage and compute precisions</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td></td>
+<td><p>mixed_precision_fft_2d</p></td>
+<td><p>Mixed precision 2D FFT with benchmarking and accuracy comparison</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<section id="introduction-examples">
+<span id="examples-introduction-examples-label"></span><h2>Introduction Examples<a class="headerlink" href="#introduction-examples" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">introduction_example</span></code></p></li>
+</ul>
+<p>Examples used in the documentation to explain basics of the cuFFTDx library and its API. <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">introduction_example</span></code> is used
+in the introductory guide to cuFFTDx API: <a class="reference internal" href="introduction1.html#intro1-label"><span class="std std-ref">First FFT Using cuFFTDx</span></a>.</p>
+</section>
+<section id="simple-fft-examples">
+<span id="examples-simple-fft-examples-label"></span><h2>Simple FFT Examples<a class="headerlink" href="#simple-fft-examples" title="Link to this heading">#</a></h2>
+<section id="simple-fft-thread-examples">
+<h3>simple_fft_thread* Examples<a class="headerlink" href="#simple-fft-thread-examples" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">simple_fft_thread</span></code></p></li>
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">simple_fft_thread_fp16</span></code></p></li>
+</ul>
+<p>In each of the examples listed above a one-dimensional complex-to-complex FFT routine is performed by a single CUDA thread. In both
+samples multiple threads are run, and each thread calculates an FFT. The input data is generated on the host, copied to a device
+buffer, and then the final results are copied back to the host.</p>
+<p>The <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">simple_fft_thread_fp16</span></code> example showcases the support for half-precision (fp16) in cuFFTDx. Please note that for half-precision
+cuFFTDx processes values in implicit batches of two FFTs, ie. each thread processes two FFTs. See also
+<a class="reference internal" href="api/methods.html#execution-methods-half-implicit-batching-label"><span class="std std-ref">Half-Precision Implicit Batching</span></a> section.</p>
+</section>
+<section id="simple-fft-block-examples">
+<h3>simple_fft_block* Examples<a class="headerlink" href="#simple-fft-block-examples" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">simple_fft_block</span></code></p></li>
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">simple_fft_block_half2</span></code></p></li>
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">simple_fft_block_fp16</span></code></p></li>
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">simple_fft_block_c2r</span></code></p></li>
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">simple_fft_block_r2c</span></code></p></li>
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">simple_fft_block_c2r_fp16</span></code></p></li>
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">simple_fft_block_r2c_fp16</span></code></p></li>
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">simple_fft_block_block_dim</span></code></p></li>
+</ul>
+<p>In each of the examples listed above a one-dimensional complex-to-complex, real-to-complex or complex-to-real FFT is performed in a CUDA block.
+The examples show how to create a complete FFT description, and then set the correct block dimensions and the necessary amount of shared memory.
+In the kernels the required array (<code class="code highlight cpp docutils literal highlight-cpp"><span class="n">thread_data</span></code>) in per-thread registers is allocated, the input data is copied into them, the FFT
+is executed, and results are transferred back to global memory. All samples use input/output functions from <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">block_io</span><span class="p">.</span><span class="n">hpp</span></code>. The input data
+is generated on the host, copied to a device buffer, and then the final results are copied back to the host.</p>
+<p>The <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">simple_fft_block_</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="n">_fp16</span></code> examples showcase the support for half-precision (fp16) in cuFFTDx. Please note that in half-precision
+processes values in implicit batches of two FFTs, ie. each thread processes two FFTs. See also
+<a class="reference internal" href="api/methods.html#execution-methods-half-implicit-batching-label"><span class="std std-ref">Half-Precision Implicit Batching</span></a> section.</p>
+<p>The <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">simple_fft_block_half2</span></code> example differs from <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">simple_fft_block_fp16</span></code> as it uses <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">__half2</span></code> type instead of <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cufftdx</span><span class="o">::</span><span class="n">complex</span><span class="o">&lt;</span><span class="n">__half2</span><span class="o">&gt;</span></code>
+for half-precision complex values, which means data is not implicitly batched on the type level. For this reason this examples uses
+a special load function (and accordingly store function) that loads and rearranges values from input buffer into <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cufftdx</span><span class="o">::</span><span class="n">complex</span><span class="o">&lt;</span><span class="n">__half2</span><span class="o">&gt;</span></code> values
+introducing implicit batching. See also
+<a class="reference internal" href="api/methods.html#execution-methods-half-implicit-batching-label"><span class="std std-ref">Half-Precision Implicit Batching</span></a> section.</p>
+<p>The <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">simple_fft_block_block_dim</span></code> example showcases the support for custom block dimensions in cuFFTDx. Check the input output functions in <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">common</span><span class="o">/</span><span class="n">block_io</span><span class="p">.</span><span class="n">hpp</span></code>
+for details on how to properly load and store data with custom block dimensions.</p>
+</section>
+<section id="extra-simple-fft-block-examples">
+<h3>Extra simple_fft_block(*) Examples<a class="headerlink" href="#extra-simple-fft-block-examples" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">simple_fft_block_shared</span></code></p></li>
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">simple_fft_block_std_complex</span></code></p></li>
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">simple_fft_block_cub_io</span></code></p></li>
+</ul>
+<p>The <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">simple_fft_block_shared</span></code> is different
+from other <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">simple_fft_block_</span><span class="p">(</span><span class="o">*</span><span class="p">)</span></code> examples because it uses the shared memory cuFFTDx API, see methods #3 and #4 in section
+<a class="reference internal" href="api/methods.html#block-execute-method-label"><span class="std std-ref">Block Execute Method</span></a>.</p>
+<p>The <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">simple_fft_block_std_complex</span></code> sample shows that <a class="reference external" href="https://nvidia.github.io/cccl/unstable/libcudacxx/standard_api/numerics_library.html">cuda::std::complex</a>
+type can be used as the complex value type for data passed to cuFFTDx. It works as it has the same size and alignment as <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cufftdx</span><span class="o">::</span><span class="n">complex</span></code>.</p>
+<p>In the <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">simple_fft_block_cub_io</span></code> the NVIDIA CUB library (<a class="github reference external" href="https://github.com/NVIDIA/cub">NVIDIA/cub</a>) is used for input/output functions instead
+of functions from <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">block_io</span><span class="p">.</span><span class="n">hpp</span></code>. It requires CUB in 1.13 version or newer.</p>
+</section>
+</section>
+<section id="nvrtc-examples">
+<span id="examples-nvrtc-examples-label"></span><h2>NVRTC Examples<a class="headerlink" href="#nvrtc-examples" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">nvrtc_fft_thread</span></code></p></li>
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">nvrtc_fft_block</span></code></p></li>
+</ul>
+<p>The <a class="reference external" href="https://docs.nvidia.com/cuda/nvrtc/index.html">NVRTC</a> examples present how to use cuFFTDx on thread and block level with NVRTC
+runtime compilation. The FFT descriptions created with cuFFTDx operators are defined only in the device code. The header file
+<code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cufftdx</span><span class="p">.</span><span class="n">hpp</span></code> is also included only in the device code that’s passed to the NVRTC. It works as long as the FFT doesn’t require
+extra workspace, see <a class="reference internal" href="api/methods.html#make-workspace-method-label"><span class="std std-ref">Make Workspace Function</span></a> section and
+<a class="reference internal" href="api/traits.html#requiresworkspace-block-trait-label"><span class="std std-ref">FFT::requires_workspace</span></a>.</p>
+<p>From cuFFTDx 1.7.0, the <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">nvrtc_query_database_fft_block</span></code> example showcases how to use the new runtime API to query for supported FFT sizes without workspace. This way traits
+like <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">shared_memory_size</span></code> and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">block_dim</span></code> can be obtained without precompiling an FFT description.
+The example defines <code class="docutils literal notranslate"><span class="pre">CUFFTDX_ENABLE_RUNTIME_DATABASE</span></code> before including the cuFFTDx headers, since the
+<code class="docutils literal notranslate"><span class="pre">query_database</span></code> and <code class="docutils literal notranslate"><span class="pre">get_all_implementations</span></code> APIs are gated behind this macro.
+Check <a class="reference internal" href="api/other_methods.html#runtime-database-query-label"><span class="std std-ref">Runtime Database Query</span></a> for more details.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Since version 0.3.0 cuFFTDx has an experimental support for compilation with <a class="reference external" href="https://docs.nvidia.com/cuda/nvrtc/index.html">NVRTC</a>.
+See <a class="reference internal" href="requirements_func.html#requirements-and-functionality-label"><span class="std std-ref">Requirements and Functionality</span></a> section.</p>
+</div>
+</section>
+<section id="fft-performance">
+<h2>FFT Performance<a class="headerlink" href="#fft-performance" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">block_fft_performance</span></code></p></li>
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">block_fft_performance_many</span></code></p></li>
+</ul>
+<p>The examples listed above report the performance of cuFFTDx device functions calculating FFT. Users can easily modify <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">block_fft_performance</span></code>
+to test the performance of a particular FFT they want to use. <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">block_fft_performance_many</span></code> example runs benchmarks for multiple different
+single precision FFT problems to show how performance changes depending on the size and the type of an FFT.</p>
+</section>
+<section id="convolution-examples">
+<h2>Convolution Examples<a class="headerlink" href="#convolution-examples" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">convolution</span></code></p></li>
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">convolution_padded</span></code></p></li>
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">convolution_r2c_c2r</span></code></p></li>
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">convolution_performance</span></code></p></li>
+</ul>
+<p>The convolution examples perform a simplified FFT convolution, either with complex-to-complex forward and inverse FFTs (<code class="code highlight cpp docutils literal highlight-cpp"><span class="n">convolution</span></code>),
+or real-to-complex and complex-to-real FFTs (<code class="code highlight cpp docutils literal highlight-cpp"><span class="n">convolution_r2c_c2r</span></code>). The most detailed example (<code class="code highlight cpp docutils literal highlight-cpp"><span class="n">convolution_padded</span></code>) performs a
+real convolution in 3 ways:</p>
+<ul class="simple">
+<li><p>by padding the input with 0s to the closest power of 2 and executing an optimized cuFFTDx R2C / C2R convolution</p></li>
+<li><p>by leaving the input as is and executing a non-optimized cuFFTDx R2C / C2R convolution</p></li>
+<li><p>by using a 3-kernel cuFFT convolution method</p></li>
+</ul>
+<p>and compares their accuracy and performance on 8 different FFT sizes to point out where such optimization may be the most useful.</p>
+<figure class="align-center" id="id2">
+<span id="examples-convolution-padded-perf-img"></span><a class="reference internal image-reference" href="_images/convolution_performance_padded_h100_80gb.svg"><img alt="FFT padded convolution performance with cuFFT and cuFFTDx on H100 80GB with maximum clocks set." src="_images/convolution_performance_padded_h100_80gb.svg" style="width: 700px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 3 </span><span class="caption-text">Comparison of batched real-to-real convolution with pointwise scaling (forward FFT, scaling, inverse FFT) performed with cuFFT,
+cuFFTDx with default setttings and unchanged input, and cuFFTDx with zero-padded input to the closest power of 2 and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">real_mode</span><span class="o">::</span><span class="n">folded</span></code>
+optimization enabled on H100 80GB with maximum clocks set. Chart presents relative performance compared to cuFFT (light blue).</span><a class="headerlink" href="#id2" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">convolution_performance</span></code> examples reports the performance difference between 3 options: single-kernel path using cuFFTDx (forward FFT,
+pointwise operation, inverse FFT in a single kernel), 3-kernel path using cuFFT calls and a custom kernel for the pointwise operation,
+2-kernel path using cuFFT callback API (requires <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">CUFFTDX_EXAMPLES_CUFFT_CALLBACK</span></code> cmake option to be set to
+<code class="code highlight cpp docutils literal highlight-cpp"><span class="n">ON</span></code>: <code class="code highlight cpp docutils literal highlight-cpp"><span class="o">-</span><span class="n">DCUFFTDX_EXAMPLES_CUFFT_CALLBACK</span><span class="o">=</span><span class="n">ON</span></code>). Depending on the device, the precision and the size of a given FFT the improvements
+from using cuFFTDx range from 45% to up to 3x speed-ups. Performance comparison between cuFFTDx and cuFFT <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">convolution_performance</span></code>
+NVIDIA H100 80GB HBM3 GPU results is presented in <a class="reference internal" href="#examples-convolution-perf-img"><span class="std std-numref">Fig. 4</span></a>.</p>
+<figure class="align-center" id="id3">
+<span id="examples-convolution-perf-img"></span><a class="reference internal image-reference" href="_images/convolution_performance_h100_80gb.svg"><img alt="FFT convolution performance with cuFFT and cuFFTDx on H100 80GB HBM3 with maximum clocks set." src="_images/convolution_performance_h100_80gb.svg" style="width: 700px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 4 </span><span class="caption-text">Comparison of batched complex-to-complex convolution with pointwise scaling (forward FFT, scaling, inverse FFT) performed with cuFFT
+and cuFFTDx on H100 80GB HBM3 with maximum clocks set. Chart presents relative performance compared to cuFFT (light blue).</span><a class="headerlink" href="#id3" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="d-convolution-examples">
+<h2>3D Convolution Examples<a class="headerlink" href="#d-convolution-examples" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">convolution_3d</span></code></p></li>
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">convolution_3d_c2r</span></code></p></li>
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">convolution_3d_r2c</span></code></p></li>
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">convolution_3d_padded</span></code></p></li>
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">convolution_3d_padded_r2c</span></code></p></li>
+</ul>
+<p>In the <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">conv_3d</span></code> folder there are several 3D FFT convolution examples as well as required I/O functions.</p>
+<p>In <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">convolution_3d</span></code> we present an idiomatic way to perform a large 3D FFT convolution which does not fit into shared memory,
+with:
+* elementwise preprocessing function
+* elementwise filtering function
+* elementwise postprocessing function.</p>
+<p>Preprocessing is merged with the first execution of outermost dimension and postprocessing is merged with its second execution.
+The innermost dimension FFTs are merged together with the filtering function. This allows to get number of kernels down from 9
+to only 5. Since strided kernels are necessary for the outer dimensions, it’s necessary to add input and output handling which
+allow for staging those transfers through padded shared memory to maximize global memory coalescing and minimize shared memory
+bank conflicts.</p>
+<p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">convolution_3d_padded</span></code> example shows a similar approach to the 3D FFT convolution but with padding the dimensions to different sizes.
+This can improve performance for unusual dimensions which require fallback to a slower path, for example prime numbers.
+Normally padding to the closest power of 2 gives the best speed-ups but padding to the closest optimized size can provide higher accuracy of the results.
+All the supported optimized (no workspace required) sizes can be checked <a class="reference internal" href="requirements_func.html#empty-workspace-list-label"><span class="std std-ref">here</span></a>.</p>
+<p>When comparing a 3D FFT with cuFFTDx with a 3D FFT with cuFFT+Thrust (for pre/pot processing and filtering function) implementation, cuFFTDx
+obtains speedups of between 3.9x and 1.3x depending on the size. A comparison between cuFFTDx and cuFFT is shown in
+<a class="reference internal" href="#examples-convolution-3d-spe-img"><span class="std std-numref">Fig. 5</span></a> on H100 80GB HBM3.</p>
+<figure class="align-center" id="id4">
+<span id="examples-convolution-3d-spe-img"></span><a class="reference internal image-reference" href="_images/conv3D_speedup_h100_80gb.svg"><img alt="FFT 3D convolution performance with cuFFT+Thrust and cuFFTDx on H100 80GB HBM3 with maximum clocks set." src="_images/conv3D_speedup_h100_80gb.svg" style="width: 700px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 5 </span><span class="caption-text">Comparison of 3D complex-to-complex convolution with pre/post processing and filtering performed with cuFFT+Thrust
+and cuFFTDx with default EPT and suggested FFTs per block on H100 80GB HBM3 with maximum clocks set. For non-optimized
+sizes results from 3D FFT using cuFFTDx with zero-padded input to the closest power of 2 are
+also shown. Chart presents relative speedup compared to cuFFT (light blue).</span><a class="headerlink" href="#id4" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Other examples show how to perform a forward-inverse 3D R2C/C2R FFT convolution (<code class="code highlight cpp docutils literal highlight-cpp"><span class="n">convolution_3d_r2c</span></code>) or an inverse-forward 3D C2R/R2C FFT
+convolution (<code class="code highlight cpp docutils literal highlight-cpp"><span class="n">convolution_3d_c2r</span></code>) with the convolution fused either with the X or Z dimension FFT kernel. The main difference with previous
+complex-to-complex convolution examples is the configuration of the Z dimension kernel that performs the C2R/R2C change. If the size is a power of 2,
+this kernel can benefit from the <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">real_mode</span><span class="o">::</span><span class="n">folded</span></code> optimization.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>3D Convolution examples have limitations on their shape and chosen parameters. Assuming that the convolution size is X/Y/Z
+then number of subbatches of each dimension (so the product of remaining dimensions) must be divisible by the <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">ffts</span><span class="o">-</span><span class="n">per</span><span class="o">-</span><span class="n">block</span></code>
+parameter of the dimension in question.</p>
+<p>For C2R/R2C this number of subbatches is dependent on input/output length, which is different from FFT size. Please refer to
+notes in examples for further detail.</p>
+</div>
+</section>
+<section id="d-3d-fft-advanced-examples">
+<h2>2D/3D FFT Advanced Examples<a class="headerlink" href="#d-3d-fft-advanced-examples" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">fft_2d</span></code></p></li>
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">fft_2d_single_kernel</span></code></p></li>
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">fft_2d_r2c_c2r</span></code></p></li>
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">fft_3d</span></code></p></li>
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">fft_3d_box_single_block</span></code></p></li>
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">fft_3d_cube_single_block</span></code></p></li>
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">fft_2d_single_kernel_block_dim</span></code></p></li>
+</ul>
+<p>In each of the examples listed above cuFFTDx is used to perform multi-dimensional FFTs. Additionally, some of them include a performance
+comparison with cuFFT. The final performance of using cuFFTDx for 2D or 3D FFTs will depend on input/output functions, exact definitions
+of FFTs (precision, size, etc.), and custom pre- and post-processing functions that can be fused into kernels.</p>
+<p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">fft_2d</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">fft_2d_r2c_c2r</span></code>, and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">fft_2d_single_kernel</span></code> examples show how to calculate 2D FFTs using cuFFTDx block-level execution (<a class="reference internal" href="api/operators.html#block-operator-label"><span class="std std-ref">cufftdx::Block</span></a>). The dimensions
+are big enough that the data doesn’t fit into shared memory, thus synchronization and data exchange have to be done via global memory.
+The <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">fft_2d_r2c_c2r</span></code> example is similar to <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">convolution_r2c_c2r</span></code> as it transforms input with real-to-complex FFT and then back with
+complex-to-real FFT. The <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">fft_2d_single_kernel</span></code> is an attempt to do 2D FFT in a single kernel using Cooperative Groups grid launch and
+grid-wide synchronization. The <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">fft_2d_single_kernel_block_dim</span></code> is similar to <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">fft_2d_single_kernel</span></code> but includes the <a class="reference internal" href="api/operators.html#blockdim-operator-label"><span class="std std-ref">BlockDim Operator</span></a> to support
+non-square matrices. For example, for 2D FFTs of 80 x 100, there are no <a class="reference internal" href="api/operators.html#ept-operator-label"><span class="std std-ref">ElementsPerThread</span></a> configurations to make both FFTs use the same number of threads. By adding
+a <a class="reference internal" href="api/operators.html#blockdim-operator-label"><span class="std std-ref">BlockDim Operator</span></a>, the user can set the block dimensions to a number of threads that is enough for both FFT executions and have both of them executed in the
+same kernel.</p>
+<p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">fft_3d</span></code> example shows how to calculate 3D FFTs using cuFFTDx block-level execution (<a class="reference internal" href="api/operators.html#block-operator-label"><span class="std std-ref">cufftdx::Block</span></a>). The dimensions
+are big enough that the data doesn’t fit into shared memory, thus synchronization and data exchange have to be done via global memory. The <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">fft_3d</span></code> example
+is similar to <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">fft_2d</span></code> as it is an evolution of the idea of unfused kernels processing 1D FFT at time. It shows the general concept but for the best
+performance the remaining 3D FFT examples mentioned below should be considered.</p>
+<p>The <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">fft_3d</span></code> example can be used as a foundation for experiments with different precisions for data and computation, or to fuse within a single kernel pre- and post-processing.</p>
+<p>In <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">fft_3d_box_single_block</span></code> and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">fft_3d_cube_single_block</span></code> samples cuFFTDx is used on a thread-level (<a class="reference internal" href="api/operators.html#thread-operator-label"><span class="std std-ref">cufftdx::Thread</span></a>)
+to executed small 3D FFTs in a single block.</p>
+</section>
+<section id="mixed-precision-fft-examples">
+<h2>Mixed Precision FFT Examples<a class="headerlink" href="#mixed-precision-fft-examples" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">mixed_precision_fft_1d</span></code></p></li>
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">mixed_precision_fft_2d</span></code></p></li>
+</ul>
+<p>The mixed examples demonstrate how to decouple cuFFTDx computation precision from the type of input and output global memory buffers.
+Techniques presented in the two aforementioned files let the user minimize I/O allowing for a significant speedup. The decrease in
+accuracy of the results can be minimal, but may depend on the input data and exact algorithm. Both examples include performance
+benchmarking and accuracy comparison with an equivalent full precision computation. It is important to note that this does not imply
+utilizing any of the <a class="reference external" href="https://developer.nvidia.com/blog/mixed-precision-programming-cuda-8/">CUDA Mixed Precision</a> capabilities.</p>
+<p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">mixed_precision_fft_1d</span></code> example shows how to compute a 1D FFT (forward FFT, complex-to-complex) in double precision using cuFFTDx with data
+stored in global memory in single precision. It shows the performance of this approach using both the register and shared memory APIs. The example also compares
+the accuracy of the results with the typical approach where the same precision is used for both I/O and computations. The speed-up obtained by using mixed precision depends
+on several factors reaching 1.7x for a FFT of 512 elements. Performance results are shown in <a class="reference internal" href="#examples-mixed1d-perf-img"><span class="std std-numref">Fig. 6</span></a>.</p>
+<figure class="align-center" id="id5">
+<span id="examples-mixed1d-perf-img"></span><a class="reference internal image-reference" href="_images/mixedPrecision1D_noshared.svg"><img alt="FFT performance for mixed precision with cuFFT and cuFFTDx on H100 80GB HBM3 with maximum clocks set." src="_images/mixedPrecision1D_noshared.svg" style="width: 700px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 6 </span><span class="caption-text">Comparison of batched complex-to-complex FFT with mixed precision (storage: float, compute: double) performed with cuFFT
+and cuFFTDx with register API on H100 80GB HBM3 with maximum clocks set. Chart presents relative performance compared to cuFFT (light blue).</span><a class="headerlink" href="#id5" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>In the <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">mixed_precision_fft_2d</span></code> example a similar approach is taken to compute a 2D FFT (forward FFT, complex-to-complex) in double precision using cuFFTDx with
+data in global memory stored in single precision. The 2D FFT is implemented in one kernel just as in the <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">fft_2d_single_kernel</span></code> example.</p>
+<p>Both examples use specific I/O functions that convert from the original to the target precision while loading and storing from/to global
+memory (see in <a class="reference internal" href="#examples-input-output-helper-label"><span class="std std-ref">Input/Output Helper Functions</span></a>).</p>
+</section>
+<section id="input-output-helper-functions">
+<span id="examples-input-output-helper-label"></span><h2>Input/Output Helper Functions<a class="headerlink" href="#input-output-helper-functions" title="Link to this heading">#</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Included I/O functions are not promised to deliver the best performance for every FFT configuration. Users may have to write their own to match their needs.</p>
+</div>
+<ul class="simple">
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">block_io</span><span class="p">.</span><span class="n">hpp</span></code></p></li>
+</ul>
+<p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">block_io</span><span class="p">.</span><span class="n">hpp</span></code> contains all helper input/output functions that are used in the example kernels. They are implemented according to the
+data layout requirements described in <a class="reference internal" href="api/methods.html#execution-methods-data-layout-label"><span class="std std-ref">Data Layouts</span></a> and
+<a class="reference internal" href="api/methods.html#execution-methods-value-format-label"><span class="std std-ref">Value Format</span></a> sections.</p>
+<ul class="simple">
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">mixed_io</span><span class="p">.</span><span class="n">hpp</span></code></p></li>
+</ul>
+<p>Additionally, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">mixed_io</span><span class="p">.</span><span class="n">hpp</span></code> contains helper input/output functions and structures necessary for mixed precision cuFFTDx usage, performing data type
+conversions where required. Currently only several storage/compute precision combinations are handled: <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">fp16</span><span class="o">/</span><span class="n">fp32</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">bf16</span><span class="o">/</span><span class="n">fp32</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">fp32</span><span class="o">/</span><span class="n">fp64</span></code>.</p>
+<ul class="simple">
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">padded_io</span><span class="p">.</span><span class="n">hpp</span></code></p></li>
+</ul>
+<p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">padded_io</span><span class="p">.</span><span class="n">hpp</span></code> contains helper input/output functions and structures necessary for zero-padded convolutions presented in example (<code class="code highlight cpp docutils literal highlight-cpp"><span class="n">convolution_padded</span></code>).
+Utilities present there load data conditionally, based on signal length, and offset memory accordingly.</p>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="python_bindings.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">cuFFTDx Python Bindings</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="lto_examples.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">LTO Examples</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction-examples">Introduction Examples</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simple-fft-examples">Simple FFT Examples</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#simple-fft-thread-examples">simple_fft_thread* Examples</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#simple-fft-block-examples">simple_fft_block* Examples</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#extra-simple-fft-block-examples">Extra simple_fft_block(*) Examples</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nvrtc-examples">NVRTC Examples</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fft-performance">FFT Performance</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#convolution-examples">Convolution Examples</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#d-convolution-examples">3D Convolution Examples</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#d-3d-fft-advanced-examples">2D/3D FFT Advanced Examples</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mixed-precision-fft-examples">Mixed Precision FFT Examples</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#input-output-helper-functions">Input/Output Helper Functions</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5"></script>
+
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+<a class="footer-brand logo" href="https://www.nvidia.com">
+  <img src="_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+</a></div>
+      
+        <div class="footer-item">
+
+<div class="footer-links">
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/">Privacy Policy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Your Privacy Choices</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/">Terms of Service</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/accessibility/">Accessibility</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/company-policies/">Corporate Policies</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/product-security/">Product Security</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/contact/">Contact</a>
+  
+  
+  
+</div>
+</div>
+      
+        <div class="footer-item">
+
+
+
+
+  <p class="copyright">
+    
+      Copyright © 2022-2026, NVIDIA Corporation &amp; Affiliates. All rights reserved.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+  </body>
+</html>

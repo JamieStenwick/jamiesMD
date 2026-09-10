@@ -1,0 +1,1418 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Traits &#8212; cuBLASDx</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
+    <link rel="stylesheet" type="text/css" href="../_static/diagram.css?v=21e9147c" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
+
+
+
+    <script src="../_static/documentation_options.js?v=26f1c5af"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/traits';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://docs.nvidia.com/cuda/cublasdx/_static/switcher.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.7.1';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+
+    <link rel="icon" href="../_static/nvidia.ico"/>
+
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Input / Output Format" href="shared_methods.html" />
+    <link rel="prev" title="Operators" href="operators.html" />
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.7.1" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+
+
+  </head>
+
+  <body data-default-mode="">
+
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="cuBLASDx - Home"/>
+    <img src="../_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="cuBLASDx - Home"/>
+  
+  
+    <p class="title logo__title">cuBLASDx</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="cuBLASDx - Home"/>
+    <img src="../_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="cuBLASDx - Home"/>
+  
+  
+    <p class="title logo__title">cuBLASDx</p>
+  
+</a>
+
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Table of Contents">
+  <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
+  <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Documentation Home</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../requirements_func.html">Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../using_cublasdx.html">Using cuBLASDx GEMM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../using_pipelines.html">Using Pipelined GEMM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../using_trsm.html">Using cuBLASDx TRSM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../performance.html">Achieving High Performance</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="operators.html">Operators</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Traits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="shared_methods.html">Input / Output Format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gemm_methods.html">GEMM Execution Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="trsm_methods.html">TRSM Execution Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pipeline.html">Pipeline Creation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="other_methods.html">Other Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="other_tensors.html">Tensor Manipulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="other_shared.html">Shared Memory Management</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Python</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../python_bindings.html">cuBLASDx Python Bindings</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../examples_learning_path.html">Learning Path Through Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../release_notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/NVIDIA/CUDALibrarySamples/tree/main/MathDx/cuBLASDx">GitHub Samples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">MathDx</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/cublasdx-downloads">cuBLASDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/cufftdx-downloads">cuFFTDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/cusolverdx-downloads">cuSolverDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/curanddx-downloads">cuRANDDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/nvcompdx-downloads">nvCOMPDx</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Traits</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="traits">
+<span id="traits-label"></span><h1>Traits<a class="headerlink" href="#traits" title="Link to this heading">#</a></h1>
+<p>Traits provide the user with information about the function descriptor constructed using <a class="reference internal" href="operators.html#operators-label"><span class="std std-ref">Operators</span></a>. They are divided into
+<a class="reference internal" href="#description-traits">Description Traits</a> and <a class="reference internal" href="#execution-traits">Execution Traits</a>.</p>
+<hr class="docutils" />
+<section id="description-traits">
+<h2>Description Traits<a class="headerlink" href="#description-traits" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 33.3%" />
+<col style="width: 66.7%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Trait</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference internal" href="#size-trait-label"><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">size_of</span><span class="o">&lt;</span><span class="n">Description</span><span class="o">&gt;</span></code></a></p></td>
+<td><p>Problem size we intend to solve.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#type-trait-label"><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">type_of</span><span class="o">&lt;</span><span class="n">Description</span><span class="o">&gt;</span></code></a></p></td>
+<td><p>Data type used, either <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">type</span><span class="o">::</span><span class="n">real</span></code> or <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">type</span><span class="o">::</span><span class="n">complex</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#precision-trait-label"><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">precision_of</span><span class="o">&lt;</span><span class="n">Description</span><span class="o">&gt;</span></code></a></p></td>
+<td><p>Compute precision of the underlying floating-point values used for <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">A</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">B</span></code>, and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">C</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#function-trait-label"><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">function_of</span><span class="o">&lt;</span><span class="n">Description</span><span class="o">&gt;</span></code></a></p></td>
+<td><p>Function to be executed.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#arrangement-trait-label"><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">arrangement_of</span><span class="o">&lt;</span><span class="n">Description</span><span class="o">&gt;</span></code></a></p></td>
+<td><p>Arrangement mode of the matrix - <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">arrangement</span><span class="o">::</span><span class="n">col_major</span></code>, and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">arrangement</span><span class="o">::</span><span class="n">row_major</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#transposemode-trait-label"><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">transpose_mode_of</span><span class="o">&lt;</span><span class="n">Description</span><span class="o">&gt;</span></code></a></p></td>
+<td><p>Transpose mode of the matrix - <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">transpose_mode</span><span class="o">::</span><span class="n">non_transposed</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">transpose_mode</span><span class="o">::</span><span class="n">transposed</span></code>, and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">transpose_mode</span><span class="o">::</span><span class="n">conj_transposed</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#alignment-trait-label"><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">alignment_of</span><span class="o">&lt;</span><span class="n">Description</span><span class="o">&gt;</span></code></a></p></td>
+<td><p>Alignments (in bytes) of matrices <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">A</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">B</span></code>, and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">C</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#leading-dimension-of-trait-label"><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">leading_dimension_of</span><span class="o">&lt;</span><span class="n">Description</span><span class="o">&gt;</span></code></a></p></td>
+<td><p>Provides leading dimensions as defined by <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Size</span></code>, and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Arrangement</span></code> or <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">TransposeMode</span></code> operators.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#sm-trait-label"><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">sm_of</span><span class="o">&lt;</span><span class="n">Description</span><span class="o">&gt;</span></code></a></p></td>
+<td><p>Target architecture for the underlying computation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#isblas-trait-label"><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">is_blas</span><span class="o">&lt;</span><span class="n">Description</span><span class="o">&gt;</span></code></a></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="nb">true</span></code> if <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Description</span></code> is a function description, formed with <a class="reference internal" href="operators.html#description-operators-label"><span class="std std-ref">Description Operators</span></a>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#isblasexecution-trait-label"><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">is_blas_execution</span><span class="o">&lt;</span><span class="n">Description</span><span class="o">&gt;</span></code></a></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="nb">true</span></code> if <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Description</span></code> is a function description, configured for execution with <a class="reference internal" href="operators.html#execution-operators-label"><span class="std std-ref">Execution Operators</span></a>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#isblascomplete-trait-label"><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">is_complete_blas</span><span class="o">&lt;</span><span class="n">Description</span><span class="o">&gt;</span></code></a></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="nb">true</span></code> if <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Description</span></code> is a valid and complete function description, formed with <a class="reference internal" href="operators.html#description-operators-label"><span class="std std-ref">Description Operators</span></a>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#isblascompleteexecution-trait-label"><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">is_complete_blas_execution</span><span class="o">&lt;</span><span class="n">Description</span><span class="o">&gt;</span></code></a></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="nb">true</span></code> if <a class="reference internal" href="#isblascomplete-trait-label"><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">is_complete_blas</span><span class="o">&lt;</span><span class="n">Description</span><span class="o">&gt;</span></code></a> is <code class="code highlight cpp docutils literal highlight-cpp"><span class="nb">true</span></code> and <a class="reference internal" href="#isblasexecution-trait-label"><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">is_blas_execution</span><span class="o">&lt;</span><span class="n">Description</span><span class="o">&gt;</span></code></a> is <code class="code highlight cpp docutils literal highlight-cpp"><span class="nb">true</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#side-trait-label"><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">side_of</span><span class="o">&lt;</span><span class="n">Description</span><span class="o">&gt;</span></code></a></p></td>
+<td><p>Side on which <code class="docutils literal notranslate"><span class="pre">A</span></code> appears: <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">side</span><span class="o">::</span><span class="n">left</span></code> or <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">side</span><span class="o">::</span><span class="n">right</span></code>. Only meaningful for TRSM descriptors.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#fillmode-trait-label"><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">fill_mode_of</span><span class="o">&lt;</span><span class="n">Description</span><span class="o">&gt;</span></code></a></p></td>
+<td><p>Which triangle of <code class="docutils literal notranslate"><span class="pre">A</span></code> is stored: <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">fill_mode</span><span class="o">::</span><span class="n">lower</span></code> or <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">fill_mode</span><span class="o">::</span><span class="n">upper</span></code>. Only meaningful for TRSM descriptors.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#diagonal-trait-label"><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">diag_of</span><span class="o">&lt;</span><span class="n">Description</span><span class="o">&gt;</span></code></a></p></td>
+<td><p>Whether the diagonal of <code class="docutils literal notranslate"><span class="pre">A</span></code> is explicit: <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">diag</span><span class="o">::</span><span class="n">non_unit</span></code> or <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">diag</span><span class="o">::</span><span class="n">unit</span></code>. Only meaningful for TRSM descriptors.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Description traits can be retrieved from an function descriptor using the helper functions provided. For example:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cublasdx.hpp&gt;</span>
+
+<span class="k">using</span><span class="w"> </span><span class="n">GEMM</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">decltype</span><span class="p">(</span><span class="n">cublasdx</span><span class="o">::</span><span class="n">Size</span><span class="o">&lt;</span><span class="mi">32</span><span class="p">,</span><span class="w"> </span><span class="mi">32</span><span class="p">,</span><span class="w"> </span><span class="mi">64</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">              </span><span class="o">+</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">Precision</span><span class="o">&lt;</span><span class="kt">float</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">              </span><span class="o">+</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">Type</span><span class="o">&lt;</span><span class="n">cublasdx</span><span class="o">::</span><span class="n">type</span><span class="o">::</span><span class="n">real</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">              </span><span class="o">+</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">TransposeMode</span><span class="o">&lt;</span><span class="n">cublasdx</span><span class="o">::</span><span class="n">T</span><span class="p">,</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">N</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">              </span><span class="o">+</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">Function</span><span class="o">&lt;</span><span class="n">cublasdx</span><span class="o">::</span><span class="n">function</span><span class="o">::</span><span class="n">MM</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">              </span><span class="o">+</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">SM</span><span class="o">&lt;</span><span class="mi">890</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">              </span><span class="o">+</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">Block</span><span class="p">());</span>
+
+<span class="k">if</span><span class="p">(</span><span class="n">cublasdx</span><span class="o">::</span><span class="n">is_complete_blas</span><span class="o">&lt;</span><span class="n">GEMM</span><span class="o">&gt;::</span><span class="n">value</span><span class="p">)</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;GEMM (M x N x K): &quot;</span>
+<span class="w">    </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">size_of</span><span class="o">&lt;</span><span class="n">GEMM</span><span class="o">&gt;::</span><span class="n">m</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot; x &quot;</span>
+<span class="w">    </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">size_of</span><span class="o">&lt;</span><span class="n">GEMM</span><span class="o">&gt;::</span><span class="n">n</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot; x &quot;</span>
+<span class="w">    </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">size_of</span><span class="o">&lt;</span><span class="n">GEMM</span><span class="o">&gt;::</span><span class="n">k</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</pre></div>
+</div>
+<section id="size-trait">
+<span id="size-trait-label"></span><h3>Size Trait<a class="headerlink" href="#size-trait" title="Link to this heading">#</a></h3>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// std::tuple&lt;unsigned int, unsigned int, unsigned int&gt;</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">size_of</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;::</span><span class="n">value</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">size_of_v</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;</span>
+
+<span class="c1">// unsigned int</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">size_of</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;::</span><span class="n">m</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">size_of_v_m</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;</span>
+
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">size_of</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;::</span><span class="n">n</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">size_of_v_n</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;</span>
+
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">size_of</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;::</span><span class="n">k</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">size_of_v_k</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">size_of</span></code> trait gives size of the problem we want to solve, as set by <a class="reference internal" href="operators.html#size-operator-label"><span class="std std-ref">Size Operator</span></a>.
+If the descriptor was not created using a <a class="reference internal" href="operators.html#size-operator-label"><span class="std std-ref">Size Operator</span></a>, compilation will fail with an error message.</p>
+</section>
+<section id="type-trait">
+<span id="type-trait-label"></span><h3>Type Trait<a class="headerlink" href="#type-trait" title="Link to this heading">#</a></h3>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// cublasdx::type</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">type_of</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;::</span><span class="n">value</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">type_of_v</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>Data type (<code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cublasdx</span><span class="o">::</span><span class="n">type</span><span class="o">::</span><span class="n">real</span></code> or <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cublasdx</span><span class="o">::</span><span class="n">type</span><span class="o">::</span><span class="n">complex</span></code>) used in the function, as set by <a class="reference internal" href="operators.html#type-operator-label"><span class="std std-ref">Type Operator</span></a>.</p>
+</section>
+<section id="precision-trait">
+<span id="precision-trait-label"></span><h3>Precision Trait<a class="headerlink" href="#precision-trait" title="Link to this heading">#</a></h3>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Precision type</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">precision_of</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;::</span><span class="n">a_type</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">precision_of_a_t</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;</span>
+
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">precision_of</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;::</span><span class="n">b_type</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">precision_of_b_t</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;</span>
+
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">precision_of</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;::</span><span class="n">c_type</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">precision_of_c_t</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>Compute precision of the input data <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">A</span></code> and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">B</span></code> and output data <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">C</span></code>, as set by <a class="reference internal" href="operators.html#precision-operator-label"><span class="std std-ref">Precision Operator</span></a>.</p>
+<p>Starting with <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cuBLASDx</span><span class="w"> </span><span class="mf">0.3.0</span></code> input precision has been decoupled from compute precision.
+Refer to <a class="reference internal" href="operators.html#precision-operator-label"><span class="std std-ref">Precision Operator</span></a> for more details.</p>
+</section>
+<section id="function-trait">
+<span id="function-trait-label"></span><h3>Function Trait<a class="headerlink" href="#function-trait" title="Link to this heading">#</a></h3>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// cublasdx::function</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">function_of</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;::</span><span class="n">value</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">function_of_v</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>Function to be executed, as set by <a class="reference internal" href="operators.html#function-operator-label"><span class="std std-ref">Function Operator</span></a>.
+If the descriptor was not created using a <a class="reference internal" href="operators.html#function-operator-label"><span class="std std-ref">Function Operator</span></a>, compilation will fail with an error message.</p>
+</section>
+<section id="arrangement-trait">
+<span id="arrangement-trait-label"></span><h3>Arrangement Trait<a class="headerlink" href="#arrangement-trait" title="Link to this heading">#</a></h3>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// std::tuple&lt;arrangement, arrangement, arrangement&gt;</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">arrangement_of</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;::</span><span class="n">value</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">arrangement_of_v</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;</span>
+
+<span class="c1">// cublasdx::arrangement</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">arrangement_of</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;::</span><span class="n">a</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">arrangement_of_v_a</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;</span>
+
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">arrangement_of</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;::</span><span class="n">b</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">arrangement_of_v_b</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;</span>
+
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">arrangement_of</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;::</span><span class="n">c</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">arrangement_of_v_c</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>Arrangement of global <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">A</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">B</span></code>, and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">C</span></code> matrices.</p>
+</section>
+<section id="transpose-mode-trait">
+<span id="transposemode-trait-label"></span><h3>Transpose Mode Trait<a class="headerlink" href="#transpose-mode-trait" title="Link to this heading">#</a></h3>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">transpose_mode_of</span></code> trait is deprecated since 0.2.0 and may be removed in future versions.</p>
+</div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// cublasdx::transpose_mode</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">transpose_mode_of</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;::</span><span class="n">a_transpose_mode</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">transpose_mode_of_a</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;</span>
+
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">transpose_mode_of</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;::</span><span class="n">b_transpose_mode</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">transpose_mode_of_b</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>Transpose mode of <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">A</span></code>, and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">B</span></code> matrices.</p>
+</section>
+<section id="alignment-trait">
+<span id="alignment-trait-label"></span><h3>Alignment Trait<a class="headerlink" href="#alignment-trait" title="Link to this heading">#</a></h3>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// std::tuple&lt;unsigned int, unsigned int, unsigned int&gt;</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">alignment_of</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;::</span><span class="n">value</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">alignment_of_v</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;</span>
+
+<span class="c1">// unsigned int</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">alignment_of</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;::</span><span class="n">a</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">alignment_of_v_a</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;</span>
+
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">alignment_of</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;::</span><span class="n">b</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">alignment_of_v_b</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;</span>
+
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">alignment_of</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;::</span><span class="n">c</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">alignment_of_v_c</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>Alignment (in bytes) of input matrices <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">A</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">B</span></code>, and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">C</span></code>.</p>
+</section>
+<section id="side-trait">
+<span id="side-trait-label"></span><h3>Side Trait<a class="headerlink" href="#side-trait" title="Link to this heading">#</a></h3>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// cublasdx::side</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">side_of</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;::</span><span class="n">value</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">side_of_v</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>Side on which the triangular matrix <code class="docutils literal notranslate"><span class="pre">A</span></code> appears in the equation solved by <a class="reference internal" href="operators.html#function-operator-trsm-label"><span class="std std-ref">TRSM</span></a>.
+Possible values are <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">side</span><span class="o">::</span><span class="n">left</span></code> and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">side</span><span class="o">::</span><span class="n">right</span></code>.</p>
+</section>
+<section id="fillmode-trait">
+<span id="fillmode-trait-label"></span><h3>FillMode Trait<a class="headerlink" href="#fillmode-trait" title="Link to this heading">#</a></h3>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// cublasdx::fill_mode</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">fill_mode_of</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;::</span><span class="n">value</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">fill_mode_of_v</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>Which triangle of matrix <code class="docutils literal notranslate"><span class="pre">A</span></code> holds the data for <a class="reference internal" href="operators.html#function-operator-trsm-label"><span class="std std-ref">TRSM</span></a>.
+Possible values are <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">fill_mode</span><span class="o">::</span><span class="n">lower</span></code> and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">fill_mode</span><span class="o">::</span><span class="n">upper</span></code>.</p>
+</section>
+<section id="diag-trait">
+<span id="diagonal-trait-label"></span><h3>Diag Trait<a class="headerlink" href="#diag-trait" title="Link to this heading">#</a></h3>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// cublasdx::diag</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">diag_of</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;::</span><span class="n">value</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">diag_of_v</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>Whether the diagonal of <code class="docutils literal notranslate"><span class="pre">A</span></code> is explicitly stored for <a class="reference internal" href="operators.html#function-operator-trsm-label"><span class="std std-ref">TRSM</span></a>.
+Possible values are <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">diag</span><span class="o">::</span><span class="n">non_unit</span></code> and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">diag</span><span class="o">::</span><span class="n">unit</span></code>.</p>
+</section>
+<section id="leading-dimension-of">
+<span id="leading-dimension-of-trait-label"></span><h3>leading_dimension_of<a class="headerlink" href="#leading-dimension-of" title="Link to this heading">#</a></h3>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// std::tuple&lt;unsigned int, unsigned int, unsigned int&gt;</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">leading_dimension_of</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;::</span><span class="n">value</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">leading_dimension_of_v</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;</span>
+
+<span class="c1">// unsigned int</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">leading_dimension_of_v_a</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">leading_dimension_of_v_b</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">leading_dimension_of_v_c</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>Type <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cublasdx</span><span class="o">::</span><span class="n">leading_dimension_of</span></code> provides leading dimensions for matrices <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">A</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">B</span></code>, and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">C</span></code>.
+Returned values are defined by <a class="reference internal" href="operators.html#size-operator-label"><span class="std std-ref">Size</span></a>, and <a class="reference internal" href="operators.html#arrangement-operator-label"><span class="std std-ref">Arrangement</span></a> or <a class="reference internal" href="operators.html#transposemode-operator-label"><span class="std std-ref">TransposeMode</span></a> operators.</p>
+<p>Requirements:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">BLAS</span></code> must have defined size, function, and transpose mode. See <a class="reference internal" href="operators.html#description-operators-label"><span class="std std-ref">Description Operators</span></a> section.</p></li>
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">BLAS</span></code> must include <a class="reference internal" href="operators.html#block-operator-label"><span class="std std-ref">Block</span></a> operator.</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="sm-trait">
+<span id="sm-trait-label"></span><h3>SM Trait<a class="headerlink" href="#sm-trait" title="Link to this heading">#</a></h3>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// unsigned int</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">sm_of</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;::</span><span class="n">value</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">sm_of_v</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>GPU architecture used to run the function. For example, gives <code class="code highlight cpp docutils literal highlight-cpp"><span class="mi">890</span></code> for Ada (sm_89).</p>
+</section>
+<section id="is-blas-trait">
+<span id="isblas-trait-label"></span><h3>is_blas Trait<a class="headerlink" href="#is-blas-trait" title="Link to this heading">#</a></h3>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// bool</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">is_blas</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;::</span><span class="n">value</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">is_blas_v</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>Trait is <code class="code highlight cpp docutils literal highlight-cpp"><span class="nb">true</span></code> if the descriptor is a function description, formed with <a class="reference internal" href="operators.html#description-operators-label"><span class="std std-ref">Description Operators</span></a>.</p>
+</section>
+<section id="is-blas-execution-trait">
+<span id="isblasexecution-trait-label"></span><h3>is_blas_execution Trait<a class="headerlink" href="#is-blas-execution-trait" title="Link to this heading">#</a></h3>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// bool</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">is_blas_execution</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;::</span><span class="n">value</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">is_blas_execution_v</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>Trait is <code class="code highlight cpp docutils literal highlight-cpp"><span class="nb">true</span></code> if the descriptor is a function description configured for execution, formed with <a class="reference internal" href="operators.html#description-operators-label"><span class="std std-ref">Description Operators</span></a> and <a class="reference internal" href="operators.html#execution-operators-label"><span class="std std-ref">Execution Operators</span></a>.</p>
+</section>
+<section id="is-complete-blas-trait">
+<span id="isblascomplete-trait-label"></span><h3>is_complete_blas Trait<a class="headerlink" href="#is-complete-blas-trait" title="Link to this heading">#</a></h3>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// bool</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">is_complete_blas</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;::</span><span class="n">value</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">is_complete_blas_v</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>Trait is <code class="code highlight cpp docutils literal highlight-cpp"><span class="nb">true</span></code> if the descriptor is a complete function description, formed with <a class="reference internal" href="operators.html#description-operators-label"><span class="std std-ref">Description Operators</span></a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Complete in this context means that the descriptor has been formed with all the necessary <a class="reference internal" href="operators.html#description-operators-label"><span class="std std-ref">Description Operators</span></a> and it is only missing an <a class="reference internal" href="operators.html#execution-operators-label"><span class="std std-ref">Execution Operators</span></a> to be able to run.</p>
+</div>
+<p>For an function descriptor to be complete, the following is required:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>One, and only one, <a class="reference internal" href="operators.html#size-operator-label"><span class="std std-ref">Size Operator</span></a>.</p></li>
+<li><p>One, and only one, <a class="reference internal" href="operators.html#function-operator-label"><span class="std std-ref">Function Operator</span></a>.</p></li>
+<li><p>One, and only one, <a class="reference internal" href="operators.html#sm-operator-label"><span class="std std-ref">SM Operator</span></a>.</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="is-complete-blas-execution-trait">
+<span id="isblascompleteexecution-trait-label"></span><h3>is_complete_blas_execution Trait<a class="headerlink" href="#is-complete-blas-execution-trait" title="Link to this heading">#</a></h3>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// bool</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">is_complete_blas_execution</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;::</span><span class="n">value</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">is_complete_blas_execution_v</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>Trait is <code class="code highlight cpp docutils literal highlight-cpp"><span class="nb">true</span></code> if both <a class="reference internal" href="#isblasexecution-trait-label"><span class="std std-ref">is_blas_execution Trait</span></a> and <a class="reference internal" href="#isblascomplete-trait-label"><span class="std std-ref">is_complete_blas Trait</span></a> are <code class="code highlight cpp docutils literal highlight-cpp"><span class="nb">true</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If <a class="reference internal" href="#isblascompleteexecution-trait-label"><span class="std std-ref">is_complete_blas_execution Trait</span></a> is <code class="code highlight cpp docutils literal highlight-cpp"><span class="nb">true</span></code> for a descriptor <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">descriptor</span></code>, then we can use the <a class="reference internal" href="gemm_methods.html#gemm-execution-methods-label"><span class="std std-ref">GEMM Execution Methods</span></a> or <a class="reference internal" href="trsm_methods.html#trsm-execution-methods-label"><span class="std std-ref">TRSM Execution Methods</span></a>
+to execute the function.</p>
+</div>
+</section>
+</section>
+<section id="execution-traits">
+<span id="execution-traits-label"></span><h2>Execution Traits<a class="headerlink" href="#execution-traits" title="Link to this heading">#</a></h2>
+<p>Execution traits can be retrieved directly from a BLAS descriptor that has been configured with <a class="reference internal" href="operators.html#execution-operators-label"><span class="std std-ref">Execution Operators</span></a>.
+The available execution traits depend on the operator used to build the descriptor. GEMM uses
+<a class="reference internal" href="operators.html#block-operator-label"><span class="std std-ref">Block Operator</span></a>; TRSM supports both <a class="reference internal" href="operators.html#block-operator-label"><span class="std std-ref">Block Operator</span></a> and <a class="reference internal" href="operators.html#thread-operator-label"><span class="std std-ref">Thread Operator</span></a>.</p>
+<section id="block-traits">
+<h3>Block Traits<a class="headerlink" href="#block-traits" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 25.0%" />
+<col style="width: 50.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Trait</p></th>
+<th class="head"><p>Default value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference internal" href="#valuetype-block-trait-label"><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Description</span><span class="o">::&lt;</span><span class="n">a</span><span class="o">/</span><span class="n">b</span><span class="o">/</span><span class="n">c</span><span class="o">&gt;</span><span class="n">_value_type</span></code></a></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">float</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">float</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">float</span></code></p></td>
+<td><p>Type of compute data <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">A</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">B</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">C</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ld-block-trait-label"><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Description</span><span class="o">::</span><span class="n">ld</span><span class="o">&lt;</span><span class="n">a</span><span class="o">/</span><span class="n">b</span><span class="o">/</span><span class="n">c</span><span class="o">&gt;</span></code></a></p></td>
+<td><p>Determined by the problem size or set via <a class="reference internal" href="operators.html#leadingdimension-operator-label"><span class="std std-ref">LeadingDimension Operator</span></a></p></td>
+<td><p>Leading dimensions of matrices <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">A</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">B</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">C</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#alignment-exec-trait-label"><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Description</span><span class="o">::&lt;</span><span class="n">a</span><span class="o">/</span><span class="n">b</span><span class="o">/</span><span class="n">c</span><span class="o">&gt;</span><span class="n">_alignment</span></code></a></p></td>
+<td><p>Determined by the type of matrices <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">A</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">B</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">C</span></code> or set via <a class="reference internal" href="operators.html#alignment-operator-label"><span class="std std-ref">Alignment Operator</span></a></p></td>
+<td><p>Alignments (in bytes) of input matrices <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">A</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">B</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">C</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#matrixsize-block-trait-label"><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Description</span><span class="o">::&lt;</span><span class="n">a</span><span class="o">/</span><span class="n">b</span><span class="o">/</span><span class="n">c</span><span class="o">&gt;</span><span class="n">_size</span></code></a></p></td>
+<td><p>Determined by the problem size and set leading dimensions.</p></td>
+<td><p>Number of elements in <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">A</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">B</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">C</span></code> matrices. Includes padding determined by set leading dimensions.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#blockdim-block-trait-label"><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Description</span><span class="o">::</span><span class="n">block_dim</span></code></a></p></td>
+<td><p>Based on heuristic or set via <a class="reference internal" href="operators.html#blockdim-operator-label"><span class="std std-ref">BlockDim Operator</span></a></p></td>
+<td><p>Value of type <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">dim3</span></code> representing number of threads computing BLAS function. Set or recommended CUDA block dimensions.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#suggestedblockdim-block-trait-label"><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Description</span><span class="o">::</span><span class="n">suggested_block_dim</span></code></a></p></td>
+<td><p>Based on heuristic.</p></td>
+<td><p>Recommended number of threads for computing BLAS function represented as CUDA block dimensions (<code class="code highlight cpp docutils literal highlight-cpp"><span class="n">dim3</span></code> value).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#maxthreads-block-trait-label"><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Description</span><span class="o">::</span><span class="n">max_threads_per_block</span></code></a></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">X</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">Y</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">Z</span></code> where <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">X</span><span class="p">,</span><span class="w"> </span><span class="n">Y</span><span class="p">,</span><span class="w"> </span><span class="n">Z</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Description</span><span class="o">::</span><span class="n">block_dim</span></code></p></td>
+<td><p>Number of threads in <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Description</span><span class="o">::</span><span class="n">block_dim</span></code>.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Block traits can be retrieved from descriptors built with <a class="reference internal" href="operators.html#block-operator-label"><span class="std std-ref">Block Operator</span></a>.</p>
+<p>For example:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cublasdx.hpp&gt;</span>
+
+<span class="k">using</span><span class="w"> </span><span class="n">BLAS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">decltype</span><span class="p">(...</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">Block</span><span class="p">());</span>
+
+<span class="k">template</span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">BLAS</span><span class="o">&gt;</span>
+<span class="n">__launch_bounds__</span><span class="p">(</span><span class="n">BLAS</span><span class="o">::</span><span class="n">max_threads_per_block</span><span class="p">)</span>
+<span class="n">__global__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">kernel</span><span class="p">(</span><span class="k">typename</span><span class="w"> </span><span class="nc">BLAS</span><span class="o">::</span><span class="n">a_value_type</span><span class="o">*</span><span class="w"> </span><span class="n">input_a</span><span class="p">,</span><span class="w"> </span><span class="p">...)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="p">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<section id="value-type-trait">
+<span id="valuetype-block-trait-label"></span><h4>Value Type Trait<a class="headerlink" href="#value-type-trait" title="Link to this heading">#</a></h4>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">BLAS</span><span class="o">::</span><span class="n">a_value_type</span>
+<span class="n">BLAS</span><span class="o">::</span><span class="n">b_value_type</span>
+<span class="n">BLAS</span><span class="o">::</span><span class="n">c_value_type</span>
+</pre></div>
+</div>
+<p>Compute types for A, B and C matrices types. See <a class="reference internal" href="../requirements_func.html#mixed-precision-label"><span class="std std-ref">Supported MMA Data Types</span></a>.</p>
+<p>Determined by <a class="reference internal" href="operators.html#precision-operator-label"><span class="std std-ref">Precision</span></a> and <a class="reference internal" href="operators.html#type-operator-label"><span class="std std-ref">Type</span></a>.</p>
+<p>The default type is <code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">float</span></code>. It can be a real or complex type depending on the <a class="reference internal" href="operators.html#type-operator-label"><span class="std std-ref">Type</span></a> operator set.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Starting from cuBLASDx 0.3.0, <strong>computational precision has been decoupled from data precision</strong>, i.e. the input / output data for each matrix can be of arbitrary type (even integral input for floating point GEMM) provided that <a class="reference internal" href="operators.html#alignment-operator-label"><span class="std std-ref">Alignment Operator</span></a> is set and at least one of those conditions is met:</p>
+<ol class="arabic simple">
+<li><p>It’s implicitly convertible to the data type chosen with <a class="reference internal" href="operators.html#precision-operator-label"><span class="std std-ref">Precision Operator</span></a> and <a class="reference internal" href="operators.html#type-operator-label"><span class="std std-ref">Type Operator</span></a>.</p></li>
+<li><p>For inputs: An appropriate converting loading operation is provided as one of the arguments. It takes the input type value. Its result must be at least implicitly convertible to the compute type.</p></li>
+<li><p>For output: An appropriate converting storing operation is provided as one of the arguments. It takes the result computational type (usually <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">C</span></code> type as defined by <a class="reference internal" href="operators.html#precision-operator-label"><span class="std std-ref">Precision Operator</span></a> and <a class="reference internal" href="operators.html#type-operator-label"><span class="std std-ref">Type Operator</span></a>). Its result must be at least implicitly convertible to the output type.</p></li>
+</ol>
+</div>
+<p>The tables below present the value types for A, B, and C matrices depending on the corresponding precisions set in <a class="reference internal" href="operators.html#precision-operator-label"><span class="std std-ref">Precision</span></a>
+operator and type set via <a class="reference internal" href="operators.html#type-operator-label"><span class="std std-ref">Type</span></a> operator. Please refer to these places for a full list of supported precisions.</p>
+<p>Columns marked as alternatives present types that can be safely used instead of <code class="code highlight cpp docutils literal highlight-cpp"><span class="o">&lt;</span><span class="n">a</span><span class="o">/</span><span class="n">b</span><span class="o">/</span><span class="n">c</span><span class="o">&gt;</span><span class="n">_value_type</span></code> types.
+Other types can also be used as long as their alignment and size are the same as those of <code class="code highlight cpp docutils literal highlight-cpp"><span class="o">&lt;</span><span class="n">a</span><span class="o">/</span><span class="n">b</span><span class="o">/</span><span class="n">c</span><span class="o">&gt;</span><span class="n">_value_type</span></code>.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head" rowspan="2"><p>Precision \ Type</p></th>
+<th class="head" colspan="2"><p>real</p></th>
+</tr>
+<tr class="row-even"><th class="head"><p>&lt;a/b/c&gt;_value_type</p></th>
+<th class="head"><p>Alternative#1</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-odd"><td><p><strong>__nv_fp8_e5m2</strong></p></td>
+<td><p>__nv_fp8_e5m2</p></td>
+<td><p>cublasdx::float_e5m2_t</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>__nv_fp8_e4m3</strong></p></td>
+<td><p>__nv_fp8_e4m3</p></td>
+<td><p>cublasdx::float_e4m3_t</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>__half</strong></p></td>
+<td><p>__half</p></td>
+<td><p>cublasdx::half_t</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>__nv_bfloat16</strong></p></td>
+<td><p>__nv_bfloat16</p></td>
+<td><p>cublasdx::bfloat16_t</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>cublasdx::tfloat32_t</strong></p></td>
+<td><p>cublasdx::tfloat32_t</p></td>
+<td><p>cublasdx::tfloat32_t</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>other</strong></p></td>
+<td><p>other</p></td>
+<td><p>N / A</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head" rowspan="2"><p>Precision \ Type</p></th>
+<th class="head" colspan="3"><p>complex</p></th>
+</tr>
+<tr class="row-even"><th class="head"><p>&lt;a/b/c&gt;_value_type</p></th>
+<th class="head"><p>Alternative#1</p></th>
+<th class="head"><p>Alternative#2</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-odd"><td><p><strong>__nv_fp8_e5m2</strong></p></td>
+<td><p>cublasdx::complex&lt;__nv_fp8_e5m2&gt;</p></td>
+<td><p>cublasdx::complex&lt;cublasdx::float_e5m2_t&gt;</p></td>
+<td><p>__nv_fp8x2_e5m2</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>__nv_fp8_e4m3</strong></p></td>
+<td><p>cublasdx::complex&lt;__nv_fp8_e4m3&gt;</p></td>
+<td><p>cublasdx::complex&lt;cublasdx::float_e4m3_t&gt;</p></td>
+<td><p>__nv_fp8x2_e4m3</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>__half</strong></p></td>
+<td><p>cublasdx::complex&lt;__half&gt;</p></td>
+<td><p>cublasdx::complex&lt;cublasdx::half_t&gt;</p></td>
+<td><p>__half2</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>__nv_bfloat16</strong></p></td>
+<td><p>cublasdx::complex&lt;__nv_bfloat16&gt;</p></td>
+<td><p>cublasdx::complex&lt;cublasdx::bfloat16_t&gt;</p></td>
+<td><p>__nv_bfloat162</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>other</strong></p></td>
+<td><p>cublasdx::complex&lt;other&gt;</p></td>
+<td><p>N / A</p></td>
+<td><p>N / A</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Types <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cublasdx</span><span class="o">::</span><span class="n">float_e5m2_t</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cublasdx</span><span class="o">::</span><span class="n">float_e4m3_t</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cublasdx</span><span class="o">::</span><span class="n">half_t</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cublasdx</span><span class="o">::</span><span class="n">bfloat16_t</span></code>, and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cublasdx</span><span class="o">::</span><span class="n">tfloat32_t</span></code> are aliases
+for CUTLASS types <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cutlass</span><span class="o">::</span><span class="n">float_e5m2_t</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cutlass</span><span class="o">::</span><span class="n">float_e4m3_t</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cutlass</span><span class="o">::</span><span class="n">half_t</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cutlass</span><span class="o">::</span><span class="n">bfloat16_t</span></code>, and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cutlass</span><span class="o">::</span><span class="n">tfloat32_t</span></code>.</p>
+</div>
+</section>
+<section id="matrix-dim-trait">
+<h4>Matrix Dim Trait<a class="headerlink" href="#matrix-dim-trait" title="Link to this heading">#</a></h4>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Matrix dimension traits are deprecated since 0.2.0 and may be removed in future versions.</p>
+</div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// tuple&lt;unsigned int, unsigned int&gt;</span>
+<span class="n">BLAS</span><span class="o">::</span><span class="n">a_dim</span>
+<span class="n">BLAS</span><span class="o">::</span><span class="n">b_dim</span>
+<span class="n">BLAS</span><span class="o">::</span><span class="n">c_dim</span>
+</pre></div>
+</div>
+<p>Logical dimensions of matrices <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">A</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">B</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">C</span></code> in form of <code class="code highlight cpp docutils literal highlight-cpp"><span class="p">(</span><span class="n">rows</span><span class="p">,</span><span class="w"> </span><span class="n">columns</span><span class="p">)</span></code> tuple.
+The dimensions are determined by the problem size, arrangement and transpose mode.</p>
+<p>See <a class="reference internal" href="operators.html#function-operator-gemm-label"><span class="std std-ref">GEMM</span></a>, <a class="reference internal" href="operators.html#size-operator-label"><span class="std std-ref">Size Operator</span></a>, <a class="reference internal" href="operators.html#arrangement-operator-label"><span class="std std-ref">Arrangement Operator</span></a> and <a class="reference internal" href="operators.html#transposemode-operator-label"><span class="std std-ref">TransposeMode Operator</span></a>.</p>
+</section>
+<section id="leading-dimension-trait">
+<span id="ld-block-trait-label"></span><h4>Leading Dimension Trait<a class="headerlink" href="#leading-dimension-trait" title="Link to this heading">#</a></h4>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// unsigned int</span>
+<span class="n">BLAS</span><span class="o">::</span><span class="n">lda</span>
+<span class="n">BLAS</span><span class="o">::</span><span class="n">ldb</span>
+<span class="n">BLAS</span><span class="o">::</span><span class="n">ldc</span>
+</pre></div>
+</div>
+<p>Leading dimensions of matrices <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">A</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">B</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">C</span></code>.</p>
+<p>See <a class="reference internal" href="operators.html#function-operator-gemm-label"><span class="std std-ref">GEMM</span></a>, <a class="reference internal" href="operators.html#size-operator-label"><span class="std std-ref">Size Operator</span></a> and <a class="reference internal" href="operators.html#leadingdimension-operator-label"><span class="std std-ref">LeadingDimension Operator</span></a>.</p>
+</section>
+<section id="matrix-size-trait">
+<span id="matrixsize-block-trait-label"></span><h4>Matrix Size Trait<a class="headerlink" href="#matrix-size-trait" title="Link to this heading">#</a></h4>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// unsigned int</span>
+<span class="n">BLAS</span><span class="o">::</span><span class="n">a_size</span>
+<span class="n">BLAS</span><span class="o">::</span><span class="n">b_size</span>
+<span class="n">BLAS</span><span class="o">::</span><span class="n">c_size</span>
+</pre></div>
+</div>
+<p>Number of elements in <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">A</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">B</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">C</span></code> matrices. It includes padding determined by set leading dimensions.</p>
+<p>See <a class="reference internal" href="operators.html#function-operator-gemm-label"><span class="std std-ref">GEMM</span></a>, <a class="reference internal" href="operators.html#size-operator-label"><span class="std std-ref">Size Operator</span></a> and <a class="reference internal" href="operators.html#leadingdimension-operator-label"><span class="std std-ref">LeadingDimension Operator</span></a>.</p>
+</section>
+<section id="matrix-shape-trait">
+<span id="matrixshape-block-trait-label"></span><h4>Matrix Shape Trait<a class="headerlink" href="#matrix-shape-trait" title="Link to this heading">#</a></h4>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// CuTe shape (cute::Shape)</span>
+<span class="n">BLAS</span><span class="o">::</span><span class="n">a_shape</span><span class="w">   </span><span class="c1">// Shape of A: (M, K) for GEMM; (dim_a, dim_a) for TRSM</span>
+<span class="n">BLAS</span><span class="o">::</span><span class="n">b_shape</span><span class="w">   </span><span class="c1">// Shape of B: (K, N) for GEMM; (M, N) for TRSM</span>
+<span class="n">BLAS</span><span class="o">::</span><span class="n">c_shape</span><span class="w">   </span><span class="c1">// Shape of C: (M, N) for GEMM (not available for TRSM)</span>
+
+<span class="c1">// Type aliases</span>
+<span class="n">BLAS</span><span class="o">::</span><span class="n">a_shape_t</span>
+<span class="n">BLAS</span><span class="o">::</span><span class="n">b_shape_t</span>
+<span class="n">BLAS</span><span class="o">::</span><span class="n">c_shape_t</span><span class="w">  </span><span class="c1">// GEMM only</span>
+</pre></div>
+</div>
+<p>Logical shape of matrices <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">A</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">B</span></code>, and (for GEMM) <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">C</span></code> as compile-time CuTe shapes. Does not include leading-dimension padding.</p>
+</section>
+<section id="alignment-exec-trait-label">
+<span id="id1"></span><h4>Alignment Trait<a class="headerlink" href="#alignment-exec-trait-label" title="Link to this heading">#</a></h4>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// unsigned int</span>
+<span class="n">BLAS</span><span class="o">::</span><span class="n">a_alignment</span>
+<span class="n">BLAS</span><span class="o">::</span><span class="n">b_alignment</span>
+<span class="n">BLAS</span><span class="o">::</span><span class="n">c_alignment</span>
+</pre></div>
+</div>
+<p>Alignments (in bytes) of matrices <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">A</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">B</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">C</span></code>. See <a class="reference internal" href="operators.html#alignment-operator-label"><span class="std std-ref">Alignment Operator</span></a>.</p>
+</section>
+<section id="block-dim-trait">
+<span id="blockdim-block-trait-label"></span><h4>Block Dim Trait<a class="headerlink" href="#block-dim-trait" title="Link to this heading">#</a></h4>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// dim3</span>
+<span class="n">BLAS</span><span class="o">::</span><span class="n">block_dim</span>
+</pre></div>
+</div>
+<p>Value of type <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">dim3</span></code> representing number of threads that will be used to perform requested BLAS function. It is
+equal to the specified (or default if not) CUDA block dimensions. See <a class="reference internal" href="operators.html#blockdim-operator-label"><span class="std std-ref">BlockDim Operator</span></a>.</p>
+<p>If <a class="reference internal" href="operators.html#blockdim-operator-label"><span class="std std-ref">BlockDim</span></a> is not used in <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">BLAS</span></code> description the default value of <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">BLAS</span><span class="o">::</span><span class="n">block_dim</span></code>
+is equal to <a class="reference internal" href="#suggestedblockdim-block-trait-label"><span class="std std-ref">BLAS::suggested_block_dim</span></a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For TRSM, the kernel must be launched with exactly <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">BLAS</span><span class="o">::</span><span class="n">block_dim</span></code>. Unlike GEMM, TRSM does not
+allow launching with block dimensions other than specified. See <a class="reference internal" href="operators.html#blockdim-operator-label"><span class="std std-ref">BlockDim Operator</span></a> for details.</p>
+</div>
+</section>
+<section id="suggested-block-dim-trait">
+<span id="suggestedblockdim-block-trait-label"></span><h4>Suggested Block Dim Trait<a class="headerlink" href="#suggested-block-dim-trait" title="Link to this heading">#</a></h4>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// dim3</span>
+<span class="n">BLAS</span><span class="o">::</span><span class="n">suggested_block_dim</span>
+</pre></div>
+</div>
+<p>Recommended number of threads for BLAS description.</p>
+</section>
+<section id="max-threads-per-block-trait">
+<span id="maxthreads-block-trait-label"></span><h4>Max Threads Per Block Trait<a class="headerlink" href="#max-threads-per-block-trait" title="Link to this heading">#</a></h4>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">BLAS</span><span class="o">::</span><span class="n">max_threads_per_block</span>
+</pre></div>
+</div>
+<p>Number of thread is recommended or set block dimensions, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">X</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">Y</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">Z</span></code> where <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">X</span><span class="p">,</span><span class="w"> </span><span class="n">Y</span><span class="p">,</span><span class="w"> </span><span class="n">Z</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Description</span><span class="o">::</span><span class="n">block_dim</span></code>.</p>
+</section>
+</section>
+</section>
+<section id="other-traits">
+<span id="other-traits-label"></span><h2>Other Traits<a class="headerlink" href="#other-traits" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 33.3%" />
+<col style="width: 66.7%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Trait</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference internal" href="#is-supported-smem-restrict-trait-label"><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">is_supported_smem_restrict</span><span class="o">&lt;</span><span class="n">Description</span><span class="p">,</span><span class="w"> </span><span class="n">Arch</span><span class="o">&gt;</span></code></a></p></td>
+<td><p>Verifies if given BLAS operation is supported with shared memory API, without aliasing matrices, on the provided CUDA architecture (<code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Architecture</span></code>).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#is-supported-rmem-restrict-trait-label"><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">is_supported_rmem_restrict</span><span class="o">&lt;</span><span class="n">Description</span><span class="p">,</span><span class="w"> </span><span class="n">Arch</span><span class="o">&gt;</span></code></a></p></td>
+<td><p>Verifies if given BLAS operation is supported with register API, without aliasing matrices, on the provided CUDA architecture (<code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Architecture</span></code>).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#suggested-leading-dimension-of-trait-label"><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">suggested_leading_dimension_of</span><span class="o">&lt;</span><span class="n">Description</span><span class="p">,</span><span class="w"> </span><span class="n">Arch</span><span class="o">&gt;</span></code></a></p></td>
+<td><p>Provides leading dimensions that may improve performance of BLAS operation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#suggested-alignment-trait-label"><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">suggested_alignment_of</span><span class="o">&lt;</span><span class="n">Description</span><span class="o">&gt;</span></code></a></p></td>
+<td><p>Suggested alignments (in bytes) of matrices <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">A</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">B</span></code>, and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">C</span></code>.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<section id="is-supported-smem-restrict">
+<span id="is-supported-smem-restrict-trait-label"></span><h3>is_supported_smem_restrict<a class="headerlink" href="#is-supported-smem-restrict" title="Link to this heading">#</a></h3>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">namespace</span><span class="w"> </span><span class="nn">cublasdx</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c1">// BLAS - BLAS description without CUDA architecture defined using SM operator</span>
+<span class="w">  </span><span class="c1">// Architecture - unsigned integer representing CUDA architecture (SM)</span>
+<span class="w">  </span><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">BLAS</span><span class="p">,</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">Architecture</span><span class="o">&gt;</span>
+<span class="w">  </span><span class="k">struct</span><span class="w"> </span><span class="nc">is_supported_smem_restrict</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">bool_constant</span><span class="o">&lt;</span><span class="p">...</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">};</span>
+
+<span class="w">  </span><span class="c1">// Helper variable template</span>
+<span class="w">  </span><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">BLAS</span><span class="p">,</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">Architecture</span><span class="o">&gt;</span>
+<span class="w">  </span><span class="kr">inline</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">is_supported_smem_restrict_v</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="p">,</span><span class="w"> </span><span class="n">Architecture</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">is_supported_smem_restrict</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="p">,</span><span class="w"> </span><span class="n">Architecture</span><span class="o">&gt;::</span><span class="n">value</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// true if BLAS is supported on the provided CUDA architecture</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">is_supported_smem_restrict</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="p">,</span><span class="w"> </span><span class="n">Architecture</span><span class="o">&gt;::</span><span class="n">value</span><span class="p">;</span>
+</pre></div>
+</div>
+<p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cublasdx</span><span class="o">::</span><span class="n">is_supported_smem_restrict</span></code> checks whether a <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">BLAS</span></code> operation is supported on <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Architecture</span></code> CUDA architecture,
+assuming that:</p>
+<ol class="arabic simple">
+<li><p>Shared memory API is used (all <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">A</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">B</span></code> and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">C</span></code> matrices have to fit into shared memory).</p></li>
+<li><p>Input precision is the same as compute precision, and</p></li>
+<li><dl class="simple">
+<dt>Matrices do not alias or overlap each others ranges,</dt><dd><ul class="simple">
+<li><p>i.e. first element of matrix B starts after last element of matrix A etc.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ol>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// true if BLAS is supported on the provided CUDA architecture</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">is_supported_smem_restrict</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="p">,</span><span class="w"> </span><span class="n">Architecture</span><span class="o">&gt;::</span><span class="n">value</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Requirements:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">BLAS</span></code> must have defined size, function, and transpose mode. See <a class="reference internal" href="operators.html#description-operators-label"><span class="std std-ref">Description Operators</span></a> section.</p></li>
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">BLAS</span></code> must include <a class="reference internal" href="operators.html#block-operator-label"><span class="std std-ref">Block</span></a> operator.</p></li>
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">BLAS</span></code> can’t have defined target CUDA architecture via <a class="reference internal" href="operators.html#sm-operator-label"><span class="std std-ref">SM</span></a> operator.</p></li>
+</ul>
+</div></blockquote>
+<div class="hint admonition">
+<p class="admonition-title">Example</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">cublasdx</span><span class="p">;</span>
+
+<span class="k">using</span><span class="w"> </span><span class="n">BLAS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">decltype</span><span class="p">(</span><span class="n">Size</span><span class="o">&lt;</span><span class="mi">128</span><span class="p">,</span><span class="w"> </span><span class="mi">128</span><span class="p">,</span><span class="w"> </span><span class="mi">128</span><span class="o">&gt;</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">Type</span><span class="o">&lt;</span><span class="n">type</span><span class="o">::</span><span class="n">real</span><span class="o">&gt;</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">Block</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">Precision</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">());</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">is_supported_smem_restrict</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="p">,</span><span class="w"> </span><span class="mi">900</span><span class="o">&gt;::</span><span class="n">value</span><span class="p">;</span><span class="w"> </span><span class="c1">// true</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">is_supported_smem_restrict</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="p">,</span><span class="w"> </span><span class="mi">800</span><span class="o">&gt;::</span><span class="n">value</span><span class="p">;</span><span class="w"> </span><span class="c1">// false</span>
+
+<span class="k">using</span><span class="w"> </span><span class="n">BLAS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">decltype</span><span class="p">(</span><span class="n">Size</span><span class="o">&lt;</span><span class="mi">96</span><span class="p">,</span><span class="w"> </span><span class="mi">96</span><span class="p">,</span><span class="w"> </span><span class="mi">96</span><span class="o">&gt;</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">Type</span><span class="o">&lt;</span><span class="n">type</span><span class="o">::</span><span class="n">real</span><span class="o">&gt;</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">Block</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">Precision</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">());</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">is_supported_smem_restrict</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="p">,</span><span class="w"> </span><span class="mi">900</span><span class="o">&gt;::</span><span class="n">value</span><span class="p">;</span><span class="w"> </span><span class="c1">// true</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">is_supported_smem_restrict</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="p">,</span><span class="w"> </span><span class="mi">800</span><span class="o">&gt;::</span><span class="n">value</span><span class="p">;</span><span class="w"> </span><span class="c1">// true</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="is-supported-rmem-restrict">
+<span id="is-supported-rmem-restrict-trait-label"></span><h3>is_supported_rmem_restrict<a class="headerlink" href="#is-supported-rmem-restrict" title="Link to this heading">#</a></h3>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">namespace</span><span class="w"> </span><span class="nn">cublasdx</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c1">// BLAS - BLAS description without CUDA architecture defined using SM operator</span>
+<span class="w">  </span><span class="c1">// Architecture - unsigned integer representing CUDA architecture (SM)</span>
+<span class="w">  </span><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">BLAS</span><span class="p">,</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">Architecture</span><span class="o">&gt;</span>
+<span class="w">  </span><span class="k">struct</span><span class="w"> </span><span class="nc">is_supported_rmem_restrict</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">bool_constant</span><span class="o">&lt;</span><span class="p">...</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">};</span>
+
+<span class="w">  </span><span class="c1">// Helper variable template</span>
+<span class="w">  </span><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">BLAS</span><span class="p">,</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">Architecture</span><span class="o">&gt;</span>
+<span class="w">  </span><span class="kr">inline</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">is_supported_rmem_restrict_v</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="p">,</span><span class="w"> </span><span class="n">Architecture</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">is_supported_rmem_restrict</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="p">,</span><span class="w"> </span><span class="n">Architecture</span><span class="o">&gt;::</span><span class="n">value</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// true if BLAS is supported on the provided CUDA architecture</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">is_supported_rmem_restrict</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="p">,</span><span class="w"> </span><span class="n">Architecture</span><span class="o">&gt;::</span><span class="n">value</span><span class="p">;</span>
+</pre></div>
+</div>
+<p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cublasdx</span><span class="o">::</span><span class="n">is_supported_rmem_restrict</span></code> checks whether a <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">BLAS</span></code> operation is supported on <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Architecture</span></code> CUDA architecture,
+assuming that:</p>
+<ol class="arabic simple">
+<li><p>Register API is used (only <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">A</span></code>, and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">B</span></code> matrices have to fit into shared memory).</p></li>
+<li><p>Input precision is the same as compute precision.</p></li>
+<li><dl class="simple">
+<dt>Matrices do not alias or overlap each others ranges,</dt><dd><ul class="simple">
+<li><p>i.e. first element of matrix B starts after last element of matrix A</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ol>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// true if BLAS is supported on the provided CUDA architecture</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">is_supported_rmem_restrict</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="p">,</span><span class="w"> </span><span class="n">Architecture</span><span class="o">&gt;::</span><span class="n">value</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Requirements:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">BLAS</span></code> must have defined size, function, and transpose mode. See <a class="reference internal" href="operators.html#description-operators-label"><span class="std std-ref">Description Operators</span></a> section.</p></li>
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">BLAS</span></code> must include <a class="reference internal" href="operators.html#block-operator-label"><span class="std std-ref">Block</span></a> operator.</p></li>
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">BLAS</span></code> can’t have defined target CUDA architecture via <a class="reference internal" href="operators.html#sm-operator-label"><span class="std std-ref">SM</span></a> operator.</p></li>
+</ul>
+</div></blockquote>
+<div class="hint admonition">
+<p class="admonition-title">Example</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">cublasdx</span><span class="p">;</span>
+
+<span class="k">using</span><span class="w"> </span><span class="n">BLAS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">decltype</span><span class="p">(</span><span class="n">Size</span><span class="o">&lt;</span><span class="mi">128</span><span class="p">,</span><span class="w"> </span><span class="mi">128</span><span class="p">,</span><span class="w"> </span><span class="mi">128</span><span class="o">&gt;</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">Type</span><span class="o">&lt;</span><span class="n">type</span><span class="o">::</span><span class="n">real</span><span class="o">&gt;</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">Block</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">Precision</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">());</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">is_supported_smem_restrict</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="p">,</span><span class="w"> </span><span class="mi">800</span><span class="o">&gt;::</span><span class="n">value</span><span class="p">;</span><span class="w"> </span><span class="c1">// false</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">is_supported_rmem_restrict</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="p">,</span><span class="w"> </span><span class="mi">800</span><span class="o">&gt;::</span><span class="n">value</span><span class="p">;</span><span class="w"> </span><span class="c1">// true</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="suggested-leading-dimension-of">
+<span id="suggested-leading-dimension-of-trait-label"></span><h3>suggested_leading_dimension_of<a class="headerlink" href="#suggested-leading-dimension-of" title="Link to this heading">#</a></h3>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">namespace</span><span class="w"> </span><span class="nn">cublasdx</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c1">// BLAS - BLAS description without CUDA architecture defined using SM operator</span>
+<span class="w">  </span><span class="c1">// Architecture - unsigned integer representing CUDA architecture (SM)</span>
+<span class="w">  </span><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">BLAS</span><span class="p">,</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">Architecture</span><span class="o">&gt;</span>
+<span class="w">  </span><span class="k">struct</span><span class="w"> </span><span class="nc">suggested_leading_dimension_of</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">static</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">lda</span><span class="p">;</span>
+<span class="w">      </span><span class="k">static</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">ldb</span><span class="p">;</span>
+<span class="w">      </span><span class="k">static</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">ldc</span><span class="p">;</span>
+
+<span class="w">      </span><span class="k">using</span><span class="w"> </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LeadingDimension</span><span class="o">&lt;</span><span class="n">lda</span><span class="p">,</span><span class="w"> </span><span class="n">ldb</span><span class="p">,</span><span class="w"> </span><span class="n">ldc</span><span class="o">&gt;</span><span class="p">;</span>
+
+<span class="w">      </span><span class="k">using</span><span class="w"> </span><span class="n">value_type</span><span class="w">                  </span><span class="o">=</span><span class="w"> </span><span class="n">COMMONDX_STL_NAMESPACE</span><span class="o">::</span><span class="n">tuple</span><span class="o">&lt;</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="w">      </span><span class="k">static</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="n">value_type</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">value_type</span><span class="w"> </span><span class="p">{</span><span class="n">lda</span><span class="p">,</span><span class="w"> </span><span class="n">ldb</span><span class="p">,</span><span class="w"> </span><span class="n">ldc</span><span class="p">};</span>
+<span class="w">      </span><span class="k">constexpr</span><span class="w">                   </span><span class="k">operator</span><span class="w"> </span><span class="n">value_type</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">noexcept</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">value</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="c1">// LeadingDimension operator with suggested leading dimensions</span>
+<span class="w">  </span><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">BLAS</span><span class="p">,</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">Architecture</span><span class="o">&gt;</span>
+<span class="w">  </span><span class="k">using</span><span class="w"> </span><span class="n">suggested_leading_dimension_of_t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">suggested_leading_dimension_of</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="p">,</span><span class="w"> </span><span class="n">Architecture</span><span class="o">&gt;::</span><span class="n">type</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">Description</span><span class="p">,</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">Architecture</span><span class="o">&gt;</span>
+<span class="w">  </span><span class="kr">inline</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="n">COMMONDX_STL_NAMESPACE</span><span class="o">::</span><span class="n">tuple</span><span class="o">&lt;</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">suggested_leading_dimension_of_v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">suggested_leading_dimension_of</span><span class="o">&lt;</span><span class="n">Description</span><span class="p">,</span><span class="w"> </span><span class="n">Architecture</span><span class="o">&gt;::</span><span class="n">value</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">Description</span><span class="p">,</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">Architecture</span><span class="o">&gt;</span>
+<span class="w">  </span><span class="kr">inline</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">suggested_leading_dimension_of_v_a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">suggested_leading_dimension_of</span><span class="o">&lt;</span><span class="n">Description</span><span class="p">,</span><span class="w"> </span><span class="n">Architecture</span><span class="o">&gt;::</span><span class="n">lda</span><span class="p">;</span>
+<span class="w">  </span><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">Description</span><span class="p">,</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">Architecture</span><span class="o">&gt;</span>
+<span class="w">  </span><span class="kr">inline</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">suggested_leading_dimension_of_v_b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">suggested_leading_dimension_of</span><span class="o">&lt;</span><span class="n">Description</span><span class="p">,</span><span class="w"> </span><span class="n">Architecture</span><span class="o">&gt;::</span><span class="n">ldb</span><span class="p">;</span>
+<span class="w">  </span><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">Description</span><span class="p">,</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">Architecture</span><span class="o">&gt;</span>
+<span class="w">  </span><span class="kr">inline</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">suggested_leading_dimension_of_v_c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">suggested_leading_dimension_of</span><span class="o">&lt;</span><span class="n">Description</span><span class="p">,</span><span class="w"> </span><span class="n">Architecture</span><span class="o">&gt;::</span><span class="n">ldc</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Type <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cublasdx</span><span class="o">::</span><span class="n">suggested_leading_dimension_of</span></code> provides suggested leading dimensions for matrices <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">A</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">B</span></code>, and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">C</span></code>.
+It is recommended to try them as in many cases it will lead to improved performance of the BLAS operation.
+It might be especially helpful when <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">M</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">N</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">K</span></code> are powers of two or multiples of 16.
+You can review cuBLASDx performance examples.</p>
+<p>Requirements:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">BLAS</span></code> must have defined size, function, and transpose mode. See <a class="reference internal" href="operators.html#description-operators-label"><span class="std std-ref">Description Operators</span></a> section.</p></li>
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">BLAS</span></code> must include <a class="reference internal" href="operators.html#block-operator-label"><span class="std std-ref">Block</span></a> operator.</p></li>
+<li><p>Using suggested leading dimensions for architecture <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">A1</span></code> must not be used with architecture <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">A2</span></code>.</p></li>
+</ul>
+</div></blockquote>
+<div class="hint admonition">
+<p class="admonition-title">Example</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">cublasdx</span><span class="p">;</span>
+
+<span class="k">using</span><span class="w"> </span><span class="n">BLAS1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">decltype</span><span class="p">(</span><span class="n">Size</span><span class="o">&lt;</span><span class="mi">128</span><span class="p">,</span><span class="w"> </span><span class="mi">128</span><span class="p">,</span><span class="w"> </span><span class="mi">128</span><span class="o">&gt;</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">Type</span><span class="o">&lt;</span><span class="n">type</span><span class="o">::</span><span class="n">real</span><span class="o">&gt;</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">Block</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">Precision</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">());</span>
+<span class="k">using</span><span class="w"> </span><span class="n">SuggestedLD</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">suggested_leading_dimension_of_t</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="p">,</span><span class="w"> </span><span class="mi">900</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="k">using</span><span class="w"> </span><span class="n">BLAS2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">decltype</span><span class="p">(</span><span class="n">BLAS1</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">SuggestedLD</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">SM</span><span class="o">&lt;</span><span class="mi">900</span><span class="o">&gt;</span><span class="p">());</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="suggested-alignment-trait">
+<span id="suggested-alignment-trait-label"></span><h3>Suggested Alignment Trait<a class="headerlink" href="#suggested-alignment-trait" title="Link to this heading">#</a></h3>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// cublasdx::Alignment</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">suggested_alignment_of_t</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;</span>
+
+<span class="c1">// std::tuple&lt;unsigned int, unsigned int, unsigned int&gt;</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">suggested_alignment_of_v</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;</span>
+
+<span class="c1">// unsigned int</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">suggested_alignment_of</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;::</span><span class="n">a</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">suggested_alignment_of_v_a</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;</span>
+
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">suggested_alignment_of</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;::</span><span class="n">b</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">suggested_alignment_of_v_b</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;</span>
+
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">suggested_alignment_of</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;::</span><span class="n">c</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">suggested_alignment_of_v_c</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>Recommended alignments (in bytes) of input matrices <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">A</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">B</span></code>, and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">C</span></code>.</p>
+<p>They are set to the maximum supported alignments, i.e. <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cublasdx</span><span class="o">::</span><span class="n">MaxAlignment</span></code>. See <a class="reference internal" href="operators.html#alignment-operator-label"><span class="std std-ref">Alignment Operator</span></a>.
+It is encouraged to use them as the alignments are more likely to result in vectorized shared memory accesses, which in turn will speed up the execution.</p>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="operators.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Operators</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="shared_methods.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Input / Output Format</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#description-traits">Description Traits</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#size-trait">Size Trait</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#type-trait">Type Trait</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#precision-trait">Precision Trait</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#function-trait">Function Trait</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#arrangement-trait">Arrangement Trait</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#transpose-mode-trait">Transpose Mode Trait</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#alignment-trait">Alignment Trait</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#side-trait">Side Trait</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fillmode-trait">FillMode Trait</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#diag-trait">Diag Trait</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#leading-dimension-of">leading_dimension_of</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sm-trait">SM Trait</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#is-blas-trait">is_blas Trait</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#is-blas-execution-trait">is_blas_execution Trait</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#is-complete-blas-trait">is_complete_blas Trait</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#is-complete-blas-execution-trait">is_complete_blas_execution Trait</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#execution-traits">Execution Traits</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#block-traits">Block Traits</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#value-type-trait">Value Type Trait</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#matrix-dim-trait">Matrix Dim Trait</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#leading-dimension-trait">Leading Dimension Trait</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#matrix-size-trait">Matrix Size Trait</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#matrix-shape-trait">Matrix Shape Trait</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#alignment-exec-trait-label">Alignment Trait</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#block-dim-trait">Block Dim Trait</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#suggested-block-dim-trait">Suggested Block Dim Trait</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#max-threads-per-block-trait">Max Threads Per Block Trait</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#other-traits">Other Traits</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#is-supported-smem-restrict">is_supported_smem_restrict</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#is-supported-rmem-restrict">is_supported_rmem_restrict</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#suggested-leading-dimension-of">suggested_leading_dimension_of</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#suggested-alignment-trait">Suggested Alignment Trait</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5"></script>
+
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+<a class="footer-brand logo" href="https://www.nvidia.com">
+  <img src="../_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="../_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+</a></div>
+      
+        <div class="footer-item">
+
+<div class="footer-links">
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/">Privacy Policy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Your Privacy Choices</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/">Terms of Service</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/accessibility/">Accessibility</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/company-policies/">Corporate Policies</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/product-security/">Product Security</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/contact/">Contact</a>
+  
+  
+  
+</div>
+</div>
+      
+        <div class="footer-item">
+
+
+
+
+  <p class="copyright">
+    
+      Copyright © 2022-2026, NVIDIA Corporation &amp; Affiliates. All rights reserved.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+  </body>
+</html>

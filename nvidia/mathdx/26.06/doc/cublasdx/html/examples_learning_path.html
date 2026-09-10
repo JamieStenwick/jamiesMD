@@ -1,0 +1,1169 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Learning Path Through Examples &#8212; cuBLASDx</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
+    <link rel="stylesheet" type="text/css" href="_static/diagram.css?v=21e9147c" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
+
+
+
+    <script src="_static/documentation_options.js?v=26f1c5af"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'examples_learning_path';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://docs.nvidia.com/cuda/cublasdx/_static/switcher.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.7.1';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+
+    <link rel="icon" href="_static/nvidia.ico"/>
+
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Examples" href="examples.html" />
+    <link rel="prev" title="cuBLASDx Python Frontends" href="python_bindings.html" />
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.7.1" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+
+
+  </head>
+
+  <body data-default-mode="">
+
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="cuBLASDx - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="cuBLASDx - Home"/>
+  
+  
+    <p class="title logo__title">cuBLASDx</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="cuBLASDx - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="cuBLASDx - Home"/>
+  
+  
+    <p class="title logo__title">cuBLASDx</p>
+  
+</a>
+
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Table of Contents">
+  <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
+  <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Documentation Home</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="requirements_func.html">Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="using_cublasdx.html">Using cuBLASDx GEMM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="using_pipelines.html">Using Pipelined GEMM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="using_trsm.html">Using cuBLASDx TRSM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance.html">Achieving High Performance</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="api/operators.html">Operators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/traits.html">Traits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/shared_methods.html">Input / Output Format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/gemm_methods.html">GEMM Execution Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/trsm_methods.html">TRSM Execution Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/pipeline.html">Pipeline Creation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/other_methods.html">Other Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/other_tensors.html">Tensor Manipulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/other_shared.html">Shared Memory Management</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Python</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="python_bindings.html">cuBLASDx Python Bindings</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Learning Path Through Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="release_notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/NVIDIA/CUDALibrarySamples/tree/main/MathDx/cuBLASDx">GitHub Samples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">MathDx</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/cublasdx-downloads">cuBLASDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/cufftdx-downloads">cuFFTDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/cusolverdx-downloads">cuSolverDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/curanddx-downloads">cuRANDDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/nvcompdx-downloads">nvCOMPDx</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Learning Path Through Examples</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="learning-path-through-examples">
+<span id="examples-learning-path-label"></span><h1>Learning Path Through Examples<a class="headerlink" href="#learning-path-through-examples" title="Link to this heading">#</a></h1>
+<p>This chapter gives a recommended path through the cuBLASDx examples. It is
+written for readers who want to learn the library by building and modifying
+working examples, not by reading the API reference front to back.</p>
+<p>The examples live under <code class="docutils literal notranslate"><span class="pre">example/cublasdx</span></code>. When built from the repository,
+executables are written under <code class="docutils literal notranslate"><span class="pre">build/example/cublasdx/&lt;example-dir&gt;/&lt;example&gt;</span></code>.
+Most correctness examples print <code class="docutils literal notranslate"><span class="pre">Success</span></code> or <code class="docutils literal notranslate"><span class="pre">Failure</span></code>. Performance examples
+print timings, throughput, and error measurements.</p>
+<section id="before-you-start">
+<h2>Before You Start<a class="headerlink" href="#before-you-start" title="Link to this heading">#</a></h2>
+<p>Configure the examples for the GPU architecture you plan to run on. The default
+configuration targets SM80; if your runtime GPU is different, pass the matching
+architecture explicitly.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cmake<span class="w"> </span>-S<span class="w"> </span>.<span class="w"> </span>-B<span class="w"> </span>build<span class="w"> </span>-DBUILD_EXAMPLE<span class="o">=</span>ON<span class="w"> </span>-DCUBLASDX_CUDA_ARCHITECTURES<span class="o">=</span><span class="m">80</span>-real
+cmake<span class="w"> </span>--build<span class="w"> </span>build<span class="w"> </span>--target<span class="w"> </span>cublasdx_examples<span class="w"> </span>-j
+</pre></div>
+</div>
+<p>Then run examples directly from their output directories. For example:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./build/example/cublasdx/01_gemm_introduction/introduction_example
+./build/example/cublasdx/02_gemm_precisions/simple_gemm_fp32
+</pre></div>
+</div>
+<p>To build one example instead of the aggregate target, use its CMake target name.
+For examples whose directory and file name would otherwise repeat the same words,
+the target keeps the numeric prefix and drops the duplicate part:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cmake<span class="w"> </span>--build<span class="w"> </span>build<span class="w"> </span>--target<span class="w"> </span>11_gemm_device_performance
+</pre></div>
+</div>
+<p>Some examples are conditional:</p>
+<ul class="simple">
+<li><p>GEMM batched tensor examples and emulation examples require CUDA Toolkit 13.1
+or newer.</p></li>
+<li><p>TRSM examples require cuBLASDx fatbin/LTO support and may be disabled when
+fatbin linking is skipped.</p></li>
+<li><p>cuBLASDx/cuFFTDx examples require cuFFTDx to be enabled and found.</p></li>
+<li><p>NVRTC examples are built as executables, but their CTest registration is
+skipped for NVHPC/NVC++.</p></li>
+</ul>
+</section>
+<section id="recommended-first-pass">
+<h2>Recommended First Pass<a class="headerlink" href="#recommended-first-pass" title="Link to this heading">#</a></h2>
+<p>Use this path when you are new to cuBLASDx or when you want a quick sanity
+check before modifying examples. Pick the track that matches the routine you
+plan to use, run one example, inspect the source while the output is still
+fresh, then move to the next step in that track.</p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<img alt="Diagram of the side-by-side GEMM and TRSM recommended first-pass flows." class="dark-light diagram diagram-medium align-center" src="_images/examples_first_pass.svg" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>The first pass has two tracks. Both tracks assume you understand cuBLASDx
+operators and descriptor composition. If you are new to the operator model, run
+<code class="docutils literal notranslate"><span class="pre">introduction_example</span></code> and read <a class="reference internal" href="api/operators.html#operators-label"><span class="std std-ref">Operators</span></a> before starting the
+TRSM path.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 50.0%" />
+<col style="width: 50.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>GEMM path</p></th>
+<th class="head"><p>TRSM path</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">introduction_example</span></code> - descriptor composition and launch basics.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">simple_gemm_fp32</span></code> - first checked fp32 GEMM.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">simple_gemm_leading_dimensions</span></code> / <code class="docutils literal notranslate"><span class="pre">simple_gemm_custom_layout</span></code> - data movement.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">simple_gemm_fp32_decoupled</span></code> - register output path.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">introduction_pipeline</span></code> - host pipeline setup and device handle use.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dgemm_emulation_pipeline</span></code> - pipelined emulation, example 20.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">device_gemm_performance</span></code> - full-device GEMM tiling.</p></li>
+</ul>
+</td>
+<td><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">trsm_thread</span></code> - one independent TRSM instance per thread.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">trsm_block</span></code> - cooperative block-level TRSM through shared memory.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">trsm_conj_transpose</span></code> - tensor views for transposed or conjugate-transposed solves.</p></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<section id="gemm-path">
+<h3>GEMM Path<a class="headerlink" href="#gemm-path" title="Link to this heading">#</a></h3>
+<p><strong>G1. Descriptor and launch</strong></p>
+<p>Run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./build/example/cublasdx/01_gemm_introduction/introduction_example
+</pre></div>
+</div>
+<p>Source file:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>example/cublasdx/01_gemm_introduction/introduction_example.cu
+</pre></div>
+</div>
+<p>Focus on how the GEMM descriptor is composed from <code class="docutils literal notranslate"><span class="pre">Size</span></code>, <code class="docutils literal notranslate"><span class="pre">Precision</span></code>,
+<code class="docutils literal notranslate"><span class="pre">Arrangement</span></code>, <code class="docutils literal notranslate"><span class="pre">Function</span></code>, <code class="docutils literal notranslate"><span class="pre">SM</span></code>, and <code class="docutils literal notranslate"><span class="pre">Block</span></code>. This example also shows
+the three GEMM execution styles used throughout the docs: shared-memory output,
+explicit register accumulation, and return-value register accumulation.</p>
+<p>Next read <a class="reference internal" href="using_cublasdx.html#intro1-label"><span class="std std-ref">Using cuBLASDx GEMM</span></a>.</p>
+<p><strong>G2. First checked fp32 GEMM</strong></p>
+<p>Run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./build/example/cublasdx/02_gemm_precisions/simple_gemm_fp32
+</pre></div>
+</div>
+<p>Source file:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>example/cublasdx/02_gemm_precisions/simple_gemm_fp32.cu
+</pre></div>
+</div>
+<p>Focus on the complete shape of a small correctness example: allocation,
+shared-memory slicing, launch attributes, reference comparison, and
+<code class="docutils literal notranslate"><span class="pre">Success</span></code> / <code class="docutils literal notranslate"><span class="pre">Failure</span></code> reporting. This is the best first GEMM file to modify.</p>
+<p>Try changing <code class="docutils literal notranslate"><span class="pre">m</span></code>, <code class="docutils literal notranslate"><span class="pre">n</span></code>, and <code class="docutils literal notranslate"><span class="pre">k</span></code> before changing precision or layout.</p>
+<p><strong>G3. Data movement basics</strong></p>
+<p>Run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./build/example/cublasdx/06_gemm_leading_dimension/simple_gemm_leading_dimensions
+</pre></div>
+</div>
+<p>Source file:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>example/cublasdx/06_gemm_leading_dimension/simple_gemm_leading_dimensions.cu
+</pre></div>
+</div>
+<p>Focus on how leading dimensions change tensor layouts and shared-memory
+slicing. Read this before using padded, strided, or non-compact matrix storage.</p>
+<p>Compare with:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>example/cublasdx/09_gemm_custom_layout/simple_gemm_custom_layout.cu
+</pre></div>
+</div>
+<p><strong>G4. Register output path</strong></p>
+<p>Run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./build/example/cublasdx/08_gemm_decoupled_io_and_compute/simple_gemm_fp32_decoupled
+</pre></div>
+</div>
+<p>Source file:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>example/cublasdx/08_gemm_decoupled_io_and_compute/simple_gemm_fp32_decoupled.cu
+</pre></div>
+</div>
+<p>Focus on the split between data movement and computation: A/B are staged,
+GEMM produces a register accumulator, and output conversion/storage happens
+separately.</p>
+<p>Next read <a class="reference internal" href="api/gemm_methods.html#gemm-execution-methods-label"><span class="std std-ref">GEMM Execution Methods</span></a>.</p>
+<p><strong>G5. First pipeline</strong></p>
+<p>Run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./build/example/cublasdx/01_gemm_introduction/introduction_pipeline
+</pre></div>
+</div>
+<p>Source file:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>example/cublasdx/01_gemm_introduction/introduction_pipeline.cu
+</pre></div>
+</div>
+<p>Focus on what moves to host setup: global tensor descriptors, pipeline creation,
+device handle extraction, dynamic shared-memory sizing, asynchronous load and compute
+stage overlap, and the final epilogue.</p>
+<p>Next read <a class="reference internal" href="using_pipelines.html#intro2-label"><span class="std std-ref">Using Pipelined GEMM</span></a>.</p>
+<p><strong>G6. Pipelined emulation</strong></p>
+<p>Run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./build/example/cublasdx/20_dgemm_emulation_pipeline/dgemm_emulation_pipeline
+</pre></div>
+</div>
+<p>Source file:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>example/cublasdx/20_dgemm_emulation_pipeline/dgemm_emulation_pipeline.cu
+</pre></div>
+</div>
+<p>Focus on how required mantissa bits control Ozaki-style emulation, how the
+pipeline is created for sliced inputs, and where reusable accumulators are
+finished before the emulated result is checked. This step requires CUDA Toolkit
+13.1 or newer.</p>
+<p>Next read <a class="reference internal" href="examples.html#examples-emulation-examples-label"><span class="std std-ref">Emulation Examples</span></a>.</p>
+<p><strong>G7. Multi-block GEMM</strong></p>
+<p>Run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./build/example/cublasdx/11_gemm_device_performance/device_gemm_performance
+</pre></div>
+</div>
+<p>Source file:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>example/cublasdx/11_gemm_device_performance/device_gemm_performance.cu
+</pre></div>
+</div>
+<p>Focus on how a full-device GEMM is assembled from cuBLASDx block tiles, how
+global dimensions are passed as runtime values, and how the example compares
+against a library reference path.</p>
+<p>Next read <a class="reference internal" href="examples.html#examples-gemm-performance-label"><span class="std std-ref">GEMM Performance</span></a>.</p>
+</section>
+<section id="trsm-path">
+<h3>TRSM Path<a class="headerlink" href="#trsm-path" title="Link to this heading">#</a></h3>
+<p><strong>T1. Thread-level TRSM</strong></p>
+<p>Run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./build/example/cublasdx/17_trsm/trsm_thread
+</pre></div>
+</div>
+<p>Source file:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>example/cublasdx/17_trsm/trsm_thread.cu
+</pre></div>
+</div>
+<p>Focus on the smallest TRSM execution model: each CUDA thread solves one
+independent triangular system directly from global memory using the <code class="docutils literal notranslate"><span class="pre">Thread()</span></code>
+execution operator.</p>
+<p>Next read <a class="reference internal" href="using_trsm.html#intro3-label"><span class="std std-ref">Using cuBLASDx TRSM</span></a>, then the <a class="reference internal" href="api/operators.html#trsm-operators-label"><span class="std std-ref">TRSM-specific operators</span></a>.</p>
+<p><strong>T2. Block-level TRSM</strong></p>
+<p>Run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./build/example/cublasdx/17_trsm/trsm_block
+</pre></div>
+</div>
+<p>Source file:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>example/cublasdx/17_trsm/trsm_block.cu
+</pre></div>
+</div>
+<p>Focus on cooperative TRSM through shared memory: <code class="docutils literal notranslate"><span class="pre">Side</span></code>, <code class="docutils literal notranslate"><span class="pre">FillMode</span></code>,
+<code class="docutils literal notranslate"><span class="pre">Diag</span></code>, <code class="docutils literal notranslate"><span class="pre">BatchesPerBlock</span></code>, shared-memory slicing, and the in-place
+<code class="docutils literal notranslate"><span class="pre">B</span> <span class="pre">-&gt;</span> <span class="pre">X</span></code> result. For custom leading dimensions or TRSM batch strides, read
+<a class="reference internal" href="api/other_methods.html#get-layout-other-label"><span class="std std-ref">Get Memory Layout</span></a> after this example.</p>
+<p>Next read <a class="reference internal" href="api/trsm_methods.html#trsm-execution-methods-label"><span class="std std-ref">TRSM Execution Methods</span></a>.</p>
+<p><strong>T3. Tensor views for TRSM</strong></p>
+<p>Run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./build/example/cublasdx/18_tensor_transform/trsm_conj_transpose
+</pre></div>
+</div>
+<p>Source file:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>example/cublasdx/18_tensor_transform/trsm_conj_transpose.cu
+</pre></div>
+</div>
+<p>Focus on applying <code class="docutils literal notranslate"><span class="pre">conj_transpose_view</span></code> at execute time so TRSM can solve
+against a transposed or conjugate-transposed triangular matrix without changing
+storage. <code class="docutils literal notranslate"><span class="pre">Arrangement</span></code> still describes memory layout; the tensor view changes
+what <code class="docutils literal notranslate"><span class="pre">FillMode</span></code> means at the call site.</p>
+<p>Next read <a class="reference internal" href="using_trsm.html#trsm-tensor-views-label"><span class="std std-ref">Tensor Views And Conjugate Transpose</span></a>.</p>
+</section>
+</section>
+<section id="choose-examples-by-goal">
+<h2>Choose Examples By Goal<a class="headerlink" href="#choose-examples-by-goal" title="Link to this heading">#</a></h2>
+<section id="basic-gemm-concepts">
+<h3>Basic GEMM Concepts<a class="headerlink" href="#basic-gemm-concepts" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 42.0%" />
+<col style="width: 28.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Example</p></th>
+<th class="head"><p>Use it when you want to learn</p></th>
+<th class="head"><p>Useful follow-up</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">introduction_example</span></code></p></td>
+<td><p>Descriptor composition and the three main GEMM execution styles:
+shared-memory output, register accumulation into existing C, and register
+return value.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">simple_gemm_fp32</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">simple_gemm_fp32</span></code></p></td>
+<td><p>A small, direct, correctness-checked GEMM that is easier to modify than
+performance examples.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">simple_gemm_leading_dimensions</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">simple_gemm_transform</span></code></p></td>
+<td><p>Element-wise load/store transforms around GEMM and how transform work
+relates to register accumulators.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">gemm_conj_transpose</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="precision-and-data-types">
+<h3>Precision And Data Types<a class="headerlink" href="#precision-and-data-types" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 42.0%" />
+<col style="width: 28.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Example</p></th>
+<th class="head"><p>Use it when you want to learn</p></th>
+<th class="head"><p>Notes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">simple_gemm_mixed_precision</span></code></p></td>
+<td><p>How computation precision, storage type, complex type, and scalar type
+interact.</p></td>
+<td><p>Good first stop before custom input/output types.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">simple_gemm_int8_int8_int32</span></code></p></td>
+<td><p>Integral GEMM and promoted accumulation.</p></td>
+<td><p>Check supported SMs before modifying.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">simple_gemm_fp8</span></code></p></td>
+<td><p>FP8 A/B inputs and higher-precision accumulation/output.</p></td>
+<td><p>Requires an FP8-capable architecture.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">simple_gemm_cfp16</span></code></p></td>
+<td><p>Complex half-precision GEMM.</p></td>
+<td><p>Compare with <code class="docutils literal notranslate"><span class="pre">simple_gemm_std_complex_fp32</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">simple_gemm_std_complex_fp32</span></code></p></td>
+<td><p>Using <code class="docutils literal notranslate"><span class="pre">cuda::std::complex</span></code> as the data type.</p></td>
+<td><p>Useful when integrating with C++ code that already uses standard complex
+types.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="layouts-tensors-and-shared-memory">
+<h3>Layouts, Tensors, And Shared Memory<a class="headerlink" href="#layouts-tensors-and-shared-memory" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 42.0%" />
+<col style="width: 28.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Example</p></th>
+<th class="head"><p>Use it when you want to learn</p></th>
+<th class="head"><p>Notes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">simple_gemm_leading_dimensions</span></code></p></td>
+<td><p>Static and dynamic leading dimensions for shared-memory tensor layouts.</p></td>
+<td><p>Read with <a class="reference internal" href="api/operators.html#leadingdimension-operator-label"><span class="std std-ref">LeadingDimension Operator</span></a>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">simple_gemm_custom_layout</span></code></p></td>
+<td><p>How custom CuTe layouts drive shared-memory sizing, slicing, and tensor
+construction.</p></td>
+<td><p>Good before writing hand-tuned data movement.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">simple_gemm_aat</span></code></p></td>
+<td><p>How one shared-memory allocation can be viewed as both <code class="docutils literal notranslate"><span class="pre">A</span></code> and
+<code class="docutils literal notranslate"><span class="pre">A^T</span></code> for <code class="docutils literal notranslate"><span class="pre">C</span> <span class="pre">=</span> <span class="pre">A</span> <span class="pre">*</span> <span class="pre">A^T</span></code>.</p></td>
+<td><p>Useful for aliasing and occupancy tradeoffs.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">gemm_conj_transpose</span></code></p></td>
+<td><p>Lazy tensor views such as <code class="docutils literal notranslate"><span class="pre">conj_transpose_view</span></code> and <code class="docutils literal notranslate"><span class="pre">transpose_view</span></code>.</p></td>
+<td><p>Good bridge from GEMM transforms to TRSM tensor views.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="pipelining-and-batching">
+<h3>Pipelining And Batching<a class="headerlink" href="#pipelining-and-batching" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 42.0%" />
+<col style="width: 28.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Example</p></th>
+<th class="head"><p>Use it when you want to learn</p></th>
+<th class="head"><p>Notes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">introduction_pipeline</span></code></p></td>
+<td><p>Basic pipelined GEMM setup: host pipeline object, device handle, tile
+selection, pipeline block dimensions, asynchronous load and compute stages, and execution.</p></td>
+<td><p>Read before modifying performance examples.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">batched_gemm_pipeline</span></code></p></td>
+<td><p>Rank-3 batched tensors, batch tile coordinates, and <code class="docutils literal notranslate"><span class="pre">reset_tile</span></code> in a
+batch loop.</p></td>
+<td><p>Requires CUDA Toolkit 13.1 or newer.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">batched_gemm</span></code></p></td>
+<td><p>Non-pipelined batched GEMM using tensor interfaces.</p></td>
+<td><p>Compare directly with <code class="docutils literal notranslate"><span class="pre">batched_gemm_pipeline</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">batched_gemm_fp64</span></code></p></td>
+<td><p>Manual batching inside one CUDA block using <code class="docutils literal notranslate"><span class="pre">BlockDim</span></code>.</p></td>
+<td><p>Older style; useful for understanding thread/block ownership.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="performance-and-fusion">
+<h3>Performance And Fusion<a class="headerlink" href="#performance-and-fusion" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 42.0%" />
+<col style="width: 28.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Example</p></th>
+<th class="head"><p>Use it when you want to learn</p></th>
+<th class="head"><p>Notes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">single_gemm_performance</span></code></p></td>
+<td><p>Block-level GEMM timing for one GEMM tile configuration.</p></td>
+<td><p>Build in Release mode for meaningful numbers.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">device_gemm_performance</span></code></p></td>
+<td><p>Full-device GEMM assembled from cuBLASDx tiles and compared with a
+library reference path.</p></td>
+<td><p>Command-line <code class="docutils literal notranslate"><span class="pre">m</span> <span class="pre">n</span> <span class="pre">k</span></code> must satisfy tile constraints.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">gemm_device_partial_sums</span></code></p></td>
+<td><p>Splitting accumulation into partial sums to trade performance and
+accuracy.</p></td>
+<td><p>Treat as an advanced accuracy/performance example.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">gemm_fusion</span></code></p></td>
+<td><p>Fusing two dependent GEMMs in one CUDA kernel.</p></td>
+<td><p>Study shared-memory reuse and synchronization.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">fused_gemm_performance</span></code></p></td>
+<td><p>Timing fused GEMMs against an unfused reference path.</p></td>
+<td><p>Build in Release mode.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">blockdim_gemm_fp16</span></code></p></td>
+<td><p>How launch dimensions and BLAS participating block dimensions interact.</p></td>
+<td><p>Useful before writing non-standard block layouts.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="trsm">
+<h3>TRSM<a class="headerlink" href="#trsm" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 42.0%" />
+<col style="width: 28.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Example</p></th>
+<th class="head"><p>Use it when you want to learn</p></th>
+<th class="head"><p>Notes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">trsm_block</span></code></p></td>
+<td><p>Block-level triangular solve through shared memory.</p></td>
+<td><p>Start here for TRSM.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">trsm_thread</span></code></p></td>
+<td><p>One thread solving one TRSM instance.</p></td>
+<td><p>Good for many small independent solves.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">trsm_conj_transpose</span></code></p></td>
+<td><p>Applying <code class="docutils literal notranslate"><span class="pre">conj_transpose_view</span></code> to solve against a viewed triangular
+matrix without materializing a transpose.</p></td>
+<td><p>Read after <code class="docutils literal notranslate"><span class="pre">gemm_conj_transpose</span></code>.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="specialized-and-optional-examples">
+<h3>Specialized And Optional Examples<a class="headerlink" href="#specialized-and-optional-examples" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 42.0%" />
+<col style="width: 28.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Example</p></th>
+<th class="head"><p>Use it when you want to learn</p></th>
+<th class="head"><p>Notes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">nvrtc_gemm</span></code></p></td>
+<td><p>Runtime compilation with NVRTC and passing cuBLASDx headers into device
+source compiled at runtime.</p></td>
+<td><p>Useful for generated kernels. Source:
+<code class="docutils literal notranslate"><span class="pre">example/cublasdx/15_nvrtc/nvrtc_gemm.cpp</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">nvrtc_trsm</span></code></p></td>
+<td><p>Runtime compilation with NVRTC for a block-level triangular solve.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">example/cublasdx/15_nvrtc/nvrtc_trsm.cpp</span></code>. Requires cuBLASDx
+fatbin/LTO support.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dgemm_emulation</span></code></p></td>
+<td><p>Ozaki-style double precision emulation using lower precision GEMM
+operations.</p></td>
+<td><p>Requires CUDA Toolkit 13.1 or newer.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">dgemm_emulation_pipeline</span></code></p></td>
+<td><p>Pipelined emulation controlled by required mantissa bits.</p></td>
+<td><p>Requires CUDA Toolkit 13.1 or newer.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">sgemm_emulation_pipeline</span></code></p></td>
+<td><p>Single precision emulation pipeline using the same mechanism as the
+double precision pipeline example.</p></td>
+<td><p>Requires CUDA Toolkit 13.1 or newer.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">gemm_fft</span></code></p></td>
+<td><p>GEMM followed by FFT in one kernel using cuBLASDx and cuFFTDx.</p></td>
+<td><p>Optional; requires cuFFTDx.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">gemm_fft_fp16</span></code></p></td>
+<td><p>Half-precision complex FFT/GEMM fusion.</p></td>
+<td><p>Optional; requires cuFFTDx.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">gemm_fft_performance</span></code></p></td>
+<td><p>Timing GEMM+FFT fusion.</p></td>
+<td><p>Optional; requires cuFFTDx and Release mode for useful timings.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<section id="suggested-modification-order">
+<h2>Suggested Modification Order<a class="headerlink" href="#suggested-modification-order" title="Link to this heading">#</a></h2>
+<p>When adapting examples to your own kernel, change one layer at a time:</p>
+<ol class="arabic simple">
+<li><p>Change <code class="docutils literal notranslate"><span class="pre">m</span></code>, <code class="docutils literal notranslate"><span class="pre">n</span></code>, <code class="docutils literal notranslate"><span class="pre">k</span></code> and rebuild.</p></li>
+<li><p>Change <code class="docutils literal notranslate"><span class="pre">Precision</span></code> and <code class="docutils literal notranslate"><span class="pre">Type</span></code>.</p></li>
+<li><p>Change <code class="docutils literal notranslate"><span class="pre">Arrangement</span></code> or leading dimensions.</p></li>
+<li><p>Change shared-memory layouts.</p></li>
+<li><p>Move from shared-memory output to register-fragment output.</p></li>
+<li><p>Add pipelining only after the non-pipelined version is correct.</p></li>
+<li><p>Add fusion after each individual operation has a checked standalone example.</p></li>
+</ol>
+<p>If a modified example fails, first check that the binary was built for the GPU
+SM you are running on, then check shared-memory size, launch block dimensions,
+alignment, and any tile divisibility requirements.</p>
+</section>
+<section id="adaptation-checklists">
+<h2>Adaptation Checklists<a class="headerlink" href="#adaptation-checklists" title="Link to this heading">#</a></h2>
+<p>Before changing a GEMM example, verify:</p>
+<ul class="simple">
+<li><p>The descriptor has exactly one <code class="docutils literal notranslate"><span class="pre">Size</span></code>, <code class="docutils literal notranslate"><span class="pre">Precision</span></code>, <code class="docutils literal notranslate"><span class="pre">Type</span></code>, <code class="docutils literal notranslate"><span class="pre">Function</span></code>, and <code class="docutils literal notranslate"><span class="pre">SM</span></code> operator.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Arrangement</span></code> or any explicit leading dimensions match the memory allocation and reference path.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Alignment</span></code> matches pointer alignment and leading dimensions.</p></li>
+<li><p>Dynamic shared memory uses <code class="docutils literal notranslate"><span class="pre">get_shared_storage_size</span></code> for shared-memory <code class="docutils literal notranslate"><span class="pre">C</span></code> and
+<code class="docutils literal notranslate"><span class="pre">get_shared_storage_size_ab</span></code> for register-accumulator <code class="docutils literal notranslate"><span class="pre">C</span></code>.</p></li>
+<li><p>Every asynchronous global/shared copy is followed by <code class="docutils literal notranslate"><span class="pre">copy_wait()</span></code> before the copied data is read.</p></li>
+<li><p>The modified example still compares against a reference result before returning success.</p></li>
+</ul>
+<p>Before changing a pipelined GEMM example, verify:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">global_m</span></code> and <code class="docutils literal notranslate"><span class="pre">global_n</span></code> are divisible by <code class="docutils literal notranslate"><span class="pre">tile_m</span></code> and <code class="docutils literal notranslate"><span class="pre">tile_n</span></code>, or the kernel has explicit edge handling.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">global_k</span> <span class="pre">/</span> <span class="pre">tile_k</span></code> is at least the chosen pipeline depth, so staged asynchronous loads and staged asynchronous compute both have valid K tiles.</p></li>
+<li><p>The launch uses <code class="docutils literal notranslate"><span class="pre">pipeline-&gt;get_block_dim()</span></code> unless the pipeline is created with <code class="docutils literal notranslate"><span class="pre">fixed_blocksize</span></code>.</p></li>
+<li><p>The device handle is passed as <code class="docutils literal notranslate"><span class="pre">__grid_constant__</span></code> when following the standard pipeline examples.</p></li>
+<li><p>One <code class="docutils literal notranslate"><span class="pre">tile_pipeline</span></code> object is constructed per kernel execution, reused with <code class="docutils literal notranslate"><span class="pre">reset_tile</span></code> for persistent work, and destroyed once.</p></li>
+<li><p>Reusable accumulators call <code class="docutils literal notranslate"><span class="pre">finish_accumulation()</span></code> with the same thread scope as <code class="docutils literal notranslate"><span class="pre">tile_pipeline.execute(accumulator)</span></code> before reading results unless <code class="docutils literal notranslate"><span class="pre">tile_pipeline.epilogue</span></code> is used; do not guard the call with <code class="docutils literal notranslate"><span class="pre">if(accumulator.is_thread_active())</span></code> because internal warp-specialization may require broader participation.</p></li>
+</ul>
+<p>Before changing a TRSM example, verify:</p>
+<ul class="simple">
+<li><p>The build links the cuBLASDx fatbin/LTO target; <code class="docutils literal notranslate"><span class="pre">cublasdx_no_lto</span></code> is GEMM-only.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Size&lt;M,</span> <span class="pre">N&gt;</span></code> describes <code class="docutils literal notranslate"><span class="pre">B</span></code> and <code class="docutils literal notranslate"><span class="pre">X</span></code>. <code class="docutils literal notranslate"><span class="pre">A</span></code> is <code class="docutils literal notranslate"><span class="pre">M</span> <span class="pre">x</span> <span class="pre">M</span></code> for left-side and <code class="docutils literal notranslate"><span class="pre">N</span> <span class="pre">x</span> <span class="pre">N</span></code> for right-side.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Arrangement</span></code> describes storage, while tensor views can change what <code class="docutils literal notranslate"><span class="pre">FillMode</span></code> means at <code class="docutils literal notranslate"><span class="pre">execute()</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">num_batches</span></code> is padded or otherwise divisible by <code class="docutils literal notranslate"><span class="pre">BatchesPerBlock</span></code> for block-level TRSM.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">B</span></code> is treated as input/output: restore it before repeated timing runs.</p></li>
+<li><p>The example fails when the reference error is not acceptable.</p></li>
+</ul>
+<p>Before changing emulation examples, verify:</p>
+<ul class="simple">
+<li><p>The build uses CUDA Toolkit 13.1 or newer.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RequiredMantissaBits</span></code> is set deliberately and the measured error is inspected.</p></li>
+<li><p>Pipelined emulation uses <code class="docutils literal notranslate"><span class="pre">reusable_accumulator</span></code> where required by the algorithm.</p></li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="python_bindings.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">cuBLASDx Python Frontends</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="examples.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Examples</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#before-you-start">Before You Start</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recommended-first-pass">Recommended First Pass</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gemm-path">GEMM Path</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#trsm-path">TRSM Path</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#choose-examples-by-goal">Choose Examples By Goal</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-gemm-concepts">Basic GEMM Concepts</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#precision-and-data-types">Precision And Data Types</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#layouts-tensors-and-shared-memory">Layouts, Tensors, And Shared Memory</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pipelining-and-batching">Pipelining And Batching</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#performance-and-fusion">Performance And Fusion</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#trsm">TRSM</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#specialized-and-optional-examples">Specialized And Optional Examples</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#suggested-modification-order">Suggested Modification Order</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#adaptation-checklists">Adaptation Checklists</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5"></script>
+
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+<a class="footer-brand logo" href="https://www.nvidia.com">
+  <img src="_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+</a></div>
+      
+        <div class="footer-item">
+
+<div class="footer-links">
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/">Privacy Policy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Your Privacy Choices</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/">Terms of Service</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/accessibility/">Accessibility</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/company-policies/">Corporate Policies</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/product-security/">Product Security</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/contact/">Contact</a>
+  
+  
+  
+</div>
+</div>
+      
+        <div class="footer-item">
+
+
+
+
+  <p class="copyright">
+    
+      Copyright © 2022-2026, NVIDIA Corporation &amp; Affiliates. All rights reserved.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+  </body>
+</html>

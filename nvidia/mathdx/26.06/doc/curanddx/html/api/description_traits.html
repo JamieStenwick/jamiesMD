@@ -1,0 +1,725 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Description Traits &#8212; cuRANDDx</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
+
+
+
+    <script src="../_static/documentation_options.js?v=53ae9ec8"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/description_traits';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://docs.nvidia.com/cuda/curanddx/_static/switcher.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.2.4';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+
+    <link rel="icon" href="../_static/nvidia.ico"/>
+
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Execution Traits" href="execution_traits.html" />
+    <link rel="prev" title="Traits" href="traits.html" />
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.2.4" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+
+
+  </head>
+
+  <body data-default-mode="">
+
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="cuRANDDx - Home"/>
+    <img src="../_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="cuRANDDx - Home"/>
+  
+  
+    <p class="title logo__title">cuRANDDx</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="cuRANDDx - Home"/>
+    <img src="../_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="cuRANDDx - Home"/>
+  
+  
+    <p class="title logo__title">cuRANDDx</p>
+  
+</a>
+
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Table of Contents">
+  <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
+  <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Documentation Home</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../get_started/requirement.html">Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../get_started/installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../get_started/introduction.html">Using cuRANDDx</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../get_started/performance.html">Achieving High Performance</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="operators.html">Operators</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="description_ops.html">Description Operators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="execution_ops.html">Execution Operators</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="traits.html">Traits</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Description Traits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="execution_traits.html">Execution Traits</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="methods.html">Execution Methods</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../examples/introduction_philox.html">Introduction Example</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../examples/thread_api.html">Thread API Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../examples/pcg.html">PCG Generator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/philox_random_bits.html">Use Philox Generator to Generate Random Bits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/xorwow_init_and_generate.html">Init State and Generate in Different Kernels</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/mrg_two_distributions.html">Different Distributions Using Skip Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/sobol.html">Quasirandom Generators</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/nvrtc_pcg.html">NVRTC Example</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../release_notes.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/NVIDIA/CUDALibrarySamples/tree/main/MathDx/cuRANDDx">GitHub Samples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">MathDx</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/nvcompdx-downloads">nvCOMPDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/cusolverdx-downloads">cuSolverDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/cublasdx-downloads">cuBLASDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/cufftdx-downloads">cuFFTDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/curanddx-downloads">cuRANDDx</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="traits.html" class="nav-link">Traits</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Description Traits</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <span class="target" id="description-traits-label"></span><section id="description-traits">
+<h1>Description Traits<a class="headerlink" href="#description-traits" title="Link to this heading">#</a></h1>
+<p>Description traits can be retrieved from a function descriptor using the helper functions provided below.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 33.3%" />
+<col style="width: 66.7%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Trait</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference internal" href="#generator-trait-label"><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">generator_of</span><span class="o">&lt;</span><span class="n">Description</span><span class="o">&gt;</span></code></a></p></td>
+<td><p>Requested generator.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#philox-rounds-trait-label"><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">philox_rounds_of</span><span class="o">&lt;</span><span class="n">Description</span><span class="o">&gt;</span></code></a></p></td>
+<td><p>Number of rounds for the Philox generator.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#sm-trait-label"><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">sm_of</span><span class="o">&lt;</span><span class="n">Description</span><span class="o">&gt;</span></code></a></p></td>
+<td><p>Target architecture for the underlying computation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#isrand-trait-label"><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">is_rand</span><span class="o">&lt;</span><span class="n">Description</span><span class="o">&gt;</span></code></a></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="nb">true</span></code> if <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Description</span></code> is a function description, formed with <a class="reference internal" href="description_ops.html#description-operators-label"><span class="std std-ref">description operators</span></a>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#israndcomplete-trait-label"><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">is_complete_rand</span><span class="o">&lt;</span><span class="n">Description</span><span class="o">&gt;</span></code></a></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="nb">true</span></code> if <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Description</span></code> is a valid and complete function description, formed with <a class="reference internal" href="description_ops.html#description-operators-label"><span class="std std-ref">description operators</span></a>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#israndexecution-trait-label"><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">is_rand_execution</span><span class="o">&lt;</span><span class="n">Description</span><span class="o">&gt;</span></code></a></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="nb">true</span></code> if <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Description</span></code> is a function description, configured for execution with <a class="reference internal" href="execution_ops.html#execution-operators-label"><span class="std std-ref">execution operators</span></a>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#israndcompleteexecution-trait-label"><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">is_complete_rand_execution</span><span class="o">&lt;</span><span class="n">Description</span><span class="o">&gt;</span></code></a></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="nb">true</span></code> if <a class="reference internal" href="#israndcomplete-trait-label"><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">is_complete_rand</span><span class="o">&lt;</span><span class="n">Description</span><span class="o">&gt;</span></code></a> is <code class="code highlight cpp docutils literal highlight-cpp"><span class="nb">true</span></code> and <a class="reference internal" href="#israndexecution-trait-label"><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">is_rand_execution</span><span class="o">&lt;</span><span class="n">Description</span><span class="o">&gt;</span></code></a> is <code class="code highlight cpp docutils literal highlight-cpp"><span class="nb">true</span></code>.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>For example we can use the description traits conveniently in a user code:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;curanddx.hpp&gt;</span>
+
+<span class="k">using</span><span class="w"> </span><span class="n">RNG</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">decltype</span><span class="p">(</span><span class="n">curanddx</span><span class="o">::</span><span class="n">Generator</span><span class="o">&lt;</span><span class="n">curanddx</span><span class="o">::</span><span class="n">philox4_32</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">                   </span><span class="o">+</span><span class="w"> </span><span class="n">curanddx</span><span class="o">::</span><span class="n">PhiloxRounds</span><span class="o">&lt;</span><span class="mi">7</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">                   </span><span class="o">+</span><span class="w"> </span><span class="n">curanddx</span><span class="o">::</span><span class="n">SM</span><span class="o">&lt;</span><span class="mi">800</span><span class="o">&gt;</span><span class="p">());</span>
+
+<span class="k">if</span><span class="p">(</span><span class="n">curanddx</span><span class="o">::</span><span class="n">is_complete_rand</span><span class="o">&lt;</span><span class="n">RNG</span><span class="o">&gt;::</span><span class="n">value</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">curanddx</span><span class="o">::</span><span class="n">generator_of_v</span><span class="o">&lt;</span><span class="n">RNG</span><span class="o">&gt;</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">curanddx</span><span class="o">::</span><span class="n">philox4_32</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Use Philox generator with &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">curanddx</span><span class="o">::</span><span class="n">philox_rounds_of_v</span><span class="o">&lt;</span><span class="n">RNG</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot; rounds </span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<section id="generator-of-trait">
+<span id="generator-trait-label"></span><h2>generator_of Trait<a class="headerlink" href="#generator-of-trait" title="Link to this heading">#</a></h2>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// curanddx::generator</span>
+<span class="n">curanddx</span><span class="o">::</span><span class="n">generator_of</span><span class="o">&lt;</span><span class="n">RNG</span><span class="o">&gt;::</span><span class="n">value</span>
+<span class="n">curanddx</span><span class="o">::</span><span class="n">generator_of_v</span><span class="o">&lt;</span><span class="n">RNG</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">generator_of</span></code> trait gives the type of generator that will be used for the RNG operation, as set by <a class="reference internal" href="description_ops.html#generator-operator-label"><span class="std std-ref">Generator Operator</span></a>.</p>
+</section>
+<section id="philox-rounds-of-trait">
+<span id="philox-rounds-trait-label"></span><h2>philox_rounds_of Trait<a class="headerlink" href="#philox-rounds-of-trait" title="Link to this heading">#</a></h2>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// unsigned int</span>
+<span class="n">curanddx</span><span class="o">::</span><span class="n">philox_rounds_of</span><span class="o">&lt;</span><span class="n">RNG</span><span class="o">&gt;::</span><span class="n">value</span>
+<span class="n">curanddx</span><span class="o">::</span><span class="n">philox_rounds_of_v</span><span class="o">&lt;</span><span class="n">RNG</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>The number of rounds used for the Philox4_32 generator, as set by <a class="reference internal" href="description_ops.html#philox-rounds-operator-label"><span class="std std-ref">PhiloxRounds Operator</span></a>.</p>
+</section>
+<section id="sm-of-trait">
+<span id="sm-trait-label"></span><h2>sm_of Trait<a class="headerlink" href="#sm-of-trait" title="Link to this heading">#</a></h2>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// unsigned int</span>
+<span class="n">curanddx</span><span class="o">::</span><span class="n">sm_of</span><span class="o">&lt;</span><span class="n">RNG</span><span class="o">&gt;::</span><span class="n">value</span>
+<span class="n">curanddx</span><span class="o">::</span><span class="n">sm_of_v</span><span class="o">&lt;</span><span class="n">RNG</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>GPU architecture used to run the function, as set by <a class="reference internal" href="description_ops.html#sm-operator-label"><span class="std std-ref">SM Operator</span></a>. For example, gives <code class="code highlight cpp docutils literal highlight-cpp"><span class="mi">750</span></code> for Turing (sm_75).</p>
+</section>
+<section id="is-rand-trait">
+<span id="isrand-trait-label"></span><h2>is_rand Trait<a class="headerlink" href="#is-rand-trait" title="Link to this heading">#</a></h2>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// bool</span>
+<span class="n">curanddx</span><span class="o">::</span><span class="n">is_rand</span><span class="o">&lt;</span><span class="n">RNG</span><span class="o">&gt;::</span><span class="n">value</span>
+<span class="n">curanddx</span><span class="o">::</span><span class="n">is_rand_v</span><span class="o">&lt;</span><span class="n">RNG</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>The trait is <code class="code highlight cpp docutils literal highlight-cpp"><span class="nb">true</span></code> if the descriptor is a function description, formed with <a class="reference internal" href="description_ops.html#description-operators-label"><span class="std std-ref">description operators</span></a>.</p>
+</section>
+<section id="is-rand-execution-trait">
+<span id="israndexecution-trait-label"></span><h2>is_rand_execution Trait<a class="headerlink" href="#is-rand-execution-trait" title="Link to this heading">#</a></h2>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// bool</span>
+<span class="n">curanddx</span><span class="o">::</span><span class="n">is_rand_execution</span><span class="o">&lt;</span><span class="n">RNG</span><span class="o">&gt;::</span><span class="n">value</span>
+<span class="n">curanddx</span><span class="o">::</span><span class="n">is_rand_execution_v</span><span class="o">&lt;</span><span class="n">RNG</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>The trait is <code class="code highlight cpp docutils literal highlight-cpp"><span class="nb">true</span></code> if the descriptor is a function description configured for execution, formed with both <a class="reference internal" href="description_ops.html#description-operators-label"><span class="std std-ref">description operators</span></a> and <a class="reference internal" href="execution_ops.html#execution-operators-label"><span class="std std-ref">execution operators</span></a>.</p>
+</section>
+<section id="is-complete-rand-trait">
+<span id="israndcomplete-trait-label"></span><h2>is_complete_rand Trait<a class="headerlink" href="#is-complete-rand-trait" title="Link to this heading">#</a></h2>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// bool</span>
+<span class="n">curanddx</span><span class="o">::</span><span class="n">is_complete_rand</span><span class="o">&lt;</span><span class="n">RNG</span><span class="o">&gt;::</span><span class="n">value</span>
+<span class="n">curanddx</span><span class="o">::</span><span class="n">is_complete_rand_v</span><span class="o">&lt;</span><span class="n">RNG</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>The trait is <code class="code highlight cpp docutils literal highlight-cpp"><span class="nb">true</span></code> if the descriptor is a complete function description, formed with <a class="reference internal" href="description_ops.html#description-operators-label"><span class="std std-ref">description operators</span></a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Complete in this context means that the descriptor has been formed with all the necessary <a class="reference internal" href="description_ops.html#description-operators-label"><span class="std std-ref">description operators</span></a> and it is only missing <a class="reference internal" href="execution_ops.html#execution-operators-label"><span class="std std-ref">execution operators</span></a> to be able to run.</p>
+</div>
+<p>For a cuRANDDx function descriptor to be complete, the following is required:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>A single instance of <a class="reference internal" href="description_ops.html#generator-operator-label"><span class="std std-ref">Generator Operator</span></a>. The default is used if the <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Generator</span></code> operator is not defined.</p></li>
+<li><p>A single instance of <a class="reference internal" href="description_ops.html#sm-operator-label"><span class="std std-ref">SM Operator</span></a>.</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="is-complete-rand-execution-trait">
+<span id="israndcompleteexecution-trait-label"></span><h2>is_complete_rand_execution Trait<a class="headerlink" href="#is-complete-rand-execution-trait" title="Link to this heading">#</a></h2>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// bool</span>
+<span class="n">curanddx</span><span class="o">::</span><span class="n">is_complete_rand_execution</span><span class="o">&lt;</span><span class="n">RNG</span><span class="o">&gt;::</span><span class="n">value</span>
+<span class="n">curanddx</span><span class="o">::</span><span class="n">is_complete_rand_execution_v</span><span class="o">&lt;</span><span class="n">RNG</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>The trait is <code class="code highlight cpp docutils literal highlight-cpp"><span class="nb">true</span></code> if both <a class="reference internal" href="#israndexecution-trait-label"><span class="std std-ref">is_rand_execution Trait</span></a> and <a class="reference internal" href="#israndcomplete-trait-label"><span class="std std-ref">is_complete_rand Trait</span></a> are <code class="code highlight cpp docutils literal highlight-cpp"><span class="nb">true</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If <a class="reference internal" href="#israndcompleteexecution-trait-label"><span class="std std-ref">is_complete_rand_execution Trait</span></a> is <code class="code highlight cpp docutils literal highlight-cpp"><span class="nb">true</span></code> for a function descriptor,
+then we can use the <a class="reference internal" href="methods.html#execution-methods-label"><span class="std std-ref">Execution Methods</span></a> to execute the function.</p>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="traits.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Traits</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="execution_traits.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Execution Traits</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generator-of-trait">generator_of Trait</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#philox-rounds-of-trait">philox_rounds_of Trait</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sm-of-trait">sm_of Trait</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#is-rand-trait">is_rand Trait</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#is-rand-execution-trait">is_rand_execution Trait</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#is-complete-rand-trait">is_complete_rand Trait</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#is-complete-rand-execution-trait">is_complete_rand_execution Trait</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5"></script>
+
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+<a class="footer-brand logo" href="https://www.nvidia.com">
+  <img src="../_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="../_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+</a></div>
+      
+        <div class="footer-item">
+
+<div class="footer-links">
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/">Privacy Policy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Your Privacy Choices</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/">Terms of Service</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/accessibility/">Accessibility</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/company-policies/">Corporate Policies</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/product-security/">Product Security</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/contact/">Contact</a>
+  
+  
+  
+</div>
+</div>
+      
+        <div class="footer-item">
+
+
+
+
+  <p class="copyright">
+    
+      Copyright © 2024-2026, NVIDIA Corporation &amp; Affiliates. All rights reserved.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+  </body>
+</html>

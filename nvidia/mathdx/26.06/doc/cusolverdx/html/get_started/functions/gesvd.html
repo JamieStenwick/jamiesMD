@@ -1,0 +1,778 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Singular Value Decomposition for General Matrices &#8212; cuSOLVERDx</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../../_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
+
+
+
+    <script src="../../_static/documentation_options.js?v=67b26ddf"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'get_started/functions/gesvd';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://docs.nvidia.com/cuda/cusolverdx/_static/switcher.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.5.0';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+
+    <link rel="icon" href="../../_static/nvidia.ico"/>
+
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Selected BLAS Functions" href="blas.html" />
+    <link rel="prev" title="Singular Value Decomposition (SVD) for Bidiagonal Matrices" href="bdsvd.html" />
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.5.0" />
+  
+    
+    <script src="../../_static/searchtools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script src="../../searchindex.js"></script>
+  
+
+
+  </head>
+
+  <body data-default-mode="">
+
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="cuSOLVERDx - Home"/>
+    <img src="../../_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="cuSOLVERDx - Home"/>
+  
+  
+    <p class="title logo__title">cuSOLVERDx</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="cuSOLVERDx - Home"/>
+    <img src="../../_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="cuSOLVERDx - Home"/>
+  
+  
+    <p class="title logo__title">cuSOLVERDx</p>
+  
+</a>
+
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Table of Contents">
+  <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
+  <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Documentation Home</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../requirement.html">Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../functionality.html">Functionality</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 has-children"><a class="reference internal" href="linear_solve.html">Linear Solve</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="potrf.html">Cholesky POTRF</a></li>
+<li class="toctree-l3"><a class="reference internal" href="potrs.html">Cholesky POTRS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="posv.html">Cholesky POSV</a></li>
+<li class="toctree-l3"><a class="reference internal" href="getrf.html">LU GETRF</a></li>
+<li class="toctree-l3"><a class="reference internal" href="getrs.html">LU GETRS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gesv.html">LU GESV</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gtsv.html">LU GTSV_NO_PIVOT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modified_lu.html">MODIFIED_LU</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="least_squares.html">Least Squares</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="gels.html">GELS</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="orthogonal_factor.html">Orthogonal Factors</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="geqrf.html">QR GEQRF</a></li>
+<li class="toctree-l3"><a class="reference internal" href="unmqr.html">QR UNMQR</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ungqr.html">QR UNGQR</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gelqf.html">LQ GELQF</a></li>
+<li class="toctree-l3"><a class="reference internal" href="unmlq.html">LQ UNMLQ</a></li>
+<li class="toctree-l3"><a class="reference internal" href="unglq.html">LQ UNGLQ</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="symmetric_eigenvalues.html">Symmetric Eigenvalues</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="htev.html">Symmetric/Hermitian Tridiagonal HTEV</a></li>
+<li class="toctree-l3"><a class="reference internal" href="heev.html">Symmetric/Hermitian HEEV</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hegst.html">Reduction from Generalized to Standard Form (HEGST)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hegv.html">Generalized Eigenvalue Solver (HEGV)</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 current active has-children"><a class="reference internal" href="svd.html">Singular Value Decomposition (SVD)</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="bdsvd.html">BDSVD</a></li>
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">GESVD</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="blas.html">BLAS</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="trsm.html">Triangular System Solve TRSM</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Using cuSolverDx</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../performance.html">Achieving High Performance</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../api/operators.html">Operators</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../api/description_ops.html">Description Operators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/execution_ops.html">Execution Operators</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../api/traits.html">Traits</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../api/description_traits.html">Description Traits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/execution_traits.html">Execution Traits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/other_traits.html">Other Traits</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/methods.html">Execution Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/other_methods.html">I/O Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/other_shared.html">Shared Memory Management</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Python</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../python_bindings.html">Python Bindings</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../examples/index.html">Examples List</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/intro_example.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/linear_solve_example.html">Linear Solve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/least_squares_example.html">Least Squares</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/orthogonal_factors_example.html">Orthogonalization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/symmetric_eigenvalues_example.html">Symmetric Eigenvalue</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/svd_example.html">Singular Value Decomposition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/blas_example.html">BLAS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/nvrtc_example.html">NVRTC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/performance_example.html">Performance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/advanced_example.html">Advanced</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../release_notes.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/NVIDIA/CUDALibrarySamples/tree/main/MathDx/cuSolverDx">GitHub Samples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">MathDx</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/cusolverdx-downloads">cuSolverDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/cublasdx-downloads">cuBLASDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/cufftdx-downloads">cuFFTDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/curanddx-downloads">cuRANDDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/nvcompdx-downloads">nvCOMPDx</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../functionality.html" class="nav-link">Functionality</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="svd.html" class="nav-link">Singular Value Decomposition</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Singular Value Decomposition for General Matrices</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="singular-value-decomposition-for-general-matrices">
+<span id="gesvd"></span><h1>Singular Value Decomposition for General Matrices<a class="headerlink" href="#singular-value-decomposition-for-general-matrices" title="Link to this heading">#</a></h1>
+<section id="background">
+<h2>Background<a class="headerlink" href="#background" title="Link to this heading">#</a></h2>
+<p>GESVD (GEneral Singular Value Decomposition) computes the singular values and, optionally, the left and/or right singular vectors of batched general matrices using the QR algorithm.</p>
+<div class="math notranslate nohighlight">
+\[A = U \Sigma V^H\]</div>
+<p>where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(A\)</span> is an <span class="math notranslate nohighlight">\(M \times N\)</span> general matrix,</p></li>
+<li><p><span class="math notranslate nohighlight">\(\Sigma\)</span> is an <span class="math notranslate nohighlight">\(M \times N\)</span> matrix that is zero except for its <span class="math notranslate nohighlight">\(\min(M, N)\)</span> diagonal elements, which contain the singular values of <span class="math notranslate nohighlight">\(A\)</span> in descending order (singular values are always real and non-negative),</p></li>
+<li><p><span class="math notranslate nohighlight">\(U\)</span> is an <span class="math notranslate nohighlight">\(M \times M\)</span> unitary matrix containing the left singular vectors of <span class="math notranslate nohighlight">\(A\)</span>, and</p></li>
+<li><p><span class="math notranslate nohighlight">\(V^H\)</span> is an <span class="math notranslate nohighlight">\(N \times N\)</span> unitary matrix representing the conjugate transpose of <span class="math notranslate nohighlight">\(V\)</span>, containing the right singular vectors of <span class="math notranslate nohighlight">\(A\)</span>.</p></li>
+</ul>
+</section>
+<section id="device-api">
+<h2>Device API<a class="headerlink" href="#device-api" title="Link to this heading">#</a></h2>
+<p>The cuSolverDx <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">gesvd</span></code> device functions are as follows (see <a class="reference internal" href="../../api/methods.html#execute-method-label"><span class="std std-ref">Execution Methods</span></a>):</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Compute singular values only</span>
+<span class="n">__device__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">execute</span><span class="p">(</span><span class="n">data_type</span><span class="o">*</span><span class="w"> </span><span class="n">A</span><span class="p">,</span><span class="w"> </span><span class="n">precision_type</span><span class="o">*</span><span class="w"> </span><span class="n">S</span><span class="p">,</span><span class="w"> </span><span class="n">data_type</span><span class="o">*</span><span class="w"> </span><span class="n">workspace</span><span class="p">,</span><span class="w"> </span><span class="n">status_type</span><span class="o">*</span><span class="w"> </span><span class="n">info</span><span class="p">);</span>
+
+<span class="c1">// Compute singular values only with runtime leading dimension</span>
+<span class="n">__device__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">execute</span><span class="p">(</span><span class="n">data_type</span><span class="o">*</span><span class="w"> </span><span class="n">A</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">lda</span><span class="p">,</span><span class="w"> </span><span class="n">precision_type</span><span class="o">*</span><span class="w"> </span><span class="n">S</span><span class="p">,</span>
+<span class="w">                        </span><span class="n">data_type</span><span class="o">*</span><span class="w"> </span><span class="n">workspace</span><span class="p">,</span><span class="w"> </span><span class="n">status_type</span><span class="o">*</span><span class="w"> </span><span class="n">info</span><span class="p">);</span>
+
+<span class="c1">// Compute singular values and the left/right singular vectors</span>
+<span class="n">__device__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">execute</span><span class="p">(</span><span class="n">data_type</span><span class="o">*</span><span class="w"> </span><span class="n">A</span><span class="p">,</span><span class="w"> </span><span class="n">precision_type</span><span class="o">*</span><span class="w"> </span><span class="n">S</span><span class="p">,</span><span class="w"> </span><span class="n">data_type</span><span class="o">*</span><span class="w"> </span><span class="n">U</span><span class="p">,</span><span class="w"> </span><span class="n">data_type</span><span class="o">*</span><span class="w"> </span><span class="n">VH</span><span class="p">,</span>
+<span class="w">                        </span><span class="n">data_type</span><span class="o">*</span><span class="w"> </span><span class="n">workspace</span><span class="p">,</span><span class="w"> </span><span class="n">status_type</span><span class="o">*</span><span class="w"> </span><span class="n">info</span><span class="p">);</span>
+
+<span class="c1">// Compute singular values and the left/right singular vectors with runtime leading dimensions</span>
+<span class="n">__device__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">execute</span><span class="p">(</span><span class="n">data_type</span><span class="o">*</span><span class="w"> </span><span class="n">A</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">lda</span><span class="p">,</span><span class="w"> </span><span class="n">precision_type</span><span class="o">*</span><span class="w"> </span><span class="n">S</span><span class="p">,</span>
+<span class="w">                        </span><span class="n">data_type</span><span class="o">*</span><span class="w"> </span><span class="n">U</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">ldu</span><span class="p">,</span>
+<span class="w">                        </span><span class="n">data_type</span><span class="o">*</span><span class="w"> </span><span class="n">VH</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">ldvh</span><span class="p">,</span>
+<span class="w">                        </span><span class="n">data_type</span><span class="o">*</span><span class="w"> </span><span class="n">workspace</span><span class="p">,</span><span class="w"> </span><span class="n">status_type</span><span class="o">*</span><span class="w"> </span><span class="n">info</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><strong>Parameters:</strong></p>
+<ul class="simple">
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">A</span></code>: Batched <span class="math notranslate nohighlight">\(M \times N\)</span> input matrix. Leading dimension is <span class="math notranslate nohighlight">\(\mathrm{lda} \geq M\)</span> for column-major layout, or <span class="math notranslate nohighlight">\(\mathrm{lda} \geq N\)</span> for row-major layout.</p></li>
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">S</span></code>: Array of size <span class="math notranslate nohighlight">\(\min(M, N)\)</span> per batch. On exit, contains the singular values of <span class="math notranslate nohighlight">\(A\)</span> in descending order. Since singular values are always real and non-negative, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">S</span></code> is of type <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">precision_type</span></code> (the underlying real type) rather than <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">data_type</span></code>.</p></li>
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">U</span></code>: Batched left singular vectors matrix. Storage size depends on the <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">jobu</span></code> configuration (see <a class="reference internal" href="#gesvd-uvt-storage-table"><span class="std std-ref">Storage requirements for U and VH</span></a>).</p></li>
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">VH</span></code>: Batched right singular vectors matrix (<span class="math notranslate nohighlight">\(V^H\)</span>). Storage size depends on the <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">jobvt</span></code> configuration (see <a class="reference internal" href="#gesvd-uvt-storage-table"><span class="std std-ref">Storage requirements for U and VH</span></a>).</p></li>
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">workspace</span></code>: Temporary buffer preallocated by the user. The required size can be obtained via <a class="reference internal" href="../../api/execution_traits.html#workspace-execution-trait-label"><span class="std std-ref">workspace_size</span></a>.</p></li>
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">info</span></code>: Status code for each batch (see <a class="reference internal" href="#gesvd-return-status"><span class="std std-ref">Return Status</span></a>).</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">gesvd</span></code> function returns <span class="math notranslate nohighlight">\(V^H\)</span> (the conjugate transpose of <span class="math notranslate nohighlight">\(V\)</span>) rather than <span class="math notranslate nohighlight">\(V\)</span> itself, consistent with standard LAPACK conventions.</p>
+</div>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>cuSolverDx <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">gesvd</span></code> supports both tall-skinny (<span class="math notranslate nohighlight">\(M \geq N\)</span>) and short-wide (<span class="math notranslate nohighlight">\(M &lt; N\)</span>) matrices.</p>
+</div>
+<section id="job-options">
+<h3>Job Options<a class="headerlink" href="#job-options" title="Link to this heading">#</a></h3>
+<p>The <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Job</span></code> operator controls whether singular vectors are computed and how they are stored.</p>
+<p><strong>Left singular vectors</strong> (<code class="code highlight cpp docutils literal highlight-cpp"><span class="n">jobu</span></code>):</p>
+<ul class="simple">
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">job</span><span class="o">::</span><span class="n">no_vectors</span></code>: <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">U</span></code> is ignored; no left singular vectors are computed.</p></li>
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">job</span><span class="o">::</span><span class="n">all_vectors</span></code>: All <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">M</span></code> columns of left singular vectors are returned in <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">U</span></code>.</p></li>
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">job</span><span class="o">::</span><span class="n">some_vectors</span></code>: The first <span class="math notranslate nohighlight">\(\min(M, N)\)</span> columns of left singular vectors are returned in <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">U</span></code>.</p></li>
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">job</span><span class="o">::</span><span class="n">overwrite_vectors</span></code>: The first <span class="math notranslate nohighlight">\(\min(M, N)\)</span> columns of left singular vectors overwrite <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">A</span></code>.</p></li>
+</ul>
+<p><strong>Right singular vectors</strong> (<code class="code highlight cpp docutils literal highlight-cpp"><span class="n">jobvt</span></code>):</p>
+<ul class="simple">
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">job</span><span class="o">::</span><span class="n">no_vectors</span></code>: <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">VH</span></code> is ignored; no right singular vectors are computed.</p></li>
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">job</span><span class="o">::</span><span class="n">all_vectors</span></code>: All <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">N</span></code> rows of right singular vectors (as <span class="math notranslate nohighlight">\(V^H\)</span>) are returned in <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">VH</span></code>.</p></li>
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">job</span><span class="o">::</span><span class="n">some_vectors</span></code>: The first <span class="math notranslate nohighlight">\(\min(M, N)\)</span> rows of right singular vectors (as <span class="math notranslate nohighlight">\(V^H\)</span>) are returned in <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">VH</span></code>.</p></li>
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">job</span><span class="o">::</span><span class="n">overwrite_vectors</span></code>: The first <span class="math notranslate nohighlight">\(\min(M, N)\)</span> rows of right singular vectors (as <span class="math notranslate nohighlight">\(V^H\)</span>) overwrite <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">A</span></code>.</p></li>
+</ul>
+<div class="pst-scrollable-table-container"><span id="gesvd-uvt-storage-table"></span><table class="table" id="id1">
+<caption><span class="caption-number">Table 1 </span><span class="caption-text">Storage requirements for <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">U</span></code> and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">VH</span></code></span><a class="headerlink" href="#id1" title="Link to this table">#</a></caption>
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 40.0%" />
+<col style="width: 40.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Job Configuration</p></th>
+<th class="head"><p>Size of <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">U</span></code></p></th>
+<th class="head"><p>Size of <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">VH</span></code></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">no_vectors</span></code></p></td>
+<td><p>Not required</p></td>
+<td><p>Not required</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">all_vectors</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\(M \times M\)</span> (leading dimension <span class="math notranslate nohighlight">\(\mathrm{ldu} \geq M\)</span>)</p></td>
+<td><p><span class="math notranslate nohighlight">\(N \times N\)</span> (leading dimension <span class="math notranslate nohighlight">\(\mathrm{ldvh} \geq N\)</span>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">some_vectors</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\(M \times \min(M, N)\)</span> (leading dimension <span class="math notranslate nohighlight">\(\mathrm{ldu} \geq M\)</span> if column-major, <span class="math notranslate nohighlight">\(\mathrm{ldu} \geq \min(M, N)\)</span> if row-major)</p></td>
+<td><p><span class="math notranslate nohighlight">\(\min(M, N) \times N\)</span> (leading dimension <span class="math notranslate nohighlight">\(\mathrm{ldvh} \geq \min(M, N)\)</span> if column-major, <span class="math notranslate nohighlight">\(\mathrm{ldvh} \geq N\)</span> if row-major)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">overwrite_vectors</span></code></p></td>
+<td><p>Not required (output <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">U</span></code> is written to <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">A</span></code>, <strong>using the Arrangement and Leading Dimension specified for</strong> <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">A</span></code>)</p></td>
+<td><p>Not required (output <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">VH</span></code> is written to <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">A</span></code>, <strong>using the Arrangement and Leading Dimension specified for</strong> <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">A</span></code>)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="return-status">
+<span id="gesvd-return-status"></span><h3>Return Status<a class="headerlink" href="#return-status" title="Link to this heading">#</a></h3>
+<p>The function returns a status code <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">info</span></code> for each batch:</p>
+<ul class="simple">
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">info</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span></code>: The function completed successfully.</p></li>
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">info</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span></code>: The algorithm did not converge; specifically, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">info</span></code> off-diagonal elements failed to converge to zero.</p></li>
+</ul>
+</section>
+<section id="supported-configurations">
+<h3>Supported Configurations<a class="headerlink" href="#supported-configurations" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p><strong>Arrangement</strong>: <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">A</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">U</span></code>, and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">VH</span></code> can independently use column-major or row-major layouts. Use the <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Arrangement</span><span class="o">&lt;</span><span class="n">Arr</span><span class="p">,</span><span class="w"> </span><span class="n">Urr</span><span class="p">,</span><span class="w"> </span><span class="n">VHrr</span><span class="o">&gt;</span></code> operator, where <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Arr</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Urr</span></code>, and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">VHrr</span></code> specify the layouts for <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">A</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">U</span></code>, and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">VH</span></code> respectively (see <a class="reference internal" href="../../api/description_ops.html#arrangement-operator-label"><span class="std std-ref">Arrangement operator</span></a>).</p></li>
+<li><p><strong>Leading Dimensions</strong>: Leading dimensions for <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">A</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">U</span></code>, and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">VH</span></code> can be set independently using the <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">LeadingDimension</span><span class="o">&lt;</span><span class="n">LDA</span><span class="p">,</span><span class="w"> </span><span class="n">LDU</span><span class="p">,</span><span class="w"> </span><span class="n">LDVH</span><span class="o">&gt;</span></code> operator (see <a class="reference internal" href="../../api/description_ops.html#leadingdimension-operator-label"><span class="std std-ref">LeadingDimension operator</span></a>).</p></li>
+<li><p><strong>Job Options</strong>: The <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Job</span></code> operator accepts <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">job</span><span class="o">::</span><span class="n">no_vectors</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">job</span><span class="o">::</span><span class="n">all_vectors</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">job</span><span class="o">::</span><span class="n">some_vectors</span></code>, or <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">job</span><span class="o">::</span><span class="n">overwrite_vectors</span></code> for left and right singular vectors (see <a class="reference internal" href="../../api/description_ops.html#job-operator-label"><span class="std std-ref">Job operator</span></a>):</p>
+<ul class="simple">
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">job</span><span class="o">::</span><span class="n">multiply_vectors</span></code> is <strong>not</strong> supported for <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">gesvd</span></code>; using it results in a compile-time error.</p></li>
+<li><p>Both <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">jobu</span></code> and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">jobvt</span></code> cannot be set to <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">job</span><span class="o">::</span><span class="n">overwrite_vectors</span></code> simultaneously; this results in a compile-time error.</p></li>
+<li><p>If <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">job</span><span class="o">::</span><span class="n">no_vectors</span></code> is selected and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">U</span></code>/<code class="code highlight cpp docutils literal highlight-cpp"><span class="n">VH</span></code> pointers are provided, they are ignored.</p></li>
+</ul>
+</li>
+</ol>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="bdsvd.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Singular Value Decomposition (SVD) for Bidiagonal Matrices</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="blas.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Selected BLAS Functions</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#background">Background</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#device-api">Device API</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#job-options">Job Options</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#return-status">Return Status</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#supported-configurations">Supported Configurations</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5"></script>
+
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+<a class="footer-brand logo" href="https://www.nvidia.com">
+  <img src="../../_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="../../_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+</a></div>
+      
+        <div class="footer-item">
+
+<div class="footer-links">
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/">Privacy Policy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Your Privacy Choices</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/">Terms of Service</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/accessibility/">Accessibility</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/company-policies/">Corporate Policies</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/product-security/">Product Security</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/contact/">Contact</a>
+  
+  
+  
+</div>
+</div>
+      
+        <div class="footer-item">
+
+
+
+
+  <p class="copyright">
+    
+      Copyright © 2024-2026, NVIDIA Corporation &amp; Affiliates. All rights reserved.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="820" height="680" viewBox="0 0 820 680" role="img" aria-labelledby="title desc" style="background: transparent; color-scheme: light dark;">
+  <title id="title">Recommended first pass through examples</title>
+  <desc id="desc">Two side-by-side cuBLASDx example paths. The GEMM path covers descriptor launch, fp32 GEMM, data movement, register output, pipeline, emulation, and device GEMM. The TRSM path covers thread TRSM, block TRSM, and tensor views.</desc>
+  <defs>
+    <style><![CDATA[
+      .box { fill: #ffffff; fill: light-dark(#ffffff, #111827); stroke: #1f2937; stroke: light-dark(#1f2937, #76b900); stroke-width: 1.6; }
+      .gemm { fill: #f3f7ec; fill: light-dark(#f3f7ec, #13220c); stroke: #76b900; stroke: light-dark(#76b900, #93d85b); stroke-width: 1.6; }
+      .layout { fill: #eef6ff; fill: light-dark(#eef6ff, #0f1d2e); stroke: #2563eb; stroke: light-dark(#2563eb, #60a5fa); stroke-width: 1.5; }
+      .pipe { fill: #fff7ed; fill: light-dark(#fff7ed, #25190b); stroke: #f97316; stroke: light-dark(#f97316, #fb923c); stroke-width: 1.5; }
+      .trsm { fill: #f7f0ff; fill: light-dark(#f7f0ff, #21152f); stroke: #7c3aed; stroke: light-dark(#7c3aed, #a78bfa); stroke-width: 1.5; }
+      .title { fill: #111827; fill: light-dark(#111827, #f9fafb); font: bold 20px Arial, sans-serif; }
+      .track { fill: #111827; fill: light-dark(#111827, #f9fafb); font: bold 17px Arial, sans-serif; }
+      .label { fill: #111827; fill: light-dark(#111827, #f9fafb); font: bold 15px Arial, sans-serif; }
+      .small { fill: #374151; fill: light-dark(#374151, #d1d5db); font: 13px Arial, sans-serif; }
+      .stem { stroke: #76b900; stroke-width: 2.2; fill: none; stroke-linecap: round; }
+      .stem-trsm { stroke: #7c3aed; stroke-width: 2.2; fill: none; stroke-linecap: round; }
+      .head { fill: #76b900; }
+      .head-trsm { fill: #7c3aed; }
+    ]]></style>
+  </defs>
+
+  <rect x="250" y="14" width="320" height="42" rx="8" class="box"/>
+  <text x="410" y="41" text-anchor="middle" class="title">First pass through examples</text>
+  <text x="220" y="74" text-anchor="middle" class="track">GEMM path</text>
+  <text x="600" y="74" text-anchor="middle" class="track">TRSM path</text>
+
+  <rect x="55" y="96" width="330" height="58" rx="8" class="gemm"/>
+  <text x="220" y="120" text-anchor="middle" class="label">G1. Descriptor and launch</text>
+  <text x="220" y="141" text-anchor="middle" class="small">introduction_example</text>
+
+  <rect x="55" y="176" width="330" height="58" rx="8" class="gemm"/>
+  <text x="220" y="200" text-anchor="middle" class="label">G2. First checked fp32 GEMM</text>
+  <text x="220" y="221" text-anchor="middle" class="small">simple_gemm_fp32</text>
+
+  <rect x="55" y="256" width="330" height="58" rx="8" class="layout"/>
+  <text x="220" y="280" text-anchor="middle" class="label">G3. Data movement</text>
+  <text x="220" y="301" text-anchor="middle" class="small">leading dimensions and custom layouts</text>
+
+  <rect x="55" y="336" width="330" height="58" rx="8" class="layout"/>
+  <text x="220" y="360" text-anchor="middle" class="label">G4. Register output</text>
+  <text x="220" y="381" text-anchor="middle" class="small">simple_gemm_fp32_decoupled</text>
+
+  <rect x="55" y="416" width="330" height="58" rx="8" class="pipe"/>
+  <text x="220" y="440" text-anchor="middle" class="label">G5. Pipeline</text>
+  <text x="220" y="461" text-anchor="middle" class="small">introduction_pipeline</text>
+
+  <rect x="55" y="496" width="330" height="58" rx="8" class="pipe"/>
+  <text x="220" y="520" text-anchor="middle" class="label">G6. Pipelined emulation</text>
+  <text x="220" y="541" text-anchor="middle" class="small">example 20: dgemm_emulation_pipeline</text>
+
+  <rect x="55" y="576" width="330" height="58" rx="8" class="gemm"/>
+  <text x="220" y="600" text-anchor="middle" class="label">G7. Multi-block GEMM</text>
+  <text x="220" y="621" text-anchor="middle" class="small">device_gemm_performance</text>
+
+  <line x1="220" y1="158" x2="220" y2="168" class="stem"/>
+  <path d="M 211 168 L 229 168 L 220 176 Z" class="head"/>
+  <line x1="220" y1="238" x2="220" y2="248" class="stem"/>
+  <path d="M 211 248 L 229 248 L 220 256 Z" class="head"/>
+  <line x1="220" y1="318" x2="220" y2="328" class="stem"/>
+  <path d="M 211 328 L 229 328 L 220 336 Z" class="head"/>
+  <line x1="220" y1="398" x2="220" y2="408" class="stem"/>
+  <path d="M 211 408 L 229 408 L 220 416 Z" class="head"/>
+  <line x1="220" y1="478" x2="220" y2="488" class="stem"/>
+  <path d="M 211 488 L 229 488 L 220 496 Z" class="head"/>
+  <line x1="220" y1="558" x2="220" y2="568" class="stem"/>
+  <path d="M 211 568 L 229 568 L 220 576 Z" class="head"/>
+
+  <rect x="435" y="96" width="330" height="70" rx="8" class="trsm"/>
+  <text x="600" y="124" text-anchor="middle" class="label">T1. Thread-level TRSM</text>
+  <text x="600" y="147" text-anchor="middle" class="small">trsm_thread</text>
+
+  <rect x="435" y="196" width="330" height="70" rx="8" class="trsm"/>
+  <text x="600" y="224" text-anchor="middle" class="label">T2. Block-level TRSM</text>
+  <text x="600" y="247" text-anchor="middle" class="small">trsm_block</text>
+
+  <rect x="435" y="296" width="330" height="70" rx="8" class="trsm"/>
+  <text x="600" y="324" text-anchor="middle" class="label">T3. Tensor views for TRSM</text>
+  <text x="600" y="347" text-anchor="middle" class="small">trsm_conj_transpose</text>
+
+  <line x1="600" y1="170" x2="600" y2="188" class="stem-trsm"/>
+  <path d="M 591 188 L 609 188 L 600 196 Z" class="head-trsm"/>
+  <line x1="600" y1="270" x2="600" y2="288" class="stem-trsm"/>
+  <path d="M 591 288 L 609 288 L 600 296 Z" class="head-trsm"/>
+</svg>

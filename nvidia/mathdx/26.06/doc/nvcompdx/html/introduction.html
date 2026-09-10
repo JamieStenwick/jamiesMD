@@ -1,0 +1,860 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Compressing a Buffer Using nvCOMPDx &#8212; nvCOMPDx</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
+
+
+
+    <script src="_static/documentation_options.js?v=64e4dae6"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'introduction';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://docs.nvidia.com/cuda/nvcompdx/_static/switcher.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.1.4';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+
+    <link rel="icon" href="_static/nvidia.ico"/>
+
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Achieving High Performance" href="highperformance.html" />
+    <link rel="prev" title="Installation Guide" href="installation.html" />
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.1.4" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+
+
+  </head>
+
+  <body data-default-mode="">
+
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="nvCOMPDx - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="nvCOMPDx - Home"/>
+  
+  
+    <p class="title logo__title">nvCOMPDx</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="nvCOMPDx - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="nvCOMPDx - Home"/>
+  
+  
+    <p class="title logo__title">nvCOMPDx</p>
+  
+</a>
+
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Table of Contents">
+  <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
+  <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Home</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="requirements.html">Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation Guide</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Using nvCOMPDx</a></li>
+<li class="toctree-l1"><a class="reference internal" href="highperformance.html">Achieving High Performance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="debug.html">Debugging Guide</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="api/operators.html">Operators</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/operators_description.html">Description Operators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/operators_execution.html">Execution Operators</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="api/traits.html">Traits</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/traits_description.html">Description Traits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/traits_execution.html">Execution Traits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/traits_other.html">Other Traits</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="api/methods.html">Execution Method</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/methods_other.html">Other Methods</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="examples/intro_example.html">Introduction Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/lz4_examples.html">LZ4 Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/ans_examples.html">ANS Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/example_nvrtc.html">NVRTC + nvJitLink Example</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="release_notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/NVIDIA/CUDALibrarySamples/tree/main/MathDx/">GitHub Samples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="acknowledgements.html">Acknowledgements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">Software License Agreement</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">MathDx</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/nvcompdx-downloads">nvCOMPDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/cusolverdx-downloads">cuSolverDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/cublasdx-downloads">cuBLASDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/cufftdx-downloads">cuFFTDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/curanddx-downloads">cuRANDDx</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Compressing a Buffer Using nvCOMPDx</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="compressing-a-buffer-using-nvcompdx">
+<span id="intro-label"></span><h1>Compressing a Buffer Using nvCOMPDx<a class="headerlink" href="#compressing-a-buffer-using-nvcompdx" title="Link to this heading">#</a></h1>
+<p>In this introduction, we will use the nvCOMPDx library to compress a buffer using the <strong>LZ4</strong> algorithm. Throughout this guide, we’ll use the terms <em>device</em> and <em>GPU</em> interchangeably to refer to an NVIDIA GPU.</p>
+<p>The provided code snippets are simplified excerpts of the <a class="reference internal" href="examples/intro_example.html#introduction-example-label"><span class="std std-ref">Introduction Example</span></a>. Refer to the <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Examples</span></code> section for further nvCOMPDx samples.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The example presented here is deliberately simple to demonstrate the basic usage of nvCOMPDx and is <strong>not</strong> optimized for performance. For performance optimization, see the <a class="reference internal" href="highperformance.html#highperformance-label"><span class="std std-ref">Achieving High Performance</span></a> page.</p>
+</div>
+<section id="defining-a-function-descriptor">
+<h2>Defining a Function Descriptor<a class="headerlink" href="#defining-a-function-descriptor" title="Link to this heading">#</a></h2>
+<p>NVIDIA MathDx libraries follow the convention of using a list of <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">operators</span></code> to create a complete description of the problem to solve.
+Therefore, the first step is to define a function descriptor by adding together nvCOMPDx operators that capture the properties of the function.
+The correctness of this description is evaluated at compile time.</p>
+<p>A well-defined nvCOMPDx routine description must include the following components:</p>
+<ol class="arabic simple">
+<li><p>Algorithm “direction”, i.e., whether we are compressing or decompressing.</p></li>
+<li><p>A selected compression or decompression algorithm.</p></li>
+<li><p>The natural data type of the uncompressed data.</p></li>
+<li><p>For compression: Maximum uncompressed chunk size.</p></li>
+</ol>
+<p>To get a descriptor for an <strong>LZ4</strong> compression routine operating on 8-bit data with a maximum uncompressed chunk size of 64KiB, we write the following lines:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;nvcompdx.hpp&gt;</span>
+
+<span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">nvcompdx</span><span class="p">;</span>
+
+<span class="k">using</span><span class="w"> </span><span class="n">COMP</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">decltype</span><span class="p">(</span><span class="n">Algorithm</span><span class="o">&lt;</span><span class="n">algorithm</span><span class="o">::</span><span class="n">lz4</span><span class="o">&gt;</span><span class="p">()</span><span class="w"> </span><span class="o">+</span>
+<span class="w">                      </span><span class="n">DataType</span><span class="o">&lt;</span><span class="n">datatype</span><span class="o">::</span><span class="n">uint8</span><span class="o">&gt;</span><span class="p">()</span><span class="w"> </span><span class="o">+</span>
+<span class="w">                      </span><span class="n">Direction</span><span class="o">&lt;</span><span class="n">direction</span><span class="o">::</span><span class="n">compress</span><span class="o">&gt;</span><span class="p">()</span><span class="w"> </span><span class="o">+</span>
+<span class="w">                      </span><span class="n">MaxUncompChunkSize</span><span class="o">&lt;</span><span class="mi">65536</span><span class="o">&gt;</span><span class="p">());</span>
+</pre></div>
+</div>
+<p>In order to encode the operation properties, nvCOMPDx provides operators
+<a class="reference internal" href="api/operators_description.html#algorithm-operator-label"><span class="std std-ref">Algorithm</span></a>, <a class="reference internal" href="api/operators_description.html#datatype-operator-label"><span class="std std-ref">DataType</span></a>, <a class="reference internal" href="api/operators_description.html#direction-operator-label"><span class="std std-ref">Direction</span></a>,
+and <a class="reference internal" href="api/operators_description.html#maxuncompchunksize-operator-label"><span class="std std-ref">MaxUncompChunkSize</span></a>, which can be combined using ordinary addition (<code class="code highlight cpp docutils literal highlight-cpp"><span class="o">+</span></code>).</p>
+<p>To obtain a fully usable operation that executes the function in CUDA kernels, at least two additional pieces of information are needed:</p>
+<ul class="simple">
+<li><p>The first is the <a class="reference internal" href="api/operators_description.html#sm-operator-label"><span class="std std-ref">SM operator</span></a> which indicates the targeted CUDA architecture on which we want to run the function. In this example, we are targeting A100 GPUs (<code class="code highlight cpp docutils literal highlight-cpp"><span class="n">SM</span><span class="o">&lt;</span><span class="mi">800</span><span class="o">&gt;</span><span class="p">()</span></code>).</p></li>
+<li><p>Second, either the <a class="reference internal" href="api/operators_execution.html#warp-operator-label"><span class="std std-ref">Warp</span></a> or the <a class="reference internal" href="api/operators_execution.html#block-operator-label"><span class="std std-ref">Block</span></a> operator to indicate that the routine will be performed at the cooperative level of a CUDA warp or an entire thread block, respectively. In the latter case, the block shape must be further configured through the <a class="reference internal" href="api/operators_execution.html#blockdim-operator-label"><span class="std std-ref">BlockDim</span></a> or <a class="reference internal" href="api/operators_execution.html#blockwarp-operator-label"><span class="std std-ref">BlockWarp</span></a> operator.</p></li>
+</ul>
+<p>At this point, nvCOMPDx performs additional verifications to ensure that the provided description is valid and that it can be executed on the requested architecture. Issues related to unsupported data types, unsupported maximum uncompressed chunk sizes, or excessive shared memory requirements will result in a compilation error. The compatibility matrices are presented under the operator descriptions <a class="reference internal" href="api/operators_description.html#datatype-compatibility-matrix-label"><span class="std std-ref">here</span></a> and <a class="reference internal" href="api/operators_description.html#maxuncompchunksize-operator-label"><span class="std std-ref">here</span></a>.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;nvcompdx.hpp&gt;</span>
+
+<span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">nvcompdx</span><span class="p">;</span>
+
+<span class="k">using</span><span class="w"> </span><span class="n">COMP</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">decltype</span><span class="p">(</span><span class="n">Algorithm</span><span class="o">&lt;</span><span class="n">algorithm</span><span class="o">::</span><span class="n">lz4</span><span class="o">&gt;</span><span class="p">()</span><span class="w"> </span><span class="o">+</span>
+<span class="w">                      </span><span class="n">DataType</span><span class="o">&lt;</span><span class="n">datatype</span><span class="o">::</span><span class="n">uint8</span><span class="o">&gt;</span><span class="p">()</span><span class="w"> </span><span class="o">+</span>
+<span class="w">                      </span><span class="n">Direction</span><span class="o">&lt;</span><span class="n">direction</span><span class="o">::</span><span class="n">compress</span><span class="o">&gt;</span><span class="p">()</span><span class="w"> </span><span class="o">+</span>
+<span class="w">                      </span><span class="n">MaxUncompChunkSize</span><span class="o">&lt;</span><span class="mi">65536</span><span class="o">&gt;</span><span class="p">()</span><span class="w"> </span><span class="o">+</span>
+<span class="w">                      </span><span class="n">Warp</span><span class="p">()</span><span class="w"> </span><span class="o">+</span>
+<span class="w">                      </span><span class="n">SM</span><span class="o">&lt;</span><span class="mi">800</span><span class="o">&gt;</span><span class="p">());</span>
+</pre></div>
+</div>
+</section>
+<section id="executing-the-function">
+<h2>Executing the Function<a class="headerlink" href="#executing-the-function" title="Link to this heading">#</a></h2>
+<p>The class <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">COMP</span></code> which describes the function can be instantiated into an object.
+Creating the object has no computational cost, and the object should be treated as a handle.
+The function descriptor object provides <a class="reference internal" href="api/methods.html#methods-label"><span class="std std-ref">execution functions</span></a> that can perform the requested function.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">__global__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">comp_warp_kernel</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">uncomp_chunk</span><span class="p">,</span>
+<span class="w">                                 </span><span class="k">const</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">uncomp_chunk_size</span><span class="p">,</span>
+<span class="w">                                 </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">comp_chunk</span><span class="p">,</span>
+<span class="w">                                 </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">comp_chunk_size</span><span class="p">,</span>
+<span class="w">                                 </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">tmp_buffer</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="k">auto</span><span class="w"> </span><span class="n">compressor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">COMP</span><span class="p">();</span>
+<span class="w">   </span><span class="k">constexpr</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">shmem_alignment</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">compressor</span><span class="p">.</span><span class="n">shmem_alignment</span><span class="p">();</span>
+<span class="w">   </span><span class="k">extern</span><span class="w"> </span><span class="n">__shared__</span><span class="w"> </span><span class="nf">__align__</span><span class="p">(</span><span class="n">shmem_alignment</span><span class="p">)</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">shared_comp_scratch_buffer</span><span class="p">[];</span>
+
+<span class="w">   </span><span class="n">compressor</span><span class="p">.</span><span class="n">execute</span><span class="p">(</span>
+<span class="w">      </span><span class="n">uncomp_chunk</span><span class="p">,</span>
+<span class="w">      </span><span class="n">comp_chunk</span><span class="p">,</span>
+<span class="w">      </span><span class="n">uncomp_chunk_size</span><span class="p">,</span>
+<span class="w">      </span><span class="n">comp_chunk_size</span><span class="p">,</span>
+<span class="w">      </span><span class="n">shared_comp_scratch_buffer</span><span class="p">,</span>
+<span class="w">      </span><span class="n">tmp_buffer</span><span class="p">);</span>
+
+<span class="w">   </span><span class="c1">// At this point, the compressed chunk resides in the buffer pointed by</span>
+<span class="w">   </span><span class="c1">// `comp_chunk`. The uncompressed input data `uncomp_chunk` is</span>
+<span class="w">   </span><span class="c1">// left untouched.</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Besides forwarding its parameters to the execution function of the instantiated <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">COMP</span></code> object, the above kernel also sets aside an appropriately sized and aligned shared-memory scratch buffer for the compressor. The alignment can be queried and specified within the kernel through <a class="reference internal" href="api/methods_other.html#other-methods-label"><span class="std std-ref">Other Methods</span></a>. The size of the dynamic shared memory buffer must be specified at kernel launch time as part of the kernel’s launch configuration.</p>
+</section>
+<section id="launching-the-kernel">
+<h2>Launching the Kernel<a class="headerlink" href="#launching-the-kernel" title="Link to this heading">#</a></h2>
+<p>To prepare for launching the above <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">comp_warp_kernel</span></code>, we need to ensure that the input data chunk has been transferred to GPU-accessible memory, and allocate an output-chunk buffer, a buffer for the output chunk size, and lastly a temporary-memory buffer to be used by the compression algorithm. We also need to determine the appropriate kernel launch configuration, i.e., the grid and block sizes along with the amount of dynamic shared memory used per block.</p>
+<p>The alignments of the input, output, and temporary memory buffers, the size of the temporary memory buffer and worst-case size of the output buffer, as well as the amount of dynamic shared memory used per block are encoded in the routine descriptor (see <a class="reference internal" href="api/methods_other.html#other-methods-label"><span class="std std-ref">Other Methods</span></a>). In this example, we can query these parameters through member functions of <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">COMP</span></code>.</p>
+<p>The grid and block sizes depend on the number of chunks and the presence of either a <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Warp</span></code> or a <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Block</span></code> operator summand in the descriptor type. If <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Warp</span></code> was specified, the block size must be a multiple of the warp size (32 threads), and the grid size must be such that the total number of warps executed by the grid is greater than or equal to the number of chunks. If <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Block</span></code> was specified, there is more flexibility in the grid and block shapes. See <a class="reference internal" href="api/operators_execution.html#execution-operators-label"><span class="std std-ref">Execution Operators</span></a> for more details.</p>
+<p>Other sizes, alignments, and values are determined by the input data and the number of chunks in a straightforward manner. The entire procedure is shown in the snippet below. For simplicity, the input data is compressed as a single chunk.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">lz4_gpu_comp_introduction</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">data</span><span class="p">,</span>
+<span class="w">                              </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">compressed</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">total_bytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">data</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+
+<span class="w">  </span><span class="c1">// We are going to compress the input data as is,</span>
+<span class="w">  </span><span class="c1">// in a single chunk</span>
+<span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">num_chunks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1ull</span><span class="p">;</span>
+
+<span class="w">  </span><span class="c1">// Allocate buffer for the input (uncompressed) data</span>
+<span class="w">  </span><span class="c1">// Note: with cudaMalloc() the input alignment is implicitly met</span>
+<span class="w">  </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">d_input_data</span><span class="p">;</span>
+<span class="w">  </span><span class="n">cudaMalloc</span><span class="p">(</span><span class="o">&amp;</span><span class="n">d_input_data</span><span class="p">,</span><span class="w"> </span><span class="n">total_bytes</span><span class="p">);</span>
+<span class="w">  </span><span class="n">cudaMemcpy</span><span class="p">(</span><span class="n">d_input_data</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="p">.</span><span class="n">data</span><span class="p">(),</span><span class="w"> </span><span class="n">total_bytes</span><span class="p">,</span><span class="w"> </span><span class="n">cudaMemcpyHostToDevice</span><span class="p">);</span>
+
+<span class="w">  </span><span class="c1">// Allocate buffer for the input/output sizes</span>
+<span class="w">  </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="kt">long</span><span class="o">*</span><span class="w"> </span><span class="n">d_output_size</span><span class="p">;</span>
+<span class="w">  </span><span class="n">cudaMalloc</span><span class="p">(</span><span class="o">&amp;</span><span class="n">d_output_size</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="kt">long</span><span class="p">));</span>
+
+<span class="w">  </span><span class="c1">// Allocate temporary scratch space</span>
+<span class="w">  </span><span class="c1">// Note: with cudaMalloc() the global temporary memory alignment is implicitly met</span>
+<span class="w">  </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">d_comp_temp</span><span class="p">;</span>
+<span class="w">  </span><span class="n">cudaMalloc</span><span class="p">(</span><span class="o">&amp;</span><span class="n">d_comp_temp</span><span class="p">,</span><span class="w"> </span><span class="n">COMP</span><span class="p">().</span><span class="n">tmp_size_total</span><span class="p">(</span><span class="n">num_chunks</span><span class="p">));</span>
+
+<span class="w">  </span><span class="c1">// Calculate the maximum compressed size, i.e. the worst case</span>
+<span class="w">  </span><span class="c1">// size of the output buffer.</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">max_comp_chunk_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">COMP</span><span class="p">().</span><span class="n">max_comp_chunk_size</span><span class="p">();</span>
+
+<span class="w">  </span><span class="c1">// Allocate buffer for the output (compressed) data</span>
+<span class="w">  </span><span class="c1">// Note: with cudaMalloc() the output alignment is implicitly met</span>
+<span class="w">  </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">d_output_data</span><span class="p">;</span>
+<span class="w">  </span><span class="n">cudaMalloc</span><span class="p">(</span><span class="o">&amp;</span><span class="n">d_output_data</span><span class="p">,</span><span class="w"> </span><span class="n">max_comp_chunk_size</span><span class="p">);</span>
+
+<span class="w">  </span><span class="c1">// Compression parameters</span>
+<span class="w">  </span><span class="c1">// We are compressing 1 chunk per thread block</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">block_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">32</span><span class="p">;</span><span class="w"> </span><span class="c1">// 1 warp</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">block_count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">num_chunks</span><span class="p">);</span><span class="w"> </span><span class="c1">// 1 chunk</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">comp_shared_memory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">COMP</span><span class="p">().</span><span class="n">shmem_size_group</span><span class="p">();</span>
+
+<span class="w">  </span><span class="n">comp_warp_kernel</span><span class="o">&lt;&lt;&lt;</span><span class="n">block_count</span><span class="p">,</span><span class="w"> </span><span class="n">block_size</span><span class="p">,</span><span class="w"> </span><span class="n">comp_shared_memory</span><span class="o">&gt;&gt;&gt;</span><span class="p">(</span>
+<span class="w">      </span><span class="n">d_input_data</span><span class="p">,</span>
+<span class="w">      </span><span class="n">total_bytes</span><span class="p">,</span>
+<span class="w">      </span><span class="n">d_output_data</span><span class="p">,</span>
+<span class="w">      </span><span class="n">d_output_size</span><span class="p">,</span>
+<span class="w">      </span><span class="n">d_comp_temp</span>
+<span class="w">    </span><span class="p">);</span>
+
+<span class="w">  </span><span class="c1">// Copy back the resulting compressed size</span>
+<span class="w">  </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">comp_bytes</span><span class="p">;</span>
+<span class="w">  </span><span class="n">cudaMemcpy</span><span class="p">(</span><span class="o">&amp;</span><span class="n">comp_bytes</span><span class="p">,</span><span class="w"> </span><span class="n">d_output_size</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="kt">long</span><span class="p">),</span><span class="w"> </span><span class="n">cudaMemcpyDeviceToHost</span><span class="p">);</span>
+
+<span class="w">  </span><span class="c1">// Copy data back to host for write out</span>
+<span class="w">  </span><span class="n">compressed</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">comp_bytes</span><span class="p">);</span>
+<span class="w">  </span><span class="n">cudaMemcpy</span><span class="p">(</span><span class="n">compressed</span><span class="p">.</span><span class="n">data</span><span class="p">(),</span><span class="w"> </span><span class="n">d_output_data</span><span class="p">,</span><span class="w"> </span><span class="n">comp_bytes</span><span class="p">,</span><span class="w"> </span><span class="n">cudaMemcpyDeviceToHost</span><span class="p">);</span>
+
+<span class="w">  </span><span class="n">cudaFree</span><span class="p">(</span><span class="n">d_input_data</span><span class="p">);</span>
+<span class="w">  </span><span class="n">cudaFree</span><span class="p">(</span><span class="n">d_output_size</span><span class="p">);</span>
+<span class="w">  </span><span class="n">cudaFree</span><span class="p">(</span><span class="n">d_comp_temp</span><span class="p">);</span>
+<span class="w">  </span><span class="n">cudaFree</span><span class="p">(</span><span class="n">d_output_data</span><span class="p">);</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="decompression">
+<h2>Decompression<a class="headerlink" href="#decompression" title="Link to this heading">#</a></h2>
+<p>For completeness, this section outlines a decompression operation that could be used to decompress the buffer produced in the previous section. The procedure is largely analogous to that for compression with a few differences:</p>
+<ul class="simple">
+<li><p>The routine descriptor must contain a <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Direction</span><span class="o">&lt;</span><span class="n">direction</span><span class="o">::</span><span class="n">decompress</span><span class="o">&gt;</span></code> operator summand rather than a <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Direction</span><span class="o">&lt;</span><span class="n">direction</span><span class="o">::</span><span class="n">compress</span><span class="o">&gt;</span></code> one.</p></li>
+<li><p>If the decompressed chunk sizes are not known in advance, they need to be computed through a separate invocation of the decompression routine with a null pointer passed for the output buffer.</p></li>
+<li><p>In identifier names, “input” now refers to the compressed data and “output” refers to the uncompressed data.</p></li>
+</ul>
+<p>The full decompression procedure, with the maximum decompressed chunk size known in advance, is illustrated in the snippet below.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;nvcompdx.hpp&gt;</span>
+
+<span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">nvcompdx</span><span class="p">;</span>
+
+<span class="c1">// For simplicity, let&#39;s assume the maximum uncompressed</span>
+<span class="c1">// chunk size is known prior to decompression.</span>
+<span class="k">constexpr</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">max_uncomp_chunk_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">65536ull</span><span class="p">;</span>
+
+<span class="k">using</span><span class="w"> </span><span class="n">DECOMP</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">decltype</span><span class="p">(</span><span class="n">Algorithm</span><span class="o">&lt;</span><span class="n">algorithm</span><span class="o">::</span><span class="n">lz4</span><span class="o">&gt;</span><span class="p">()</span><span class="w"> </span><span class="o">+</span>
+<span class="w">                        </span><span class="n">DataType</span><span class="o">&lt;</span><span class="n">datatype</span><span class="o">::</span><span class="n">uint8</span><span class="o">&gt;</span><span class="p">()</span><span class="w"> </span><span class="o">+</span>
+<span class="w">                        </span><span class="n">Direction</span><span class="o">&lt;</span><span class="n">direction</span><span class="o">::</span><span class="n">decompress</span><span class="o">&gt;</span><span class="p">()</span><span class="w"> </span><span class="o">+</span>
+<span class="w">                        </span><span class="n">Warp</span><span class="p">()</span><span class="w"> </span><span class="o">+</span>
+<span class="w">                        </span><span class="n">SM</span><span class="o">&lt;</span><span class="mi">800</span><span class="o">&gt;</span><span class="p">());</span>
+
+<span class="n">__global__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">decomp_warp_kernel</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">comp_chunk</span><span class="p">,</span>
+<span class="w">                                   </span><span class="k">const</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">comp_chunk_size</span><span class="p">,</span>
+<span class="w">                                   </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">uncomp_chunk</span><span class="p">,</span>
+<span class="w">                                   </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">uncomp_chunk_size</span><span class="p">,</span>
+<span class="w">                                   </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">tmp_buffer</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="k">auto</span><span class="w"> </span><span class="n">decompressor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DECOMP</span><span class="p">();</span>
+<span class="w">   </span><span class="k">constexpr</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">shmem_alignment</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">decompressor</span><span class="p">.</span><span class="n">shmem_alignment</span><span class="p">();</span>
+<span class="w">   </span><span class="k">extern</span><span class="w"> </span><span class="n">__shared__</span><span class="w"> </span><span class="nf">__align__</span><span class="p">(</span><span class="n">shmem_alignment</span><span class="p">)</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">shared_comp_scratch_buffer</span><span class="p">[];</span>
+
+<span class="w">   </span><span class="n">decompressor</span><span class="p">.</span><span class="n">execute</span><span class="p">(</span>
+<span class="w">      </span><span class="n">comp_chunk</span><span class="p">,</span>
+<span class="w">      </span><span class="n">uncomp_chunk</span><span class="p">,</span>
+<span class="w">      </span><span class="n">comp_chunk_size</span><span class="p">,</span>
+<span class="w">      </span><span class="n">uncomp_chunk_size</span><span class="p">,</span>
+<span class="w">      </span><span class="n">shared_comp_scratch_buffer</span><span class="p">,</span>
+<span class="w">      </span><span class="n">tmp_buffer</span><span class="p">);</span>
+
+<span class="w">   </span><span class="c1">// At this point, the uncompressed chunk resides in the buffer pointed by</span>
+<span class="w">   </span><span class="c1">// `uncomp_chunk`. The compressed input data `comp_chunk` is</span>
+<span class="w">   </span><span class="c1">// left untouched.</span>
+<span class="p">}</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="n">lz4_gpu_decomp_introduction</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">data</span><span class="p">,</span>
+<span class="w">                                </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">uncompressed</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">total_bytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">data</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+
+<span class="w">  </span><span class="c1">// The input data consists of a single compressed chunk</span>
+<span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">num_chunks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1ull</span><span class="p">;</span>
+
+<span class="w">  </span><span class="c1">// Allocate buffer for the input (compressed) data</span>
+<span class="w">  </span><span class="c1">// Note: with cudaMalloc() the input alignment is implicitly met</span>
+<span class="w">  </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">d_input_data</span><span class="p">;</span>
+<span class="w">  </span><span class="n">cudaMalloc</span><span class="p">(</span><span class="o">&amp;</span><span class="n">d_input_data</span><span class="p">,</span><span class="w"> </span><span class="n">total_bytes</span><span class="p">);</span>
+<span class="w">  </span><span class="n">cudaMemcpy</span><span class="p">(</span><span class="n">d_input_data</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="p">.</span><span class="n">data</span><span class="p">(),</span><span class="w"> </span><span class="n">total_bytes</span><span class="p">,</span><span class="w"> </span><span class="n">cudaMemcpyHostToDevice</span><span class="p">);</span>
+
+<span class="w">  </span><span class="c1">// Allocate buffer for the input/output sizes</span>
+<span class="w">  </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="kt">long</span><span class="o">*</span><span class="w"> </span><span class="n">d_output_size</span><span class="p">;</span>
+<span class="w">  </span><span class="n">cudaMalloc</span><span class="p">(</span><span class="o">&amp;</span><span class="n">d_output_size</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="kt">long</span><span class="p">));</span>
+
+<span class="w">  </span><span class="c1">// Allocate temporary scratch space</span>
+<span class="w">  </span><span class="c1">// Note: with cudaMalloc() the global temporary memory alignment is implicitly met</span>
+<span class="w">  </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">d_decomp_temp</span><span class="p">;</span>
+<span class="w">  </span><span class="n">cudaMalloc</span><span class="p">(</span><span class="o">&amp;</span><span class="n">d_decomp_temp</span><span class="p">,</span><span class="w"> </span><span class="n">DECOMP</span><span class="p">().</span><span class="n">tmp_size_total</span><span class="p">(</span><span class="n">num_chunks</span><span class="p">));</span>
+
+<span class="w">  </span><span class="c1">// Allocate buffer for the output (uncompressed) data</span>
+<span class="w">  </span><span class="c1">// The size of the output buffer is known in advance in this example</span>
+<span class="w">  </span><span class="c1">// Note: with cudaMalloc() the output alignment is implicitly met</span>
+<span class="w">  </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">d_output_data</span><span class="p">;</span>
+<span class="w">  </span><span class="n">cudaMalloc</span><span class="p">(</span><span class="o">&amp;</span><span class="n">d_output_data</span><span class="p">,</span><span class="w"> </span><span class="n">max_uncomp_chunk_size</span><span class="p">);</span>
+
+<span class="w">  </span><span class="c1">// Decompression parameters</span>
+<span class="w">  </span><span class="c1">// We are decompressing 1 chunk per thread block</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">block_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">32</span><span class="p">;</span><span class="w"> </span><span class="c1">// 1 warp</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">block_count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">num_chunks</span><span class="p">);</span><span class="w"> </span><span class="c1">// 1 chunk</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">decomp_shared_memory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DECOMP</span><span class="p">().</span><span class="n">shmem_size_group</span><span class="p">();</span>
+
+<span class="w">  </span><span class="n">decomp_warp_kernel</span><span class="o">&lt;&lt;&lt;</span><span class="n">block_count</span><span class="p">,</span><span class="w"> </span><span class="n">block_size</span><span class="p">,</span><span class="w"> </span><span class="n">decomp_shared_memory</span><span class="o">&gt;&gt;&gt;</span><span class="p">(</span>
+<span class="w">      </span><span class="n">d_input_data</span><span class="p">,</span>
+<span class="w">      </span><span class="n">total_bytes</span><span class="p">,</span>
+<span class="w">      </span><span class="n">d_output_data</span><span class="p">,</span>
+<span class="w">      </span><span class="n">d_output_size</span><span class="p">,</span>
+<span class="w">      </span><span class="n">d_decomp_temp</span>
+<span class="w">    </span><span class="p">);</span>
+
+<span class="w">  </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">uncomp_chunk_size</span><span class="p">;</span>
+<span class="w">  </span><span class="n">cudaMemcpy</span><span class="p">(</span><span class="o">&amp;</span><span class="n">uncomp_chunk_size</span><span class="p">,</span>
+<span class="w">             </span><span class="n">d_output_size</span><span class="p">,</span>
+<span class="w">             </span><span class="k">sizeof</span><span class="p">(</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="kt">long</span><span class="p">),</span>
+<span class="w">             </span><span class="n">cudaMemcpyDeviceToHost</span><span class="p">);</span>
+
+<span class="w">  </span><span class="c1">// Copy data back to host for write out</span>
+<span class="w">  </span><span class="n">uncompressed</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">uncomp_chunk_size</span><span class="p">);</span>
+<span class="w">  </span><span class="n">cudaMemcpy</span><span class="p">(</span><span class="n">uncompressed</span><span class="p">.</span><span class="n">data</span><span class="p">(),</span>
+<span class="w">             </span><span class="n">d_output_data</span><span class="p">,</span>
+<span class="w">             </span><span class="n">uncomp_chunk_size</span><span class="p">,</span>
+<span class="w">             </span><span class="n">cudaMemcpyDeviceToHost</span><span class="p">);</span>
+
+<span class="w">  </span><span class="n">cudaFree</span><span class="p">(</span><span class="n">d_input_data</span><span class="p">);</span>
+<span class="w">  </span><span class="n">cudaFree</span><span class="p">(</span><span class="n">d_output_size</span><span class="p">);</span>
+<span class="w">  </span><span class="n">cudaFree</span><span class="p">(</span><span class="n">d_decomp_temp</span><span class="p">);</span>
+<span class="w">  </span><span class="n">cudaFree</span><span class="p">(</span><span class="n">d_output_data</span><span class="p">);</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The full <a class="reference internal" href="examples/intro_example.html#introduction-example-label"><span class="std std-ref">Introduction Example</span></a> does not include a decompression part, but many other examples do.</p>
+</div>
+</section>
+<section id="compilation">
+<h2>Compilation<a class="headerlink" href="#compilation" title="Link to this heading">#</a></h2>
+<p>For instructions on how to compile programs with nvCOMPDx, see <a class="reference internal" href="installation.html#installation-guide-label"><span class="std std-ref">Installation Guide</span></a>.</p>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="installation.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Installation Guide</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="highperformance.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Achieving High Performance</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#defining-a-function-descriptor">Defining a Function Descriptor</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#executing-the-function">Executing the Function</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#launching-the-kernel">Launching the Kernel</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#decompression">Decompression</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#compilation">Compilation</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5"></script>
+
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+<a class="footer-brand logo" href="https://www.nvidia.com">
+  <img src="_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+</a></div>
+      
+        <div class="footer-item">
+
+<div class="footer-links">
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/">Privacy Policy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Your Privacy Choices</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/">Terms of Service</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/accessibility/">Accessibility</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/company-policies/">Corporate Policies</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/product-security/">Product Security</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/contact/">Contact</a>
+  
+  
+  
+</div>
+</div>
+      
+        <div class="footer-item">
+
+
+
+
+  <p class="copyright">
+    
+      Copyright © 2024-2026, NVIDIA Corporation &amp; Affiliates. All rights reserved.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+  </body>
+</html>

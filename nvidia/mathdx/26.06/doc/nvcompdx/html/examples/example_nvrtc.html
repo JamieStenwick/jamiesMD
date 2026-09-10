@@ -1,0 +1,996 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>NVRTC + nvJitLink Example &#8212; nvCOMPDx</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
+
+
+
+    <script src="../_static/documentation_options.js?v=64e4dae6"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'examples/example_nvrtc';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://docs.nvidia.com/cuda/nvcompdx/_static/switcher.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.1.4';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+
+    <link rel="icon" href="../_static/nvidia.ico"/>
+
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Release Notes" href="../release_notes.html" />
+    <link rel="prev" title="ANS Examples" href="ans_examples.html" />
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.1.4" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+
+
+  </head>
+
+  <body data-default-mode="">
+
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="nvCOMPDx - Home"/>
+    <img src="../_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="nvCOMPDx - Home"/>
+  
+  
+    <p class="title logo__title">nvCOMPDx</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="nvCOMPDx - Home"/>
+    <img src="../_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="nvCOMPDx - Home"/>
+  
+  
+    <p class="title logo__title">nvCOMPDx</p>
+  
+</a>
+
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Table of Contents">
+  <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
+  <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Home</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../requirements.html">Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Using nvCOMPDx</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../highperformance.html">Achieving High Performance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../debug.html">Debugging Guide</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../api/operators.html">Operators</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api/operators_description.html">Description Operators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/operators_execution.html">Execution Operators</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../api/traits.html">Traits</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api/traits_description.html">Description Traits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/traits_execution.html">Execution Traits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/traits_other.html">Other Traits</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/methods.html">Execution Method</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/methods_other.html">Other Methods</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="intro_example.html">Introduction Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lz4_examples.html">LZ4 Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ans_examples.html">ANS Examples</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">NVRTC + nvJitLink Example</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../release_notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/NVIDIA/CUDALibrarySamples/tree/main/MathDx/">GitHub Samples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../acknowledgements.html">Acknowledgements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">Software License Agreement</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">MathDx</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/nvcompdx-downloads">nvCOMPDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/cusolverdx-downloads">cuSolverDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/cublasdx-downloads">cuBLASDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/cufftdx-downloads">cuFFTDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/curanddx-downloads">cuRANDDx</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">NVRTC + nvJitLink Example</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="nvrtc-nvjitlink-example">
+<span id="example-nvrtc-label"></span><h1>NVRTC + nvJitLink Example<a class="headerlink" href="#nvrtc-nvjitlink-example" title="Link to this heading">#</a></h1>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 66.7%" />
+<col style="width: 33.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Location</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="mo">05</span><span class="n">_lz4_cpu_and_nvrtc</span><span class="o">/</span><span class="n">lz4_cpu_compression_nvrtc_decompression</span><span class="p">.</span><span class="n">cu</span></code></p></td>
+<td><p>CPU compression, Warp-level GPU nvRTC + nvJitLink LZ4 decompression</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>This NVRTC example demonstrates how to use nvCOMPDx with <a class="reference external" href="https://docs.nvidia.com/cuda/nvrtc/">NVTRC runtime compilation</a> and <a class="reference external" href="https://docs.nvidia.com/cuda/nvjitlink/index.html">nvJitLink runtime linking</a>.</p>
+<p>The problem description created with nvCOMPDx operators is defined only in the device code. The header file <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">nvcompdx</span><span class="p">.</span><span class="n">hpp</span></code> is included only in the device code, which is passed to NVRTC to create an LTO IR (link-time-optimizable intermediate representation). Then, nvJitLink is used to link the generated LTO IR with nvCOMPDx’s LTO library, perform optimization on the linked LTO IR modules, and generate the cubin for the specified GPU architecture.</p>
+<p>The compressed buffer is generated on the CPU using the <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">lz4</span></code> library. This library must be installed separately on the system to build the example. Detailed installation instructions are provided on the <a class="reference external" href="https://github.com/NVIDIA/CUDALibrarySamples/tree/main/MathDx/">GitHub example page</a>.</p>
+<p>The example is located in the <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">example</span><span class="o">/</span><span class="n">nvcompdx</span><span class="o">/</span><span class="mo">05</span><span class="n">_lz4_cpu_and_nvrtc</span></code> folder of the nvCOMPDx package.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cm">/*</span>
+<span class="cm"> * SPDX-FileCopyrightText: Copyright (c) 2025-2026 NVIDIA CORPORATION &amp; AFFILIATES. All rights reserved.</span>
+<span class="cm"> * SPDX-License-Identifier: Apache-2.0</span>
+<span class="cm"> *</span>
+<span class="cm"> * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span class="cm"> * you may not use this file except in compliance with the License.</span>
+<span class="cm"> * You may obtain a copy of the License at</span>
+<span class="cm"> *</span>
+<span class="cm"> * http://www.apache.org/licenses/LICENSE-2.0</span>
+<span class="cm"> *</span>
+<span class="cm"> * Unless required by applicable law or agreed to in writing, software</span>
+<span class="cm"> * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span class="cm"> * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span class="cm"> * See the License for the specific language governing permissions and</span>
+<span class="cm"> * limitations under the License.</span>
+<span class="cm"> */</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;lz4.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;lz4hc.h&gt;</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;nvrtc.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;nvJitLink.h&gt;</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;nvcompdx.hpp&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;../common/batch_data.hpp&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;../common/util_nvrtc.hpp&quot;</span>
+
+<span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">nvcompdx</span><span class="p">;</span>
+
+<span class="c1">// This sample demonstrates the usage of the warp-level device API for</span>
+<span class="c1">// LZ4 GPU decompression. The decompression kernel is compiled and linked</span>
+<span class="c1">// during runtime. The compression happens through the host-side</span>
+<span class="c1">// lz4 CPU library.</span>
+
+<span class="c1">// LZ4 decompression kernel, using the preconfigured decompressor</span>
+<span class="c1">// 1 warp per chunk, but multiple chunks per thread block</span>
+
+<span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">decomp_kernel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sa">R</span><span class="s">&quot;</span><span class="dl">kernel(</span>
+<span class="s">#include &lt;nvcompdx.hpp&gt;</span>
+
+<span class="s">using namespace nvcompdx;</span>
+
+<span class="s">extern &quot;C&quot; __global__ void decomp_warp_kernel(</span>
+<span class="s">    size_t batch_size,</span>
+<span class="s">    const void * const * comp_chunks,</span>
+<span class="s">    void * const * uncomp_chunks,</span>
+<span class="s">    const unsigned long long * comp_chunk_sizes,</span>
+<span class="s">    unsigned long long * decomp_chunk_sizes) {</span>
+
+<span class="s">  const unsigned int global_chunk_id = (blockIdx.x * blockDim.x + threadIdx.x) / 32;</span>
+<span class="s">  const unsigned int local_chunk_id = threadIdx.x / 32;</span>
+<span class="s">  if(global_chunk_id &gt;= batch_size) {</span>
+<span class="s">    return;</span>
+<span class="s">  }</span>
+
+<span class="s">  // clang-format off</span>
+<span class="s">  using decompressor_type =</span>
+<span class="s">    decltype(Algorithm&lt;algorithm::ALGORITHM&gt;() +</span>
+<span class="s">             DataType&lt;datatype::DATATYPE&gt;() +</span>
+<span class="s">             MaxUncompChunkSize&lt;MAX_UNCOMP_CHUNK_SIZE&gt;() +</span>
+<span class="s">             Direction&lt;direction::decompress&gt;() +</span>
+<span class="s">             Warp() +</span>
+<span class="s">             SM&lt;ARCH&gt;());</span>
+<span class="s">  // clang-format on</span>
+
+<span class="s">  auto decompressor = decompressor_type();</span>
+<span class="s">  constexpr auto shmem_size_warp = decompressor.shmem_size_group();</span>
+<span class="s">  extern __shared__ __align__(decompressor.shmem_alignment()) unsigned char shared_scratch_decomp_buffer[];</span>
+
+<span class="s">  decompressor.execute(</span>
+<span class="s">    comp_chunks[global_chunk_id],</span>
+<span class="s">    uncomp_chunks[global_chunk_id],</span>
+<span class="s">    comp_chunk_sizes[global_chunk_id],</span>
+<span class="s">    decomp_chunk_sizes + global_chunk_id,</span>
+<span class="s">    shared_scratch_decomp_buffer + shmem_size_warp * local_chunk_id,</span>
+<span class="s">    nullptr);</span>
+<span class="s">}</span>
+<span class="dl">)kernel</span><span class="s">&quot;</span><span class="p">;</span>
+
+<span class="k">static</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="nf">get_device_architecture_option</span><span class="p">(</span><span class="n">CUdevice</span><span class="o">&amp;</span><span class="w"> </span><span class="n">device</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c1">// Note:</span>
+<span class="w">  </span><span class="c1">// -arch=compute_...       will generate PTX</span>
+<span class="w">  </span><span class="c1">// -arch=sm_...            will generate SASS</span>
+<span class="w">  </span><span class="c1">// -arch=sm_... with -dlto will generate LTO IR</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">option</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;-arch=sm_&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">get_device_architecture</span><span class="p">(</span><span class="n">device</span><span class="p">));</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">option</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">static</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">get_comp_include_dirs</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="cp">#ifndef NVCOMPDX_INCLUDE_DIRS</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="cp">#else</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">comp_include_dirs_array</span><span class="p">;</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">comp_include_dirs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">NVCOMPDX_INCLUDE_DIRS</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">delim</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;,&quot;</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">start</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0U</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">end</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">comp_include_dirs</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">delim</span><span class="p">);</span>
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">end</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">::</span><span class="n">npos</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">comp_include_dirs_array</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="s">&quot;--include-path=&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">comp_include_dirs</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="n">start</span><span class="p">,</span><span class="w"> </span><span class="n">end</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">start</span><span class="p">));</span>
+<span class="w">      </span><span class="n">start</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">end</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">delim</span><span class="p">.</span><span class="n">length</span><span class="p">();</span>
+<span class="w">      </span><span class="n">end</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">comp_include_dirs</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">delim</span><span class="p">,</span><span class="w"> </span><span class="n">start</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">comp_include_dirs_array</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="s">&quot;--include-path=&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">comp_include_dirs</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="n">start</span><span class="p">,</span><span class="w"> </span><span class="n">end</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">start</span><span class="p">));</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="cp">#endif </span><span class="c1">// NVCOMPDX_INCLUDE_DIRS</span>
+<span class="cp">#ifdef COMMONDX_INCLUDE_DIR</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="n">comp_include_dirs_array</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="s">&quot;--include-path=&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">(</span><span class="n">COMMONDX_INCLUDE_DIR</span><span class="p">));</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="cp">#endif </span><span class="c1">// COMMONDX_INCLUDE_DIR</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">env_ptr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">getenv</span><span class="p">(</span><span class="s">&quot;NVCOMPDX_EXAMPLE_COMMONDX_INCLUDE_DIR&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">env_ptr</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">nullptr</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">comp_include_dirs_array</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="s">&quot;--include-path=&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">(</span><span class="n">env_ptr</span><span class="p">));</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">env_ptr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">getenv</span><span class="p">(</span><span class="s">&quot;NVCOMPDX_EXAMPLE_NVCOMPDX_INCLUDE_DIR&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">env_ptr</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">nullptr</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">comp_include_dirs_array</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="s">&quot;--include-path=&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">(</span><span class="n">env_ptr</span><span class="p">));</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">env_ptr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">getenv</span><span class="p">(</span><span class="s">&quot;NVCOMPDX_EXAMPLE_CUDA_INCLUDE_DIR&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">env_ptr</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">nullptr</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">comp_include_dirs_array</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="s">&quot;--include-path=&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">(</span><span class="n">env_ptr</span><span class="p">));</span>
+<span class="w">      </span><span class="n">comp_include_dirs_array</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="s">&quot;--include-path=&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">(</span><span class="n">env_ptr</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;/cccl&quot;</span><span class="p">);</span>
+<span class="w">      </span><span class="n">comp_include_dirs_array</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="s">&quot;--include-path=&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">(</span><span class="n">env_ptr</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;/cuda/std&quot;</span><span class="p">);</span>
+<span class="w">      </span><span class="n">comp_include_dirs_array</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="s">&quot;--include-path=&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">(</span><span class="n">env_ptr</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;/cccl/cuda/std&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">comp_include_dirs_array</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// Benchmark performance from the binary data file</span>
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">Arch</span><span class="o">&gt;</span>
+<span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">run_nvrtc_example</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">&gt;&gt;&amp;</span><span class="w"> </span><span class="n">data</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">assert</span><span class="p">(</span><span class="o">!</span><span class="n">data</span><span class="p">.</span><span class="n">empty</span><span class="p">());</span>
+
+<span class="w">  </span><span class="kt">size_t</span><span class="w"> </span><span class="n">total_bytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">part</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">data</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">total_bytes</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">part</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;----------&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;files: &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">data</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;uncompressed (B): &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">total_bytes</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+<span class="w">  </span><span class="c1">// Compile-time (de)compression parameters</span>
+<span class="w">  </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">num_warps_per_chunk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">  </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">num_chunks_per_block</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span>
+<span class="w">  </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">num_warps_per_block</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">num_warps_per_chunk</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">num_chunks_per_block</span><span class="p">;</span>
+<span class="w">  </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">block_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">num_warps_per_block</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">32</span><span class="p">);</span>
+<span class="w">  </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">chunk_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">16</span><span class="p">;</span><span class="w"> </span><span class="c1">// [bytes]</span>
+
+<span class="w">  </span><span class="c1">// Build up input batch on CPU</span>
+<span class="w">  </span><span class="n">BatchDataCPU</span><span class="w"> </span><span class="nf">input_data_cpu</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="n">chunk_size</span><span class="p">);</span>
+<span class="w">  </span><span class="kt">size_t</span><span class="w"> </span><span class="n">batch_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">input_data_cpu</span><span class="p">.</span><span class="n">batch_size</span><span class="p">();</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;chunks: &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">batch_size</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+<span class="w">  </span><span class="c1">// Allocate and prepare output/compressed batch</span>
+<span class="w">  </span><span class="n">BatchDataCPU</span><span class="w"> </span><span class="nf">compressed_data_cpu</span><span class="p">(</span><span class="n">LZ4_compressBound</span><span class="p">(</span><span class="n">chunk_size</span><span class="p">),</span><span class="w"> </span><span class="n">batch_size</span><span class="p">);</span>
+
+<span class="w">  </span><span class="c1">// Compressing on the CPU</span>
+<span class="w">  </span><span class="c1">// Loop over chunks on the CPU, compressing each one one by one</span>
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">batch_size</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// Could use LZ4_compress_default or LZ4_compress_fast instead</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LZ4_compress_HC</span><span class="p">(</span>
+<span class="w">      </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*&gt;</span><span class="p">(</span><span class="n">input_data_cpu</span><span class="p">.</span><span class="n">chunk_ptrs</span><span class="p">()[</span><span class="n">i</span><span class="p">]),</span>
+<span class="w">      </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">*&gt;</span><span class="p">(</span><span class="n">compressed_data_cpu</span><span class="p">.</span><span class="n">chunk_ptrs</span><span class="p">()[</span><span class="n">i</span><span class="p">]),</span>
+<span class="w">      </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">input_data_cpu</span><span class="p">.</span><span class="n">chunk_sizes</span><span class="p">()[</span><span class="n">i</span><span class="p">]),</span>
+<span class="w">      </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">compressed_data_cpu</span><span class="p">.</span><span class="n">chunk_sizes</span><span class="p">()[</span><span class="n">i</span><span class="p">]),</span>
+<span class="w">      </span><span class="mi">12</span><span class="w"> </span><span class="cm">/* compression level */</span><span class="p">);</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">throw</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">runtime_error</span><span class="p">(</span><span class="s">&quot;LZ4 CPU failed to compress chunk &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;.&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">// Set the actual compressed size</span>
+<span class="w">    </span><span class="n">compressed_data_cpu</span><span class="p">.</span><span class="n">chunk_sizes</span><span class="p">()[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">size_t</span><span class="o">&gt;</span><span class="p">(</span><span class="n">size</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="c1">// Compute compression ratio</span>
+<span class="w">  </span><span class="kt">size_t</span><span class="o">*</span><span class="w"> </span><span class="n">compressed_sizes_host</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">compressed_data_cpu</span><span class="p">.</span><span class="n">chunk_sizes</span><span class="p">();</span>
+<span class="w">  </span><span class="kt">size_t</span><span class="w"> </span><span class="n">comp_bytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">accumulate</span><span class="p">(</span><span class="n">compressed_sizes_host</span><span class="p">,</span><span class="w"> </span><span class="n">compressed_sizes_host</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">batch_size</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="p">(</span><span class="mi">0</span><span class="p">));</span>
+
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;comp_size: &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">comp_bytes</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;, compressed ratio: &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">fixed</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">setprecision</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="w">            </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="p">(</span><span class="kt">double</span><span class="p">)</span><span class="n">total_bytes</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">comp_bytes</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+<span class="w">  </span><span class="c1">// Configure the GPU decompressor</span>
+<span class="w">  </span><span class="c1">// clang-format off</span>
+<span class="w">  </span><span class="k">using</span><span class="w"> </span><span class="n">lz4_decompressor_type</span><span class="w"> </span><span class="o">=</span>
+<span class="w">    </span><span class="k">decltype</span><span class="p">(</span><span class="n">Algorithm</span><span class="o">&lt;</span><span class="n">algorithm</span><span class="o">::</span><span class="n">lz4</span><span class="o">&gt;</span><span class="p">()</span><span class="w"> </span><span class="o">+</span>
+<span class="w">             </span><span class="n">DataType</span><span class="o">&lt;</span><span class="n">datatype</span><span class="o">::</span><span class="n">uint8</span><span class="o">&gt;</span><span class="p">()</span><span class="w"> </span><span class="o">+</span>
+<span class="w">             </span><span class="n">MaxUncompChunkSize</span><span class="o">&lt;</span><span class="n">chunk_size</span><span class="o">&gt;</span><span class="p">()</span><span class="w"> </span><span class="o">+</span>
+<span class="w">             </span><span class="n">Direction</span><span class="o">&lt;</span><span class="n">direction</span><span class="o">::</span><span class="n">decompress</span><span class="o">&gt;</span><span class="p">()</span><span class="w"> </span><span class="o">+</span>
+<span class="w">             </span><span class="n">Warp</span><span class="p">()</span><span class="w"> </span><span class="o">+</span>
+<span class="w">             </span><span class="n">SM</span><span class="o">&lt;</span><span class="n">Arch</span><span class="o">&gt;</span><span class="p">());</span>
+<span class="w">  </span><span class="c1">// clang-format on</span>
+
+<span class="w">  </span><span class="c1">// Runtime decompression parameters</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">block_count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="o">&gt;</span><span class="p">((</span><span class="n">batch_size</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">num_chunks_per_block</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">num_chunks_per_block</span><span class="p">);</span>
+
+<span class="w">  </span><span class="c1">// Global scratch buffer</span>
+<span class="w">  </span><span class="c1">// Note: lz4 decompression requires no global scratch buffer</span>
+<span class="w">  </span><span class="k">static_assert</span><span class="p">(</span><span class="n">lz4_decompressor_type</span><span class="p">().</span><span class="n">tmp_size_group</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+
+<span class="w">  </span><span class="c1">// Shared scratch buffer</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">decomp_shared_memory</span><span class="w"> </span><span class="o">=</span>
+<span class="w">    </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">lz4_decompressor_type</span><span class="p">().</span><span class="n">shmem_size_group</span><span class="p">()</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">num_chunks_per_block</span><span class="p">);</span>
+
+<span class="w">  </span><span class="c1">// Copy compressed data to GPU</span>
+<span class="w">  </span><span class="n">BatchData</span><span class="w"> </span><span class="nf">compressed_data</span><span class="p">(</span><span class="n">compressed_data_cpu</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="n">lz4_decompressor_type</span><span class="p">().</span><span class="n">input_alignment</span><span class="p">());</span>
+
+<span class="w">  </span><span class="c1">// Allocate and build up decompression batch on GPU</span>
+<span class="w">  </span><span class="n">BatchData</span><span class="w"> </span><span class="nf">decomp_data</span><span class="p">(</span><span class="n">input_data_cpu</span><span class="p">,</span><span class="w"> </span><span class="nb">false</span><span class="p">,</span><span class="w"> </span><span class="n">lz4_decompressor_type</span><span class="p">().</span><span class="n">output_alignment</span><span class="p">());</span>
+
+<span class="w">  </span><span class="c1">// Create an NVRTC program out of the string-defined kernel</span>
+<span class="w">  </span><span class="n">nvrtcProgram</span><span class="w"> </span><span class="n">program</span><span class="p">;</span>
+<span class="w">  </span><span class="n">NVRTC_CHECK</span><span class="p">(</span><span class="n">nvrtcCreateProgram</span><span class="p">(</span>
+<span class="w">    </span><span class="o">&amp;</span><span class="n">program</span><span class="p">,</span>
+<span class="w">    </span><span class="n">decomp_kernel</span><span class="p">,</span>
+<span class="w">    </span><span class="nb">NULL</span><span class="w"> </span><span class="cm">/* CUDA program name */</span><span class="p">,</span>
+<span class="w">    </span><span class="mi">0</span><span class="w"> </span><span class="cm">/* numHeaders */</span><span class="p">,</span>
+<span class="w">    </span><span class="nb">NULL</span><span class="w"> </span><span class="cm">/* headers */</span><span class="p">,</span>
+<span class="w">    </span><span class="nb">NULL</span><span class="w"> </span><span class="cm">/* includeNames */</span><span class="p">));</span>
+
+<span class="w">  </span><span class="c1">// Prepare compilation options</span>
+<span class="w">  </span><span class="n">CUdevice</span><span class="w"> </span><span class="n">cuDevice</span><span class="p">;</span>
+<span class="w">  </span><span class="n">CU_CHECK</span><span class="p">(</span><span class="n">cuInit</span><span class="p">(</span><span class="mi">0</span><span class="w"> </span><span class="cm">/* flags */</span><span class="p">));</span>
+<span class="w">  </span><span class="n">CU_CHECK</span><span class="p">(</span><span class="n">cuDeviceGet</span><span class="p">(</span><span class="o">&amp;</span><span class="n">cuDevice</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="cm">/* by default using the first device */</span><span class="p">));</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">gpu_architecture_option</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_device_architecture_option</span><span class="p">(</span><span class="n">cuDevice</span><span class="p">);</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*&gt;</span><span class="w"> </span><span class="n">opts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="s">&quot;--std=c++17&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s">&quot;--device-as-default-execution-space&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s">&quot;--include-path=&quot;</span><span class="w"> </span><span class="n">CUDAToolkit_INCLUDE_DIR</span><span class="p">,</span><span class="w"> </span><span class="c1">// Path to the CUDA include directory</span>
+<span class="w">    </span><span class="s">&quot;--include-path=&quot;</span><span class="w"> </span><span class="n">CUDAToolkit_INCLUDE_DIR</span><span class="w"> </span><span class="s">&quot;/cccl&quot;</span><span class="p">,</span><span class="w"> </span><span class="c1">// Path to CCCL headers (CTK 13+)</span>
+<span class="w">    </span><span class="s">&quot;--include-path=&quot;</span><span class="w"> </span><span class="n">CUDAToolkit_INCLUDE_DIR</span><span class="w"> </span><span class="s">&quot;/cuda/std&quot;</span><span class="p">,</span><span class="w"> </span><span class="c1">// Path to standard headers (CTK &lt;13)</span>
+<span class="w">    </span><span class="s">&quot;--include-path=&quot;</span><span class="w"> </span><span class="n">CUDAToolkit_INCLUDE_DIR</span><span class="w"> </span><span class="s">&quot;/cccl/cuda/std&quot;</span><span class="p">,</span><span class="w"> </span><span class="c1">// Path to standard headers (CTK 13+)</span>
+<span class="w">    </span><span class="s">&quot;-dlto&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s">&quot;-rdc=true&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="n">gpu_architecture_option</span><span class="p">.</span><span class="n">c_str</span><span class="p">()};</span>
+
+<span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">opt_convert_define</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[](</span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">s1</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">s2</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">(</span><span class="s">&quot;-D&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">s1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">(</span><span class="s">&quot;=&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">s2</span><span class="p">;</span>
+<span class="w">  </span><span class="p">};</span>
+
+<span class="w">  </span><span class="c1">// Compiler definitions</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">comp_config_values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">opt_convert_define</span><span class="p">(</span><span class="s">&quot;ALGORITHM&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;lz4&quot;</span><span class="p">),</span>
+<span class="w">    </span><span class="n">opt_convert_define</span><span class="p">(</span><span class="s">&quot;DATATYPE&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;uint8&quot;</span><span class="p">),</span>
+<span class="w">    </span><span class="n">opt_convert_define</span><span class="p">(</span><span class="s">&quot;MAX_UNCOMP_CHUNK_SIZE&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">chunk_size</span><span class="p">)),</span>
+<span class="w">    </span><span class="n">opt_convert_define</span><span class="p">(</span><span class="s">&quot;ARCH&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">Arch</span><span class="p">))};</span>
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">config</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">comp_config_values</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">opts</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">config</span><span class="p">.</span><span class="n">c_str</span><span class="p">());</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="c1">// Include folder paths</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">comp_include_dirs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_comp_include_dirs</span><span class="p">();</span>
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">comp_include_dirs</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">opts</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">d</span><span class="p">.</span><span class="n">c_str</span><span class="p">());</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="c1">// Compile kernel via nvrtc</span>
+<span class="w">  </span><span class="n">nvrtcResult</span><span class="w"> </span><span class="n">compileResult</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nvrtcCompileProgram</span><span class="p">(</span><span class="n">program</span><span class="p">,</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">opts</span><span class="p">.</span><span class="n">size</span><span class="p">()),</span><span class="w"> </span><span class="n">opts</span><span class="p">.</span><span class="n">data</span><span class="p">());</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">compileResult</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">NVRTC_SUCCESS</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// Obtain compilation log from the program if unsuccessful</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="w"> </span><span class="n">option</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">opts</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">option</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">print_nvrtc_program_log</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">cerr</span><span class="p">,</span><span class="w"> </span><span class="n">program</span><span class="p">);</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="c1">// Obtain generated LTO IR from the program</span>
+<span class="w">  </span><span class="kt">size_t</span><span class="w"> </span><span class="n">lto_size</span><span class="p">;</span>
+<span class="w">  </span><span class="n">NVRTC_CHECK</span><span class="p">(</span><span class="n">nvrtcGetLTOIRSize</span><span class="p">(</span><span class="n">program</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">lto_size</span><span class="p">));</span>
+<span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">ltoir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_unique</span><span class="o">&lt;</span><span class="kt">char</span><span class="p">[]</span><span class="o">&gt;</span><span class="p">(</span><span class="n">lto_size</span><span class="p">);</span>
+<span class="w">  </span><span class="n">NVRTC_CHECK</span><span class="p">(</span><span class="n">nvrtcGetLTOIR</span><span class="p">(</span><span class="n">program</span><span class="p">,</span><span class="w"> </span><span class="n">ltoir</span><span class="p">.</span><span class="n">get</span><span class="p">()));</span>
+<span class="w">  </span><span class="n">NVRTC_CHECK</span><span class="p">(</span><span class="n">nvrtcDestroyProgram</span><span class="p">(</span><span class="o">&amp;</span><span class="n">program</span><span class="p">));</span>
+
+<span class="w">  </span><span class="c1">// Load the generated Cubin and get a handle to our kernel</span>
+<span class="w">  </span><span class="n">CUcontext</span><span class="w"> </span><span class="n">context</span><span class="p">;</span>
+<span class="cp">#if CUDA_VERSION &gt;= 13000</span>
+<span class="w">  </span><span class="n">CU_CHECK</span><span class="p">(</span><span class="n">cuCtxCreate</span><span class="p">(</span><span class="o">&amp;</span><span class="n">context</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">CUctxCreateParams</span><span class="o">*</span><span class="p">)</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="cm">/* flags */</span><span class="p">,</span><span class="w"> </span><span class="n">cuDevice</span><span class="p">));</span>
+<span class="cp">#else</span>
+<span class="w">  </span><span class="n">CU_CHECK</span><span class="p">(</span><span class="n">cuCtxCreate</span><span class="p">(</span><span class="o">&amp;</span><span class="n">context</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="cm">/* flags */</span><span class="p">,</span><span class="w"> </span><span class="n">cuDevice</span><span class="p">));</span>
+<span class="cp">#endif </span><span class="c1">// CUDA_VERSION &gt;= 13000</span>
+
+<span class="w">  </span><span class="c1">// Load the generated LTO IR and the static nvCOMPDx LTO library</span>
+<span class="w">  </span><span class="n">nvJitLinkHandle</span><span class="w"> </span><span class="n">linker</span><span class="p">;</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*&gt;</span><span class="w"> </span><span class="n">lopts</span><span class="p">;</span>
+<span class="w">  </span><span class="n">lopts</span><span class="p">.</span><span class="n">emplace_back</span><span class="p">(</span><span class="s">&quot;-lto&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="n">lopts</span><span class="p">.</span><span class="n">emplace_back</span><span class="p">(</span><span class="n">gpu_architecture_option</span><span class="p">.</span><span class="n">c_str</span><span class="p">());</span>
+<span class="w">  </span><span class="n">NVJITLINK_CHECK</span><span class="p">(</span><span class="n">linker</span><span class="p">,</span><span class="w"> </span><span class="n">nvJitLinkCreate</span><span class="p">(</span><span class="o">&amp;</span><span class="n">linker</span><span class="p">,</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">uint32_t</span><span class="o">&gt;</span><span class="p">(</span><span class="n">lopts</span><span class="p">.</span><span class="n">size</span><span class="p">()),</span><span class="w"> </span><span class="n">lopts</span><span class="p">.</span><span class="n">data</span><span class="p">()));</span>
+
+<span class="w">  </span><span class="c1">// Add the runtime-compiled kernel LTO IR</span>
+<span class="w">  </span><span class="n">NVJITLINK_CHECK</span><span class="p">(</span><span class="n">linker</span><span class="p">,</span><span class="w"> </span><span class="n">nvJitLinkAddData</span><span class="p">(</span><span class="n">linker</span><span class="p">,</span><span class="w"> </span><span class="n">NVJITLINK_INPUT_LTOIR</span><span class="p">,</span><span class="w"> </span><span class="n">ltoir</span><span class="p">.</span><span class="n">get</span><span class="p">(),</span><span class="w"> </span><span class="n">lto_size</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;lto_online&quot;</span><span class="p">));</span>
+
+<span class="w">  </span><span class="c1">// Add nvCOMPDx LTO library or the nvCOMPDx fatbinary</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">fatbin_env_ptr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">getenv</span><span class="p">(</span><span class="s">&quot;NVCOMPDX_EXAMPLE_NVCOMPDX_FATBIN&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">library_env_ptr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">getenv</span><span class="p">(</span><span class="s">&quot;NVCOMPDX_EXAMPLE_NVCOMPDX_LIBRARY&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">fatbin_env_ptr</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">NVJITLINK_CHECK</span><span class="p">(</span><span class="n">linker</span><span class="p">,</span><span class="w"> </span><span class="n">nvJitLinkAddFile</span><span class="p">(</span><span class="n">linker</span><span class="p">,</span><span class="w"> </span><span class="n">NVJITLINK_INPUT_FATBIN</span><span class="p">,</span><span class="w"> </span><span class="n">fatbin_env_ptr</span><span class="p">));</span>
+<span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">library_env_ptr</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">NVJITLINK_CHECK</span><span class="p">(</span><span class="n">linker</span><span class="p">,</span><span class="w"> </span><span class="n">nvJitLinkAddFile</span><span class="p">(</span><span class="n">linker</span><span class="p">,</span><span class="w"> </span><span class="n">NVJITLINK_INPUT_LIBRARY</span><span class="p">,</span><span class="w"> </span><span class="n">library_env_ptr</span><span class="p">));</span>
+<span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="cp">#if defined(NVCOMPDX_FATBIN)</span>
+<span class="w">    </span><span class="n">NVJITLINK_CHECK</span><span class="p">(</span><span class="n">linker</span><span class="p">,</span><span class="w"> </span><span class="n">nvJitLinkAddFile</span><span class="p">(</span><span class="n">linker</span><span class="p">,</span><span class="w"> </span><span class="n">NVJITLINK_INPUT_FATBIN</span><span class="p">,</span><span class="w"> </span><span class="n">NVCOMPDX_FATBIN</span><span class="p">));</span>
+<span class="cp">#elif defined(NVCOMPDX_LIBRARY)</span>
+<span class="w">    </span><span class="n">NVJITLINK_CHECK</span><span class="p">(</span><span class="n">linker</span><span class="p">,</span><span class="w"> </span><span class="n">nvJitLinkAddFile</span><span class="p">(</span><span class="n">linker</span><span class="p">,</span><span class="w"> </span><span class="n">NVJITLINK_INPUT_LIBRARY</span><span class="p">,</span><span class="w"> </span><span class="n">NVCOMPDX_LIBRARY</span><span class="p">));</span>
+<span class="cp">#else</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cerr</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Please set one of the environment variables: &quot;</span>
+<span class="w">              </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;NVCOMPDX_EXAMPLE_NVCOMPDX_LIBRARY, &quot;</span>
+<span class="w">              </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;NVCOMPDX_EXAMPLE_NVCOMPDX_FATBIN, &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span>
+<span class="w">              </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;or during compilation define NVCOMPDX_LIBRARY or &quot;</span>
+<span class="w">              </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;NVCOMPDX_FATBIN.&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="cp">#endif</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="c1">// Generate the cubin from the LTO IR sources</span>
+<span class="w">  </span><span class="n">NVJITLINK_CHECK</span><span class="p">(</span><span class="n">linker</span><span class="p">,</span><span class="w"> </span><span class="n">nvJitLinkComplete</span><span class="p">(</span><span class="n">linker</span><span class="p">));</span>
+
+<span class="w">  </span><span class="c1">// Acquire cubin</span>
+<span class="w">  </span><span class="kt">size_t</span><span class="w"> </span><span class="n">cubin_size</span><span class="p">;</span>
+<span class="w">  </span><span class="n">NVJITLINK_CHECK</span><span class="p">(</span><span class="n">linker</span><span class="p">,</span><span class="w"> </span><span class="n">nvJitLinkGetLinkedCubinSize</span><span class="p">(</span><span class="n">linker</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">cubin_size</span><span class="p">));</span>
+<span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">cubin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_unique</span><span class="o">&lt;</span><span class="kt">char</span><span class="p">[]</span><span class="o">&gt;</span><span class="p">(</span><span class="n">cubin_size</span><span class="p">);</span>
+<span class="w">  </span><span class="n">NVJITLINK_CHECK</span><span class="p">(</span><span class="n">linker</span><span class="p">,</span><span class="w"> </span><span class="n">nvJitLinkGetLinkedCubin</span><span class="p">(</span><span class="n">linker</span><span class="p">,</span><span class="w"> </span><span class="n">cubin</span><span class="p">.</span><span class="n">get</span><span class="p">()));</span>
+<span class="w">  </span><span class="n">NVJITLINK_CHECK</span><span class="p">(</span><span class="n">linker</span><span class="p">,</span><span class="w"> </span><span class="n">nvJitLinkDestroy</span><span class="p">(</span><span class="o">&amp;</span><span class="n">linker</span><span class="p">));</span>
+
+<span class="w">  </span><span class="c1">// Load cubin</span>
+<span class="w">  </span><span class="n">CUmodule</span><span class="w"> </span><span class="k">module</span><span class="p">;</span>
+<span class="w">  </span><span class="n">CUfunction</span><span class="w"> </span><span class="n">kernel</span><span class="p">;</span>
+<span class="w">  </span><span class="n">CU_CHECK</span><span class="p">(</span><span class="n">cuModuleLoadDataEx</span><span class="p">(</span><span class="o">&amp;</span><span class="k">module</span><span class="p">,</span><span class="w"> </span><span class="n">cubin</span><span class="p">.</span><span class="n">get</span><span class="p">(),</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="cm">/* numOptions */</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">));</span>
+<span class="w">  </span><span class="n">CU_CHECK</span><span class="p">(</span><span class="n">cuModuleGetFunction</span><span class="p">(</span><span class="o">&amp;</span><span class="n">kernel</span><span class="p">,</span><span class="w"> </span><span class="k">module</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;decomp_warp_kernel&quot;</span><span class="p">));</span>
+
+<span class="w">  </span><span class="c1">// Set dynamic shared memory needs</span>
+<span class="w">  </span><span class="n">CU_CHECK</span><span class="p">(</span><span class="n">cuFuncSetAttribute</span><span class="p">(</span><span class="n">kernel</span><span class="p">,</span><span class="w"> </span><span class="n">CU_FUNC_ATTRIBUTE_MAX_DYNAMIC_SHARED_SIZE_BYTES</span><span class="p">,</span><span class="w"> </span><span class="n">decomp_shared_memory</span><span class="p">));</span>
+
+<span class="w">  </span><span class="c1">// Start with the actual decompression</span>
+<span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">comp_chunks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">compressed_data</span><span class="p">.</span><span class="n">chunk_ptrs</span><span class="p">();</span>
+<span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">uncomp_chunks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">decomp_data</span><span class="p">.</span><span class="n">chunk_ptrs</span><span class="p">();</span>
+<span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">comp_chunk_sizes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">compressed_data</span><span class="p">.</span><span class="n">chunk_sizes</span><span class="p">();</span>
+<span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">decomp_chunk_sizes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">decomp_data</span><span class="p">.</span><span class="n">chunk_sizes</span><span class="p">();</span>
+<span class="w">  </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">args</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="o">&amp;</span><span class="n">batch_size</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">comp_chunks</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">uncomp_chunks</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">comp_chunk_sizes</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">decomp_chunk_sizes</span><span class="p">};</span>
+<span class="w">  </span><span class="n">CU_CHECK</span><span class="p">(</span><span class="n">cuLaunchKernel</span><span class="p">(</span>
+<span class="w">    </span><span class="n">kernel</span><span class="p">,</span>
+<span class="w">    </span><span class="n">block_count</span><span class="w"> </span><span class="cm">/* gridDimX */</span><span class="p">,</span>
+<span class="w">    </span><span class="mi">1</span><span class="w"> </span><span class="cm">/* gridDimY */</span><span class="p">,</span>
+<span class="w">    </span><span class="mi">1</span><span class="w"> </span><span class="cm">/* gridDimZ */</span><span class="p">,</span>
+<span class="w">    </span><span class="n">block_size</span><span class="w"> </span><span class="cm">/* blockDimX */</span><span class="p">,</span>
+<span class="w">    </span><span class="mi">1</span><span class="w"> </span><span class="cm">/* blockDimY */</span><span class="p">,</span>
+<span class="w">    </span><span class="mi">1</span><span class="w"> </span><span class="cm">/* blockDimZ */</span><span class="p">,</span>
+<span class="w">    </span><span class="n">decomp_shared_memory</span><span class="p">,</span>
+<span class="w">    </span><span class="nb">NULL</span><span class="w"> </span><span class="cm">/* hStream */</span><span class="p">,</span>
+<span class="w">    </span><span class="n">args</span><span class="p">,</span>
+<span class="w">    </span><span class="nb">NULL</span><span class="p">));</span>
+<span class="w">  </span><span class="n">CU_CHECK</span><span class="p">(</span><span class="n">cuCtxSynchronize</span><span class="p">());</span>
+
+<span class="w">  </span><span class="c1">// Validate decompressed data against input</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">decomp_data</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">input_data_cpu</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">throw</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">runtime_error</span><span class="p">(</span><span class="s">&quot;Failed to validate decompressed data&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;decompression validated :)&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">Arch</span><span class="o">&gt;</span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">Runner</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="p">...</span><span class="w"> </span><span class="n">Args</span><span class="o">&gt;</span>
+<span class="w">  </span><span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">run</span><span class="p">(</span><span class="n">Args</span><span class="o">&amp;&amp;</span><span class="p">...</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">run_nvrtc_example</span><span class="o">&lt;</span><span class="n">Arch</span><span class="o">&gt;</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">forward</span><span class="o">&lt;</span><span class="n">Args</span><span class="o">&gt;</span><span class="p">(</span><span class="n">args</span><span class="p">)...);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">};</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">argc</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">argv</span><span class="p">[])</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">file_names</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">do</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">argc</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">break</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">argc</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">current_argv</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">argv</span><span class="p">[</span><span class="n">i</span><span class="o">++</span><span class="p">];</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">strcmp</span><span class="p">(</span><span class="n">current_argv</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;-f&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Parse until next `-` argument</span>
+<span class="w">        </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">argc</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">argv</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="sc">&#39;-&#39;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="n">file_names</span><span class="p">.</span><span class="n">emplace_back</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="n">i</span><span class="o">++</span><span class="p">]);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">cerr</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Unknown argument: &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">current_argv</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">file_names</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cerr</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Must specify at least one file via &#39;-f &lt;file&gt;&#39;.&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">multi_file</span><span class="p">(</span><span class="n">file_names</span><span class="p">);</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">run_with_current_arch</span><span class="o">&lt;</span><span class="n">Runner</span><span class="o">&gt;</span><span class="p">(</span><span class="n">data</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="ans_examples.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">ANS Examples</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../release_notes.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Release Notes</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+
+<div class="bd-sidebar-secondary"></div>
+
+
+              
+            
+
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5"></script>
+
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+<a class="footer-brand logo" href="https://www.nvidia.com">
+  <img src="../_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="../_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+</a></div>
+      
+        <div class="footer-item">
+
+<div class="footer-links">
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/">Privacy Policy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Your Privacy Choices</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/">Terms of Service</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/accessibility/">Accessibility</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/company-policies/">Corporate Policies</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/product-security/">Product Security</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/contact/">Contact</a>
+  
+  
+  
+</div>
+</div>
+      
+        <div class="footer-item">
+
+
+
+
+  <p class="copyright">
+    
+      Copyright © 2024-2026, NVIDIA Corporation &amp; Affiliates. All rights reserved.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+  </body>
+</html>

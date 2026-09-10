@@ -1,0 +1,790 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>NVIDIA MathDx Package &#8212; MathDx</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
+
+
+
+    <script src="_static/documentation_options.js?v=13000535"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'index';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://docs.nvidia.com/cuda/mathdx/_static/switcher.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '26.06.1';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+
+    <link rel="icon" href="_static/nvidia.ico"/>
+
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Installation Guide" href="installation.html" />
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="26.06.1" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+
+
+  </head>
+
+  <body data-default-mode="">
+
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="#">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="MathDx - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="MathDx - Home"/>
+  
+  
+    <p class="title logo__title">MathDx</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="#">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="MathDx - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="MathDx - Home"/>
+  
+  
+    <p class="title logo__title">MathDx</p>
+  
+</a>
+
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Table of Contents">
+  <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Home</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">NVIDIA MathDx Device Extensions</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Install MathDx</a></li>
+<li class="toctree-l1"><a class="reference internal" href="python.html">Python</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference external" href="https://docs.nvidia.com/cuda/cublasdx/">cuBLASDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://docs.nvidia.com/cuda/cufftdx/">cuFFTDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://docs.nvidia.com/cuda/cusolverdx/">cuSolverDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://docs.nvidia.com/cuda/curanddx/">cuRANDDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://docs.nvidia.com/cuda/nvcompdx/">nvCOMPDx</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Libraries Download Pages</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/cublasdx-downloads">cuBLASDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/cufftdx-downloads">cuFFTDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/cusolverdx-downloads">cuSolverDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/curanddx-downloads">cuRANDDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/nvcompdx-downloads">nvCOMPDx</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="release_notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/NVIDIA/CUDALibrarySamples/tree/main/MathDx/">GitHub Samples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none"></div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="nvidia-mathdx-package">
+<h1>NVIDIA MathDx Package<a class="headerlink" href="#nvidia-mathdx-package" title="Link to this heading">#</a></h1>
+<p>The <strong>MathDx</strong> package is a comprehensive collection of NVIDIA device extension libraries that empower CUDA developers to run
+advanced mathematical operations directly inside their GPU kernels, leveraging kernel fusion for maximum efficiency and flexibility.
+These libraries are crafted to work seamlessly together, providing a unified solution for high-performance computations, data processing,
+and random number generation — all without unnecessary host-device data transfers.
+MathDx delivers performance portability across hardware generations, abstracting low-level GPU architecture details
+so developers can focus on algorithms rather than hardware-specific tuning.</p>
+<ul class="simple">
+<li><p><strong>cuBLASDx</strong>: Device-side extensions for selected linear algebra routines, including efficient General Matrix Multiplication (GEMM) performed within kernels.</p></li>
+<li><p><strong>cuFFTDx</strong>: Device-side Fast Fourier Transform library, enabling in-kernel FFT calculations for signal processing and scientific computation.</p></li>
+<li><p><strong>cuSolverDx</strong>: Device-side matrix factorization, linear solve, least squares, eigenvalue solver, and singular value decomposition routines, supporting scientific and engineering workflows within a kernel.</p></li>
+<li><p><strong>cuRANDDx</strong>: A random number generation library serving as a modern replacement for <a class="reference external" href="https://docs.nvidia.com/cuda/curand/device-api-overview.html#device-api-overview">cuRAND device APIs</a>.</p></li>
+<li><p><strong>nvCOMPDx</strong>: Compression and decompression capabilities built into device code, essential for high-throughput streaming and storage applications.</p></li>
+</ul>
+<p>All device extension libraries are shipped in a single package, see
+<a class="reference internal" href="installation.html#installation-guide-label"><span class="std std-ref">Installation Guide</span></a> for more details.</p>
+<section id="libraries-documentation">
+<h2>Libraries Documentation<a class="headerlink" href="#libraries-documentation" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://docs.nvidia.com/cuda/cublasdx/index.html">cuBLASDx Documentation</a></p></li>
+<li><p><a class="reference external" href="https://docs.nvidia.com/cuda/cufftdx/index.html">cuFFTDx Documentation</a></p></li>
+<li><p><a class="reference external" href="https://docs.nvidia.com/cuda/cusolverdx/index.html">cuSolverDx Documentation</a></p></li>
+<li><p><a class="reference external" href="https://docs.nvidia.com/cuda/curanddx/index.html">cuRANDDx Documentation</a></p></li>
+<li><p><a class="reference external" href="https://docs.nvidia.com/cuda/nvcompdx/index.html">nvCOMPDx Documentation</a></p></li>
+</ul>
+</section>
+<section id="components">
+<h2>Components<a class="headerlink" href="#components" title="Link to this heading">#</a></h2>
+<p>The latest release: <strong>26.06.1</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>MathDx</p></th>
+<th class="head"><p>cuBLASDx</p></th>
+<th class="head"><p>cuFFTDx</p></th>
+<th class="head"><p>cuSolverDx</p></th>
+<th class="head"><p>cuRANDDx</p></th>
+<th class="head"><p>nvCOMPDx</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>26.06.1</strong></p></td>
+<td><p>0.7.1</p></td>
+<td><p>1.7.3</p></td>
+<td><p>0.5.0</p></td>
+<td><p>0.2.4</p></td>
+<td><p>0.1.4</p></td>
+</tr>
+<tr class="row-odd"><td><p>26.06.0</p></td>
+<td><p>0.7.0</p></td>
+<td><p>1.7.1</p></td>
+<td><p>0.5.0</p></td>
+<td><p>0.2.4</p></td>
+<td><p>0.1.4</p></td>
+</tr>
+<tr class="row-even"><td><p>26.03.0</p></td>
+<td><p>0.6.0</p></td>
+<td><p>1.7.0</p></td>
+<td><p>0.4.0</p></td>
+<td><p>0.2.3</p></td>
+<td><p>0.1.3</p></td>
+</tr>
+<tr class="row-odd"><td><p>25.12.1</p></td>
+<td><p>0.5.1</p></td>
+<td><p>1.6.1</p></td>
+<td><p>0.3.0</p></td>
+<td><p>0.2.2</p></td>
+<td><p>0.1.2</p></td>
+</tr>
+<tr class="row-even"><td><p>25.12.0</p></td>
+<td><p>0.5.0</p></td>
+<td><p>1.6.0</p></td>
+<td><p>0.3.0</p></td>
+<td><p>0.2.2</p></td>
+<td><p>0.1.2</p></td>
+</tr>
+<tr class="row-odd"><td><p>25.6.1</p></td>
+<td><p>0.4.1</p></td>
+<td><p>1.5.1</p></td>
+<td><p>0.2.1</p></td>
+<td><p>0.2.1</p></td>
+<td><p>0.1.1</p></td>
+</tr>
+<tr class="row-even"><td><p>25.6.0</p></td>
+<td><p>0.4.0</p></td>
+<td><p>1.5.0</p></td>
+<td><p>0.2.0</p></td>
+<td><p>0.2.0</p></td>
+<td><p>0.1.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>25.1.1</p></td>
+<td><p>0.3.1</p></td>
+<td><p>1.3.1</p></td>
+<td><p>0.1.1</p></td>
+<td><p>0.1.1</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>25.1.0</p></td>
+<td><p>0.3.0</p></td>
+<td><p>1.3.0</p></td>
+<td><p>0.1.0</p></td>
+<td><p>0.1.0</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>24.8.0</p></td>
+<td><p>0.2.0</p></td>
+<td><p>1.2.1</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>24.4.0</p></td>
+<td><p>0.1.1</p></td>
+<td><p>1.2.0</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>24.1.0</p></td>
+<td><p>0.1.0</p></td>
+<td><p>1.1.1</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>22.11.0</p></td>
+<td></td>
+<td><p>1.1.0</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>22.02.0</p></td>
+<td></td>
+<td><p>1.0.0</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Link to this heading">#</a></h2>
+<p>General requirements for the components in the latest release:</p>
+<ul class="simple">
+<li><p>Supported CUDA compiler (C++17 support required)</p></li>
+<li><p>Supported host compiler (C++17 support required)</p></li>
+<li><p>(Optional) CMake (version 3.26 or greater)</p></li>
+<li><p>NVIDIA GPU: Turing (SM75) or newer</p></li>
+<li><p>CUDA Toolkit support:</p>
+<ul>
+<li><p>Always use the latest patch version of the CUDA Toolkit (for example, for 13.0 use 13.0.2).</p></li>
+</ul>
+</li>
+</ul>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"></th>
+<th class="head"><p>cuBLASDx</p></th>
+<th class="head"><p>cuFFTDx</p></th>
+<th class="head"><p>cuSolverDx</p></th>
+<th class="head"><p>cuRANDDx</p></th>
+<th class="head"><p>nvCOMPDx</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CUDA</p></td>
+<td><div class="line-block">
+<div class="line">13.0.2+</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">13.0.2+</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">13.0.2+</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">13.0.2+</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">13.0.2+</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<ul class="simple">
+<li><p>CUDA compilers: NVCC and NVRTC from the supported CUDA Toolkits.</p></li>
+<li><p>Host compilers:</p></li>
+</ul>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"></th>
+<th class="head"><p>cuBLASDx</p></th>
+<th class="head"><p>cuFFTDx</p></th>
+<th class="head"><p>cuSolverDx</p></th>
+<th class="head"><p>cuRANDDx</p></th>
+<th class="head"><p>nvCOMPDx</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>GCC</p></td>
+<td><p>7+</p></td>
+<td><p>7+</p></td>
+<td><p>7+</p></td>
+<td><p>7+</p></td>
+<td><p>7+</p></td>
+</tr>
+<tr class="row-odd"><td><p>Clang (Linux/WSL2)</p></td>
+<td><p>9+</p></td>
+<td><p>9+</p></td>
+<td><p>9+</p></td>
+<td><p>9+</p></td>
+<td><p>9+</p></td>
+</tr>
+<tr class="row-even"><td><p>MSVC (Windows)</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td><p>19.44+ (VS2022 17.14)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>We recommend using GCC 10+ as the host compiler, and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">NVCC</span></code> shipped with the latest <a class="reference external" href="https://developer.nvidia.com/cuda/toolkit">CUDA Toolkit</a> as the CUDA compiler.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For detailed requirements, please check the documentation of each library as as requirements may differ slightly between libraries.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This MathDx release ships with CUTLASS 4.5.2, and this is the recommended version to use.
+CUTLASS 4.4.3, 4.3.6, and 4.2.2 are also supported but not regularly tested, thus not recommended.</p>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+<div class="toctree-wrapper compound">
+</div>
+<div class="toctree-wrapper compound">
+</div>
+<div class="toctree-wrapper compound">
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="right-next"
+       href="installation.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Installation Guide</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#libraries-documentation">Libraries Documentation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#components">Components</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#requirements">Requirements</a><ul class="nav section-nav flex-column">
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5"></script>
+
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+<a class="footer-brand logo" href="https://www.nvidia.com">
+  <img src="_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+</a></div>
+      
+        <div class="footer-item">
+
+<div class="footer-links">
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/">Privacy Policy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Your Privacy Choices</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/">Terms of Service</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/accessibility/">Accessibility</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/company-policies/">Corporate Policies</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/product-security/">Product Security</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/contact/">Contact</a>
+  
+  
+  
+</div>
+</div>
+      
+        <div class="footer-item">
+
+
+
+
+  <p class="copyright">
+    
+      Copyright © 2025-2026, NVIDIA Corporation &amp; Affiliates. All rights reserved.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+  </body>
+</html>

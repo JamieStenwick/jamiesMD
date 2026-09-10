@@ -1,0 +1,854 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Augment cuFFTDx with LTO &#8212; cuFFTDx</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
+
+
+
+    <script src="../_static/documentation_options.js?v=702cf1bd"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'cufft_lto/augment_with_lto';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://docs.nvidia.com/cuda/cufftdx/_static/switcher.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '1.7.3';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+
+    <link rel="icon" href="../_static/nvidia.ico"/>
+
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Custom LTO Helper" href="custom_lto_helper.html" />
+    <link rel="prev" title="Using cuFFTDx with cuFFT LTO" href="index.html" />
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="1.7.3" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+
+
+  </head>
+
+  <body data-default-mode="">
+
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="cuFFTDx - Home"/>
+    <img src="../_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="cuFFTDx - Home"/>
+  
+  
+    <p class="title logo__title">cuFFTDx</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="cuFFTDx - Home"/>
+    <img src="../_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="cuFFTDx - Home"/>
+  
+  
+    <p class="title logo__title">cuFFTDx</p>
+  
+</a>
+
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Table of Contents">
+  <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
+  <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Documentation home</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../requirements_func.html">Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../introduction1.html">Using cuFFTDx</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../introduction2.html">Your Next Custom FFT Kernels</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Using cuFFTDx with cuFFT LTO</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Augment cuFFTDx with LTO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="custom_lto_helper.html">Customize LTO Helper</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../performance.html">Achieving High Performance</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../api/operators.html">Operators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/traits.html">Traits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/methods.html">Execution Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/other_methods.html">Other Methods</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">cuFFT API Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../cufft_api/device_api.html">cuFFT Device API</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Python Bindings</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../python_bindings.html">Python Bindings</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lto_examples.html">LTO Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lto_helper.html">LTO Helper</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../release_notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/NVIDIA/CUDALibrarySamples/tree/main/MathDx/cuFFTDx">GitHub Samples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">MathDx</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/cufftdx-downloads">cuFFTDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/cusolverdx-downloads">cuSolverDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/cublasdx-downloads">cuBLASDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/curanddx-downloads">cuRANDDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/nvcompdx-downloads">nvCOMPDx</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">Using cuFFTDx with cuFFT LTO</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Augment cuFFTDx with LTO</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="augment-cufftdx-with-lto">
+<span id="augment-with-lto-label"></span><h1>Augment cuFFTDx with LTO<a class="headerlink" href="#augment-cufftdx-with-lto" title="Link to this heading">#</a></h1>
+<p>This section shows how the LTO blobs provided by cuFFT can be integrated into existing cuFFTDx projects.</p>
+<p>We will cover two use cases:</p>
+<ul class="simple">
+<li><p><strong>Offline Kernel Generation</strong>: A user is optimizing kernels with knowledge of the required FFTs ahead of compilation and would like to avoid any runtime cost by generating kernels offline using NVCC.</p></li>
+<li><p><strong>Online Kernel Generation</strong>: A user does not know which FFTs to compute until execution and needs to generate kernels at runtime using NVRTC and nvJitLink.</p></li>
+</ul>
+<section id="use-case-i-offline-kernel-generation">
+<span id="offline-lto-kernel-generation-label"></span><h2>Use Case I: Offline Kernel Generation<a class="headerlink" href="#use-case-i-offline-kernel-generation" title="Link to this heading">#</a></h2>
+<p>We use code snippets from <a class="reference internal" href="../lto_examples.html#introduction-examples-lto-label"><span class="std std-ref">09_introduction_lto_example/introduction_lto_example</span></a> to demonstrate how to integrate LTO features into your codebase for the offline kernel generation use case.
+This example shows how to modify the existing non-LTO sample <a class="reference internal" href="../examples.html#examples-simple-fft-examples-label"><span class="std std-ref">02_simple_fft_block/simple_fft_block</span></a> to add LTO support.</p>
+<p>The modifications required to add LTO support to <code class="docutils literal notranslate"><span class="pre">simple_fft_block</span></code> can be divided into three categories:</p>
+<ol class="arabic simple">
+<li><p>LTO database creation.</p></li>
+<li><p>Source code changes.</p></li>
+<li><p>Build changes.</p></li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Here we show how the modifications are done with direct compilation. For CMake users, please refer to <a class="reference internal" href="../installation.html#installation-with-cmake-lto-label"><span class="std std-ref">Using cuFFT LTO Database with cuFFTDx in CMake</span></a>.</p>
+</div>
+<section id="lto-database-creation">
+<h3>LTO Database Creation<a class="headerlink" href="#lto-database-creation" title="Link to this heading">#</a></h3>
+<p>The first modification required to add LTO support, before making any changes to the project source code or build, is constructing an LTO database. The database consists of a C++ header file as well as <code class="code highlight cpp docutils literal highlight-cpp"><span class="p">.</span><span class="n">fatbin</span></code> and <code class="code highlight cpp docutils literal highlight-cpp"><span class="p">.</span><span class="n">ltoir</span></code> files. All generated files must be included and linked with the project, and therefore must be created <strong>before the project is compiled</strong>.
+To generate the database, one can use <strong>LTO Helper</strong>, provided by the cuFFTDx package, or build a <a class="reference internal" href="custom_lto_helper.html#customize-lto-helper-label"><span class="std std-ref">custom helper</span></a>. The LTO helper constructs a database using a CSV file of FFT descriptions.
+Please refer to <a class="reference internal" href="../lto_helper.html#lto-helper-label"><span class="std std-ref">LTO Helper</span></a> for an in-depth overview of the tool.</p>
+<p><code class="docutils literal notranslate"><span class="pre">introduction_lto_example</span></code> builds the database using the following steps:</p>
+<ol class="arabic simple">
+<li><p>Create a CSV file containing a list of all FFT descriptions that should be included in the database.
+Below is an example CSV file, <code class="docutils literal notranslate"><span class="pre">introduction_lto_example.csv</span></code>, that inquires the LTO Helper to produce an LTO database for computing a C2C forward FFT of size 128 (the FFT configuration used in <code class="docutils literal notranslate"><span class="pre">introduction_lto_example</span></code>).</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>size,direction,execution_type
+<span class="m">128</span>,fft_direction::forward,execution_type::block
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For the complete list of traits that can be included in the CSV file, please visit <a class="reference internal" href="../lto_helper.html#lto-helper-label"><span class="std std-ref">LTO Helper</span></a>. Note that the target CUDA architecture is provided as an argument to the LTO Helper and not as a trait within the CSV file.</p>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>Compile the LTO Helper.</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>g++<span class="w"> </span>-I&lt;cufft_include_path&gt;<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-L&lt;cufft_lib_path&gt;<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-I&lt;cuda_include_path&gt;<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-lcufft<span class="w"> </span>cufftdx_cufft_lto_helper.cpp<span class="w"> </span>-o<span class="w"> </span>cufftdx_cufft_lto_helper
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li><p>Run the LTO Helper, providing the output directory, CSV file, and the target CUDA architectures, to produce and write the LTO database fatbin(s), ltoir(s) and a C++ header file to disk. The CUDA architectures argument, <code class="docutils literal notranslate"><span class="pre">--CUDA_ARCHITECTURES</span></code>, is optional and, if omitted, results in LTO database being built for all supported architectures.</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./cufftdx_cufft_lto_helper<span class="w"> </span>&lt;output_dir_path&gt;
+<span class="w">                           </span>introduction_lto_example.csv<span class="w"> </span><span class="se">\</span>
+<span class="w">                           </span>--CUDA_ARCHITECTURES<span class="o">=</span>XX<span class="p">;</span>YY<span class="p">;</span>...
+</pre></div>
+</div>
+</section>
+<section id="source-code-changes">
+<h3>Source Code Changes<a class="headerlink" href="#source-code-changes" title="Link to this heading">#</a></h3>
+<p>The source code changes necessary to add LTO support to an existing project are minimal. Two adjustments are needed:</p>
+<ol class="arabic simple">
+<li><p>Add an include statement for the database header file created by the LTO Helper.</p></li>
+</ol>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;/path/to/lto_database.hpp.inc&quot;</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>Modify the FFT description type to include the LTOIR codetype.</p></li>
+</ol>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">FFT_without_code_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">decltype</span><span class="p">(</span><span class="n">cufftdx</span><span class="o">::</span><span class="n">Block</span><span class="p">()</span><span class="w"> </span><span class="o">+</span>
+<span class="w">    </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">Size</span><span class="o">&lt;</span><span class="mi">128</span><span class="o">&gt;</span><span class="p">()</span><span class="w"> </span><span class="o">+</span>
+<span class="w">    </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">Type</span><span class="o">&lt;</span><span class="n">cufftdx</span><span class="o">::</span><span class="n">fft_type</span><span class="o">::</span><span class="n">c2c</span><span class="o">&gt;</span><span class="p">()</span><span class="w"> </span><span class="o">+</span>
+<span class="w">    </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">Direction</span><span class="o">&lt;</span><span class="n">cufftdx</span><span class="o">::</span><span class="n">fft_direction</span><span class="o">::</span><span class="n">forward</span><span class="o">&gt;</span><span class="p">()</span><span class="w"> </span><span class="o">+</span>
+<span class="w">    </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">Precision</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">()</span><span class="w"> </span><span class="o">+</span>
+<span class="w">    </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">ElementsPerThread</span><span class="o">&lt;</span><span class="mi">8</span><span class="o">&gt;</span><span class="p">()</span><span class="w"> </span><span class="o">+</span>
+<span class="w">    </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">FFTsPerBlock</span><span class="o">&lt;</span><span class="mi">2</span><span class="o">&gt;</span><span class="p">()</span><span class="w"> </span><span class="o">+</span>
+<span class="w">    </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">SM</span><span class="o">&lt;</span><span class="n">Arch</span><span class="o">&gt;</span><span class="p">());</span>
+<span class="k">using</span><span class="w"> </span><span class="n">FFT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">decltype</span><span class="p">(</span><span class="n">FFT_without_code_type</span><span class="p">()</span><span class="w"> </span><span class="o">+</span>
+<span class="w">    </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">experimental</span><span class="o">::</span><span class="n">CodeType</span><span class="o">&lt;</span>
+<span class="w">        </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">experimental</span><span class="o">::</span><span class="n">code_type</span><span class="o">::</span><span class="n">ltoir</span><span class="o">&gt;</span><span class="p">());</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If the FFT traits do not coincide with an entry in the LTO database or are not supported for the targetted architecture it is possible that a non-LTO implementation is chosen. To validate that LTO device code has been selected from the database, the following static assert can be used:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">static_assert</span><span class="p">(</span>
+<span class="w">    </span><span class="n">FFT</span><span class="o">::</span><span class="n">code</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">experimental</span><span class="o">::</span><span class="n">code_type</span><span class="o">::</span><span class="n">ltoir</span><span class="p">,</span>
+<span class="w">    </span><span class="s">&quot;Selected implementation code type is not LTOIR.&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>To avoid any kind of undefined behaviour only one database header file can be included in the application.</p>
+</div>
+</section>
+<section id="build-changes">
+<h3>Build Changes<a class="headerlink" href="#build-changes" title="Link to this heading">#</a></h3>
+<p>The following is a list of steps for building and linking user code with the generated LTO database.</p>
+<ol class="arabic simple">
+<li><p>Compile the <code class="docutils literal notranslate"><span class="pre">.cu</span></code> file which contains kernel(s) utilizing cuFFTDx operations into LTOIR. The <code class="docutils literal notranslate"><span class="pre">-dc</span></code> flag indicates the file contains relocatable device code while the <code class="docutils literal notranslate"><span class="pre">--generate-code</span> <span class="pre">arch=compute_75,code=lto_75</span></code> flag tells nvcc to generate LTOIR for the desired architecture(s).</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nvcc<span class="w"> </span>-std<span class="o">=</span>c++17<span class="w"> </span><span class="se">\</span>
+<span class="w">     </span>-dc<span class="w"> </span><span class="se">\</span>
+<span class="w">     </span>--generate-code<span class="w"> </span><span class="nv">arch</span><span class="o">=</span>compute_75,code<span class="o">=</span>lto_75<span class="w"> </span><span class="se">\</span>
+<span class="w">     </span>-I&lt;cufftdx_include_path&gt;<span class="w"> </span><span class="se">\</span>
+<span class="w">     </span>-I/path/to/lto_database.hpp.inc<span class="w"> </span><span class="se">\</span>
+<span class="w">     </span>introduction_lto_example.cu<span class="w"> </span>-o<span class="w"> </span>introduction_lto_example.o
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>Device link the <code class="docutils literal notranslate"><span class="pre">.o</span></code> file from step 1 with the LTO database fatbin(s) and ltoir(s), producing a new object containing the linked device code. Note that the <code class="docutils literal notranslate"><span class="pre">--generate-code</span></code> flag provided in this command uses <code class="docutils literal notranslate"><span class="pre">code=sm_75</span></code>, not <code class="docutils literal notranslate"><span class="pre">code=lto_75</span></code>, as this command specifies the output architecture produced when linking all input LTOIR.</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nvcc<span class="w"> </span>-dlto<span class="w"> </span><span class="se">\</span>
+<span class="w">     </span>-dlink<span class="w"> </span><span class="se">\</span>
+<span class="w">     </span>--generate-code<span class="w"> </span><span class="nv">arch</span><span class="o">=</span>compute_75,code<span class="o">=</span>sm_75<span class="w"> </span><span class="se">\</span>
+<span class="w">     </span>/path/to/database_X.fatbin<span class="w"> </span>...<span class="w"> </span><span class="se">\</span>
+<span class="w">     </span>/path/to/database_X.ltoir<span class="w"> </span>...<span class="w"> </span><span class="se">\</span>
+<span class="w">     </span>introduction_lto_example.o<span class="w"> </span>-o<span class="w"> </span>introduction_lto_example_dlink.o
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li><p>Host link the object files from step 1 and step 2 to produce the final executable.</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>g++<span class="w"> </span>-L&lt;cuda_lib64_path&gt;<span class="w"> </span>-lcudart<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>introduction_lto_example_dlink.o<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>introduction_lto_example.o<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-o<span class="w"> </span>introduction_lto_example
+</pre></div>
+</div>
+</section>
+</section>
+<section id="use-case-ii-online-kernel-generation">
+<span id="online-lto-kernel-generation-label"></span><h2>Use Case II: Online Kernel Generation<a class="headerlink" href="#use-case-ii-online-kernel-generation" title="Link to this heading">#</a></h2>
+<p>We use code snippets from <a class="reference internal" href="../lto_examples.html#introduction-examples-lto-label"><span class="std std-ref">04_nvrtc_fft/nvrtc_fft_block_lto</span></a> to demonstrate how to integrate LTO features into your codebase for the online kernel generation use case.
+This example shows how to modify the existing non-LTO NVRTC sample <a class="reference internal" href="../examples.html#examples-nvrtc-examples-label"><span class="std std-ref">04_nvrtc_fft/nvrtc_fft_thread</span></a> to add LTO support.</p>
+<p>The modifications required to add LTO support to <code class="docutils literal notranslate"><span class="pre">04_nvrtc_fft/nvrtc_fft_thread</span></code> can be divided into two categories:</p>
+<ol class="arabic simple">
+<li><p>Source code changes.</p></li>
+<li><p>Build changes.</p></li>
+</ol>
+<section id="id1">
+<h3>Source Code Changes<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<p>In contrast to the offline kernel generation use case, most of the changes in online kernel generation happen in the source code:</p>
+<ol class="arabic">
+<li><p>LTO Database Creation.</p>
+<p>Instead of writing the LTO database (the C++ header and the LTOIRs) to disk,
+one can use the <code class="docutils literal notranslate"><span class="pre">cufftdx::utils::get_database_and_ltoir</span></code> function to get pointers to the C++ header and the LTOIRs.
+For more details about the function, please refer to <a class="reference internal" href="../api/other_methods.html#get-database-and-ltoir-label"><span class="std std-ref">(online) LTO Database Creation</span></a>.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span><span class="w"> </span><span class="p">[</span><span class="n">lto_db</span><span class="p">,</span><span class="w"> </span><span class="n">ltoirs</span><span class="p">,</span><span class="w"> </span><span class="n">block_dim</span><span class="p">,</span><span class="w"> </span><span class="n">shared_memory_size</span><span class="p">]</span><span class="w"> </span><span class="o">=</span>
+<span class="w">   </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">utils</span><span class="o">::</span><span class="n">get_database_and_ltoir</span><span class="p">(</span>
+<span class="w">      </span><span class="n">fft_size</span><span class="p">,</span>
+<span class="w">      </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">fft_direction</span><span class="o">::</span><span class="n">inverse</span><span class="p">,</span>
+<span class="w">      </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">fft_type</span><span class="o">::</span><span class="n">c2c</span><span class="p">,</span>
+<span class="w">      </span><span class="n">example</span><span class="o">::</span><span class="n">nvrtc</span><span class="o">::</span><span class="n">get_device_architecture</span><span class="p">(</span><span class="n">current_device</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span>
+<span class="w">      </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">utils</span><span class="o">::</span><span class="n">execution_type</span><span class="o">::</span><span class="n">block</span><span class="p">,</span>
+<span class="w">      </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">precision</span><span class="o">::</span><span class="n">f64</span><span class="p">,</span>
+<span class="w">      </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">complex_layout</span><span class="o">::</span><span class="n">natural</span><span class="p">,</span>
+<span class="w">      </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">real_mode</span><span class="o">::</span><span class="n">normal</span><span class="p">,</span>
+<span class="w">      </span><span class="n">fft_ept</span>
+<span class="w">   </span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The function is a wrapper around the cuFFT Device API (see <a class="reference internal" href="../cufft_api/device_api.html#cufft-device-api-label"><span class="std std-ref">cuFFT Device API Reference</span></a>). To use it, one needs to:</p>
+<ol class="arabic simple">
+<li><p>Define the macro <code class="docutils literal notranslate"><span class="pre">CUFFTDX_ENABLE_CUFFT_DEPENDENCY</span></code>.</p></li>
+<li><p>Link against the cuFFT library.</p></li>
+</ol>
+</div>
+</li>
+<li><p>CUDA Source Code Changes.</p>
+<p>The changes here are the same as in the offline kernel generation use case. We need to:</p>
+<ol class="loweralpha simple">
+<li><p>Include the database header (<code class="docutils literal notranslate"><span class="pre">lto_db</span></code>).</p></li>
+<li><p>Modify the FFT description type to include the LTOIR codetype.</p></li>
+</ol>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">test_kernel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sa">R</span><span class="s">&quot;</span><span class="dl">kernel(</span>
+<span class="s">using namespace cufftdx;</span>
+
+<span class="s">// FFT Operators</span>
+<span class="s">using size_desc = Size&lt;FFT_SIZE&gt;;</span>
+<span class="s">using dir_desc  = Direction&lt;fft_direction::inverse&gt;;</span>
+<span class="s">using type_c2c  = Type&lt;fft_type::c2c&gt;;</span>
+<span class="s">using FFT_without_code_type = decltype(Block() +</span>
+<span class="s">    size_desc() + dir_desc() + type_c2c() +</span>
+<span class="s">    Precision&lt;double&gt;() + SM&lt;FFT_SM&gt;() +</span>
+<span class="s">    ElementsPerThread&lt;FFT_EPT&gt;());</span>
+<span class="s">using FFT = decltype(FFT_without_code_type() +</span>
+<span class="s">    experimental::CodeType&lt;experimental::code_type::ltoir&gt;());</span>
+
+<span class="s">// ...</span>
+<span class="dl">)kernel</span><span class="s">&quot;</span><span class="p">;</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">   </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">dx_source_code</span><span class="p">;</span>
+<span class="w">   </span><span class="n">dx_source_code</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="s">&quot;#include &lt;cufftdx.hpp&gt;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="w">   </span><span class="n">dx_source_code</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">lto_db</span><span class="p">);</span><span class="w"> </span><span class="c1">// Include LTO database header</span>
+<span class="w">   </span><span class="n">dx_source_code</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">test_kernel</span><span class="p">);</span>
+<span class="w">   </span><span class="c1">// ...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p>Compile the CUDA Source Code to LTOIR using <a class="reference external" href="https://docs.nvidia.com/cuda/nvrtc/index.html">NVRTC</a>.</p>
+<p>The changes boil down to adding the <code class="docutils literal notranslate"><span class="pre">-dlto</span></code> and <code class="docutils literal notranslate"><span class="pre">--relocatable-device-code=true</span></code> flags to the NVRTC compilation options.</p>
+</li>
+<li><p>Link the LTOIRs, generated online by NVRTC and dumped by cuFFT, using <a class="reference external" href="https://docs.nvidia.com/cuda/nvjitlink/index.html">nvJitLink</a>.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">nvJitLinkAddData</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span><span class="w"> </span><span class="n">NVJITLINK_INPUT_ANY</span><span class="p">,</span>
+<span class="w">                 </span><span class="n">ltoir</span><span class="p">.</span><span class="n">data</span><span class="p">(),</span><span class="w"> </span><span class="n">ltoir_size</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;nvrtc_ltoir&quot;</span><span class="p">);</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">unsigned</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">ltoirs</span><span class="p">.</span><span class="n">size</span><span class="p">();</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="n">nvJitLinkAddData</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span><span class="w"> </span><span class="n">NVJITLINK_INPUT_ANY</span><span class="p">,</span>
+<span class="w">                    </span><span class="n">ltoirs</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">data</span><span class="p">(),</span><span class="w"> </span><span class="n">ltoirs</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">size</span><span class="p">(),</span>
+<span class="w">                    </span><span class="s">&quot;cufft_generated_ltoir&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>To add the LTOIRs data to nvJitLink, one can simply use <code class="docutils literal notranslate"><span class="pre">NVJITLINK_INPUT_ANY</span></code> as the input type and do not have to worry about differentiating between LTOIRs and fatbinaries returned by the cuFFT library (see <a class="reference internal" href="../cufft_api/device_api.html#api-reference-cufftcode-container-label"><span class="std std-ref">cufftDeviceCodeType</span></a>).</p>
+</div>
+</li>
+</ol>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>To avoid any kind of undefined behaviour only one database header file (at <code class="docutils literal notranslate"><span class="pre">dx_source_code.append(lto_db);</span></code> )
+can be included in the application.</p>
+</div>
+</section>
+<section id="id2">
+<h3>Build Changes<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
+<p>Since CUDA code compilation and linking are done at runtime, the build changes are minimal. Two adjustments are needed:</p>
+<ul class="simple">
+<li><p>Link with the two extra dependencies, the cuFFT and the nvJitLink libraries, and</p></li>
+<li><p>Define the <code class="docutils literal notranslate"><span class="pre">CUFFT_ENABLE_EXPERIMENTAL_API</span></code> macro for using <a class="reference internal" href="../cufft_api/device_api.html#cufft-device-api-label"><span class="std std-ref">cuFFT Device API</span></a>.</p></li>
+<li><p>Define the <code class="docutils literal notranslate"><span class="pre">CUFFTDX_ENABLE_CUFFT_DEPENDENCY</span></code> macro for using the <code class="docutils literal notranslate"><span class="pre">cufftdx::utils::get_database_and_ltoir</span></code> function.</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nvcc<span class="w"> </span>-DCUDA_INCLUDE_DIR<span class="o">=</span><span class="se">\&quot;</span>&lt;cuda_include_path&gt;<span class="se">\&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">     </span>-DCUFFTDX_INCLUDE_DIRS<span class="o">=</span><span class="se">\&quot;</span>&lt;cufftdx_include_path&gt;<span class="se">\&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">     </span>-DCOMMONDX_INCLUDE_DIR<span class="o">=</span><span class="se">\&quot;</span>&lt;cufftdx_include_path&gt;<span class="se">\&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="hll"><span class="w">     </span>-DCUFFTDX_ENABLE_CUFFT_DEPENDENCY<span class="w"> </span><span class="se">\</span>
+</span><span class="hll"><span class="w">     </span>-DCUFFT_ENABLE_EXPERIMENTAL_API<span class="w"> </span><span class="se">\</span>
+</span><span class="hll"><span class="w">     </span>-L&lt;cufft_lib_path&gt;<span class="w"> </span>-I&lt;cufft_include_path&gt;<span class="w"> </span><span class="se">\</span>
+</span><span class="w">     </span>-I&lt;cufftdx_include_path&gt;<span class="w"> </span><span class="se">\</span>
+<span class="hll"><span class="w">     </span>-lcufft<span class="w"> </span><span class="se">\</span>
+</span><span class="hll"><span class="w">     </span>-lnvJitLink<span class="w"> </span><span class="se">\</span>
+</span><span class="hll"><span class="w">     </span>-lnvrtc<span class="w"> </span><span class="se">\</span>
+</span><span class="w">     </span>-lcuda<span class="w"> </span><span class="se">\</span>
+<span class="w">     </span>nvrtc_fft_block_lto.cu<span class="w"> </span>-o<span class="w"> </span>nvrtc_fft_block_lto
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Using cuFFTDx with cuFFT LTO</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="custom_lto_helper.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Custom LTO Helper</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#use-case-i-offline-kernel-generation">Use Case I: Offline Kernel Generation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lto-database-creation">LTO Database Creation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#source-code-changes">Source Code Changes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#build-changes">Build Changes</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#use-case-ii-online-kernel-generation">Use Case II: Online Kernel Generation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Source Code Changes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Build Changes</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5"></script>
+
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+<a class="footer-brand logo" href="https://www.nvidia.com">
+  <img src="../_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="../_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+</a></div>
+      
+        <div class="footer-item">
+
+<div class="footer-links">
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/">Privacy Policy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Your Privacy Choices</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/">Terms of Service</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/accessibility/">Accessibility</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/company-policies/">Corporate Policies</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/product-security/">Product Security</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/contact/">Contact</a>
+  
+  
+  
+</div>
+</div>
+      
+        <div class="footer-item">
+
+
+
+
+  <p class="copyright">
+    
+      Copyright © 2022-2026, NVIDIA Corporation &amp; Affiliates. All rights reserved.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+  </body>
+</html>

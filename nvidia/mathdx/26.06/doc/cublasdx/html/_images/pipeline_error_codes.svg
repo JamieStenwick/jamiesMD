@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="390" viewBox="0 0 960 390" role="img" aria-labelledby="title desc" style="background: transparent; color-scheme: light dark;">
+  <title id="title">Pipeline error fields and codes</title>
+  <desc id="desc">Pipeline errors have two independent fields: pipeline_error_code plus get_cuda_error() for CUDA runtime status. A CUDA preprocessing failure with no specific pipeline_error_code uses cuda and reports the CUDA status.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#76b900"/>
+    </marker>
+    <style><![CDATA[
+      .box { fill: #ffffff; fill: light-dark(#ffffff, #111827); stroke: #1f2937; stroke: light-dark(#1f2937, #76b900); stroke-width: 1.6; }
+      .err { fill: #fff7ed; fill: light-dark(#fff7ed, #25190b); stroke: #f97316; stroke: light-dark(#f97316, #fb923c); stroke-width: 1.5; }
+      .cuda { fill: #eef6ff; fill: light-dark(#eef6ff, #0f1d2e); stroke: #2563eb; stroke: light-dark(#2563eb, #60a5fa); stroke-width: 1.5; }
+      .soft { fill: #f3f7ec; fill: light-dark(#f3f7ec, #13220c); stroke: #76b900; stroke: light-dark(#76b900, #93d85b); stroke-width: 1.5; }
+      .title { fill: #111827; fill: light-dark(#111827, #f9fafb); font: bold 18px Arial, sans-serif; }
+      .label { fill: #111827; fill: light-dark(#111827, #f9fafb); font: bold 16px Arial, sans-serif; }
+      .text { fill: #111827; fill: light-dark(#111827, #f9fafb); font: 16px Arial, sans-serif; }
+      .small { fill: #374151; fill: light-dark(#374151, #d1d5db); font: 13px Arial, sans-serif; }
+      .line { stroke: #76b900; stroke-width: 2.4; fill: none; marker-end: url(#arrow); }
+    ]]></style>
+  </defs>
+
+  <rect x="28" y="16" width="575" height="36" rx="8" class="box"/>
+  <text x="316" y="40" text-anchor="middle" class="title">pipeline_error keeps error code separate from CUDA status</text>
+
+  <rect x="330" y="70" width="300" height="126" rx="10" class="box"/>
+  <text x="480" y="104" text-anchor="middle" class="label">cublasdx::pipeline_error</text>
+  <rect x="360" y="128" width="112" height="42" rx="6" class="err"/>
+  <text x="416" y="154" text-anchor="middle" class="text">code</text>
+  <rect x="496" y="128" width="104" height="42" rx="6" class="cuda"/>
+  <text x="548" y="154" text-anchor="middle" class="text">CUDA status</text>
+
+  <rect x="42" y="238" width="276" height="114" rx="10" class="err"/>
+  <text x="180" y="268" text-anchor="middle" class="label">pipeline_error_code</text>
+  <text x="180" y="294" text-anchor="middle" class="small">specific cuBLASDx reason</text>
+  <text x="180" y="314" text-anchor="middle" class="small">cuda for CUDA-only status</text>
+  <text x="180" y="334" text-anchor="middle" class="small">unknown means fallback</text>
+  <path d="M 416 170 C 360 210 280 224 184 234" class="line"/>
+
+  <rect x="342" y="238" width="276" height="114" rx="10" class="soft"/>
+  <text x="480" y="268" text-anchor="middle" class="label">Messages</text>
+  <text x="480" y="294" text-anchor="middle" class="small">pipeline_error_string(code)</text>
+  <text x="480" y="314" text-anchor="middle" class="small">describes only pipeline_error_code</text>
+  <text x="480" y="334" text-anchor="middle" class="small">check CUDA status separately</text>
+  <path d="M 416 170 C 442 208 460 222 480 234" class="line"/>
+
+  <rect x="642" y="238" width="276" height="114" rx="10" class="cuda"/>
+  <text x="780" y="268" text-anchor="middle" class="label">CUDA status</text>
+  <text x="780" y="294" text-anchor="middle" class="small">read error.get_cuda_error()</text>
+  <text x="780" y="314" text-anchor="middle" class="small">allocation_failed can carry it</text>
+  <text x="780" y="334" text-anchor="middle" class="small">CUDA-only: code is cuda</text>
+  <path d="M 548 170 C 596 212 680 226 776 234" class="line"/>
+</svg>

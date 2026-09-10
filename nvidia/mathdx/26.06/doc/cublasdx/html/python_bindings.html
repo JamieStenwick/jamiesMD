@@ -1,0 +1,729 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>cuBLASDx Python Frontends &#8212; cuBLASDx</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
+    <link rel="stylesheet" type="text/css" href="_static/diagram.css?v=21e9147c" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
+
+
+
+    <script src="_static/documentation_options.js?v=26f1c5af"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'python_bindings';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://docs.nvidia.com/cuda/cublasdx/_static/switcher.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.7.1';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+
+    <link rel="icon" href="_static/nvidia.ico"/>
+
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Learning Path Through Examples" href="examples_learning_path.html" />
+    <link rel="prev" title="Shared Memory Management" href="api/other_shared.html" />
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.7.1" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+
+
+  </head>
+
+  <body data-default-mode="">
+
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="cuBLASDx - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="cuBLASDx - Home"/>
+  
+  
+    <p class="title logo__title">cuBLASDx</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="cuBLASDx - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="cuBLASDx - Home"/>
+  
+  
+    <p class="title logo__title">cuBLASDx</p>
+  
+</a>
+
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Table of Contents">
+  <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
+  <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Documentation Home</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="requirements_func.html">Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="using_cublasdx.html">Using cuBLASDx GEMM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="using_pipelines.html">Using Pipelined GEMM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="using_trsm.html">Using cuBLASDx TRSM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance.html">Achieving High Performance</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="api/operators.html">Operators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/traits.html">Traits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/shared_methods.html">Input / Output Format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/gemm_methods.html">GEMM Execution Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/trsm_methods.html">TRSM Execution Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/pipeline.html">Pipeline Creation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/other_methods.html">Other Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/other_tensors.html">Tensor Manipulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/other_shared.html">Shared Memory Management</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Python</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">cuBLASDx Python Bindings</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="examples_learning_path.html">Learning Path Through Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="release_notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/NVIDIA/CUDALibrarySamples/tree/main/MathDx/cuBLASDx">GitHub Samples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">MathDx</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/cublasdx-downloads">cuBLASDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/cufftdx-downloads">cuFFTDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/cusolverdx-downloads">cuSolverDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/curanddx-downloads">cuRANDDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/nvcompdx-downloads">nvCOMPDx</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">cuBLASDx Python Frontends</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="cublasdx-python-frontends">
+<span id="python-bindings-label"></span><h1>cuBLASDx Python Frontends<a class="headerlink" href="#cublasdx-python-frontends" title="Link to this heading">#</a></h1>
+<p>cuBLASDx offers a C++ API that’s callable from CUDA C++ kernels. Python users can access selected
+cuBLASDx-backed functionality through higher-level Python frontends such as
+<a class="reference external" href="https://developer.nvidia.com/warp-python">NVIDIA Warp</a> or
+<a class="reference external" href="https://github.com/NVIDIA/nvmath-python">nvmath-python</a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>These frontends are not a one-to-one binding of every cuBLASDx C++ API. Feature coverage,
+compiler backend, packaging, and autotuning behavior are defined by the frontend package.
+Check the frontend documentation for supported operations, versions, and performance guidance.</p>
+</div>
+<section id="id2">
+<h2><a class="reference external" href="https://developer.nvidia.com/warp-python">NVIDIA Warp</a><a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<p><a class="reference external" href="https://developer.nvidia.com/warp-python">NVIDIA Warp</a> is a Python library that allows developers to write high-performance simulation and graphics code that runs efficiently on both CPUs and NVIDIA GPUs.
+It uses just-in-time (JIT) compilation to turn Python functions into fast, parallel kernels, making it ideal for tasks like physics simulation, robotics, and
+geometry processing. Warp also supports differentiable programming, allowing integration with machine learning frameworks for gradient-based optimization-all
+while keeping the simplicity of Python.</p>
+<p>Warp uses cuBLASDx for its matrix multiplication operations in <code class="docutils literal notranslate"><span class="pre">Tile</span></code> mode.</p>
+<p>This is what a simple matmul kernel using Warp looks like:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@wp</span><span class="o">.</span><span class="n">kernel</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">tile_gemm</span><span class="p">(</span><span class="n">A</span><span class="p">:</span> <span class="n">wp</span><span class="o">.</span><span class="n">array2d</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">wp</span><span class="o">.</span><span class="n">float32</span><span class="p">),</span> <span class="n">B</span><span class="p">:</span> <span class="n">wp</span><span class="o">.</span><span class="n">array2d</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">wp</span><span class="o">.</span><span class="n">float16</span><span class="p">),</span> <span class="n">C</span><span class="p">:</span> <span class="n">wp</span><span class="o">.</span><span class="n">array2d</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">wp</span><span class="o">.</span><span class="n">float64</span><span class="p">)):</span>
+    <span class="c1"># output tile index</span>
+    <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">wp</span><span class="o">.</span><span class="n">tid</span><span class="p">()</span>
+
+    <span class="nb">sum</span> <span class="o">=</span> <span class="n">wp</span><span class="o">.</span><span class="n">tile_zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">TILE_M</span><span class="p">,</span> <span class="n">TILE_N</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">wp</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+    <span class="n">_M</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">_N</span> <span class="o">=</span> <span class="n">B</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">K</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="n">count</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">K</span> <span class="o">/</span> <span class="n">TILE_K</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">count</span><span class="p">):</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">wp</span><span class="o">.</span><span class="n">tile_load</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">TILE_M</span><span class="p">,</span> <span class="n">TILE_K</span><span class="p">),</span> <span class="n">offset</span><span class="o">=</span><span class="p">(</span><span class="n">i</span> <span class="o">*</span> <span class="n">TILE_M</span><span class="p">,</span> <span class="n">k</span> <span class="o">*</span> <span class="n">TILE_K</span><span class="p">))</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="n">wp</span><span class="o">.</span><span class="n">tile_load</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">TILE_K</span><span class="p">,</span> <span class="n">TILE_N</span><span class="p">),</span> <span class="n">offset</span><span class="o">=</span><span class="p">(</span><span class="n">k</span> <span class="o">*</span> <span class="n">TILE_K</span><span class="p">,</span> <span class="n">j</span> <span class="o">*</span> <span class="n">TILE_N</span><span class="p">))</span>
+
+        <span class="c1"># sum += a*b</span>
+        <span class="n">wp</span><span class="o">.</span><span class="n">tile_matmul</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="nb">sum</span><span class="p">)</span>
+
+    <span class="n">wp</span><span class="o">.</span><span class="n">tile_store</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="nb">sum</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="p">(</span><span class="n">i</span> <span class="o">*</span> <span class="n">TILE_M</span><span class="p">,</span> <span class="n">j</span> <span class="o">*</span> <span class="n">TILE_N</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>The Warp GitHub repository can be accessed <a class="reference external" href="https://github.com/NVIDIA/warp">here</a> and offers multiple examples,
+including <a class="reference external" href="https://github.com/NVIDIA/warp/blob/main/warp/examples/tile/example_tile_mlp.py">one that implements multi-level-perceptron</a>
+using cuBLASDx for necessary matrix multiplications or <a class="reference external" href="https://github.com/NVIDIA/warp/blob/main/warp/examples/tile/example_tile_nbody.py">how to simulate an N-Body gravitational problem</a>
+using cuBLASDx for the matrix multiplications.</p>
+<p>Warp provides autotuning out of the box through its Tile model of programming, where the user describes the problem on a high level, and then it is autotuned and mapped onto the hardware by Warp.</p>
+</section>
+<section id="id5">
+<h2><a class="reference external" href="https://github.com/NVIDIA/nvmath-python">nvmath-python</a><a class="headerlink" href="#id5" title="Link to this heading">#</a></h2>
+<p><a class="reference external" href="https://github.com/NVIDIA/nvmath-python">nvmath-python</a> is a Python library that provides high-performance, pythonic access to NVIDIA’s CUDA-X math libraries,
+enabling accelerated mathematical operations like linear algebra and fast Fourier transforms on both CPUs and NVIDIA GPUs.
+It integrates seamlessly with popular Python libraries such as CuPy, PyTorch, and NumPy, allowing users to leverage NVIDIA
+hardware acceleration within familiar workflows without needing C or C++ bindings. With both stateless and stateful APIs,
+nvmath-python delivers near-native performance for computational tasks in deep learning, data processing, and scientific
+computing, while supporting advanced features like device kernel fusion and customizable callbacks</p>
+<p>This is what a simple matmul kernel using nvmath-python looks like:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">MM</span> <span class="o">=</span> <span class="n">matmul</span><span class="p">(</span>
+    <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">),</span>
+    <span class="n">precision</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float16</span><span class="p">,</span>
+    <span class="n">data_type</span><span class="o">=</span><span class="s2">&quot;complex&quot;</span><span class="p">,</span>
+    <span class="n">transpose_mode</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;non_transposed&quot;</span><span class="p">,</span> <span class="s2">&quot;transposed&quot;</span><span class="p">),</span>
+    <span class="n">execution</span><span class="o">=</span><span class="s2">&quot;Block&quot;</span><span class="p">,</span>
+    <span class="n">compiler</span><span class="o">=</span><span class="s2">&quot;numba&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="nd">@cuda</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">link</span><span class="o">=</span><span class="n">MM</span><span class="o">.</span><span class="n">files</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">f</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">output</span><span class="p">):</span>
+    <span class="n">smem</span> <span class="o">=</span> <span class="n">cuda</span><span class="o">.</span><span class="n">shared</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">value_type</span><span class="p">)</span>
+    <span class="n">smem_a</span> <span class="o">=</span> <span class="n">smem</span><span class="p">[</span><span class="mi">0</span><span class="p">:]</span>
+    <span class="n">smem_b</span> <span class="o">=</span> <span class="n">smem</span><span class="p">[</span><span class="n">a_size</span><span class="p">:]</span>
+    <span class="n">smem_c</span> <span class="o">=</span> <span class="n">smem</span><span class="p">[</span><span class="n">a_size</span> <span class="o">+</span> <span class="n">b_size</span> <span class="p">:]</span>
+
+    <span class="n">load_to_shared</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">smem_a</span><span class="p">,</span> <span class="n">a_dim</span><span class="p">,</span> <span class="n">lda</span><span class="p">)</span>
+    <span class="n">load_to_shared</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">smem_b</span><span class="p">,</span> <span class="n">b_dim</span><span class="p">,</span> <span class="n">ldb</span><span class="p">)</span>
+    <span class="n">load_to_shared</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">smem_c</span><span class="p">,</span> <span class="n">c_dim</span><span class="p">,</span> <span class="n">ldc</span><span class="p">)</span>
+
+    <span class="n">cuda</span><span class="o">.</span><span class="n">syncthreads</span><span class="p">()</span>
+
+    <span class="n">MM</span><span class="p">(</span><span class="n">alpha</span><span class="p">,</span> <span class="n">smem_a</span><span class="p">,</span> <span class="n">smem_b</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">smem_c</span><span class="p">)</span>
+
+    <span class="n">cuda</span><span class="o">.</span><span class="n">syncthreads</span><span class="p">()</span>
+
+    <span class="n">store_from_shared</span><span class="p">(</span><span class="n">smem_c</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span> <span class="n">c_dim</span><span class="p">,</span> <span class="n">ldc</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Pipelined GEMM is exposed through the device <code class="docutils literal notranslate"><span class="pre">Matmul</span></code> frontend. The descriptor enables the pipeline,
+the Numba kernel is compiled with cuBLASDx pipeline extensions, and the host creates a device pipeline
+from the global-memory inputs before launching the kernel. The full nvmath-python example is available
+as <a class="reference external" href="https://github.com/NVIDIA/nvmath-python/blob/main/examples/device/cublasdx_device_gemm_performance_pipeline.py">cublasdx_device_gemm_performance_pipeline.py</a>.</p>
+<p>The pipeline-specific structure looks like this:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">nvmath.device</span><span class="w"> </span><span class="kn">import</span> <span class="n">Matmul</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">nvmath.device.common</span><span class="w"> </span><span class="kn">import</span> <span class="n">axpby</span><span class="p">,</span> <span class="n">make_tensor</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">nvmath.device.cublasdx</span><span class="w"> </span><span class="kn">import</span> <span class="n">MAX_ALIGNMENT</span><span class="p">,</span> <span class="n">DevicePipeline</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">nvmath.device.cublasdx_numba</span><span class="w"> </span><span class="kn">import</span> <span class="n">pipeline_extensions</span>
+
+<span class="n">MM</span> <span class="o">=</span> <span class="n">Matmul</span><span class="p">(</span>
+    <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">tile_m</span><span class="p">,</span> <span class="n">tile_n</span><span class="p">,</span> <span class="n">tile_k</span><span class="p">),</span>
+    <span class="n">precision</span><span class="o">=</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float16</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float16</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">),</span>
+    <span class="n">data_type</span><span class="o">=</span><span class="s2">&quot;real&quot;</span><span class="p">,</span>
+    <span class="n">arrangement</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;row_major&quot;</span><span class="p">,</span> <span class="s2">&quot;col_major&quot;</span><span class="p">,</span> <span class="s2">&quot;row_major&quot;</span><span class="p">),</span>
+    <span class="n">execution</span><span class="o">=</span><span class="s2">&quot;Block&quot;</span><span class="p">,</span>
+    <span class="n">block_size</span><span class="o">=</span><span class="n">block_size</span><span class="p">,</span>
+    <span class="n">alignment</span><span class="o">=</span><span class="n">MAX_ALIGNMENT</span><span class="p">,</span>
+    <span class="n">with_pipeline</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">enable_input_streaming</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">static_block_dim</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="nd">@cuda</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">extensions</span><span class="o">=</span><span class="n">pipeline_extensions</span><span class="p">,</span> <span class="n">launch_bounds</span><span class="o">=</span><span class="p">[</span><span class="n">MM</span><span class="o">.</span><span class="n">block_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">matmul_kernel</span><span class="p">(</span><span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">device_pipeline</span><span class="p">:</span> <span class="n">DevicePipeline</span><span class="p">):</span>
+    <span class="n">smem</span> <span class="o">=</span> <span class="n">cuda</span><span class="o">.</span><span class="n">shared</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">byte</span><span class="p">,</span> <span class="n">alignment</span><span class="o">=</span><span class="n">device_pipeline</span><span class="o">.</span><span class="n">buffer_alignment</span><span class="p">)</span>
+
+    <span class="n">c_tile</span> <span class="o">=</span> <span class="n">c</span><span class="p">[</span>
+        <span class="n">cuda</span><span class="o">.</span><span class="n">blockIdx</span><span class="o">.</span><span class="n">x</span> <span class="o">*</span> <span class="n">tile_m</span> <span class="p">:</span> <span class="p">(</span><span class="n">cuda</span><span class="o">.</span><span class="n">blockIdx</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">tile_m</span><span class="p">,</span>
+        <span class="n">cuda</span><span class="o">.</span><span class="n">blockIdx</span><span class="o">.</span><span class="n">y</span> <span class="o">*</span> <span class="n">tile_n</span> <span class="p">:</span> <span class="p">(</span><span class="n">cuda</span><span class="o">.</span><span class="n">blockIdx</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">tile_n</span><span class="p">,</span>
+    <span class="p">]</span>
+    <span class="n">gmem_c</span> <span class="o">=</span> <span class="n">make_tensor</span><span class="p">(</span><span class="n">c_tile</span><span class="p">,</span> <span class="n">MM</span><span class="o">.</span><span class="n">get_layout_gmem_c</span><span class="p">(</span><span class="n">m</span><span class="p">))</span>
+
+    <span class="n">tile_pipeline</span> <span class="o">=</span> <span class="n">device_pipeline</span><span class="o">.</span><span class="n">get_tile</span><span class="p">(</span><span class="n">smem</span><span class="p">,</span> <span class="n">cuda</span><span class="o">.</span><span class="n">blockIdx</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">cuda</span><span class="o">.</span><span class="n">blockIdx</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
+    <span class="n">accumulator</span> <span class="o">=</span> <span class="n">MM</span><span class="o">.</span><span class="n">suggest_accumulator</span><span class="p">()</span>
+    <span class="n">tile_pipeline</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">accumulator</span><span class="p">)</span>
+    <span class="n">tile_pipeline</span><span class="o">.</span><span class="n">_del</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">accumulator</span><span class="o">.</span><span class="n">is_thread_active</span><span class="p">():</span>
+        <span class="n">d_frag</span> <span class="o">=</span> <span class="n">accumulator</span><span class="o">.</span><span class="n">make_partition_and_copy</span><span class="p">(</span><span class="n">gmem_c</span><span class="p">)</span>
+        <span class="n">axpby</span><span class="p">(</span><span class="n">alpha</span><span class="p">,</span> <span class="n">accumulator</span><span class="o">.</span><span class="n">get_results</span><span class="p">(),</span> <span class="n">beta</span><span class="p">,</span> <span class="n">d_frag</span><span class="p">)</span>
+        <span class="n">accumulator</span><span class="o">.</span><span class="n">partition_and_copy</span><span class="p">(</span><span class="n">d_frag</span><span class="p">,</span> <span class="n">gmem_c</span><span class="p">)</span>
+
+<span class="n">pipeline_depth</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="k">assert</span> <span class="n">k</span> <span class="o">//</span> <span class="n">tile_k</span> <span class="o">&gt;=</span> <span class="n">pipeline_depth</span>
+<span class="n">device_pipeline</span> <span class="o">=</span> <span class="n">MM</span><span class="o">.</span><span class="n">suggest_device_pipeline</span><span class="p">(</span><span class="n">pipeline_depth</span><span class="p">,</span> <span class="n">a_d</span><span class="p">,</span> <span class="n">b_d</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The device pipeline owns the dynamic shared-memory requirements and the per-block tile state. Inside
+<code class="docutils literal notranslate"><span class="pre">tile_pipeline.execute(accumulator)</span></code>, cuBLASDx can overlap staged asynchronous global/shared loads with
+staged asynchronous MMA compute. More than one load stage and more than one compute stage can be in flight;
+after the K-stage accumulation completes, the Python kernel runs one epilogue stage that updates the output tile.
+The complete nvmath-python example also derives a maximum pipeline depth from available shared memory, times the
+kernel with Numba, and compares the result against cuBLASLt.</p>
+<p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">nvmath</span><span class="o">-</span><span class="n">python</span></code> GitHub repository can be accessed <a class="reference external" href="https://github.com/NVIDIA/nvmath-python">here</a> and offers multiple examples as well,
+mirroring the examples from the <a class="reference external" href="https://github.com/NVIDIA/CUDALibrarySamples/tree/main/MathDx/cuBLASDx">cuBLASDx C++ repository</a></p>
+<p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">nvmath</span><span class="o">-</span><span class="n">python</span></code> also offers autotuning by iterating over all possible configurations, measuring their performance and selecting the best one.
+This can be done in a simple python for loop and does not require any additional code from the user.</p>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="api/other_shared.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Shared Memory Management</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="examples_learning_path.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Learning Path Through Examples</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">NVIDIA Warp</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">nvmath-python</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5"></script>
+
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+<a class="footer-brand logo" href="https://www.nvidia.com">
+  <img src="_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+</a></div>
+      
+        <div class="footer-item">
+
+<div class="footer-links">
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/">Privacy Policy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Your Privacy Choices</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/">Terms of Service</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/accessibility/">Accessibility</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/company-policies/">Corporate Policies</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/product-security/">Product Security</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/contact/">Contact</a>
+  
+  
+  
+</div>
+</div>
+      
+        <div class="footer-item">
+
+
+
+
+  <p class="copyright">
+    
+      Copyright © 2022-2026, NVIDIA Corporation &amp; Affiliates. All rights reserved.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+  </body>
+</html>

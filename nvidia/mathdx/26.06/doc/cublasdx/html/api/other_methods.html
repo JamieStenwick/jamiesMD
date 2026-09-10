@@ -1,0 +1,857 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Other Methods &#8212; cuBLASDx</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
+    <link rel="stylesheet" type="text/css" href="../_static/diagram.css?v=21e9147c" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
+
+
+
+    <script src="../_static/documentation_options.js?v=26f1c5af"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/other_methods';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://docs.nvidia.com/cuda/cublasdx/_static/switcher.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.7.1';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+
+    <link rel="icon" href="../_static/nvidia.ico"/>
+
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Tensors" href="other_tensors.html" />
+    <link rel="prev" title="Pipeline Creation Result" href="pipeline.html" />
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.7.1" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+
+
+  </head>
+
+  <body data-default-mode="">
+
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="cuBLASDx - Home"/>
+    <img src="../_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="cuBLASDx - Home"/>
+  
+  
+    <p class="title logo__title">cuBLASDx</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="cuBLASDx - Home"/>
+    <img src="../_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="cuBLASDx - Home"/>
+  
+  
+    <p class="title logo__title">cuBLASDx</p>
+  
+</a>
+
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Table of Contents">
+  <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
+  <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Documentation Home</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../requirements_func.html">Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../using_cublasdx.html">Using cuBLASDx GEMM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../using_pipelines.html">Using Pipelined GEMM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../using_trsm.html">Using cuBLASDx TRSM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../performance.html">Achieving High Performance</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="operators.html">Operators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="traits.html">Traits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="shared_methods.html">Input / Output Format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gemm_methods.html">GEMM Execution Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="trsm_methods.html">TRSM Execution Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pipeline.html">Pipeline Creation</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Other Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="other_tensors.html">Tensor Manipulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="other_shared.html">Shared Memory Management</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Python</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../python_bindings.html">cuBLASDx Python Bindings</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../examples_learning_path.html">Learning Path Through Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../release_notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/NVIDIA/CUDALibrarySamples/tree/main/MathDx/cuBLASDx">GitHub Samples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">MathDx</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/cublasdx-downloads">cuBLASDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/cufftdx-downloads">cuFFTDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/cusolverdx-downloads">cuSolverDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/curanddx-downloads">cuRANDDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/nvcompdx-downloads">nvCOMPDx</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Other Methods</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="other-methods">
+<h1>Other Methods<a class="headerlink" href="#other-methods" title="Link to this heading">#</a></h1>
+<section id="get-memory-layout">
+<span id="get-layout-other-label"></span><h2>Get Memory Layout<a class="headerlink" href="#get-memory-layout" title="Link to this heading">#</a></h2>
+<p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">BLAS</span><span class="o">::</span><span class="n">get_layout_</span><span class="o">&lt;</span><span class="n">gmem</span><span class="o">/</span><span class="n">smem</span><span class="o">&gt;</span><span class="n">_</span><span class="o">&lt;</span><span class="n">a</span><span class="o">/</span><span class="n">b</span><span class="o">/</span><span class="n">c</span><span class="o">&gt;</span><span class="p">()</span></code> function fetches global memory or shared memory <a class="reference external" href="https://docs.nvidia.com/cutlass/latest/media/docs/cpp/cute/01_layout.html">CuTe layout</a> for matrix <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">A</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">B</span></code> or <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">C</span></code>,
+determined by <a class="reference internal" href="traits.html#matrixsize-block-trait-label"><span class="std std-ref">matrix sizes</span></a>, <a class="reference internal" href="operators.html#arrangement-operator-label"><span class="std std-ref">arrangement</span></a>,
+and <a class="reference internal" href="operators.html#leadingdimension-operator-label"><span class="std std-ref">leading dimensions</span></a>. For shared memory layouts the leading dimensions, if not specified
+explicitly through a parameter, will be inferred from the <a class="reference internal" href="operators.html#leadingdimension-operator-label"><span class="std std-ref">leading dimensions</span></a> operator. For
+global memory layouts custom leading dimensions must be passed either through a static or dynamic integral type, or otherwise
+they will be inferred from <a class="reference internal" href="traits.html#matrixsize-block-trait-label"><span class="std std-ref">matrix sizes</span></a>.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">__forceinline__</span><span class="w"> </span><span class="n">__host__</span><span class="w"> </span><span class="n">__device__</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">get_layout_gmem_a</span><span class="p">();</span>
+<span class="n">__forceinline__</span><span class="w"> </span><span class="n">__host__</span><span class="w"> </span><span class="n">__device__</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">get_layout_gmem_b</span><span class="p">();</span>
+<span class="n">__forceinline__</span><span class="w"> </span><span class="n">__host__</span><span class="w"> </span><span class="n">__device__</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">get_layout_gmem_c</span><span class="p">();</span>
+
+<span class="n">__forceinline__</span><span class="w"> </span><span class="n">__host__</span><span class="w"> </span><span class="n">__device__</span><span class="w">  </span><span class="k">constexpr</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">get_layout_smem_a</span><span class="p">();</span>
+<span class="n">__forceinline__</span><span class="w"> </span><span class="n">__host__</span><span class="w"> </span><span class="n">__device__</span><span class="w">  </span><span class="k">constexpr</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">get_layout_smem_b</span><span class="p">();</span>
+<span class="n">__forceinline__</span><span class="w"> </span><span class="n">__host__</span><span class="w"> </span><span class="n">__device__</span><span class="w">  </span><span class="k">constexpr</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">get_layout_smem_c</span><span class="p">();</span>
+
+<span class="c1">// Overloads for specifying the leading dimensions statically during compilation time.</span>
+<span class="c1">// integral_type can be either signed or unsigned integer type and integral_value follow</span>
+<span class="c1">// this specification.</span>
+<span class="n">__forceinline__</span><span class="w"> </span><span class="n">__host__</span><span class="w"> </span><span class="n">__device__</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">get_layout_gmem_a</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">integral_constant</span><span class="o">&lt;</span><span class="n">integral_type</span><span class="p">,</span><span class="w"> </span><span class="n">lda</span><span class="o">&gt;</span><span class="p">);</span>
+<span class="n">__forceinline__</span><span class="w"> </span><span class="n">__host__</span><span class="w"> </span><span class="n">__device__</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">get_layout_gmem_b</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">integral_constant</span><span class="o">&lt;</span><span class="n">integral_type</span><span class="p">,</span><span class="w"> </span><span class="n">ldb</span><span class="o">&gt;</span><span class="p">);</span>
+<span class="n">__forceinline__</span><span class="w"> </span><span class="n">__host__</span><span class="w"> </span><span class="n">__device__</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">get_layout_gmem_c</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">integral_constant</span><span class="o">&lt;</span><span class="n">integral_type</span><span class="p">,</span><span class="w"> </span><span class="n">ldc</span><span class="o">&gt;</span><span class="p">);</span>
+
+<span class="c1">// Overloads for specifying the leading dimensions during the execution time.</span>
+
+<span class="n">__forceinline__</span><span class="w"> </span><span class="n">__host__</span><span class="w"> </span><span class="n">__device__</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">get_layout_gmem_a</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">lda</span><span class="p">);</span>
+<span class="n">__forceinline__</span><span class="w"> </span><span class="n">__host__</span><span class="w"> </span><span class="n">__device__</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">get_layout_gmem_b</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">ldb</span><span class="p">);</span>
+<span class="n">__forceinline__</span><span class="w"> </span><span class="n">__host__</span><span class="w"> </span><span class="n">__device__</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">get_layout_gmem_c</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">ldc</span><span class="p">);</span>
+
+<span class="n">__forceinline__</span><span class="w"> </span><span class="n">__host__</span><span class="w"> </span><span class="n">__device__</span><span class="w">  </span><span class="k">constexpr</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">get_layout_smem_a</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">lda</span><span class="p">);</span>
+<span class="n">__forceinline__</span><span class="w"> </span><span class="n">__host__</span><span class="w"> </span><span class="n">__device__</span><span class="w">  </span><span class="k">constexpr</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">get_layout_smem_b</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">ldb</span><span class="p">);</span>
+<span class="n">__forceinline__</span><span class="w"> </span><span class="n">__host__</span><span class="w"> </span><span class="n">__device__</span><span class="w">  </span><span class="k">constexpr</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">get_layout_smem_c</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">ldc</span><span class="p">);</span>
+
+<span class="c1">// TRSM only: overloads with batch stride (for BatchesPerBlock &gt; 1)</span>
+<span class="n">__forceinline__</span><span class="w"> </span><span class="n">__host__</span><span class="w"> </span><span class="n">__device__</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">get_layout_gmem_a</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">lda</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">batch_stride_a</span><span class="p">);</span>
+<span class="n">__forceinline__</span><span class="w"> </span><span class="n">__host__</span><span class="w"> </span><span class="n">__device__</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">get_layout_gmem_b</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">ldb</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">batch_stride_b</span><span class="p">);</span>
+
+<span class="n">__forceinline__</span><span class="w"> </span><span class="n">__host__</span><span class="w"> </span><span class="n">__device__</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">get_layout_smem_a</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">lda</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">batch_stride_a</span><span class="p">);</span>
+<span class="n">__forceinline__</span><span class="w"> </span><span class="n">__host__</span><span class="w"> </span><span class="n">__device__</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">get_layout_smem_b</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">ldb</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">batch_stride_b</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">BLAS</span><span class="o">::</span><span class="n">get_layout_</span><span class="o">&lt;</span><span class="n">gmem</span><span class="o">/</span><span class="n">smem</span><span class="o">&gt;</span><span class="n">_</span><span class="o">&lt;</span><span class="n">a</span><span class="o">/</span><span class="n">b</span><span class="o">/</span><span class="n">c</span><span class="o">&gt;</span><span class="p">()</span></code> returns a combination of memory tag (global or shared) and the layout
+(<a class="reference external" href="https://docs.nvidia.com/cutlass/latest/media/docs/cpp/cute/01_layout.html">cute::Layout</a>)
+for matrix <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">A</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">B</span></code> or <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">C</span></code> which can be directly passed to <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cublasdx</span><span class="o">::</span><span class="n">make_tensor</span></code> to create a tensor.</p>
+<p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">BLAS</span><span class="o">::</span><span class="n">get_layout_</span><span class="o">&lt;</span><span class="n">gmem</span><span class="o">/</span><span class="n">smem</span><span class="o">&gt;</span><span class="n">_</span><span class="o">&lt;</span><span class="n">a</span><span class="o">/</span><span class="n">b</span><span class="o">/</span><span class="n">c</span><span class="o">&gt;</span><span class="p">()</span></code> returns a matrix layout corresponding to the order set via
+<a class="reference internal" href="operators.html#arrangement-operator-label"><span class="std std-ref">Arrangement</span></a> operator. For example, if the order for <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">A</span></code> matrix was set to <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cublasdx</span><span class="o">::</span><span class="n">row_major</span></code>,
+the returned layout follows the row-major order.</p>
+<p>In case of dynamic leading dimensions provided by user during execution time, the function accepts the leading
+dimension as an argument, see the example below.</p>
+<p>For TRSM descriptors with <a class="reference internal" href="operators.html#batchesperblock-operator-label"><span class="std std-ref">BatchesPerBlock</span></a> <code class="docutils literal notranslate"><span class="pre">&gt;</span> <span class="pre">1</span></code>, the layout functions return a 3D layout
+(rows x cols x batches). The two-argument overloads <code class="docutils literal notranslate"><span class="pre">get_layout_&lt;gmem/smem&gt;_&lt;a/b&gt;(ld,</span> <span class="pre">batch_stride)</span></code> are available
+<strong>only for TRSM</strong> and allow specifying both the inner leading dimension and the stride between consecutive batches.
+When only one argument is provided, the batch stride defaults to the cosize of the inner (single-batch) layout.
+When no arguments are provided, both the leading dimension and the batch stride use their default values.</p>
+<div class="hint admonition">
+<p class="admonition-title">Example</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">BLAS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">decltype</span><span class="p">(...)</span>
+
+<span class="k">extern</span><span class="w"> </span><span class="n">__shared__</span><span class="w"> </span><span class="n">__align__</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">byte</span><span class="w"> </span><span class="n">smem</span><span class="p">[];</span>
+
+<span class="c1">// a, b, c are pointers to global memory of input matrices A and B and output matrix C</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">a_global_tensor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">make_tensor</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">BLAS</span><span class="o">::</span><span class="n">get_layout_gmem_a</span><span class="p">());</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">b_global_tensor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">make_tensor</span><span class="p">(</span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="n">BLAS</span><span class="o">::</span><span class="n">get_layout_gmem_b</span><span class="p">());</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">c_global_tensor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">make_tensor</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="w"> </span><span class="n">BLAS</span><span class="o">::</span><span class="n">get_layout_gmem_c</span><span class="p">());</span>
+
+<span class="k">auto</span><span class="w"> </span><span class="p">[</span><span class="n">smem_a</span><span class="p">,</span><span class="w"> </span><span class="n">smem_b</span><span class="p">,</span><span class="w"> </span><span class="n">smem_c</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">slice_shared_memory</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;</span><span class="p">(</span><span class="n">smem</span><span class="p">);</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">a_shared_tensor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">make_tensor</span><span class="p">(</span><span class="n">smem_a</span><span class="p">,</span><span class="w"> </span><span class="n">BLAS</span><span class="o">::</span><span class="n">get_layout_smem_a</span><span class="p">());</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">b_shared_tensor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">make_tensor</span><span class="p">(</span><span class="n">smem_b</span><span class="p">,</span><span class="w"> </span><span class="n">BLAS</span><span class="o">::</span><span class="n">get_layout_smem_b</span><span class="p">());</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">c_shared_tensor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">make_tensor</span><span class="p">(</span><span class="n">smem_c</span><span class="p">,</span><span class="w"> </span><span class="n">BLAS</span><span class="o">::</span><span class="n">get_layout_smem_c</span><span class="p">());</span>
+
+<span class="c1">// With leading dimensions specified during the compilation time</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">a_global_tensor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">make_tensor</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">BLAS</span><span class="o">::</span><span class="n">get_layout_gmem_a</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">integral_constant</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="n">lda</span><span class="o">&gt;</span><span class="p">{}));</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">b_global_tensor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">make_tensor</span><span class="p">(</span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="n">BLAS</span><span class="o">::</span><span class="n">get_layout_gmem_b</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">integral_constant</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="n">ldb</span><span class="o">&gt;</span><span class="p">{}));</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">c_global_tensor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">make_tensor</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="w"> </span><span class="n">BLAS</span><span class="o">::</span><span class="n">get_layout_gmem_c</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">integral_constant</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="n">ldc</span><span class="o">&gt;</span><span class="p">{}));</span>
+
+<span class="c1">// With leading dimensions specified during the execution time</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">a_global_tensor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">make_tensor</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">BLAS</span><span class="o">::</span><span class="n">get_layout_gmem_a</span><span class="p">(</span><span class="n">lda</span><span class="p">));</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">b_global_tensor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">make_tensor</span><span class="p">(</span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="n">BLAS</span><span class="o">::</span><span class="n">get_layout_gmem_b</span><span class="p">(</span><span class="n">ldb</span><span class="p">));</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">c_global_tensor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">make_tensor</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="w"> </span><span class="n">BLAS</span><span class="o">::</span><span class="n">get_layout_gmem_c</span><span class="p">(</span><span class="n">ldc</span><span class="p">));</span>
+
+<span class="k">auto</span><span class="w"> </span><span class="p">[</span><span class="n">smem_a</span><span class="p">,</span><span class="w"> </span><span class="n">smem_b</span><span class="p">,</span><span class="w"> </span><span class="n">smem_c</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">slice_shared_memory</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;</span><span class="p">(</span><span class="n">smem</span><span class="p">,</span><span class="w"> </span><span class="n">lda</span><span class="p">,</span><span class="w"> </span><span class="n">ldb</span><span class="p">,</span><span class="w"> </span><span class="n">ldc</span><span class="p">);</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">a_shared_tensor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">make_tensor</span><span class="p">(</span><span class="n">smem_a</span><span class="p">,</span><span class="w"> </span><span class="n">BLAS</span><span class="o">::</span><span class="n">get_layout_smem_a</span><span class="p">(</span><span class="n">lda</span><span class="p">));</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">b_shared_tensor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">make_tensor</span><span class="p">(</span><span class="n">smem_b</span><span class="p">,</span><span class="w"> </span><span class="n">BLAS</span><span class="o">::</span><span class="n">get_layout_smem_b</span><span class="p">(</span><span class="n">ldb</span><span class="p">));</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">c_shared_tensor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">make_tensor</span><span class="p">(</span><span class="n">smem_c</span><span class="p">,</span><span class="w"> </span><span class="n">BLAS</span><span class="o">::</span><span class="n">get_layout_smem_c</span><span class="p">(</span><span class="n">ldc</span><span class="p">));</span>
+</pre></div>
+</div>
+</div>
+<div class="hint admonition">
+<p class="admonition-title">TRSM batch stride example</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// TRSM with BatchesPerBlock &gt; 1: use two-argument overload for custom batch strides</span>
+<span class="k">using</span><span class="w"> </span><span class="n">TRSM</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">decltype</span><span class="p">(</span><span class="n">cublasdx</span><span class="o">::</span><span class="n">Size</span><span class="o">&lt;</span><span class="mi">32</span><span class="p">,</span><span class="w"> </span><span class="mi">16</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">                      </span><span class="o">+</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">Function</span><span class="o">&lt;</span><span class="n">cublasdx</span><span class="o">::</span><span class="n">function</span><span class="o">::</span><span class="n">TRSM</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">                      </span><span class="o">+</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">BatchesPerBlock</span><span class="o">&lt;</span><span class="mi">4</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">                      </span><span class="o">+</span><span class="w"> </span><span class="p">...);</span>
+
+<span class="c1">// Default batch stride (cosize of single-batch layout)</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">a_layout</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TRSM</span><span class="o">::</span><span class="n">get_layout_smem_a</span><span class="p">();</span><span class="w">       </span><span class="c1">// 3D layout: (dim_a, dim_a, 4)</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">b_layout</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TRSM</span><span class="o">::</span><span class="n">get_layout_smem_b</span><span class="p">();</span><span class="w">       </span><span class="c1">// 3D layout: (M, N, 4)</span>
+
+<span class="c1">// Custom leading dimension, default batch stride</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">a_layout</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TRSM</span><span class="o">::</span><span class="n">get_layout_smem_a</span><span class="p">(</span><span class="n">lda</span><span class="p">);</span>
+
+<span class="c1">// Custom leading dimension and custom batch stride (TRSM only)</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">a_layout</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TRSM</span><span class="o">::</span><span class="n">get_layout_smem_a</span><span class="p">(</span><span class="n">lda</span><span class="p">,</span><span class="w"> </span><span class="n">batch_stride_a</span><span class="p">);</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">b_layout</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TRSM</span><span class="o">::</span><span class="n">get_layout_smem_b</span><span class="p">(</span><span class="n">ldb</span><span class="p">,</span><span class="w"> </span><span class="n">batch_stride_b</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="suggested-shared-memory-layout">
+<span id="suggest-layout-other-label"></span><h2>Suggested Shared Memory Layout<a class="headerlink" href="#suggested-shared-memory-layout" title="Link to this heading">#</a></h2>
+<p>In addition to <a class="reference internal" href="#get-layout-other-label"><span class="std std-ref">get_layout_smem_*</span></a> function, cuBLASDx also provides a function that returns the suggested
+custom shared memory layouts for matrix <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">A</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">B</span></code> or <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">C</span></code>, determined by the <a class="reference internal" href="traits.html#valuetype-block-trait-label"><span class="std std-ref">value types</span></a>,
+<a class="reference internal" href="traits.html#matrixsize-block-trait-label"><span class="std std-ref">matrix sizes</span></a>, <a class="reference internal" href="operators.html#arrangement-operator-label"><span class="std std-ref">arrangements</span></a>, <a class="reference internal" href="traits.html#alignment-exec-trait-label"><span class="std std-ref">alignments</span></a>,
+block size, and GPU architecture.
+Those suggested layouts were designed to positively impact the performance of matrix multiplication itself as well as copy operations
+between shared and global memory, and because of that they rely on the arrangements of the matrices.
+Suggested layouts ignore leading dimensions set with <a class="reference internal" href="operators.html#leadingdimension-operator-label"><span class="std std-ref">LeadingDimension</span></a> operator.
+The best improvements are expected with row-major <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">A</span></code> and column-major <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">B</span></code>.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">__forceinline__</span><span class="w"> </span><span class="n">__host__</span><span class="w"> </span><span class="n">__device__</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">suggest_layout_smem_a</span><span class="p">();</span>
+<span class="n">__forceinline__</span><span class="w"> </span><span class="n">__host__</span><span class="w"> </span><span class="n">__device__</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">suggest_layout_smem_b</span><span class="p">();</span>
+<span class="n">__forceinline__</span><span class="w"> </span><span class="n">__host__</span><span class="w"> </span><span class="n">__device__</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">suggest_layout_smem_c</span><span class="p">();</span>
+</pre></div>
+</div>
+<p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">BLAS</span><span class="o">::</span><span class="n">suggest_layout_smem_</span><span class="o">&lt;</span><span class="n">a</span><span class="o">/</span><span class="n">b</span><span class="o">/</span><span class="n">c</span><span class="o">&gt;</span><span class="p">()</span></code> returns a combination of a shared memory tag and the layout of A/B/C (<code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cute</span><span class="o">::</span><span class="n">Layout</span></code>),
+which can be directly passed to <a class="reference internal" href="other_tensors.html#create-tensor-other-label"><span class="std std-ref">cublasdx::make_tensor</span></a> to create a tensor.</p>
+<div class="hint admonition">
+<p class="admonition-title">Example</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">BLAS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">decltype</span><span class="p">(</span><span class="n">Size</span><span class="o">&lt;</span><span class="mi">128</span><span class="p">,</span><span class="w"> </span><span class="mi">128</span><span class="p">,</span><span class="w"> </span><span class="mi">128</span><span class="o">&gt;</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">Type</span><span class="o">&lt;</span><span class="n">type</span><span class="o">::</span><span class="n">real</span><span class="o">&gt;</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">Block</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">Precision</span><span class="o">&lt;</span><span class="kt">float</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="o">&gt;</span><span class="p">());</span>
+
+<span class="k">extern</span><span class="w"> </span><span class="n">__shared__</span><span class="w"> </span><span class="nf">__align__</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">byte</span><span class="w"> </span><span class="n">smem</span><span class="p">[];</span>
+
+<span class="c1">// Slice shared memory into pointer for A, B, and C matrices</span>
+<span class="k">auto</span><span class="w"> </span><span class="p">[</span><span class="n">smem_a</span><span class="p">,</span><span class="w"> </span><span class="n">smem_b</span><span class="p">,</span><span class="w"> </span><span class="n">smem_c</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">slice_shared_memory</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;</span><span class="p">(</span><span class="n">smem</span><span class="p">);</span>
+
+<span class="c1">// Create suggested shared memory layout for optimal performance</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">suggested_smem_a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">make_tensor</span><span class="p">(</span><span class="n">smem_a</span><span class="p">,</span><span class="w"> </span><span class="n">BLAS</span><span class="o">::</span><span class="n">suggest_layout_smem_a</span><span class="p">());</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">suggested_smem_b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">make_tensor</span><span class="p">(</span><span class="n">smem_b</span><span class="p">,</span><span class="w"> </span><span class="n">BLAS</span><span class="o">::</span><span class="n">suggest_layout_smem_b</span><span class="p">());</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">suggested_smem_c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">make_tensor</span><span class="p">(</span><span class="n">smem_c</span><span class="p">,</span><span class="w"> </span><span class="n">BLAS</span><span class="o">::</span><span class="n">suggest_layout_smem_c</span><span class="p">());</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="data-accumulator">
+<span id="get-accumulator-other-label"></span><h2>Data Accumulator<a class="headerlink" href="#data-accumulator" title="Link to this heading">#</a></h2>
+<p>Data accumulator is an object aware of execution context and implementation details of a GEMM, from which it is
+able to infer which elements of <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">C</span></code> matrix will be mapped to any thread. cuBLASDx uses accumulators as helper objects
+for partitioning global and shared memory tensors, as well as getting, copying, modifying and transforming register fragments.</p>
+<p>Please refer to <a class="reference internal" href="other_tensors.html#accumulator-register-tensor-other-label"><span class="std std-ref">Accumulator And Register Fragment Tensors</span></a> for more information on available accumulator functionality.</p>
+<section id="get-data-accumulator">
+<h3>Get Data Accumulator<a class="headerlink" href="#get-data-accumulator" title="Link to this heading">#</a></h3>
+<p>Default data accumulator is used for non-suggested execution contexts. Mixing contexts may cause subpar performance.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Get layouts</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">a_smem_layout</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BLAS</span><span class="o">::</span><span class="n">get_layout_smem_a</span><span class="p">();</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">b_smem_layout</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BLAS</span><span class="o">::</span><span class="n">get_layout_smem_b</span><span class="p">();</span>
+
+<span class="c1">// Get accumulator</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">accumulator</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BLAS</span><span class="o">::</span><span class="n">get_accumulator</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="suggest-data-accumulator">
+<span id="suggest-accumulator-other-label"></span><h3>Suggest Data Accumulator<a class="headerlink" href="#suggest-data-accumulator" title="Link to this heading">#</a></h3>
+<p>Suggested data accumulator is used for suggested execution contexts. Mixing contexts may cause subpar performance.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Suggest layouts</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">a_smem_layout</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BLAS</span><span class="o">::</span><span class="n">suggest_layout_smem_a</span><span class="p">();</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">b_smem_layout</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BLAS</span><span class="o">::</span><span class="n">suggest_layout_smem_b</span><span class="p">();</span>
+
+<span class="c1">// Suggest accumulator</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">accumulator</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BLAS</span><span class="o">::</span><span class="n">suggest_accumulator</span><span class="p">();</span>
+</pre></div>
+</div>
+<hr class="docutils" />
+</section>
+</section>
+<section id="tensor-views">
+<span id="tensor-views-label"></span><h2>Tensor Views<a class="headerlink" href="#tensor-views" title="Link to this heading">#</a></h2>
+<p>cuBLASDx provides lazy tensor view wrappers that transform a tensor’s elements on access without
+copying data.  They are lightweight descriptors backed by the original tensor’s storage and are
+the recommended way to express transposition and conjugation when calling <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">execute</span><span class="p">()</span></code>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The deprecated <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">TransposeMode</span></code> operator does <strong>not</strong> work with TRSM.  Use tensor views together
+with the <a class="reference internal" href="operators.html#arrangement-operator-label"><span class="std std-ref">Arrangement</span></a> operator instead.
+See <a class="reference internal" href="../using_trsm.html#trsm-tensor-views-label"><span class="std std-ref">Tensor Views in TRSM</span></a> for details.</p>
+</div>
+<section id="cublasdx-transpose-view">
+<span id="tensor-view-transpose-label"></span><h3>cublasdx::transpose_view<a class="headerlink" href="#cublasdx-transpose-view" title="Link to this heading">#</a></h3>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">Tensor</span><span class="o">&gt;</span>
+<span class="n">__host__</span><span class="w"> </span><span class="n">__device__</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">transpose_view</span><span class="p">(</span><span class="n">Tensor</span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">tensor</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Returns a lazy view of <code class="docutils literal notranslate"><span class="pre">tensor</span></code> with its first two modes (rows and columns) swapped.  No data
+is copied — the view simply reinterprets the layout.  For 1D tensors the input is returned
+unchanged.</p>
+</section>
+<section id="cublasdx-conjugate-view">
+<span id="tensor-view-conjugate-label"></span><h3>cublasdx::conjugate_view<a class="headerlink" href="#cublasdx-conjugate-view" title="Link to this heading">#</a></h3>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">Tensor</span><span class="o">&gt;</span>
+<span class="n">__host__</span><span class="w"> </span><span class="n">__device__</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">conjugate_view</span><span class="p">(</span><span class="n">Tensor</span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">tensor</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Returns a lazy view that applies complex conjugation (<span class="math notranslate nohighlight">\(a + bi \rightarrow a - bi\)</span>) to each
+element on access.  For real types the operation is a no-op.</p>
+</section>
+<section id="cublasdx-conj-transpose-view">
+<span id="tensor-view-conj-transpose-label"></span><h3>cublasdx::conj_transpose_view<a class="headerlink" href="#cublasdx-conj-transpose-view" title="Link to this heading">#</a></h3>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">Tensor</span><span class="o">&gt;</span>
+<span class="n">__host__</span><span class="w"> </span><span class="n">__device__</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">conj_transpose_view</span><span class="p">(</span><span class="n">Tensor</span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">tensor</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Returns a lazy view that both transposes and conjugates the tensor — the Hermitian adjoint
+(<span class="math notranslate nohighlight">\(A^H\)</span>).  Equivalent to applying <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">conjugate_view</span></code> after <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">transpose_view</span></code>.</p>
+<p>This is especially important for TRSM when the triangular matrix <code class="docutils literal notranslate"><span class="pre">A</span></code> must be treated as its
+conjugate transpose.  See <a class="reference internal" href="../using_trsm.html#trsm-tensor-views-label"><span class="std std-ref">Tensor Views in TRSM</span></a>.</p>
+</section>
+<section id="cublasdx-make-transform-view">
+<span id="tensor-view-make-transform-label"></span><h3>cublasdx::make_transform_view<a class="headerlink" href="#cublasdx-make-transform-view" title="Link to this heading">#</a></h3>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">Tensor</span><span class="p">,</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">Transform</span><span class="o">&gt;</span>
+<span class="n">__host__</span><span class="w"> </span><span class="n">__device__</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">make_transform_view</span><span class="p">(</span><span class="n">Tensor</span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">tensor</span><span class="p">,</span><span class="w"> </span><span class="n">Transform</span><span class="w"> </span><span class="n">transform</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Returns a lazy view that applies an arbitrary stateless element-wise <code class="docutils literal notranslate"><span class="pre">transform</span></code> functor to each
+element on access.  The built-in <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cublasdx</span><span class="o">::</span><span class="n">conjugate</span></code> functor can be used here; user-defined
+stateless functors are also accepted. See <a class="reference internal" href="#tensor-modifier-conjugate-label"><span class="std std-ref">cublasdx::conjugate</span></a> for more information.</p>
+</section>
+</section>
+<section id="element-wise-functors">
+<h2>Element-wise Functors<a class="headerlink" href="#element-wise-functors" title="Link to this heading">#</a></h2>
+<p>In addition to the tensor views above, cuBLASDx provides two built-in stateless element-wise
+functors that can be passed directly as transform arguments to
+<a class="reference internal" href="gemm_methods.html#block-execute-method-label"><span class="std std-ref">execute()</span></a>.</p>
+<section id="cublasdx-identity">
+<span id="tensor-modifier-identity-label"></span><h3>cublasdx::identity<a class="headerlink" href="#cublasdx-identity" title="Link to this heading">#</a></h3>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">cublasdx</span><span class="o">::</span><span class="n">identity</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Passes each element through unchanged. This is the default transform for every load and store
+position in <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">execute</span><span class="p">(...)</span></code>.  Using <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">identity</span></code> explicitly is equivalent to omitting that argument.</p>
+</section>
+<section id="cublasdx-conjugate">
+<span id="tensor-modifier-conjugate-label"></span><h3>cublasdx::conjugate<a class="headerlink" href="#cublasdx-conjugate" title="Link to this heading">#</a></h3>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">cublasdx</span><span class="o">::</span><span class="n">conjugate</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Applies complex conjugation to each element. For real types the operation is a no-op (element is
+returned unchanged).  For complex types it negates the imaginary part:
+<span class="math notranslate nohighlight">\(a + bi \rightarrow a - bi\)</span>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Both functors are stateless. Only stateless functors are accepted by <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">execute</span><span class="p">(...)</span></code>.</p>
+</div>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="pipeline.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Pipeline Creation Result</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="other_tensors.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Tensors</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#get-memory-layout">Get Memory Layout</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#suggested-shared-memory-layout">Suggested Shared Memory Layout</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-accumulator">Data Accumulator</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#get-data-accumulator">Get Data Accumulator</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#suggest-data-accumulator">Suggest Data Accumulator</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tensor-views">Tensor Views</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cublasdx-transpose-view">cublasdx::transpose_view</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cublasdx-conjugate-view">cublasdx::conjugate_view</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cublasdx-conj-transpose-view">cublasdx::conj_transpose_view</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cublasdx-make-transform-view">cublasdx::make_transform_view</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#element-wise-functors">Element-wise Functors</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cublasdx-identity">cublasdx::identity</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cublasdx-conjugate">cublasdx::conjugate</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5"></script>
+
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+<a class="footer-brand logo" href="https://www.nvidia.com">
+  <img src="../_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="../_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+</a></div>
+      
+        <div class="footer-item">
+
+<div class="footer-links">
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/">Privacy Policy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Your Privacy Choices</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/">Terms of Service</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/accessibility/">Accessibility</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/company-policies/">Corporate Policies</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/product-security/">Product Security</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/contact/">Contact</a>
+  
+  
+  
+</div>
+</div>
+      
+        <div class="footer-item">
+
+
+
+
+  <p class="copyright">
+    
+      Copyright © 2022-2026, NVIDIA Corporation &amp; Affiliates. All rights reserved.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+  </body>
+</html>

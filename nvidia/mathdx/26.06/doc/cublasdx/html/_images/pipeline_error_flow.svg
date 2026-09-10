@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="520" viewBox="0 0 960 520" role="img" aria-labelledby="title desc" style="background: transparent; color-scheme: light dark;">
+  <title id="title">Pipeline creation error flow</title>
+  <desc id="desc">Pipeline creation returns an expected value. Success provides a host pipeline. Failure provides a pipeline error with a cuBLASDx error code, an optional CUDA status, and a string helper.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#76b900"/></marker>
+    <marker id="warn-arrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#f97316"/></marker>
+    <style><![CDATA[
+      .box { fill: #ffffff; fill: light-dark(#ffffff, #111827); stroke: #1f2937; stroke: light-dark(#1f2937, #76b900); stroke-width: 1.6; }
+      .ok { fill: #f3f7ec; fill: light-dark(#f3f7ec, #13220c); stroke: #76b900; stroke: light-dark(#76b900, #93d85b); stroke-width: 1.6; }
+      .err { fill: #fff7ed; fill: light-dark(#fff7ed, #25190b); stroke: #f97316; stroke: light-dark(#f97316, #fb923c); stroke-width: 1.5; }
+      .cuda { fill: #eef6ff; fill: light-dark(#eef6ff, #0f1d2e); stroke: #2563eb; stroke: light-dark(#2563eb, #60a5fa); stroke-width: 1.5; }
+      .title { fill: #111827; fill: light-dark(#111827, #f9fafb); font: bold 18px Arial, sans-serif; }
+      .label { fill: #111827; fill: light-dark(#111827, #f9fafb); font: bold 16px Arial, sans-serif; }
+      .small { fill: #374151; fill: light-dark(#374151, #d1d5db); font: 13px Arial, sans-serif; }
+      .line { stroke: #76b900; stroke-width: 2.4; fill: none; marker-end: url(#arrow); }
+      .warnline { stroke: #f97316; stroke-width: 2.2; fill: none; marker-end: url(#warn-arrow); }
+      .warnbus { stroke: #f97316; stroke-width: 2.2; fill: none; }
+    ]]></style>
+  </defs>
+
+  <rect x="28" y="16" width="608" height="36" rx="8" class="box"/>
+  <text x="332" y="40" text-anchor="middle" class="title">Pipeline creation returns either a host pipeline or a recoverable error</text>
+
+  <rect x="36" y="92" width="222" height="78" rx="8" class="box"/>
+  <text x="147" y="123" text-anchor="middle" class="label">suggest_pipeline</text>
+  <text x="147" y="147" text-anchor="middle" class="small">or make_pipeline</text>
+
+  <rect x="338" y="80" width="280" height="102" rx="8" class="box"/>
+  <text x="478" y="112" text-anchor="middle" class="label">detail::expected</text>
+  <text x="478" y="138" text-anchor="middle" class="small">expected&lt;host_pipeline,</text>
+  <text x="478" y="158" text-anchor="middle" class="small">pipeline_error&gt;</text>
+  <path d="M 258 131 L 333 131" class="line"/>
+
+  <rect x="700" y="58" width="220" height="104" rx="8" class="ok"/>
+  <text x="810" y="90" text-anchor="middle" class="label">success</text>
+  <text x="810" y="116" text-anchor="middle" class="small">pipeline-&gt;buffer_size()</text>
+  <text x="810" y="136" text-anchor="middle" class="small">get_device_handle()</text>
+  <path d="M 618 116 L 695 106" class="line"/>
+
+  <rect x="700" y="198" width="220" height="112" rx="8" class="err"/>
+  <text x="810" y="229" text-anchor="middle" class="label">failure</text>
+  <text x="810" y="255" text-anchor="middle" class="small">pipeline.error()</text>
+  <text x="810" y="276" text-anchor="middle" class="small">error.code</text>
+  <text x="810" y="296" text-anchor="middle" class="small">get_cuda_error()</text>
+  <path d="M 618 150 L 695 244" class="warnline"/>
+
+  <rect x="48" y="410" width="236" height="76" rx="8" class="err"/>
+  <text x="166" y="438" text-anchor="middle" class="label">Validation code</text>
+  <text x="166" y="462" text-anchor="middle" class="small">switch on error.code</text>
+  <text x="166" y="480" text-anchor="middle" class="small">or use pipeline_error_string</text>
+
+  <rect x="362" y="410" width="236" height="76" rx="8" class="err"/>
+  <text x="480" y="438" text-anchor="middle" class="label">Allocation failure</text>
+  <text x="480" y="462" text-anchor="middle" class="small">code == allocation_failed</text>
+  <text x="480" y="480" text-anchor="middle" class="small">plus CUDA status</text>
+
+  <rect x="676" y="410" width="244" height="76" rx="8" class="cuda"/>
+  <text x="798" y="438" text-anchor="middle" class="label">CUDA-only failure</text>
+  <text x="798" y="462" text-anchor="middle" class="small">code == cuda</text>
+  <text x="798" y="480" text-anchor="middle" class="small">status != success</text>
+
+  <path d="M 810 310 L 810 354" class="warnbus"/>
+  <path d="M 166 354 L 810 354" class="warnbus"/>
+  <path d="M 166 354 L 166 405" class="warnline"/>
+  <path d="M 480 354 L 480 405" class="warnline"/>
+  <path d="M 798 354 L 798 405" class="warnline"/>
+</svg>

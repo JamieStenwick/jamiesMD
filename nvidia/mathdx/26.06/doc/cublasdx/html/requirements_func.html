@@ -1,0 +1,971 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Requirements And Functionality &#8212; cuBLASDx</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
+    <link rel="stylesheet" type="text/css" href="_static/diagram.css?v=21e9147c" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
+
+
+
+    <script src="_static/documentation_options.js?v=26f1c5af"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'requirements_func';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://docs.nvidia.com/cuda/cublasdx/_static/switcher.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.7.1';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+
+    <link rel="icon" href="_static/nvidia.ico"/>
+
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Quick Installation Guide" href="installation.html" />
+    <link rel="prev" title="NVIDIA cuBLASDx" href="index.html" />
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.7.1" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+
+
+  </head>
+
+  <body data-default-mode="">
+
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="cuBLASDx - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="cuBLASDx - Home"/>
+  
+  
+    <p class="title logo__title">cuBLASDx</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="cuBLASDx - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="cuBLASDx - Home"/>
+  
+  
+    <p class="title logo__title">cuBLASDx</p>
+  
+</a>
+
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Table of Contents">
+  <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
+  <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Documentation Home</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="using_cublasdx.html">Using cuBLASDx GEMM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="using_pipelines.html">Using Pipelined GEMM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="using_trsm.html">Using cuBLASDx TRSM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance.html">Achieving High Performance</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="api/operators.html">Operators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/traits.html">Traits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/shared_methods.html">Input / Output Format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/gemm_methods.html">GEMM Execution Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/trsm_methods.html">TRSM Execution Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/pipeline.html">Pipeline Creation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/other_methods.html">Other Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/other_tensors.html">Tensor Manipulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/other_shared.html">Shared Memory Management</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Python</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="python_bindings.html">cuBLASDx Python Bindings</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="examples_learning_path.html">Learning Path Through Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="release_notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/NVIDIA/CUDALibrarySamples/tree/main/MathDx/cuBLASDx">GitHub Samples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">MathDx</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/cublasdx-downloads">cuBLASDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/cufftdx-downloads">cuFFTDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/cusolverdx-downloads">cuSolverDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/curanddx-downloads">cuRANDDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/nvcompdx-downloads">nvCOMPDx</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Requirements And Functionality</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="requirements-and-functionality">
+<span id="requirements-label"></span><h1>Requirements And Functionality<a class="headerlink" href="#requirements-and-functionality" title="Link to this heading">#</a></h1>
+<section id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Link to this heading">#</a></h2>
+<p>The list of required software to use the cuBLASDx library is relatively short:</p>
+<ul class="simple">
+<li><p>CUDA Toolkit 13.0 or newer</p></li>
+<li><p>Supported CUDA compiler (C++17 required)</p></li>
+<li><p>Supported host compiler (C++17 required)</p></li>
+<li><p>(Optional) CMake (3.30 or newer for building this source tree, documentation, and examples; 3.25 or newer recommended for consuming an installed MathDx package)</p></li>
+</ul>
+<p>The CMake version requirement depends on the workflow:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 35.0%" />
+<col style="width: 25.0%" />
+<col style="width: 40.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Workflow</p></th>
+<th class="head"><p>CMake version</p></th>
+<th class="head"><p>Notes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Building this source tree</p></td>
+<td><p>3.30 or newer</p></td>
+<td><p>Required by the top-level project and documentation/example build.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Consuming an installed MathDx package</p></td>
+<td><p>3.25 or newer recommended</p></td>
+<td><p>Required for <code class="docutils literal notranslate"><span class="pre">INTERPROCEDURAL_OPTIMIZATION</span></code> when using TRSM fatbin LTO. Older CMake can use the explicit flag workaround in <a class="reference internal" href="installation.html#lto-fatbin-binary-linking-label"><span class="std std-ref">CMake &lt; 3.25 Workaround</span></a>.</p></td>
+</tr>
+<tr class="row-even"><td><p>GEMM-only projects without CMake</p></td>
+<td><p>Not required</p></td>
+<td><p>Include the MathDx and CUTLASS headers directly.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Dependencies:</p>
+<ul class="simple">
+<li><p>commonDx (included with the MathDx package)</p></li>
+<li><p>CUTLASS 4.4.1 or newer (CUTLASS 4.4.1 is included with the MathDx package)</p></li>
+</ul>
+<section id="supported-compilers">
+<h3>Supported Compilers<a class="headerlink" href="#supported-compilers" title="Link to this heading">#</a></h3>
+<p><strong>CUDA Compilers:</strong></p>
+<ul class="simple">
+<li><p>NVCC 13.0+ (CUDA Toolkit 13.0 or newer)</p></li>
+<li><p>(Experimental support) NVRTC 13.0+ (CUDA Toolkit 13.0 or newer)</p></li>
+</ul>
+<p><strong>Host / C++ Compilers:</strong></p>
+<ul class="simple">
+<li><p>GCC 7+</p></li>
+<li><p>Clang 9+ (Linux/WSL2 only)</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>We recommend using GCC 9+ as the host compiler, and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">NVCC</span></code> shipped with the latest <a class="reference external" href="https://developer.nvidia.com/cuda/toolkit">CUDA Toolkit</a> as the CUDA compiler.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Compiling cuBLASDx on Windows with MSVC has not been tested and is not supported yet. However, it is possible to compile
+kernels with cuBLASDx on Windows using NVRTC, as demonstrated in one of the examples.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>cuBLASDx emits errors for unsupported C++ standard versions, which can be silenced by defining <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">CUBLASDX_IGNORE_DEPRECATED_DIALECT</span></code>
+during compilation. cuBLASDx is not guaranteed to work with C++ standard versions that are not officially supported.</p>
+</div>
+</section>
+</section>
+<section id="supported-functionality">
+<span id="functionality-label"></span><h2>Supported Functionality<a class="headerlink" href="#supported-functionality" title="Link to this heading">#</a></h2>
+<p>This is an Early Access (EA) version of cuBLASDx. The current functionality of the library is a subset of the capabilities
+that will be available in the first official release.</p>
+<p>Supported features include:</p>
+<ul class="simple">
+<li><p>Creating block descriptors that execute the <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">GEMM</span></code> (general matrix multiply) routine: <span class="math notranslate nohighlight">\(\mathbf{C}_{m\times n}  = {\alpha} \times \mathbf{A}_{m\times k} \times \mathbf{B}_{k\times n} + {\beta} \times \mathbf{C}_{m\times n}\)</span> (See <a class="reference internal" href="api/operators.html#function-operator-label"><span class="std std-ref">Function operator</span></a>).</p></li>
+<li><p>Creating block descriptors that execute <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">TRSM</span></code> (triangular solve): <span class="math notranslate nohighlight">\(A \times X = B\)</span> or <span class="math notranslate nohighlight">\(X \times A = B\)</span> in-place in shared memory (See <a class="reference internal" href="api/operators.html#function-operator-trsm-label"><span class="std std-ref">TRSM</span></a>).</p></li>
+<li><p>Creating pipeline objects that overlap asynchronous load stages with asynchronous compute stages during tile <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">GEMM</span></code> execution</p></li>
+<li><p>Automatic use of Tensor Cores and Tensor Memory Accelerator, as well as automatic data layouts for optimal memory access patterns.</p></li>
+<li><p>Using either register fragments or shared memory as input/output memory space for accumulation.</p></li>
+<li><p>Bi-directional information flow: from the user to the descriptor via <a class="reference internal" href="api/operators.html#operators-label"><span class="std std-ref">Operators</span></a>, and from the descriptor to the user via <a class="reference internal" href="api/traits.html#traits-label"><span class="std std-ref">Traits</span></a>.</p></li>
+<li><p>Targeting specific GPU architectures using the <a class="reference internal" href="api/operators.html#sm-operator-label"><span class="std std-ref">SM Operator</span></a>. This enables users to configure the descriptor with suggested parameters for optimal performance.</p></li>
+</ul>
+<section id="supported-memory-spaces">
+<h3>Supported Memory Spaces<a class="headerlink" href="#supported-memory-spaces" title="Link to this heading">#</a></h3>
+<p>cuBLASDx tiles support all GEMM sizes defined by the <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">m</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">n</span></code>, and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">k</span></code> dimensions that can fit into the combined register file (RF) and shared memory. Matrices <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">A</span></code> and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">B</span></code>
+must fit into shared memory to perform computations. These input matrices may overlap or alias each other. The maximum amount of shared memory per CUDA thread block can be found
+in the <a class="reference external" href="https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#features-and-technical-specifications-technical-specifications-per-compute-capability">CUDA C Programming Guide</a>.</p>
+<dl class="simple">
+<dt>The input/output <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">C</span></code> matrix can be:</dt><dd><ol class="arabic simple">
+<li><p>Provided in shared memory (it cannot alias any input elements) for <span class="math notranslate nohighlight">\(\mathbf{C}_{m\times n}  = {\alpha} \times \mathbf{A}_{m\times k} \times \mathbf{B}_{k\times n} + {\beta} \times \mathbf{C}_{m\times n}\)</span></p></li>
+<li><p>Provided as a register fragment for accumulation to <span class="math notranslate nohighlight">\(\mathbf{C}_{m\times n} = \mathbf{A}_{m\times k} \times \mathbf{B}_{k\times n} + \mathbf{C}_{m\times n}\)</span></p></li>
+<li><p>Returned by value as a register fragment from <span class="math notranslate nohighlight">\(\mathbf{C}_{m\times n} = \mathbf{A}_{m\times k} \times \mathbf{B}_{k\times n}\)</span></p></li>
+</ol>
+</dd>
+</dl>
+<p>The cuBLASDx pipeline extension can start GEMM execution (as described with operators) from global memory and efficiently
+pipeline subsequent stages until all tiles have been loaded and multiplied. Multiple asynchronous load stages and
+multiple asynchronous compute stages can be in flight for the same output tile; one epilogue stage consumes the completed
+accumulator at the end.</p>
+</section>
+<section id="supported-computation-types">
+<h3>Supported Computation Types<a class="headerlink" href="#supported-computation-types" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>cuBLASDx supports calculations in two domains:</dt><dd><ol class="arabic simple">
+<li><p>Real</p></li>
+<li><p>Complex</p></li>
+</ol>
+</dd>
+<dt>In seven floating point precisions:</dt><dd><ol class="arabic simple">
+<li><p>half (<code class="code highlight cpp docutils literal highlight-cpp"><span class="n">__half</span></code>)</p></li>
+<li><p>single (<code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">float</span></code>)</p></li>
+<li><p>double (<code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">double</span></code>)</p></li>
+<li><p>fp8_e4m3 (<code class="code highlight cpp docutils literal highlight-cpp"><span class="n">__nv_fp8_e4m3</span></code>)</p></li>
+<li><p>fp8_e5m2 (<code class="code highlight cpp docutils literal highlight-cpp"><span class="n">__nv_fp8_e5m2</span></code>)</p></li>
+<li><p>bf16 (<code class="code highlight cpp docutils literal highlight-cpp"><span class="n">__nv_bfloat16</span></code>)</p></li>
+<li><p>tf32 (<code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cublasdx</span><span class="o">::</span><span class="n">tfloat32_t</span></code>)</p></li>
+</ol>
+</dd>
+<dt>In eight integral precisions:</dt><dd><ol class="arabic simple">
+<li><p>Signed 8-bit (<code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int8_t</span></code>)</p></li>
+<li><p>Unsigned 8-bit (<code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">uint8_t</span></code>)</p></li>
+<li><p>Signed 16-bit (<code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int16_t</span></code>)</p></li>
+<li><p>Unsigned 16-bit (<code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">uint16_t</span></code>)</p></li>
+<li><p>Signed 32-bit (<code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int32_t</span></code>)</p></li>
+<li><p>Unsigned 32-bit (<code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">uint32_t</span></code>)</p></li>
+<li><p>Signed 64-bit (<code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int64_t</span></code>)</p></li>
+<li><p>Unsigned 64-bit (<code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">uint64_t</span></code>)</p></li>
+</ol>
+</dd>
+</dl>
+<p>Starting from <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cuBLASDx</span><span class="w"> </span><span class="mf">0.2.0</span></code>, matrix multiplication with different precisions for <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">A</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">B</span></code>, and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">C</span></code> is supported.</p>
+<p>The accumulator (<code class="code highlight cpp docutils literal highlight-cpp"><span class="n">C</span></code> precision) must be one of: <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">__half</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">float</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">double</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int32_t</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">uint32_t</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int64_t</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">uint64_t</span></code>.
+The types <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">__nv_bfloat16</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cublasdx</span><span class="o">::</span><span class="n">tfloat32_t</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">__nv_fp8_e4m3</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">__nv_fp8_e5m2</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int8_t</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">uint8_t</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int16_t</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">uint16_t</span></code> are
+valid for inputs (<code class="code highlight cpp docutils literal highlight-cpp"><span class="n">A</span></code> or <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">B</span></code>) but cannot be used as the accumulator (<code class="code highlight cpp docutils literal highlight-cpp"><span class="n">C</span></code>).</p>
+<dl class="simple">
+<dt>Any combination of input and accumulator precisions is supported, as long as either:</dt><dd><ol class="arabic simple">
+<li><p>All are floating point precisions (accumulator restricted as above).</p></li>
+<li><dl class="simple">
+<dt>All are integral precisions and:</dt><dd><ol class="loweralpha simple">
+<li><p>The accumulator is at least 4x wider than any input,</p></li>
+<li><p>Input signedness implies accumulator signedness.</p></li>
+</ol>
+</dd>
+</dl>
+</li>
+</ol>
+</dd>
+</dl>
+<p>Mixed floating/integral GEMMs are unsupported, but in-register input conversion can be applied to achieve this effect.</p>
+</section>
+<section id="supported-input-types">
+<h3>Supported Input Types<a class="headerlink" href="#supported-input-types" title="Link to this heading">#</a></h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Starting from cuBLASDx 0.3.0, <strong>computational precision has been decoupled from data precision</strong>, i.e. the input / output data for each matrix can be of arbitrary type (even integral input for floating point GEMM) provided that <a class="reference internal" href="api/operators.html#alignment-operator-label"><span class="std std-ref">Alignment Operator</span></a> is set and at least one of those conditions is met:</p>
+<ol class="arabic simple">
+<li><p>It’s implicitly convertible to the data type chosen with <a class="reference internal" href="api/operators.html#precision-operator-label"><span class="std std-ref">Precision Operator</span></a> and <a class="reference internal" href="api/operators.html#type-operator-label"><span class="std std-ref">Type Operator</span></a>.</p></li>
+<li><p>For inputs: An appropriate converting loading operation is provided as one of the arguments. It takes the input type value. Its result must be at least implicitly convertible to the compute type.</p></li>
+<li><p>For output: An appropriate converting storing operation is provided as one of the arguments. It takes the result computational type (usually <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">C</span></code> type as defined by <a class="reference internal" href="api/operators.html#precision-operator-label"><span class="std std-ref">Precision Operator</span></a> and <a class="reference internal" href="api/operators.html#type-operator-label"><span class="std std-ref">Type Operator</span></a>). Its result must be at least implicitly convertible to the output type.</p></li>
+</ol>
+</div>
+</section>
+<section id="supported-input-layouts">
+<h3>Supported Input Layouts<a class="headerlink" href="#supported-input-layouts" title="Link to this heading">#</a></h3>
+<p>Data can be provided in any layout described by a <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cublasdx</span><span class="o">::</span><span class="n">tensor</span></code> (or underlying <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cute</span><span class="o">::</span><span class="n">Tensor</span></code>) as long as it’s a 2-dimensional tensor.
+Its modes can be hierarchical, but there needs to be only 2 of them.</p>
+</section>
+<section id="supported-maximal-sizes-with-non-overlapping-a-and-b">
+<h3>Supported Maximal Sizes With Non-Overlapping A And B<a class="headerlink" href="#supported-maximal-sizes-with-non-overlapping-a-and-b" title="Link to this heading">#</a></h3>
+<p>Below you can find a table presenting maximal supported sizes for three commonly-used floating point precisions (half, single, and double) and type (real or complex) assuming <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">m</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">n</span></code>, and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">k</span></code> dimensions are equal, and precisions of <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">A</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">B</span></code> and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">C</span></code> are the same.</p>
+<dl class="simple">
+<dt>Effective supported dimensions are much bigger, if:</dt><dd><ol class="arabic simple">
+<li><p>Dimensions are not equal (long and wide matrices)</p></li>
+<li><p>A and B are aliased and share elements (e.g. <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">A</span></code> multiplied with its transposition requires fitting only <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">A</span></code>)</p></li>
+</ol>
+</dd>
+</dl>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head" rowspan="2"><p>Function</p></th>
+<th class="head" rowspan="2"><p>Type, Precision of A/B/C</p></th>
+<th class="head" rowspan="2"><p>Architecture</p></th>
+<th class="head" colspan="2"><p>Max Size</p></th>
+</tr>
+<tr class="row-even"><th class="head"><p>Restricted AB with C in Shared</p></th>
+<th class="head"><p>Restricted AB with C in registers</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-odd"><td rowspan="16"><p>GEMM</p></td>
+<td rowspan="4"><ul class="simple">
+<li><p>Real, half</p></li>
+</ul>
+</td>
+<td><p>75</p></td>
+<td><p>104</p></td>
+<td><p>127</p></td>
+</tr>
+<tr class="row-even"><td><p>80, 87</p></td>
+<td><p>166</p></td>
+<td><p>203</p></td>
+</tr>
+<tr class="row-odd"><td><p>86, 89, 120, 121</p></td>
+<td><p>129</p></td>
+<td><p>157</p></td>
+</tr>
+<tr class="row-even"><td><p>90, 100, 103, 110</p></td>
+<td><p>196</p></td>
+<td><p>240</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="4"><ul class="simple">
+<li><p>Real, float</p></li>
+<li><p>Complex, half</p></li>
+</ul>
+</td>
+<td><p>75</p></td>
+<td><p>73</p></td>
+<td><p>89</p></td>
+</tr>
+<tr class="row-even"><td><p>80, 87</p></td>
+<td><p>117</p></td>
+<td><p>143</p></td>
+</tr>
+<tr class="row-odd"><td><p>86, 89, 120, 121</p></td>
+<td><p>91</p></td>
+<td><p>111</p></td>
+</tr>
+<tr class="row-even"><td><p>90, 100, 103, 110</p></td>
+<td><p>139</p></td>
+<td><p>170</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="4"><ul class="simple">
+<li><p>Real, double</p></li>
+<li><p>Complex, float</p></li>
+</ul>
+</td>
+<td><p>75</p></td>
+<td><p>52</p></td>
+<td><p>63</p></td>
+</tr>
+<tr class="row-even"><td><p>80, 87</p></td>
+<td><p>83</p></td>
+<td><p>101</p></td>
+</tr>
+<tr class="row-odd"><td><p>86, 89, 120, 121</p></td>
+<td><p>64</p></td>
+<td><p>78</p></td>
+</tr>
+<tr class="row-even"><td><p>90, 100, 103, 110</p></td>
+<td><p>98</p></td>
+<td><p>120</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="4"><ul class="simple">
+<li><p>Complex, double</p></li>
+</ul>
+</td>
+<td><p>75</p></td>
+<td><p>36</p></td>
+<td><p>44</p></td>
+</tr>
+<tr class="row-even"><td><p>80, 87</p></td>
+<td><p>58</p></td>
+<td><p>71</p></td>
+</tr>
+<tr class="row-odd"><td><p>86, 89, 120, 121</p></td>
+<td><p>45</p></td>
+<td><p>55</p></td>
+</tr>
+<tr class="row-even"><td><p>90, 100, 103, 110</p></td>
+<td><p>69</p></td>
+<td><p>84</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Starting with <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cuBLASDx</span><span class="w"> </span><span class="mf">0.3.0</span></code> there are no static assertions on whether the chosen size will fit onto device. This is a result of allowing
+inputs to overlap and providing a register based accumulation API along with shared memory one.</p>
+</div>
+</section>
+</section>
+<section id="supported-mma-data-types">
+<span id="mixed-precision-label"></span><h2>Supported MMA Data Types<a class="headerlink" href="#supported-mma-data-types" title="Link to this heading">#</a></h2>
+<p>The table below lists the precisions of <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">A</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">B</span></code>, and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">C</span></code> for which specialized <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Tensor</span><span class="w"> </span><span class="n">Core</span></code> operation is available.</p>
+<p>The type and precision of the scaling factors, i.e., <span class="math notranslate nohighlight">\({\alpha}\)</span> and <span class="math notranslate nohighlight">\({\beta}\)</span>, are expected to match those of matrix <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">C</span></code>.
+Matrices <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">A</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">B</span></code>, and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">C</span></code> must all be either real or complex data types. If the I/O precision is decoupled from the computation precision, the scale type
+must be compatible with the compute type.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Precision A</p></th>
+<th class="head"><p>Precision B</p></th>
+<th class="head"><p>Precision C</p></th>
+<th class="head"><p>Note</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>fp8_e4m3</p></td>
+<td><p>fp8_e4m3</p></td>
+<td><p>float</p></td>
+<td><p>MMA for SM89+, WGMMA for SM90a, and 1SM UTCMMA for SM100a</p></td>
+</tr>
+<tr class="row-odd"><td><p>fp8_e4m3</p></td>
+<td><p>fp8_e5m2</p></td>
+<td><p>float</p></td>
+<td><p>MMA for SM89+, WGMMA for SM90a and 1SM UTCMMA for SM100a</p></td>
+</tr>
+<tr class="row-even"><td><p>fp8_e5m2</p></td>
+<td><p>fp8_e5m2</p></td>
+<td><p>float</p></td>
+<td><p>MMA for SM89+, WGMMA for SM90a and 1SM UTCMMA for SM100a</p></td>
+</tr>
+<tr class="row-odd"><td><p>fp8_e5m2</p></td>
+<td><p>fp8_e4m3</p></td>
+<td><p>float</p></td>
+<td><p>MMA for SM89+, WGMMA for SM90a and 1SM UTCMMA for SM100a</p></td>
+</tr>
+<tr class="row-even"><td><p>half</p></td>
+<td><p>half</p></td>
+<td><p>half</p></td>
+<td><p>MMA for SM75+, WGMMA for SM90a and 1SM UTCMMA for SM100a</p></td>
+</tr>
+<tr class="row-odd"><td><p>half</p></td>
+<td><p>half</p></td>
+<td><p>float</p></td>
+<td><p>MMA for SM75+, WGMMA for SM90a and 1SM UTCMMA for SM100a</p></td>
+</tr>
+<tr class="row-even"><td><p>bf16</p></td>
+<td><p>bf16</p></td>
+<td><p>float</p></td>
+<td><p>MMA for SM80+, WGMMA for SM90a and 1SM UTCMMA for SM100a</p></td>
+</tr>
+<tr class="row-odd"><td><p>tf32</p></td>
+<td><p>tf32</p></td>
+<td><p>float</p></td>
+<td><p>MMA for SM80+, WGMMA for SM90a and 1SM UTCMMA for SM100a</p></td>
+</tr>
+<tr class="row-even"><td><p>int8_t</p></td>
+<td><p>int8_t</p></td>
+<td><p>int32_t</p></td>
+<td><p>MMA for SM80+, WGMMA for SM90a and 1SM UTCMMA for SM100a</p></td>
+</tr>
+<tr class="row-odd"><td><p>uint8_t</p></td>
+<td><p>int8_t</p></td>
+<td><p>int32_t</p></td>
+<td><p>MMA for SM80+, WGMMA for SM90a and 1SM UTCMMA for SM100a</p></td>
+</tr>
+<tr class="row-even"><td><p>int8_t</p></td>
+<td><p>uint8_t</p></td>
+<td><p>int32_t</p></td>
+<td><p>MMA for SM80+, WGMMA for SM90a and 1SM UTCMMA for SM100a</p></td>
+</tr>
+<tr class="row-odd"><td><p>uint8_t</p></td>
+<td><p>uint8_t</p></td>
+<td><p>int32_t</p></td>
+<td><p>MMA for SM80+, WGMMA for SM90a and 1SM UTCMMA for SM100a</p></td>
+</tr>
+<tr class="row-even"><td><p>double</p></td>
+<td><p>double</p></td>
+<td><p>double</p></td>
+<td><p>MMA, SM80+</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If an MMA instruction exists for the combination of precisions of <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">A</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">B</span></code>, and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">C</span></code>, cuBLASDx will use the MMA instruction automatically on supported GPU architectures.
+Otherwise, cuBLASDx will use an FMA instruction, and there are no performance guarantees.</p>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">NVIDIA cuBLASDx</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="installation.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Quick Installation Guide</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#requirements">Requirements</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#supported-compilers">Supported Compilers</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#supported-functionality">Supported Functionality</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#supported-memory-spaces">Supported Memory Spaces</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#supported-computation-types">Supported Computation Types</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#supported-input-types">Supported Input Types</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#supported-input-layouts">Supported Input Layouts</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#supported-maximal-sizes-with-non-overlapping-a-and-b">Supported Maximal Sizes With Non-Overlapping A And B</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#supported-mma-data-types">Supported MMA Data Types</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5"></script>
+
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+<a class="footer-brand logo" href="https://www.nvidia.com">
+  <img src="_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+</a></div>
+      
+        <div class="footer-item">
+
+<div class="footer-links">
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/">Privacy Policy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Your Privacy Choices</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/">Terms of Service</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/accessibility/">Accessibility</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/company-policies/">Corporate Policies</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/product-security/">Product Security</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/contact/">Contact</a>
+  
+  
+  
+</div>
+</div>
+      
+        <div class="footer-item">
+
+
+
+
+  <p class="copyright">
+    
+      Copyright © 2022-2026, NVIDIA Corporation &amp; Affiliates. All rights reserved.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+  </body>
+</html>

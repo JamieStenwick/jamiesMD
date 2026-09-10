@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="940" height="460" viewBox="0 0 940 460" role="img" aria-labelledby="title desc" style="background: transparent; color-scheme: light dark;">
+  <title id="title">Device GEMM partitioning</title>
+  <desc id="desc">A CUDA block computes one C tile. The block streams matching tiles from an A row band and a B column band across the K dimension.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#76b900"/></marker>
+    <style><![CDATA[
+      .box { fill: #ffffff; fill: light-dark(#ffffff, #111827); stroke: #1f2937; stroke: light-dark(#1f2937, #76b900); stroke-width: 1.5; }
+      .a { fill: #eef6ff; fill: light-dark(#eef6ff, #0f1d2e); stroke: #2563eb; stroke: light-dark(#2563eb, #60a5fa); stroke-width: 1.5; }
+      .b { fill: #fff7ed; fill: light-dark(#fff7ed, #25190b); stroke: #f97316; stroke: light-dark(#f97316, #fb923c); stroke-width: 1.5; }
+      .c { fill: #f3f7ec; fill: light-dark(#f3f7ec, #13220c); stroke: #76b900; stroke: light-dark(#76b900, #93d85b); stroke-width: 1.5; }
+      .tile { fill: #ffffff; fill: light-dark(#ffffff, #111827); stroke: #111827; stroke: light-dark(#111827, #f9fafb); stroke-width: 2; }
+      .ghostBox { fill: #ffffff; fill: light-dark(#ffffff, #111827); stroke: #1f2937; stroke: light-dark(#1f2937, #76b900); stroke-width: 1.1; opacity: 0.55; }
+      .text { fill: #111827; fill: light-dark(#111827, #f9fafb); font: 14px Arial, sans-serif; }
+      .small { fill: #374151; fill: light-dark(#374151, #d1d5db); font: 12px Arial, sans-serif; }
+      .label { fill: #111827; fill: light-dark(#111827, #f9fafb); font: bold 14px Arial, sans-serif; }
+      .title { fill: #111827; fill: light-dark(#111827, #f9fafb); font: bold 16px Arial, sans-serif; }
+      .line { stroke: #76b900; stroke-width: 2.3; fill: none; marker-end: url(#arrow); }
+      .grid { stroke: #6b7280; stroke: light-dark(#6b7280, #9ca3af); stroke-width: 0.9; fill: none; }
+    ]]></style>
+  </defs>
+
+  <rect x="28" y="16" width="580" height="36" rx="8" class="box"/>
+  <text x="318" y="40" text-anchor="middle" class="title">One CUDA block maps A and B tiles to one C tile</text>
+
+  <rect x="42" y="96" width="244" height="182" rx="10" class="a"/>
+  <rect x="42" y="96" width="244" height="34" rx="10" class="box"/>
+  <text x="164" y="119" text-anchor="middle" class="label">A matrix: M x K</text>
+  <path d="M 42 180 L 286 180 M 42 229 L 286 229 M 123 130 L 123 278 M 204 130 L 204 278" class="grid"/>
+  <rect x="42" y="180" width="81" height="49" class="tile"/>
+  <text x="82" y="209" text-anchor="middle" class="small">A tile</text>
+
+  <rect x="348" y="78" width="330" height="158" rx="10" class="b"/>
+  <rect x="348" y="78" width="330" height="34" rx="10" class="box"/>
+  <text x="513" y="101" text-anchor="middle" class="label">B matrix: K x N</text>
+  <path d="M 348 154 L 678 154 M 348 195 L 678 195 M 414 112 L 414 236 M 480 112 L 480 236 M 546 112 L 546 236 M 612 112 L 612 236" class="grid"/>
+  <rect x="480" y="112" width="66" height="42" class="tile"/>
+  <text x="513" y="138" text-anchor="middle" class="small">B tile</text>
+
+  <rect x="348" y="286" width="300" height="140" rx="10" class="c"/>
+  <rect x="348" y="286" width="300" height="34" rx="10" class="box"/>
+  <text x="498" y="309" text-anchor="middle" class="label">C output grid: M x N</text>
+  <path d="M 348 346 L 648 346 M 348 373 L 648 373 M 348 400 L 648 400 M 408 320 L 408 426 M 468 320 L 468 426 M 528 320 L 528 426 M 588 320 L 588 426" class="grid"/>
+  <rect x="468" y="346" width="60" height="27" class="tile"/>
+  <text x="498" y="364" text-anchor="middle" class="small">C tile</text>
+
+  <rect x="736" y="184" width="158" height="120" rx="10" class="box"/>
+  <text x="815" y="216" text-anchor="middle" class="label">CUDA block</text>
+  <text x="815" y="242" text-anchor="middle" class="small">blockIdx.x</text>
+  <text x="815" y="262" text-anchor="middle" class="small">blockIdx.y</text>
+  <text x="815" y="284" text-anchor="middle" class="small">owns C tile</text>
+
+  <rect x="64" y="306" width="170" height="54" rx="8" class="ghostBox"/>
+  <rect x="72" y="314" width="170" height="54" rx="8" class="ghostBox"/>
+  <rect x="80" y="322" width="170" height="54" rx="8" class="box"/>
+  <text x="165" y="344" text-anchor="middle" class="small">K tile stream</text>
+  <text x="165" y="363" text-anchor="middle" class="small">K0, K1, K2, ...</text>
+
+  <path d="M 123 205 C 216 214 274 270 342 353" class="line"/>
+  <path d="M 513 154 C 513 208 510 247 502 281" class="line"/>
+  <path d="M 736 244 C 684 272 624 319 533 355" class="line"/>
+  <path d="M 250 349 C 300 349 325 351 342 353" class="line"/>
+</svg>

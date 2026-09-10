@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="455" viewBox="0 0 960 455" role="img" aria-labelledby="title desc" style="background: transparent; color-scheme: light dark;">
+  <title id="title">cuBLASDx CMake target decision flow</title>
+  <desc id="desc">Choose cublasdx_no_lto for GEMM-only header-only builds, cublasdx for default CUDA Toolkit 13.2 or newer builds, and cublasdx_fatbin for TRSM or fatbin builds on older toolkits.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#76b900"/></marker>
+    <style><![CDATA[
+      .box { fill: #ffffff; fill: light-dark(#ffffff, #111827); stroke: #1f2937; stroke: light-dark(#1f2937, #76b900); stroke-width: 1.5; }
+      .q { fill: #eef6ff; fill: light-dark(#eef6ff, #0f1d2e); stroke: #2563eb; stroke: light-dark(#2563eb, #60a5fa); stroke-width: 1.4; }
+      .target { fill: #f3f7ec; fill: light-dark(#f3f7ec, #13220c); stroke: #76b900; stroke: light-dark(#76b900, #93d85b); stroke-width: 1.5; }
+      .warn { fill: #fff7ed; fill: light-dark(#fff7ed, #25190b); stroke: #f97316; stroke: light-dark(#f97316, #fb923c); stroke-width: 1.4; }
+      .text { fill: #111827; fill: light-dark(#111827, #f9fafb); font: 15px Arial, sans-serif; }
+      .small { fill: #374151; fill: light-dark(#374151, #d1d5db); font: 12px Arial, sans-serif; }
+      .label { fill: #111827; fill: light-dark(#111827, #f9fafb); font: bold 15px Arial, sans-serif; }
+      .line { stroke: #76b900; stroke-width: 2.2; fill: none; marker-end: url(#arrow); }
+      .alt { stroke: #2563eb; stroke: light-dark(#2563eb, #60a5fa); stroke-width: 2; fill: none; marker-end: url(#arrow); }
+    ]]></style>
+  </defs>
+
+  <rect x="30" y="18" width="330" height="34" rx="8" class="box"/>
+  <text x="195" y="41" text-anchor="middle" class="label">Choose a cuBLASDx CMake target</text>
+
+  <rect x="72" y="82" width="210" height="76" rx="10" class="q"/>
+  <text x="177" y="111" text-anchor="middle" class="text">Does the project</text>
+  <text x="177" y="132" text-anchor="middle" class="text">use TRSM?</text>
+
+  <rect x="62" y="258" width="230" height="84" rx="10" class="target"/>
+  <text x="177" y="289" text-anchor="middle" class="label">mathdx::cublasdx_no_lto</text>
+  <text x="177" y="313" text-anchor="middle" class="small">GEMM-only header path</text>
+  <text x="177" y="332" text-anchor="middle" class="small">no fatbin linking overhead</text>
+  <path d="M 177 158 L 177 253" class="line"/>
+  <text x="198" y="206" class="small">no</text>
+
+  <rect x="390" y="82" width="214" height="76" rx="10" class="q"/>
+  <text x="497" y="111" text-anchor="middle" class="text">CUDA Toolkit</text>
+  <text x="497" y="132" text-anchor="middle" class="text">13.2 or newer?</text>
+  <path d="M 282 120 L 385 120" class="line"/>
+  <text x="324" y="106" class="small">yes</text>
+
+  <rect x="704" y="76" width="218" height="88" rx="10" class="target"/>
+  <text x="813" y="108" text-anchor="middle" class="label">mathdx::cublasdx</text>
+  <text x="813" y="132" text-anchor="middle" class="small">default target</text>
+  <text x="813" y="151" text-anchor="middle" class="small">auto fatbin on CTK &gt;= 13.2</text>
+  <path d="M 604 120 L 699 120" class="line"/>
+  <text x="644" y="106" class="small">yes</text>
+
+  <rect x="386" y="258" width="222" height="88" rx="10" class="target"/>
+  <text x="497" y="289" text-anchor="middle" class="label">mathdx::cublasdx_fatbin</text>
+  <text x="497" y="313" text-anchor="middle" class="small">explicit libcublasdx.fatbin</text>
+  <text x="497" y="332" text-anchor="middle" class="small">needed for CTK &lt; 13.2</text>
+  <path d="M 497 158 L 497 253" class="line"/>
+  <text x="518" y="206" class="small">no</text>
+
+  <rect x="642" y="258" width="280" height="94" rx="10" class="warn"/>
+  <text x="782" y="287" text-anchor="middle" class="label">Fatbin/LTO target properties</text>
+  <text x="782" y="313" text-anchor="middle" class="small">CUDA_SEPARABLE_COMPILATION ON</text>
+  <text x="782" y="332" text-anchor="middle" class="small">INTERPROCEDURAL_OPTIMIZATION ON</text>
+  <path d="M 608 302 L 637 302" class="alt"/>
+  <path d="M 813 164 L 813 253" class="alt"/>
+
+  <rect x="228" y="382" width="500" height="42" rx="8" class="box"/>
+  <text x="478" y="408" text-anchor="middle" class="small">Do not use mathdx::cublasdx_no_lto for TRSM; it intentionally disables the fatbin.</text>
+</svg>

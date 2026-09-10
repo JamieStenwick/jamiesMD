@@ -36,6 +36,21 @@ struct SimParams {
 };
 
 
+struct Particles {
+    /*All data necessary to fully define particles, 3 coordinate position arrays,
+    3 coordinate velocity arrays, and a radii array (for now)*/
+    std::vector<double> x{};
+    std::vector<double> y{};
+    std::vector<double> z{};
+
+    std::vector<double> vx{};
+    std::vector<double> vy{};
+    std::vector<double> vz{};
+
+    std::vector<double> r{};
+};
+
+
 class Simulator {
 public:
     Simulator(const SimParams& Params) :
@@ -45,10 +60,6 @@ public:
         m_xpos(m_Params.N),
         m_ypos(m_Params.N),
         m_zpos(m_Params.N),
-
-        m_xforce(m_Params.N),
-        m_yforce(m_Params.N),
-        m_zforce(m_Params.N),
 
         m_radii(m_Params.N, 1),
         m_cellList(m_Params.N)
@@ -113,7 +124,14 @@ public:
     }
 
     /*
-    void setPositionsRandom(Random seed) {
+    void setPositionsRandom() {
+        1. Get exactly number of random velocities (3*N) probably normal distribution and scaled by temp and fill velocity arrays.
+        2. Then get enough uniform numbers for twice number of particles (3*N*2)
+        3. Loop through each particle on CPU (GPU just a means of generating a shitload of random numbers rn)
+        3a. Look through every particle in cell corresponding to generated number and see if sampled position < allowable delta r
+        3b. If valid, append particle to cell list and position to particle, if not go back to 3
+        4. Repeat until all particles assigned valid location
+        5. If random position list is exhausted, relaunch kernel and copy back just an N number of positions (3*N) total
         
     }
     */
@@ -137,10 +155,6 @@ private:
     std::vector<double> m_xpos{};
     std::vector<double> m_ypos{};
     std::vector<double> m_zpos{};
-
-    std::vector<double> m_xforce{};
-    std::vector<double> m_yforce{};
-    std::vector<double> m_zforce{};
 
     std::vector<double> m_radii{};
     std::vector<double> m_cellList{};

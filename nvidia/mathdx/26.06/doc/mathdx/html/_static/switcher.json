@@ -1,0 +1,27 @@
+[
+    {
+        "name": "26.06.1 (current release)",
+        "version": "26.06.1",
+        "url": "https://docs.nvidia.com/cuda/mathdx/"
+    },
+    {
+        "name": "26.06.0",
+        "version": "26.06.0",
+        "url": "https://docs.nvidia.com/cuda/mathdx/26.06.0/"
+    },
+    {
+        "name": "26.03.0",
+        "version": "26.03.0",
+        "url": "https://docs.nvidia.com/cuda/mathdx/26.03.0/"
+    },
+    {
+        "name": "25.12.1",
+        "version": "25.12.1",
+        "url": "https://docs.nvidia.com/cuda/mathdx/25.12.1/"
+    },
+    {
+        "name": "25.12.0",
+        "version": "25.12.0",
+        "url": "https://docs.nvidia.com/cuda/mathdx/25.12.0/"
+    }
+]

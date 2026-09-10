@@ -1,0 +1,1246 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>cuFFT Device API Reference &#8212; cuFFTDx</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
+
+
+
+    <script src="../_static/documentation_options.js?v=702cf1bd"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'cufft_api/device_api';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://docs.nvidia.com/cuda/cufftdx/_static/switcher.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '1.7.3';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+
+    <link rel="icon" href="../_static/nvidia.ico"/>
+
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="cuFFTDx Python Bindings" href="../python_bindings.html" />
+    <link rel="prev" title="Other Methods" href="../api/other_methods.html" />
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="1.7.3" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+
+
+  </head>
+
+  <body data-default-mode="">
+
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="cuFFTDx - Home"/>
+    <img src="../_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="cuFFTDx - Home"/>
+  
+  
+    <p class="title logo__title">cuFFTDx</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="cuFFTDx - Home"/>
+    <img src="../_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="cuFFTDx - Home"/>
+  
+  
+    <p class="title logo__title">cuFFTDx</p>
+  
+</a>
+
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Table of Contents">
+  <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
+  <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Documentation home</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../requirements_func.html">Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../introduction1.html">Using cuFFTDx</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../introduction2.html">Your Next Custom FFT Kernels</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../cufft_lto/index.html">Using cuFFTDx with cuFFT LTO</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../cufft_lto/augment_with_lto.html">Augment cuFFTDx with LTO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cufft_lto/custom_lto_helper.html">Customize LTO Helper</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../performance.html">Achieving High Performance</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../api/operators.html">Operators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/traits.html">Traits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/methods.html">Execution Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/other_methods.html">Other Methods</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">cuFFT API Reference</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">cuFFT Device API</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Python Bindings</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../python_bindings.html">Python Bindings</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lto_examples.html">LTO Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lto_helper.html">LTO Helper</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../release_notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/NVIDIA/CUDALibrarySamples/tree/main/MathDx/cuFFTDx">GitHub Samples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">MathDx</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/cufftdx-downloads">cuFFTDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/cusolverdx-downloads">cuSolverDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/cublasdx-downloads">cuBLASDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/curanddx-downloads">cuRANDDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/nvcompdx-downloads">nvCOMPDx</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">cuFFT Device API Reference</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="cufft-device-api-reference">
+<span id="cufft-device-api-label"></span><h1>cuFFT Device API Reference<a class="headerlink" href="#cufft-device-api-reference" title="Link to this heading">#</a></h1>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The API described in this section is experimental and is subject to change at any time.
+To acknowledge this notice, define <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">CUFFT_ENABLE_EXPERIMENTAL_API</span></code> before including <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cufft_device</span><span class="p">.</span><span class="n">h</span></code>.
+Otherwise, the compiler will issue an error.</p>
+</div>
+<p>This section describes the extension to the cuFFT API included in the cuFFT library shipped as part of the CUDA Toolkit.
+It contains a collection of host functions that can be used to query or generate device function
+code along with the database metadata (a C++ header file) that can be used together with the cuFFTDx library.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>All functions discussed in this section are defined in the <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cufft</span><span class="o">/</span><span class="n">include</span><span class="o">/</span><span class="n">cufft_device</span><span class="p">.</span><span class="n">h</span></code> header file.</p>
+</div>
+<section id="version-information">
+<h2>Version Information<a class="headerlink" href="#version-information" title="Link to this heading">#</a></h2>
+<section id="cufftdevicegetversion">
+<span id="api-reference-cufftdevicegetversion-label"></span><h3>cufftDeviceGetVersion<a class="headerlink" href="#cufftdevicegetversion" title="Link to this heading">#</a></h3>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.cufftDeviceGetVersion">
+<span class="n"><span class="pre">cufftResult</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cufftDeviceGetVersion</span></span></span><span class="sig-paren">(</span><em class="sig-param"><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">version</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#c.cufftDeviceGetVersion" title="Link to this definition">#</a><br /></dt>
+<dd><p>Returns the version of the device code output by the cuFFT library, i.e., <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">CUFFT_DEVICE_VERSION</span></code> defined in <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cufft_device</span><span class="p">.</span><span class="n">h</span></code>.
+Note that this is a separate versioning from the version of the cuFFT library itself.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>version[Out]</strong> – Pointer to store the version number.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return values<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>CUFFT_SUCCESS</strong> – Version number was successfully retrieved.</p></li>
+<li><p><strong>CUFFT_INVALID_VALUE</strong> – The <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">version</span></code> pointer is <code class="docutils literal notranslate"><span class="pre">NULL</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+<section id="description-management">
+<h2>Description Management<a class="headerlink" href="#description-management" title="Link to this heading">#</a></h2>
+<p>The set of functions used to specify which FFT implementations should be included in the database.</p>
+<section id="cufftdescriptioncreate">
+<span id="api-reference-cufftdescriptioncreate-label"></span><h3>cufftDescriptionCreate<a class="headerlink" href="#cufftdescriptioncreate" title="Link to this heading">#</a></h3>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.cufftDescriptionCreate">
+<span class="n"><span class="pre">cufftResult</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cufftDescriptionCreate</span></span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">cufftDescriptionHandle</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">desc_handle</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span><a class="headerlink" href="#c.cufftDescriptionCreate" title="Link to this definition">#</a><br /></dt>
+<dd><p>Creates a new FFT description handle in memory owned and provided by the user.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>desc_handle[In]</strong> – Pointer to a <code class="docutils literal notranslate"><span class="pre">cufftDescriptionHandle</span></code> object.</p></li>
+<li><p><strong>desc_handle[Out]</strong> – Contains a <code class="docutils literal notranslate"><span class="pre">cufftDescriptionHandle</span></code> handle value.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return values<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>CUFFT_SUCCESS</strong> – Description handle was successfully created.</p></li>
+<li><p><strong>CUFFT_INVALID_VALUE</strong> – The handle pointer is <code class="code highlight cpp docutils literal highlight-cpp"><span class="nb">NULL</span></code>.</p></li>
+<li><p><strong>CUFFT_INTERNAL_ERROR</strong> – The internal handle factory reaches its maximum capacity.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="cufftdescriptiontrait">
+<span id="api-reference-cufftdescriptionctrait-label"></span><h3>cufftDescriptionTrait<a class="headerlink" href="#cufftdescriptiontrait" title="Link to this heading">#</a></h3>
+<p>Traits that can be set or queried for a FFT description (<code class="docutils literal notranslate"><span class="pre">cufftDescriptionHandle</span></code>).
+These traits correspond to the effective backend traits, as opposed to the frontend traits that can be set or queried for a FFT operator.
+To retrieve the backend traits associated with an FFT operator, use the helper function <a class="reference internal" href="../api/other_methods.html#frontend-to-backend-label"><span class="std std-ref">Frontend to Backend Traits Conversion</span></a>.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="k">enum</span><span class="w"> </span><span class="n">cufftDescriptionTrait_t</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="n">CUFFT_DESC_TRAIT_SIZE</span><span class="p">,</span><span class="w">               </span><span class="c1">// Value: unsigned int</span>
+<span class="w">   </span><span class="n">CUFFT_DESC_TRAIT_DIRECTION</span><span class="p">,</span><span class="w">          </span><span class="c1">// Value:</span>
+<span class="w">       </span><span class="c1">// CUFFT_DESC_DIRECTION_&lt;UNSET/FORWARD/INVERSE&gt;</span>
+<span class="w">   </span><span class="n">CUFFT_DESC_TRAIT_PRECISION</span><span class="p">,</span><span class="w">          </span><span class="c1">// Value:</span>
+<span class="w">       </span><span class="c1">// CUFFT_DESC_&lt;SINGLE/DOUBLE&gt;</span>
+<span class="w">   </span><span class="n">CUFFT_DESC_TRAIT_TYPE</span><span class="p">,</span><span class="w">               </span><span class="c1">// Value:</span>
+<span class="w">       </span><span class="c1">// CUFFT_DESC_&lt;C2C/C2R/R2C&gt;</span>
+<span class="w">   </span><span class="n">CUFFT_DESC_TRAIT_SM</span><span class="p">,</span><span class="w">                 </span><span class="c1">// Value: unsigned int</span>
+<span class="w">       </span><span class="c1">// (e.g., 750, 800, 900)</span>
+<span class="w">   </span><span class="n">CUFFT_DESC_TRAIT_ELEMENTS_PER_THREAD</span><span class="w"> </span><span class="c1">// Value: unsigned int</span>
+<span class="p">}</span><span class="w"> </span><span class="n">cufftDescriptionTrait</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+<section id="cufftdescriptionsettraitint64">
+<span id="api-reference-cufftdescriptionsettraitint64-label"></span><h3>cufftDescriptionSetTraitInt64<a class="headerlink" href="#cufftdescriptionsettraitint64" title="Link to this heading">#</a></h3>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.cufftDescriptionSetTraitInt64">
+<span class="n"><span class="pre">cufftResult</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cufftDescriptionSetTraitInt64</span></span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">cufftDescriptionHandle</span></span><span class="w"> </span><span class="n"><span class="pre">desc_handle</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">cufftDescriptionTrait</span></span><span class="w"> </span><span class="n"><span class="pre">trait</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">long</span></span><span class="w"> </span><span class="kt"><span class="pre">long</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">value</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span><a class="headerlink" href="#c.cufftDescriptionSetTraitInt64" title="Link to this definition">#</a><br /></dt>
+<dd><p>Sets a trait value for a FFT description.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>desc_handle[In]</strong> – <code class="docutils literal notranslate"><span class="pre">cufftDescriptionHandle</span></code> returned by <a class="reference internal" href="#api-reference-cufftdescriptioncreate-label"><span class="std std-ref">cufftDescriptionCreate</span></a>.</p></li>
+<li><p><strong>trait[In]</strong> – The trait identifier, of type <a class="reference internal" href="#api-reference-cufftdescriptionctrait-label"><span class="std std-ref">cufftDescriptionTrait</span></a>, to set.</p></li>
+<li><p><strong>value[In]</strong> – The value to set for the trait. See comments in <a class="reference internal" href="#api-reference-cufftdescriptionctrait-label"><span class="std std-ref">cufftDescriptionTrait</span></a> for valid values.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return values<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>CUFFT_SUCCESS</strong> – Trait was successfully set.</p></li>
+<li><p><strong>CUFFT_INVALID_VALUE</strong> – Invalid <code class="docutils literal notranslate"><span class="pre">handle</span></code> or <code class="docutils literal notranslate"><span class="pre">trait</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="cufftdescriptiongettraitint64">
+<span id="api-reference-cufftdescriptiongettraitint64-label"></span><h3>cufftDescriptionGetTraitInt64<a class="headerlink" href="#cufftdescriptiongettraitint64" title="Link to this heading">#</a></h3>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.cufftDescriptionGetTraitInt64">
+<span class="n"><span class="pre">cufftResult</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cufftDescriptionGetTraitInt64</span></span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">cufftDescriptionHandle</span></span><span class="w"> </span><span class="n"><span class="pre">desc_handle</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">cufftDescriptionTrait</span></span><span class="w"> </span><span class="n"><span class="pre">trait</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="kt"><span class="pre">long</span></span><span class="w"> </span><span class="kt"><span class="pre">long</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">value</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span><a class="headerlink" href="#c.cufftDescriptionGetTraitInt64" title="Link to this definition">#</a><br /></dt>
+<dd><p>Gets a trait value from an FFT description.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>desc_handle[In]</strong> – <code class="docutils literal notranslate"><span class="pre">cufftDescriptionHandle</span></code> returned by <a class="reference internal" href="#api-reference-cufftdescriptioncreate-label"><span class="std std-ref">cufftDescriptionCreate</span></a>.</p></li>
+<li><p><strong>trait[In]</strong> – The trait identifier, of type <a class="reference internal" href="#api-reference-cufftdescriptionctrait-label"><span class="std std-ref">cufftDescriptionTrait</span></a>, to query.</p></li>
+<li><p><strong>value[Out]</strong> – Pointer to store the trait value.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return values<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>CUFFT_SUCCESS</strong> – Trait value was successfully retrieved.</p></li>
+<li><p><strong>CUFFT_INVALID_VALUE</strong> – Invalid <code class="docutils literal notranslate"><span class="pre">handle</span></code> or <code class="docutils literal notranslate"><span class="pre">trait</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+<section id="device-management">
+<h2>Device Management<a class="headerlink" href="#device-management" title="Link to this heading">#</a></h2>
+<p>The set of functions that establish and manage mappings between FFT descriptions and their corresponding device functions and building blocks.</p>
+<section id="cufftdevicecreate">
+<span id="api-reference-cufftdevicecreate-label"></span><h3>cufftDeviceCreate<a class="headerlink" href="#cufftdevicecreate" title="Link to this heading">#</a></h3>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.cufftDeviceCreate">
+<span class="n"><span class="pre">cufftResult</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cufftDeviceCreate</span></span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">cufftDeviceHandle</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">handle</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">desc_count</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">cufftDescriptionHandle</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">desc_handles</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span><a class="headerlink" href="#c.cufftDeviceCreate" title="Link to this definition">#</a><br /></dt>
+<dd><p>Creates a new device handle with the specified FFT descriptions. For each FFT description provided, cuFFT will search for device
+functions with matching traits as well as the building blocks needed to generate the device functions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>handle[In]</strong> – Pointer to a <code class="docutils literal notranslate"><span class="pre">cufftDeviceHandle</span></code> object.</p></li>
+<li><p><strong>handle[Out]</strong> – Contains a <code class="docutils literal notranslate"><span class="pre">cufftDeviceHandle</span></code> handle value.</p></li>
+<li><p><strong>desc_count[In]</strong> – Number of descriptions.</p></li>
+<li><p><strong>desc_handles[In]</strong> – Pointer to an array of description handles with length <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">desc_count</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return values<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>CUFFT_SUCCESS</strong> – Device handle was successfully created.</p></li>
+<li><p><strong>CUFFT_INVALID_VALUE</strong> – <ul>
+<li><p>The handle pointer or the pointer to the description handles pointer is <code class="docutils literal notranslate"><span class="pre">NULL</span></code>.</p></li>
+<li><p>Any of the description handles used in the array is invalid.</p></li>
+</ul>
+</p></li>
+<li><p><strong>CUFFT_INTERNAL_ERROR</strong> – The internal handle factory reaches its maximum capacity.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>We do not return an error if there is no matching device function or if the combinations of the traits values is invalid for the given description handles.
+This allows users to create a chunk of descriptions at once, and filter out the unsupported ones later in a separate step.</p>
+<p>One could use <a class="reference internal" href="#api-reference-cufftdeviceissupported-label"><span class="std std-ref">cufftDeviceIsSupported</span></a> defined below to check whether a description is valid, supported, or unsupported.</p>
+</div>
+</section>
+<section id="cufftdeviceissupported">
+<span id="api-reference-cufftdeviceissupported-label"></span><h3>cufftDeviceIsSupported<a class="headerlink" href="#cufftdeviceissupported" title="Link to this heading">#</a></h3>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.cufftDeviceIsSupported">
+<span class="n"><span class="pre">cufftResult</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cufftDeviceIsSupported</span></span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">cufftDeviceHandle</span></span><span class="w"> </span><span class="n"><span class="pre">handle</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">cufftDescriptionHandle</span></span><span class="w"> </span><span class="n"><span class="pre">desc_handle</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">is_supported</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span><a class="headerlink" href="#c.cufftDeviceIsSupported" title="Link to this definition">#</a><br /></dt>
+<dd><p>Checks whether a description associated with the device handle is valid and supported. When the descriotion is valid, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">is_supported</span></code> can
+be used to check if the description is supported.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>handle[In]</strong> – <code class="docutils literal notranslate"><span class="pre">cufftDeviceHandle</span></code> returned by <a class="reference internal" href="#api-reference-cufftdevicecreate-label"><span class="std std-ref">cufftDeviceCreate</span></a>.</p></li>
+<li><p><strong>desc_handle[In]</strong> – <code class="docutils literal notranslate"><span class="pre">cufftDescriptionHandle</span></code> returned by <a class="reference internal" href="#api-reference-cufftdescriptioncreate-label"><span class="std std-ref">cufftDescriptionCreate</span></a>.</p></li>
+<li><p><strong>is_supported[Out]</strong> – Pointer to store the result.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return values<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>CUFFT_SUCCESS</strong> – Description is valid.</p></li>
+<li><p><strong>CUFFT_INVALID_VALUE</strong> – <ul>
+<li><p>Device handle <code class="docutils literal notranslate"><span class="pre">handle</span></code> or description handle <code class="docutils literal notranslate"><span class="pre">desc_handle</span></code> is invalid.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">is_supported</span></code> pointer is <code class="docutils literal notranslate"><span class="pre">NULL</span></code>.</p></li>
+<li><p>The traits of the description are invalid, e.g. <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">CUFFT_DESC_TRAIT_SIZE</span></code> or <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">CUFFT_DESC_TRAIT_SM</span></code> is not set.</p></li>
+</ul>
+</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="cufftdevicedestroy">
+<span id="api-reference-cufftdevicedestroy-label"></span><h3>cufftDeviceDestroy<a class="headerlink" href="#cufftdevicedestroy" title="Link to this heading">#</a></h3>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.cufftDeviceDestroy">
+<span class="n"><span class="pre">cufftResult</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cufftDeviceDestroy</span></span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cufftDeviceHandle</span></span><span class="w"> </span><span class="n"><span class="pre">handle</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#c.cufftDeviceDestroy" title="Link to this definition">#</a><br /></dt>
+<dd><p>Destroys a device handle and frees associated resources.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>handle[In]</strong> – <code class="docutils literal notranslate"><span class="pre">cufftDeviceHandle</span></code> returned by <a class="reference internal" href="#api-reference-cufftdevicecreate-label"><span class="std std-ref">cufftDeviceCreate</span></a>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return values<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>CUFFT_SUCCESS</strong> – Device handle was successfully destroyed.</p></li>
+<li><p><strong>CUFFT_INVALID_VALUE</strong> – Invalid <code class="docutils literal notranslate"><span class="pre">handle</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+<section id="device-function-management">
+<h2>Device Function Management<a class="headerlink" href="#device-function-management" title="Link to this heading">#</a></h2>
+<p>The set of functions for retrieving device functions and device function traits.</p>
+<section id="cufftdevicegetnumdevicefunctions">
+<span id="api-reference-cufftdevicegetnumdevicefunctions-label"></span><h3>cufftDeviceGetNumDeviceFunctions<a class="headerlink" href="#cufftdevicegetnumdevicefunctions" title="Link to this heading">#</a></h3>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.cufftDeviceGetNumDeviceFunctions">
+<span class="n"><span class="pre">cufftResult</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cufftDeviceGetNumDeviceFunctions</span></span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">cufftDeviceHandle</span></span><span class="w"> </span><span class="n"><span class="pre">handle</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">cufftDescriptionHandle</span></span><span class="w"> </span><span class="n"><span class="pre">desc_handle</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">func_count</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span><a class="headerlink" href="#c.cufftDeviceGetNumDeviceFunctions" title="Link to this definition">#</a><br /></dt>
+<dd><p>Gets the number of device functions that match a given description from the associated device handle.
+If the description is unsupported, i.e. no matched device function is found, or the traits of the description are invalid, <code class="docutils literal notranslate"><span class="pre">0</span></code> is returned.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>handle[In]</strong> – <code class="docutils literal notranslate"><span class="pre">cufftDeviceHandle</span></code> returned by <a class="reference internal" href="#api-reference-cufftdevicecreate-label"><span class="std std-ref">cufftDeviceCreate</span></a>.</p></li>
+<li><p><strong>desc_handle[In]</strong> – <code class="docutils literal notranslate"><span class="pre">cufftDescriptionHandle</span></code> returned by <a class="reference internal" href="#api-reference-cufftdescriptioncreate-label"><span class="std std-ref">cufftDescriptionCreate</span></a>.</p></li>
+<li><p><strong>func_count[Out]</strong> – Pointer to store the number of functions.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return values<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>CUFFT_SUCCESS</strong> – Function count was successfully retrieved.</p></li>
+<li><p><strong>CUFFT_INVALID_VALUE</strong> – <ul>
+<li><p>Invalid <code class="docutils literal notranslate"><span class="pre">handle</span></code> or <code class="docutils literal notranslate"><span class="pre">desc_handle</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">func_count</span></code> pointer is <code class="docutils literal notranslate"><span class="pre">NULL</span></code>.</p></li>
+</ul>
+</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="cufftdevicegetdevicefunctions">
+<span id="api-reference-cufftdevicegetdevicefunctions-label"></span><h3>cufftDeviceGetDeviceFunctions<a class="headerlink" href="#cufftdevicegetdevicefunctions" title="Link to this heading">#</a></h3>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.cufftDeviceGetDeviceFunctions">
+<span class="n"><span class="pre">cufftResult</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cufftDeviceGetDeviceFunctions</span></span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">cufftDeviceHandle</span></span><span class="w"> </span><span class="n"><span class="pre">handle</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">cufftDescriptionHandle</span></span><span class="w"> </span><span class="n"><span class="pre">desc_handle</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">func_count</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">cufftDeviceFunctionHandle</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">func_handles</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span><a class="headerlink" href="#c.cufftDeviceGetDeviceFunctions" title="Link to this definition">#</a><br /></dt>
+<dd><p>Retrieves an array of device function handles that matches a given description associated with the device handle.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>handle[In]</strong> – <code class="docutils literal notranslate"><span class="pre">cufftDeviceHandle</span></code> returned by <a class="reference internal" href="#api-reference-cufftdevicecreate-label"><span class="std std-ref">cufftDeviceCreate</span></a>.</p></li>
+<li><p><strong>desc_handle[In]</strong> – <code class="docutils literal notranslate"><span class="pre">cufftDescriptionHandle</span></code> returned by <a class="reference internal" href="#api-reference-cufftdescriptioncreate-label"><span class="std std-ref">cufftDescriptionCreate</span></a>.</p></li>
+<li><p><strong>func_count[In]</strong> – Number of function handles to retrieve. Value returned by <a class="reference internal" href="#api-reference-cufftdevicegetnumdevicefunctions-label"><span class="std std-ref">cufftDeviceGetNumDeviceFunctions</span></a>.</p></li>
+<li><p><strong>func_handles[Out]</strong> – Array to store the function handles.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return values<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>CUFFT_SUCCESS</strong> – Function handles were successfully retrieved.</p></li>
+<li><p><strong>CUFFT_INVALID_VALUE</strong> – <ul>
+<li><p>Invalid <code class="docutils literal notranslate"><span class="pre">handle</span></code> or <code class="docutils literal notranslate"><span class="pre">desc_handle</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">func_handles</span></code> pointer is <code class="docutils literal notranslate"><span class="pre">NULL</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">func_count</span></code> is not equal to the number of functions returned by <a class="reference internal" href="#api-reference-cufftdevicegetnumdevicefunctions-label"><span class="std std-ref">cufftDeviceGetNumDeviceFunctions</span></a>.</p></li>
+</ul>
+</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="cufftdevicefunctiontrait">
+<span id="api-reference-cufftdevicefunction-traits-label"></span><h3>cufftDeviceFunctionTrait<a class="headerlink" href="#cufftdevicefunctiontrait" title="Link to this heading">#</a></h3>
+<p>Traits that can be queried for a device function (<code class="docutils literal notranslate"><span class="pre">cufftDeviceFunctionHandle</span></code>).</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="k">enum</span><span class="w"> </span><span class="n">cufftDeviceFunctionTrait_t</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">CUFFT_DEVICE_FUNC_TRAIT_ELEMENTS_PER_THREAD</span><span class="p">,</span>
+<span class="w">        </span><span class="c1">// Elements per thread</span>
+<span class="w">    </span><span class="n">CUFFT_DEVICE_FUNC_TRAIT_STORAGE_SIZE</span><span class="p">,</span>
+<span class="w">        </span><span class="c1">// Storage elements per thread</span>
+<span class="w">    </span><span class="n">CUFFT_DEVICE_FUNC_TRAIT_SHARED_MEMORY_PER_FFT</span><span class="p">,</span>
+<span class="w">        </span><span class="c1">// Shared memory per FFT</span>
+<span class="w">    </span><span class="n">CUFFT_DEVICE_FUNC_TRAIT_THREADS_PER_FFT</span><span class="p">,</span>
+<span class="w">        </span><span class="c1">// Threads per FFT</span>
+<span class="w">    </span><span class="n">CUFFT_DEVICE_FUNC_TRAIT_SUGGESTED_FFTS_PER_BLOCK</span><span class="p">,</span>
+<span class="w">        </span><span class="c1">// Suggested number of FFTs processed per block</span>
+<span class="p">}</span><span class="w"> </span><span class="n">cufftDeviceFunctionTrait</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+<section id="cufftdevicegetdevicefunctiontraitint64">
+<span id="api-reference-cufftdevicegetdevicefunctiontraitint64-label"></span><h3>cufftDeviceGetDeviceFunctionTraitInt64<a class="headerlink" href="#cufftdevicegetdevicefunctiontraitint64" title="Link to this heading">#</a></h3>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.cufftDeviceGetDeviceFunctionTraitInt64">
+<span class="n"><span class="pre">cufftResult</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cufftDeviceGetDeviceFunctionTraitInt64</span></span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">cufftDeviceHandle</span></span><span class="w"> </span><span class="n"><span class="pre">handle</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">cufftDeviceFunctionHandle</span></span><span class="w"> </span><span class="n"><span class="pre">func_handle</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">cufftDeviceFunctionTrait</span></span><span class="w"> </span><span class="n"><span class="pre">trait</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="kt"><span class="pre">long</span></span><span class="w"> </span><span class="kt"><span class="pre">long</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">value</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span><a class="headerlink" href="#c.cufftDeviceGetDeviceFunctionTraitInt64" title="Link to this definition">#</a><br /></dt>
+<dd><p>Gets a trait value from a device function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>handle[In]</strong> – <code class="docutils literal notranslate"><span class="pre">cufftDeviceHandle</span></code> returned by <a class="reference internal" href="#api-reference-cufftdevicecreate-label"><span class="std std-ref">cufftDeviceCreate</span></a>.</p></li>
+<li><p><strong>func_handle[In]</strong> – <code class="docutils literal notranslate"><span class="pre">cufftDeviceFunctionHandle</span></code> returned by <a class="reference internal" href="#api-reference-cufftdevicegetdevicefunctions-label"><span class="std std-ref">cufftDeviceGetDeviceFunctions</span></a>.</p></li>
+<li><p><strong>trait[In]</strong> – The trait identifier, of type <a class="reference internal" href="#api-reference-cufftdevicefunction-traits-label"><span class="std std-ref">cufftDeviceFunctionTrait</span></a>, to query.</p></li>
+<li><p><strong>value[Out]</strong> – Pointer to store the trait value.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return values<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>CUFFT_SUCCESS</strong> – Trait value was successfully retrieved.</p></li>
+<li><p><strong>CUFFT_INVALID_VALUE</strong> – <ul>
+<li><p>Invalid <code class="docutils literal notranslate"><span class="pre">handle</span></code>, <code class="docutils literal notranslate"><span class="pre">func_handle</span></code> or <code class="docutils literal notranslate"><span class="pre">trait</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">value</span></code> pointer is <code class="docutils literal notranslate"><span class="pre">NULL</span></code>.</p></li>
+</ul>
+</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+<section id="database-and-code-management">
+<h2>Database and Code Management<a class="headerlink" href="#database-and-code-management" title="Link to this heading">#</a></h2>
+<p>The set of functions for retrieving:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>LTOIRs that can be used to</dt><dd><ul>
+<li><p>Build all the device functions associated with the device handle (<code class="docutils literal notranslate"><span class="pre">cufftDeviceHandle</span></code>).</p></li>
+<li><p>Build a specific device function when a function handle (<code class="docutils literal notranslate"><span class="pre">cufftDeviceFunctionHandle</span></code>) is provided.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>Database metadata (a C++ header file).</p></li>
+</ul>
+<p>These components, when used in combination with the cuFFTDx library, can be used to build kernels that compute the specified FFTs using LTO.</p>
+<section id="cufftdevicegetdatabasestrsize">
+<span id="api-reference-cufftdevicegetdatabasestrsize-label"></span><h3>cufftDeviceGetDatabaseStrSize<a class="headerlink" href="#cufftdevicegetdatabasestrsize" title="Link to this heading">#</a></h3>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.cufftDeviceGetDatabaseStrSize">
+<span class="n"><span class="pre">cufftResult</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cufftDeviceGetDatabaseStrSize</span></span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">cufftDeviceHandle</span></span><span class="w"> </span><span class="n"><span class="pre">handle</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">db_str_size</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">cufftDeviceFunctionHandle</span></span><span class="w"> </span><span class="n"><span class="pre">func_handle</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span><a class="headerlink" href="#c.cufftDeviceGetDatabaseStrSize" title="Link to this definition">#</a><br /></dt>
+<dd><p>Gets the size of the database string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>handle[In]</strong> – <code class="docutils literal notranslate"><span class="pre">cufftDeviceHandle</span></code> returned by <a class="reference internal" href="#api-reference-cufftdevicecreate-label"><span class="std std-ref">cufftDeviceCreate</span></a>.</p></li>
+<li><p><strong>db_str_size[Out]</strong> – Pointer to store the database string size.</p></li>
+<li><p><strong>func_handle[In]</strong> – (optional) Any <code class="docutils literal notranslate"><span class="pre">cufftDeviceFunctionHandle</span></code> returned by <a class="reference internal" href="#api-reference-cufftdevicegetdevicefunctions-label"><span class="std std-ref">cufftDeviceGetDeviceFunctions</span></a>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return values<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>CUFFT_SUCCESS</strong> – Database string size was successfully retrieved.</p></li>
+<li><p><strong>CUFFT_INVALID_VALUE</strong> – <ul>
+<li><p>Invalid <code class="docutils literal notranslate"><span class="pre">handle</span></code> or <code class="docutils literal notranslate"><span class="pre">func_handle</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">db_str_size</span></code> pointer is <code class="docutils literal notranslate"><span class="pre">NULL</span></code>.</p></li>
+</ul>
+</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="cufftdevicegetdatabasestr">
+<span id="api-reference-cufftdevicegetdatabasestr-label"></span><h3>cufftDeviceGetDatabaseStr<a class="headerlink" href="#cufftdevicegetdatabasestr" title="Link to this heading">#</a></h3>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.cufftDeviceGetDatabaseStr">
+<span class="n"><span class="pre">cufftResult</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cufftDeviceGetDatabaseStr</span></span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">cufftDeviceHandle</span></span><span class="w"> </span><span class="n"><span class="pre">handle</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">db_str_size</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">db_str</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">cufftDeviceFunctionHandle</span></span><span class="w"> </span><span class="n"><span class="pre">func_handle</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="o"><span class="pre">-</span></span><span class="m"><span class="pre">1</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span><a class="headerlink" href="#c.cufftDeviceGetDatabaseStr" title="Link to this definition">#</a><br /></dt>
+<dd><p>Retrieves the database string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>handle[In]</strong> – <code class="docutils literal notranslate"><span class="pre">cufftDeviceHandle</span></code> returned by <a class="reference internal" href="#api-reference-cufftdevicecreate-label"><span class="std std-ref">cufftDeviceCreate</span></a>.</p></li>
+<li><p><strong>db_str_size[In]</strong> – Size of the buffer to store the database string. Value returned by <a class="reference internal" href="#api-reference-cufftdevicegetdatabasestrsize-label"><span class="std std-ref">cufftDeviceGetDatabaseStrSize</span></a>.</p></li>
+<li><p><strong>db_str[Out]</strong> – Buffer to store the database string with size <code class="docutils literal notranslate"><span class="pre">db_str_size</span></code>.</p></li>
+<li><p><strong>func_handle[In]</strong> – (optional) Any <code class="docutils literal notranslate"><span class="pre">cufftDeviceFunctionHandle</span></code> returned by <a class="reference internal" href="#api-reference-cufftdevicegetdevicefunctions-label"><span class="std std-ref">cufftDeviceGetDeviceFunctions</span></a>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return values<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>CUFFT_SUCCESS</strong> – Database string was successfully retrieved.</p></li>
+<li><p><strong>CUFFT_INVALID_VALUE</strong> – <ul>
+<li><p>Invalid <code class="docutils literal notranslate"><span class="pre">handle</span></code> or <code class="docutils literal notranslate"><span class="pre">func_handle</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">db_str</span></code> pointer is <code class="docutils literal notranslate"><span class="pre">NULL</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">db_str_size</span></code> is not equal to the size of the database string returned by <a class="reference internal" href="#api-reference-cufftdevicegetdatabasestrsize-label"><span class="std std-ref">cufftDeviceGetDatabaseStrSize</span></a>.</p></li>
+</ul>
+</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="cufftdevicegetnumltoirs">
+<span id="api-reference-cufftdevicegetnumltoirs-label"></span><h3>cufftDeviceGetNumLTOIRs<a class="headerlink" href="#cufftdevicegetnumltoirs" title="Link to this heading">#</a></h3>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.cufftDeviceGetNumLTOIRs">
+<span class="n"><span class="pre">cufftResult</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cufftDeviceGetNumLTOIRs</span></span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">cufftDeviceHandle</span></span><span class="w"> </span><span class="n"><span class="pre">handle</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">code_count</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">cufftDeviceFunctionHandle</span></span><span class="w"> </span><span class="n"><span class="pre">func_handle</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="o"><span class="pre">-</span></span><span class="m"><span class="pre">1</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span><a class="headerlink" href="#c.cufftDeviceGetNumLTOIRs" title="Link to this definition">#</a><br /></dt>
+<dd><p>Gets the number of LTOIRs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>handle[In]</strong> – <code class="docutils literal notranslate"><span class="pre">cufftDeviceHandle</span></code> returned by <a class="reference internal" href="#api-reference-cufftdevicecreate-label"><span class="std std-ref">cufftDeviceCreate</span></a>.</p></li>
+<li><p><strong>code_count[Out]</strong> – Pointer to store the number of LTOIRs.</p></li>
+<li><p><strong>func_handle[In]</strong> – (optional) Any <code class="docutils literal notranslate"><span class="pre">cufftDeviceFunctionHandle</span></code> returned by <a class="reference internal" href="#api-reference-cufftdevicegetdevicefunctions-label"><span class="std std-ref">cufftDeviceGetDeviceFunctions</span></a>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return values<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>CUFFT_SUCCESS</strong> – Code count was successfully retrieved.</p></li>
+<li><p><strong>CUFFT_INVALID_VALUE</strong> – <ul>
+<li><p>Invalid <code class="docutils literal notranslate"><span class="pre">handle</span></code> or <code class="docutils literal notranslate"><span class="pre">func_handle</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">code_count</span></code> pointer is <code class="docutils literal notranslate"><span class="pre">NULL</span></code>.</p></li>
+</ul>
+</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="cufftdevicegetltoirsizes">
+<span id="api-reference-cufftdevicegetltoirsizes-label"></span><h3>cufftDeviceGetLTOIRSizes<a class="headerlink" href="#cufftdevicegetltoirsizes" title="Link to this heading">#</a></h3>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.cufftDeviceGetLTOIRSizes">
+<span class="n"><span class="pre">cufftResult</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cufftDeviceGetLTOIRSizes</span></span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">cufftDeviceHandle</span></span><span class="w"> </span><span class="n"><span class="pre">handle</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">code_count</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">code_sizes</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">cufftDeviceFunctionHandle</span></span><span class="w"> </span><span class="n"><span class="pre">func_handle</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="o"><span class="pre">-</span></span><span class="m"><span class="pre">1</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span><a class="headerlink" href="#c.cufftDeviceGetLTOIRSizes" title="Link to this definition">#</a><br /></dt>
+<dd><p>Gets the sizes of LTOIRs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>handle[In]</strong> – <code class="docutils literal notranslate"><span class="pre">cufftDeviceHandle</span></code> returned by <a class="reference internal" href="#api-reference-cufftdevicecreate-label"><span class="std std-ref">cufftDeviceCreate</span></a>.</p></li>
+<li><p><strong>code_count[In]</strong> – Number of LTOIRs. Value returned by <a class="reference internal" href="#api-reference-cufftdevicegetnumltoirs-label"><span class="std std-ref">cufftDeviceGetNumLTOIRs</span></a>.</p></li>
+<li><p><strong>code_sizes[Out]</strong> – Pointer to an array of size <code class="docutils literal notranslate"><span class="pre">code_count</span></code> to store LTOIR sizes.</p></li>
+<li><p><strong>func_handle[In]</strong> – (optional) Any <code class="docutils literal notranslate"><span class="pre">cufftDeviceFunctionHandle</span></code> returned by <a class="reference internal" href="#api-reference-cufftdevicegetdevicefunctions-label"><span class="std std-ref">cufftDeviceGetDeviceFunctions</span></a>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return values<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>CUFFT_SUCCESS</strong> – Code sizes were successfully retrieved.</p></li>
+<li><p><strong>CUFFT_INVALID_VALUE</strong> – <ul>
+<li><p>Invalid <code class="docutils literal notranslate"><span class="pre">handle</span></code> or <code class="docutils literal notranslate"><span class="pre">func_handle</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">code_sizes</span></code> pointer is <code class="docutils literal notranslate"><span class="pre">NULL</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">code_count</span></code> is not equal to the number of LTOIRs returned by <a class="reference internal" href="#api-reference-cufftdevicegetnumltoirs-label"><span class="std std-ref">cufftDeviceGetNumLTOIRs</span></a>.</p></li>
+</ul>
+</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="cufftdevicecodetype">
+<span id="api-reference-cufftcode-container-label"></span><h3>cufftDeviceCodeType<a class="headerlink" href="#cufftdevicecodetype" title="Link to this heading">#</a></h3>
+<p>There are two types of codes that can be returned by <a class="reference internal" href="#api-reference-cufftdevicegetnumltoirs-label"><span class="std std-ref">cufftDeviceGetNumLTOIRs</span></a>:</p>
+<ul class="simple">
+<li><p>LTOIRs and</p></li>
+<li><p>fatbinary containing LTOIRs.</p></li>
+</ul>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="k">enum</span><span class="w"> </span><span class="n">cufftDeviceCodeContainer_t</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="n">CUFFT_DEVICE_LTOIR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">   </span><span class="n">CUFFT_DEVICE_FATBIN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span>
+<span class="p">}</span><span class="w"> </span><span class="n">cufftDeviceCodeContainer</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+<section id="cufftdevicegetltoirs">
+<span id="api-reference-cufftdevicegetltoirs-label"></span><h3>cufftDeviceGetLTOIRs<a class="headerlink" href="#cufftdevicegetltoirs" title="Link to this heading">#</a></h3>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.cufftDeviceGetLTOIRs">
+<span class="n"><span class="pre">cufftResult</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cufftDeviceGetLTOIRs</span></span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">cufftDeviceHandle</span></span><span class="w"> </span><span class="n"><span class="pre">handle</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">code_count</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">code_ptrs</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">cufftDeviceCodeContainer</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">code_containers</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">cufftDeviceFunctionHandle</span></span><span class="w"> </span><span class="n"><span class="pre">func_handle</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="o"><span class="pre">-</span></span><span class="m"><span class="pre">1</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span><a class="headerlink" href="#c.cufftDeviceGetLTOIRs" title="Link to this definition">#</a><br /></dt>
+<dd><p>Retrieves the LTOIRs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>handle[In]</strong> – <code class="docutils literal notranslate"><span class="pre">cufftDeviceHandle</span></code> returned by <a class="reference internal" href="#api-reference-cufftdevicecreate-label"><span class="std std-ref">cufftDeviceCreate</span></a>.</p></li>
+<li><p><strong>code_count[In]</strong> – Number of LTOIRs to retrieve. Value returned by <a class="reference internal" href="#api-reference-cufftdevicegetnumltoirs-label"><span class="std std-ref">cufftDeviceGetNumLTOIRs</span></a>.</p></li>
+<li><p><strong>code_ptrs[Out]</strong> – Pointer to an array of array of <code class="docutils literal notranslate"><span class="pre">char</span></code> to store the LTOIRs.</p></li>
+<li><p><strong>code_containers[Out]</strong> – Pointer to an array of <code class="docutils literal notranslate"><span class="pre">cufftDeviceCodeContainer</span></code> with length <code class="docutils literal notranslate"><span class="pre">code_count</span></code> to store the code types.</p></li>
+<li><p><strong>func_handle[In]</strong> – (optional) Any <code class="docutils literal notranslate"><span class="pre">cufftDeviceFunctionHandle</span></code> returned by <a class="reference internal" href="#api-reference-cufftdevicegetdevicefunctions-label"><span class="std std-ref">cufftDeviceGetDeviceFunctions</span></a>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return values<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>CUFFT_SUCCESS</strong> – LTOIRs were successfully retrieved.</p></li>
+<li><p><strong>CUFFT_INVALID_VALUE</strong> – <ul>
+<li><p>Invalid <code class="docutils literal notranslate"><span class="pre">handle</span></code> or <code class="docutils literal notranslate"><span class="pre">func_handle</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">code_ptrs</span></code> pointer or <code class="docutils literal notranslate"><span class="pre">code_containers</span></code> pointer is <code class="docutils literal notranslate"><span class="pre">NULL</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">code_count</span></code> is not equal to the number of LTOIRs returned by <a class="reference internal" href="#api-reference-cufftdevicegetnumltoirs-label"><span class="std std-ref">cufftDeviceGetNumLTOIRs</span></a>.</p></li>
+</ul>
+</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>When writing the data to disk, it is important to write to files with the right file extensions, <code class="code highlight cpp docutils literal highlight-cpp"><span class="p">.</span><span class="n">ltoir</span></code> for LTOIRs (<code class="docutils literal notranslate"><span class="pre">CUFFT_DEVICE_LTOIR</span></code>) and <code class="code highlight cpp docutils literal highlight-cpp"><span class="p">.</span><span class="n">fatbin</span></code> for fatbinaries (<code class="docutils literal notranslate"><span class="pre">CUFFT_DEVICE_FATBIN</span></code>). Otherwise, NVCC will fail to recognize the files.</p>
+</div>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../api/other_methods.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Other Methods</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../python_bindings.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">cuFFTDx Python Bindings</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#version-information">Version Information</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cufftdevicegetversion">cufftDeviceGetVersion</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#description-management">Description Management</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cufftdescriptioncreate">cufftDescriptionCreate</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cufftdescriptiontrait">cufftDescriptionTrait</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cufftdescriptionsettraitint64">cufftDescriptionSetTraitInt64</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cufftdescriptiongettraitint64">cufftDescriptionGetTraitInt64</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#device-management">Device Management</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cufftdevicecreate">cufftDeviceCreate</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cufftdeviceissupported">cufftDeviceIsSupported</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cufftdevicedestroy">cufftDeviceDestroy</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#device-function-management">Device Function Management</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cufftdevicegetnumdevicefunctions">cufftDeviceGetNumDeviceFunctions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cufftdevicegetdevicefunctions">cufftDeviceGetDeviceFunctions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cufftdevicefunctiontrait">cufftDeviceFunctionTrait</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cufftdevicegetdevicefunctiontraitint64">cufftDeviceGetDeviceFunctionTraitInt64</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#database-and-code-management">Database and Code Management</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cufftdevicegetdatabasestrsize">cufftDeviceGetDatabaseStrSize</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cufftdevicegetdatabasestr">cufftDeviceGetDatabaseStr</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cufftdevicegetnumltoirs">cufftDeviceGetNumLTOIRs</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cufftdevicegetltoirsizes">cufftDeviceGetLTOIRSizes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cufftdevicecodetype">cufftDeviceCodeType</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cufftdevicegetltoirs">cufftDeviceGetLTOIRs</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5"></script>
+
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+<a class="footer-brand logo" href="https://www.nvidia.com">
+  <img src="../_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="../_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+</a></div>
+      
+        <div class="footer-item">
+
+<div class="footer-links">
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/">Privacy Policy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Your Privacy Choices</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/">Terms of Service</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/accessibility/">Accessibility</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/company-policies/">Corporate Policies</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/product-security/">Product Security</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/contact/">Contact</a>
+  
+  
+  
+</div>
+</div>
+      
+        <div class="footer-item">
+
+
+
+
+  <p class="copyright">
+    
+      Copyright © 2022-2026, NVIDIA Corporation &amp; Affiliates. All rights reserved.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+  </body>
+</html>

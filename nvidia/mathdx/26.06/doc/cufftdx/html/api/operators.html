@@ -1,0 +1,1071 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Operators &#8212; cuFFTDx</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
+
+
+
+    <script src="../_static/documentation_options.js?v=702cf1bd"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/operators';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://docs.nvidia.com/cuda/cufftdx/_static/switcher.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '1.7.3';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+
+    <link rel="icon" href="../_static/nvidia.ico"/>
+
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Traits" href="traits.html" />
+    <link rel="prev" title="Achieving High Performance" href="../performance.html" />
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="1.7.3" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+
+
+  </head>
+
+  <body data-default-mode="">
+
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="cuFFTDx - Home"/>
+    <img src="../_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="cuFFTDx - Home"/>
+  
+  
+    <p class="title logo__title">cuFFTDx</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="cuFFTDx - Home"/>
+    <img src="../_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="cuFFTDx - Home"/>
+  
+  
+    <p class="title logo__title">cuFFTDx</p>
+  
+</a>
+
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Table of Contents">
+  <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
+  <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Documentation home</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../requirements_func.html">Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../introduction1.html">Using cuFFTDx</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../introduction2.html">Your Next Custom FFT Kernels</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../cufft_lto/index.html">Using cuFFTDx with cuFFT LTO</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../cufft_lto/augment_with_lto.html">Augment cuFFTDx with LTO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cufft_lto/custom_lto_helper.html">Customize LTO Helper</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../performance.html">Achieving High Performance</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Operators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="traits.html">Traits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="methods.html">Execution Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="other_methods.html">Other Methods</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">cuFFT API Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../cufft_api/device_api.html">cuFFT Device API</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Python Bindings</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../python_bindings.html">Python Bindings</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lto_examples.html">LTO Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lto_helper.html">LTO Helper</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../release_notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/NVIDIA/CUDALibrarySamples/tree/main/MathDx/cuFFTDx">GitHub Samples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">MathDx</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/cufftdx-downloads">cuFFTDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/cusolverdx-downloads">cuSolverDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/cublasdx-downloads">cuBLASDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/curanddx-downloads">cuRANDDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/nvcompdx-downloads">nvCOMPDx</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Operators</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="operators">
+<span id="operators-label"></span><h1>Operators<a class="headerlink" href="#operators" title="Link to this heading">#</a></h1>
+<p>Operators are used to describe the FFT operation to solve, and to configure the execution. They are divided into
+<a class="reference internal" href="#description-operators-label"><span class="std std-ref">Description Operators</span></a> and <a class="reference internal" href="#execution-operators-label"><span class="std std-ref">Execution Operators</span></a>.</p>
+<hr class="docutils" />
+<section id="description-operators">
+<span id="description-operators-label"></span><h2>Description Operators<a class="headerlink" href="#description-operators" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 25.0%" />
+<col style="width: 50.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Operator</p></th>
+<th class="head"><p>Default value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference internal" href="#size-operator-label"><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Size</span><span class="o">&lt;</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">S</span><span class="o">&gt;</span></code></a></p></td>
+<td><p>Not set.</p></td>
+<td><p>Size <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">S</span></code> of the FFT to calculate.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#direction-operator-label"><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Direction</span><span class="o">&lt;</span><span class="n">fft_direction</span><span class="o">&gt;</span></code></a></p></td>
+<td><p>Not set.</p></td>
+<td><p>Direction of the FFT, either <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">fft_direction</span><span class="o">::</span><span class="n">inverse</span></code> or <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">fft_direction</span><span class="o">::</span><span class="n">forward</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#type-operator-label"><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Type</span><span class="o">&lt;</span><span class="n">fft_type</span><span class="o">&gt;</span></code></a></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">fft_type</span><span class="o">::</span><span class="n">c2c</span></code></p></td>
+<td><p>Types of input and output data (C2C, R2C, C2R).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#precision-operator-label"><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Precision</span><span class="o">&lt;</span><span class="n">P</span><span class="o">&gt;</span></code></a></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">float</span></code></p></td>
+<td><p>Precision <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">P</span></code> of the floating-point values used to compute the FFT: <code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">double</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">float</span></code> or <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">__half</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#sm-operator-label"><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">SM</span><span class="o">&lt;</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">CC</span><span class="o">&gt;</span></code></a></p></td>
+<td><p>Not set.</p></td>
+<td><p>Target CUDA architecure for which the FFT function should be generated.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#real-fft-options-operator-label"><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">RealFFTOptions</span><span class="o">&lt;</span><span class="n">complex_layout</span><span class="p">,</span><span class="w"> </span><span class="n">real_mode</span><span class="o">&gt;</span></code></a></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">complex_layout</span><span class="o">::</span><span class="n">natural</span></code> and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">real_mode</span><span class="o">::</span><span class="n">normal</span></code>.</p></td>
+<td><p>Complex data layout choice and execution mode for R2C/C2R FFT types</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#codetype-operator-label"><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">experimental</span><span class="o">::</span><span class="n">CodeType</span><span class="o">&lt;</span><span class="n">experimental</span><span class="o">::</span><span class="n">code_type</span><span class="o">&gt;</span></code></a></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">experimental</span><span class="o">::</span><span class="n">code_type</span><span class="o">::</span><span class="n">ptx</span></code></p></td>
+<td><p>Code type of the FFT compute device function, either <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">experimental</span><span class="o">::</span><span class="n">code_type</span><span class="o">::</span><span class="n">ptx</span></code> or <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">experimental</span><span class="o">::</span><span class="n">code_type</span><span class="o">::</span><span class="n">ltoir</span></code>.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Description operators define the FFT operation to be solved. Combined with <a class="reference internal" href="#execution-operators-label"><span class="std std-ref">Execution Operators</span></a>, they form a
+complete FFT descriptor that can be executed on a GPU.</p>
+<p>Operators are added to construct the FFT descriptor type. For example, for a forward FFT operation consisting of a FFT with 8 <code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">double</span></code> elements per thread:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cufftdx.hpp&gt;</span>
+
+<span class="k">using</span><span class="w"> </span><span class="n">FFT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">decltype</span><span class="p">(</span><span class="w"> </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">Size</span><span class="o">&lt;</span><span class="mi">8</span><span class="o">&gt;</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">Type</span><span class="o">&lt;</span><span class="n">fft_type</span><span class="o">::</span><span class="n">c2c</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">                    </span><span class="o">+</span><span class="w"> </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">Direction</span><span class="o">&lt;</span><span class="n">fft_direction</span><span class="o">::</span><span class="n">forward</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">                    </span><span class="o">+</span><span class="w"> </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">Precision</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">Thread</span><span class="p">()</span><span class="w"> </span><span class="p">);</span>
+</pre></div>
+</div>
+<dl class="simple">
+<dt>For an FFT descriptor to be complete, the following is required:</dt><dd><ul class="simple">
+<li><p>One, and only one, <a class="reference internal" href="#size-operator-label"><span class="std std-ref">Size Operator</span></a>.</p></li>
+<li><p>One, and only one, <a class="reference internal" href="#direction-operator-label"><span class="std std-ref">Direction Operator</span></a> unless either <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cufftdx</span><span class="o">::</span><span class="n">Type</span><span class="o">&lt;</span><span class="n">fft_type</span><span class="o">::</span><span class="n">r2c</span><span class="o">&gt;</span><span class="p">()</span></code> or <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cufftdx</span><span class="o">::</span><span class="n">Type</span><span class="o">&lt;</span><span class="n">fft_type</span><span class="o">::</span><span class="n">c2r</span><span class="o">&gt;</span><span class="p">()</span></code> are added.</p></li>
+<li><p>One, and only one, <a class="reference internal" href="#sm-operator-label"><span class="std std-ref">SM Operator</span></a> unless a <a class="reference internal" href="#thread-operator-label"><span class="std std-ref">Thread Operator</span></a> is added.</p></li>
+</ul>
+</dd>
+</dl>
+<section id="size-operator">
+<span id="size-operator-label"></span><h3>Size Operator<a class="headerlink" href="#size-operator" title="Link to this heading">#</a></h3>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">cufftdx</span><span class="o">::</span><span class="n">Size</span><span class="o">&lt;</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">S</span><span class="o">&gt;</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Sets the size <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">S</span></code> of the FFT operation to compute.</p>
+<p>There is no default size.</p>
+<dl class="simple">
+<dt>Restrictions:</dt><dd><ul class="simple">
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">S</span></code> must be greater than <code class="code highlight cpp docutils literal highlight-cpp"><span class="mi">1</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="direction-operator">
+<span id="direction-operator-label"></span><h3>Direction Operator<a class="headerlink" href="#direction-operator" title="Link to this heading">#</a></h3>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">cufftdx</span><span class="o">::</span><span class="n">Direction</span><span class="o">&lt;</span><span class="n">cufftdx</span><span class="o">::</span><span class="n">fft_direction</span><span class="o">&gt;</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Sets the direction of the FFT, either <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">fft_direction</span><span class="o">::</span><span class="n">inverse</span></code> or <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">fft_direction</span><span class="o">::</span><span class="n">forward</span></code>.</p>
+<p>There is no default direction.</p>
+<p>If the FFT is constructed with the <code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Type&lt;R2C&gt;</span></code> operator, direction is assumed to be forward and
+a direction operator is not necessary.</p>
+<p>If the FFT is constructed with the <code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Type&lt;C2R&gt;</span></code> operator, direction is assumed to be inverse and
+a direction operator is not necessary.</p>
+<dl class="simple">
+<dt>Restrictions:</dt><dd><ul class="simple">
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">fft_direction</span><span class="o">::</span><span class="n">forward</span></code> requires <code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Type&lt;C2C&gt;</span></code> or <code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Type&lt;R2C&gt;</span></code>.</p></li>
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">fft_direction</span><span class="o">::</span><span class="n">inverse</span></code> requires <code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Type&lt;C2C&gt;</span></code> or <code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Type&lt;C2R&gt;</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+<p>cuFFTDx performs un-normalized FFTs; that is, performing a forward FFT on an input data set followed by
+an inverse FFT on the resulting set yields data that is equal to the input, scaled by the size of the FFT.
+Scaling either transform by the reciprocal of the size of the data set is left for the user to perform as seen fit.</p>
+</section>
+<section id="type-operator">
+<span id="type-operator-label"></span><h3>Type Operator<a class="headerlink" href="#type-operator" title="Link to this heading">#</a></h3>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">cufftdx</span><span class="o">::</span><span class="n">Type</span><span class="o">&lt;</span><span class="n">cufftdx</span><span class="o">::</span><span class="n">fft_type</span><span class="o">&gt;</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Sets the type of the FFT to compute, either <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">fft_type</span><span class="o">::</span><span class="n">c2c</span></code> for complex-to-complex; <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">fft_type</span><span class="o">::</span><span class="n">r2c</span></code> for
+real-to-complex; or <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">fft_type</span><span class="o">::</span><span class="n">c2r</span></code> for complex-to-real.</p>
+<p>The default type is <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">fft_type</span><span class="o">::</span><span class="n">c2c</span></code>.</p>
+<dl class="simple">
+<dt>Restrictions:</dt><dd><ul class="simple">
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">fft_type</span><span class="o">::</span><span class="n">r2c</span></code> requires <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">fft_direction</span><span class="o">::</span><span class="n">forward</span></code>. If no direction is specified, it is assumed to be <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">fft_direction</span><span class="o">::</span><span class="n">forward</span></code>.</p></li>
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">fft_type</span><span class="o">::</span><span class="n">c2r</span></code> requires <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">fft_direction</span><span class="o">::</span><span class="n">inverse</span></code>. If no direction is specified, it is assumed to be <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">fft_direction</span><span class="o">::</span><span class="n">inverse</span></code>.</p></li>
+<li><p>cuFFDx performs unnormalized Fast Fourier Transform calculations.</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="precision-operator">
+<span id="precision-operator-label"></span><h3>Precision Operator<a class="headerlink" href="#precision-operator" title="Link to this heading">#</a></h3>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">cufftdx</span><span class="o">::</span><span class="n">Precision</span><span class="o">&lt;</span><span class="n">__half</span><span class="o">&gt;</span><span class="p">()</span>
+
+<span class="n">cufftdx</span><span class="o">::</span><span class="n">Precision</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">()</span>
+
+<span class="n">cufftdx</span><span class="o">::</span><span class="n">Precision</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Sets the floating-point precision used to compute the FFT. This is the type of the values used for input and output, as well as the
+underlying type of the values used to compute the FFT.</p>
+<p>The default precision is <code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">float</span></code>.</p>
+</section>
+<section id="sm-operator">
+<span id="sm-operator-label"></span><h3>SM Operator<a class="headerlink" href="#sm-operator" title="Link to this heading">#</a></h3>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">cufftdx</span><span class="o">::</span><span class="n">SM</span><span class="o">&lt;</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">CC</span><span class="o">&gt;</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Sets the target architecture <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">CC</span></code> for the underlying FFT function to use. Supported architectures are:</p>
+<ul class="simple">
+<li><p>Turing: <code class="code highlight cpp docutils literal highlight-cpp"><span class="mi">750</span></code> (sm_75).</p></li>
+<li><p>Ampere: <code class="code highlight cpp docutils literal highlight-cpp"><span class="mi">800</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="mi">860</span></code> and <code class="code highlight cpp docutils literal highlight-cpp"><span class="mi">870</span></code> (sm_80, sm_86, sm_87).</p></li>
+<li><p>Ada: <code class="code highlight cpp docutils literal highlight-cpp"><span class="mi">890</span></code> (sm_89).</p></li>
+<li><p>Hopper: <code class="code highlight cpp docutils literal highlight-cpp"><span class="mi">900</span></code> (sm_90).</p></li>
+<li><p>Blackwell: <code class="code highlight cpp docutils literal highlight-cpp"><span class="mi">1000</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="mi">1030</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="mi">1200</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="mi">1210</span></code> (sm_100, sm_103, sm_120, sm_121).</p></li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Support for architectures sm_103, and sm_121 is experimental in this release.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Starting with cuFFTDx 1.7.0, support for CTK 12, SM70, SM72, and SM101 is removed.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>When compiling for <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">XYa</span></code> or <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">XYf</span></code> compute capability use <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">XY0</span></code> in the <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">SM</span></code> operator (see also <a class="reference external" href="https://docs.nvidia.com/cuda/cuda-programming-guide/05-appendices/compute-capabilities.html#feature-availability">CUDA C++ Programming Guide: Feature Availability</a>).</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If the created descriptor type (that includes the <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">SM</span><span class="o">&lt;</span><span class="n">CC</span><span class="o">&gt;</span></code> operator) is passed to a CUDA kernel using a template parameter,
+adding the compile-time macro <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">CUFFTDX_SKIP_IF_NOT_APPLICABLE_SM</span><span class="p">()</span></code> to the first line of the CUDA kernel is recommended.
+This practice avoids kernel compilation for unintended device architectures, thereby reducing compilation time and the final binary size.
+This is only necessary if the compilation unit is compiled for multiple CUDA architectures.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cufftdx.hpp&gt;</span>
+
+<span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">FFT</span><span class="o">&gt;</span>
+<span class="n">__global__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">user_kernel</span><span class="p">(...)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">CUFFTDX_SKIP_IF_NOT_APPLICABLE_SM</span><span class="p">(</span><span class="n">FFT</span><span class="p">);</span>
+
+<span class="w">  </span><span class="c1">// rest of the kernel code ...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>It is not guaranteed that executions of exactly the same FFTs on GPUs of different CUDA architectures will produce
+bit-identical results.</p>
+</div>
+</section>
+<section id="realfftoptions-operator">
+<span id="real-fft-options-operator-label"></span><h3>RealFFTOptions Operator<a class="headerlink" href="#realfftoptions-operator" title="Link to this heading">#</a></h3>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">cufftdx</span><span class="o">::</span><span class="n">RealFFTOptions</span><span class="o">&lt;</span><span class="n">complex_layout</span><span class="p">,</span><span class="w"> </span><span class="n">real_mode</span><span class="o">&gt;</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The first argument defines the input and output data layouts for real-to-complex (<code class="code highlight cpp docutils literal highlight-cpp"><span class="n">fft_type</span><span class="o">::</span><span class="n">r2c</span></code>) and complex-to-real
+(<code class="code highlight cpp docutils literal highlight-cpp"><span class="n">fft_type</span><span class="o">::</span><span class="n">c2r</span></code>) FFT types, which is explained in detail in <a class="reference internal" href="methods.html#complex-data-layouts-label"><span class="std std-ref">Complex Element Layouts</span></a> for complex inputs and outputs
+and <a class="reference internal" href="methods.html#real-data-layouts-label"><span class="std std-ref">Real Element Layouts</span></a> for real inputs and outputs.</p>
+<p>Possible <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">complex_layout</span></code> values:</p>
+<ul class="simple">
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">complex_layout</span><span class="o">::</span><span class="n">natural</span></code> (default)</p></li>
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">complex_layout</span><span class="o">::</span><span class="n">packed</span></code></p></li>
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">complex_layout</span><span class="o">::</span><span class="n">full</span></code></p></li>
+</ul>
+<p>The second argument, a <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">real_mode</span></code> enum value, allows to choose between optimized and non optimized execution kernel. There are two modes: normal (default), and optimized, which is called <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">folded</span></code>. The optimized execution is an opt-in, as it changes how the data is partitioned between threads in block execution.</p>
+<p>Possible <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">real_mode</span></code> values:</p>
+<ul class="simple">
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">real_mode</span><span class="o">::</span><span class="n">normal</span></code> (default)</p></li>
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">real_mode</span><span class="o">::</span><span class="n">folded</span></code></p></li>
+</ul>
+<p>All traits necessary for correct I/O are shared by the topmost FFT type. Please refer to examples (e.g. <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">simple_fft_block_r2c</span></code>
+and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">simple_fft_block_c2r</span></code>) for a direct showcase of proper idioms.</p>
+</section>
+<section id="codetype-operator">
+<span id="codetype-operator-label"></span><h3>CodeType Operator<a class="headerlink" href="#codetype-operator" title="Link to this heading">#</a></h3>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">cufftdx</span><span class="o">::</span><span class="n">experimental</span><span class="o">::</span><span class="n">CodeType</span><span class="o">&lt;</span><span class="n">cufftdx</span><span class="o">::</span><span class="n">experimental</span><span class="o">::</span><span class="n">code_type</span><span class="o">&gt;</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Sets the type of code to use for kernel generation. Available options are:</p>
+<ul class="simple">
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">experimental</span><span class="o">::</span><span class="n">code_type</span><span class="o">::</span><span class="n">ptx</span></code> (default) - Use inlined-PTX implementation of the FFT compute device functions.</p></li>
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">experimental</span><span class="o">::</span><span class="n">code_type</span><span class="o">::</span><span class="n">ltoir</span></code> - If available, use LTOIR implementation of the FFT compute device functions.</p></li>
+</ul>
+<p>The default code type is <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">experimental</span><span class="o">::</span><span class="n">code_type</span><span class="o">::</span><span class="n">ptx</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">experimental</span><span class="o">::</span><span class="n">code_type</span><span class="o">::</span><span class="n">ltoir</span></code> code type is specified but not available, cuFFTDx will fall back to using inlined-PTX implementation.
+On the other hand, if <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">experimental</span><span class="o">::</span><span class="n">code_type</span><span class="o">::</span><span class="n">ptx</span></code> code type is specified, cuFFTDx <strong>will not</strong> use LTOIR implementation even if it is available.</p>
+</div>
+<hr class="docutils" />
+</section>
+</section>
+<section id="execution-operators">
+<span id="execution-operators-label"></span><h2>Execution Operators<a class="headerlink" href="#execution-operators" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 25.0%" />
+<col style="width: 50.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Operator</p></th>
+<th class="head"><p>Default value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference internal" href="#thread-operator-label"><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Thread</span></code></a></p></td>
+<td><p>Not set.</p></td>
+<td><p>Creates FFT thread execution object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#block-operator-label"><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Block</span></code></a></p></td>
+<td><p>Not set.</p></td>
+<td><p>Creates FFT block execution object. See <a class="reference internal" href="#block-configuration-operators">Block Configuration Operators</a>.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Execution operators configure how the FFT operation will run on the GPU. Combined with <a class="reference internal" href="#description-operators-label"><span class="std std-ref">Description Operators</span></a>, they form a
+complete FFT descriptor that can be executed on a GPU.</p>
+<p>Operators are added to construct the FFT descriptor type. For example, for a forward FFT operation consisting of two FFTs with 128 <code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">float</span></code> elements each, running simultaneously in one CUDA block:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cufftdx.hpp&gt;</span>
+
+<span class="k">using</span><span class="w"> </span><span class="n">FFT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">decltype</span><span class="p">(</span><span class="w"> </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">Size</span><span class="o">&lt;</span><span class="mi">128</span><span class="o">&gt;</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">Type</span><span class="o">&lt;</span><span class="n">fft_type</span><span class="o">::</span><span class="n">c2c</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">                    </span><span class="o">+</span><span class="w"> </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">Direction</span><span class="o">&lt;</span><span class="n">fft_direction</span><span class="o">::</span><span class="n">forward</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">                    </span><span class="o">+</span><span class="w"> </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">Precision</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">Block</span><span class="p">()</span>
+<span class="w">                    </span><span class="o">+</span><span class="w"> </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">ElementsPerThread</span><span class="o">&lt;</span><span class="mi">8</span><span class="o">&gt;</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">FFTsPerBlock</span><span class="o">&lt;</span><span class="mi">2</span><span class="o">&gt;</span><span class="p">()</span><span class="w"> </span><span class="p">);</span>
+</pre></div>
+</div>
+<section id="thread-operator">
+<span id="thread-operator-label"></span><h3>Thread Operator<a class="headerlink" href="#thread-operator" title="Link to this heading">#</a></h3>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">cufftdx</span><span class="o">::</span><span class="n">Thread</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Sets the FFT operation to run in a thread context. The FFT operation will simultaneously run a single, independent FFT (described using <a class="reference internal" href="#description-operators-label"><span class="std std-ref">Description Operators</span></a>) per thread.</p>
+<p>Each thread will compute one FFT of the size defined by the <a class="reference internal" href="#size-operator">Size Operator</a>.</p>
+<dl class="simple">
+<dt>Restrictions:</dt><dd><ul class="simple">
+<li><p>Is mutually exclusive with <code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Block</span></code> operator</p></li>
+<li><p>Compilation will fail when used with block-only operators: <code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">FFTsPerBlock</span></code>, <code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">ElementsPerThread</span></code>, <code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">BlockDim</span></code>.</p></li>
+<li><p>With <code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Precision&lt;__half&gt;</span></code> restricts <code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Size</span></code> to range <span class="math notranslate nohighlight">\([2, 32]\)</span>.</p></li>
+<li><p>With <code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Precision&lt;float&gt;</span></code> restricts <code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Size</span></code> to range <span class="math notranslate nohighlight">\([2, 32]\)</span>.</p></li>
+<li><p>With <code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Precision&lt;double&gt;</span></code> restricts <code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Size</span></code> to range <span class="math notranslate nohighlight">\([2, 16]\)</span>.</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="block-operator">
+<span id="block-operator-label"></span><h3>Block Operator<a class="headerlink" href="#block-operator" title="Link to this heading">#</a></h3>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">cufftdx</span><span class="o">::</span><span class="n">Block</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Generates a collective FFT operation to run in a single CUDA block. One or more threads will cooperate to compute the
+collective FFT operation.</p>
+<p>The number of FFTs to compute, as well as the number of threads used to calculate each FFT, can be configured using
+<a class="reference internal" href="#block-configuration-operators">Block Configuration Operators</a>.</p>
+<dl class="simple">
+<dt>Restrictions:</dt><dd><ul class="simple">
+<li><p>Is mutually exclusive with <code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Thread</span></code> operator</p></li>
+<li><p>Unless a <a class="reference internal" href="#blockdim-operator-label"><span class="std std-ref">BlockDim Operator</span></a> is used, the collective FFT operation can only be executed
+inside a 2D block of sizes:</p>
+<ul>
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">blockDim</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">size_of</span><span class="o">&lt;</span><span class="n">Description</span><span class="o">&gt;::</span><span class="n">value</span><span class="o">/</span><span class="n">Description</span><span class="o">::</span><span class="n">elements_per_thread</span></code>.</p></li>
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">blockDim</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Description</span><span class="o">::</span><span class="n">ffts_per_block</span><span class="o">/</span><span class="n">Description</span><span class="o">::</span><span class="n">implicit_batching</span></code>.</p></li>
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">blockDim</span><span class="p">.</span><span class="n">z</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span></code>.</p></li>
+</ul>
+</li>
+<li><p>Operator <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cufftdx</span><span class="o">::</span><span class="n">Precision</span><span class="o">&lt;</span><span class="n">__half</span><span class="o">&gt;</span><span class="p">()</span></code> restricts <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cufftdx</span><span class="o">::</span><span class="n">Size</span><span class="o">&lt;</span><span class="n">U</span><span class="o">&gt;</span><span class="p">()</span></code> to range <span class="math notranslate nohighlight">\([2, 32768]\)</span>.</p></li>
+<li><p>Operator <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cufftdx</span><span class="o">::</span><span class="n">Precision</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">()</span></code> restricts <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cufftdx</span><span class="o">::</span><span class="n">Size</span><span class="o">&lt;</span><span class="n">U</span><span class="o">&gt;</span><span class="p">()</span></code> to range <span class="math notranslate nohighlight">\([2, 32768]\)</span>.</p></li>
+<li><p>Operator <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cufftdx</span><span class="o">::</span><span class="n">Precision</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">()</span></code> restricts <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cufftdx</span><span class="o">::</span><span class="n">Size</span><span class="o">&lt;</span><span class="n">U</span><span class="o">&gt;</span><span class="p">()</span></code> to range <span class="math notranslate nohighlight">\([2, 16384]\)</span>.</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="block-configuration-operators">
+<span id="block-configuration-operators-label"></span><h3>Block Configuration Operators<a class="headerlink" href="#block-configuration-operators" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 25.0%" />
+<col style="width: 50.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Operators</p></th>
+<th class="head"><p>Default value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference internal" href="#fftsperblock-operator-label"><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">FFTsPerBlock</span><span class="o">&lt;</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">F</span><span class="o">&gt;</span></code></a></p></td>
+<td><p>1</p></td>
+<td><p>Number <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">F</span></code> of FFTs calculated per CUDA block.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ept-operator-label"><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">ElementsPerThread</span><span class="o">&lt;</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">E</span><span class="o">&gt;</span></code></a></p></td>
+<td><p>Heuristic.</p></td>
+<td><p>Number <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">E</span></code> of FFT values per CUDA thread.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#blockdim-operator-label"><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">BlockDim</span><span class="o">&lt;</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">X</span><span class="p">,</span><span class="w"> </span><span class="n">Y</span><span class="p">,</span><span class="w"> </span><span class="n">Z</span><span class="o">&gt;</span></code></a></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="p">(</span><span class="n">size</span><span class="o">/</span><span class="n">elements_per_thread</span><span class="p">,</span><span class="w"> </span><span class="n">ffts_per_block</span><span class="o">/</span><span class="n">implicit_batching</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span></code></p></td>
+<td><p>Required for executing block FFT within block
+with custom dimensions.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dynamic-batching-operator-label"><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">experimental</span><span class="o">::</span><span class="n">DynamicBatching</span></code></a></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="nb">false</span></code></p></td>
+<td><p>Configures the FFT execution to use dynamic batching.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Block-configuration operators allow the user to tune how the collective FFT operation will run on a single CUDA block. When no block-configuration operators are used, the FFT execution will use the default block dimensions.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Block configuration operators can only be used with <a class="reference internal" href="#block-operator-label"><span class="std std-ref">Block Operator</span></a>.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>It is not guaranteed that executions of the same FFTs (size, direction, type, precision) but with different</p>
+<ul class="simple">
+<li><p>number of elements per thread (<a class="reference internal" href="#ept-operator-label"><span class="std std-ref">ElementsPerThread</span></a>),</p></li>
+<li><p>number of FFTs calculated per CUDA block (<a class="reference internal" href="#fftsperblock-operator-label"><span class="std std-ref">FFTsPerBlock</span></a>), or</p></li>
+<li><p>block dimension (<a class="reference internal" href="#blockdim-operator-label"><span class="std std-ref">BlockDim</span></a>),</p></li>
+</ul>
+<p>will produce bit-identical results.</p>
+</div>
+<section id="ffts-per-block-operator">
+<span id="fftsperblock-operator-label"></span><h4>FFTs Per Block Operator<a class="headerlink" href="#ffts-per-block-operator" title="Link to this heading">#</a></h4>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">cufftdx</span><span class="o">::</span><span class="n">FFTsPerBlock</span><span class="o">&lt;</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="o">&gt;</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Sets the number of FFT to compute in parallel within a single CUDA block. Each FFT is computed concurrently by a
+separate group of threads.</p>
+<p>The default is one FFT per block.</p>
+</section>
+<section id="elements-per-thread-operator">
+<span id="ept-operator-label"></span><h4>Elements Per Thread Operator<a class="headerlink" href="#elements-per-thread-operator" title="Link to this heading">#</a></h4>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">cufftdx</span><span class="o">::</span><span class="n">ElementsPerThread</span><span class="o">&lt;</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="o">&gt;</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Sets the number of FFT elements to be computed by each thread.</p>
+<p>The default is determined heuristically to target performance.</p>
+<p>Restrictions:</p>
+<ul class="simple">
+<li><p>If <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">FFT</span><span class="o">::</span><span class="n">requires_workspace</span></code> is <code class="code highlight cpp docutils literal highlight-cpp"><span class="nb">false</span></code>, it must be a divisor of the requested FFT size.</p></li>
+<li><p>If <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">FFT</span><span class="o">::</span><span class="n">requires_workspace</span></code> is <code class="code highlight cpp docutils literal highlight-cpp"><span class="nb">true</span></code>, it must be a power of two smaller than the size of the FFT.</p></li>
+<li><p>Must be in range <span class="math notranslate nohighlight">\([2; 32]\)</span> for <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cufftdx</span><span class="o">::</span><span class="n">Precision</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">()</span></code> and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cufftdx</span><span class="o">::</span><span class="n">Precision</span><span class="o">&lt;</span><span class="n">__half</span><span class="o">&gt;</span><span class="p">()</span></code>.</p></li>
+<li><p>Must be in range <span class="math notranslate nohighlight">\([2; 16]\)</span> for <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cufftdx</span><span class="o">::</span><span class="n">Precision</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">()</span></code>.</p></li>
+</ul>
+</section>
+<section id="blockdim-operator">
+<span id="blockdim-operator-label"></span><h4>BlockDim Operator<a class="headerlink" href="#blockdim-operator" title="Link to this heading">#</a></h4>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">cufftdx</span><span class="o">::</span><span class="n">BlockDim</span><span class="o">&lt;</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">X</span><span class="p">,</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">Y</span><span class="p">,</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">Z</span><span class="o">&gt;</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>BlockDim operator is not officially supported with CUDA Toolkit 13.1.0 (NVCC 13.1.80) and earlier.
+If you are using cuFFTDx with a previous version of nvcc, and you want to use the BlockDim operator, you can:</p>
+<ul class="simple">
+<li><p>Define the <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">CUFFTDX_IGNORE_BLOCK_DIM_UNSUPPORTED</span></code> macro to ignore these assertions and use the BlockDim operator.</p></li>
+<li><p>Add the -Xptxas -O1 flag to the compilation command and verify correctness of the results every time.</p></li>
+</ul>
+</div>
+<p>From version 1.6.0 onwards it is possible to set the CUDA block size to (X, Y, Z), to configure the FFT execution.</p>
+<p>Using this operator, the user can adapt the FFT execution to use custom block dimensions.</p>
+<p>The default block dimensions for an FFT are:</p>
+<ul class="simple">
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">blockDim</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">size_of</span><span class="o">&lt;</span><span class="n">Description</span><span class="o">&gt;::</span><span class="n">value</span><span class="o">/</span><span class="n">Description</span><span class="o">::</span><span class="n">elements_per_thread</span></code>.</p></li>
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">blockDim</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Description</span><span class="o">::</span><span class="n">ffts_per_block</span><span class="o">/</span><span class="n">Description</span><span class="o">::</span><span class="n">implicit_type_batching</span></code>.</p></li>
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">blockDim</span><span class="p">.</span><span class="n">z</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span></code>.</p></li>
+</ul>
+<p>The use of this operator does not guarantee that the FFT execute will make use of the full block dimensions but it ensures a correct execution of the FFT when the kernel is launched with the specified block dimensions.
+When setting custom block dimensions with <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">BlockDim</span><span class="o">&lt;</span><span class="n">X</span><span class="p">,</span><span class="w"> </span><span class="n">Y</span><span class="p">,</span><span class="w"> </span><span class="n">Z</span><span class="o">&gt;</span></code> certain restrictions apply:</p>
+<ul class="simple">
+<li><p>X must be larger or equal than <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">size_of</span><span class="o">&lt;</span><span class="n">Description</span><span class="o">&gt;::</span><span class="n">value</span><span class="o">/</span><span class="n">Description</span><span class="o">::</span><span class="n">elements_per_thread</span></code>.</p></li>
+<li><p>Y must be larger or equal than <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Description</span><span class="o">::</span><span class="n">ffts_per_block</span><span class="o">/</span><span class="n">Description</span><span class="o">::</span><span class="n">implicit_type_batching</span></code>.</p></li>
+<li><p>Runtime block dimensions must be equal to those set in the <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">BlockDim</span></code> operator.</p></li>
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">experimental</span><span class="o">::</span><span class="n">CodeType</span></code> operator must be set to <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">experimental</span><span class="o">::</span><span class="n">code_type</span><span class="o">::</span><span class="n">ptx</span></code> or if using
+<code class="code highlight cpp docutils literal highlight-cpp"><span class="n">experimental</span><span class="o">::</span><span class="n">code_type</span><span class="o">::</span><span class="n">ltoir</span></code>, the LTO database must be generated with cuFFT version 12.3 or later
+(from CUDA Toolkit 13.3).</p></li>
+</ul>
+<div class="hint admonition">
+<p class="admonition-title">Examples</p>
+<div class="line-block">
+<div class="line">FFT <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Size</span><span class="o">&lt;</span><span class="mi">128</span><span class="o">&gt;</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">ElementsPerThread</span><span class="o">&lt;</span><span class="mi">8</span><span class="o">&gt;</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">FFTsPerBlock</span><span class="o">&lt;</span><span class="mi">1</span><span class="o">&gt;</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">BlockDim</span><span class="o">&lt;</span><span class="mi">64</span><span class="o">&gt;</span></code> - OK</div>
+<div class="line">FFT <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Size</span><span class="o">&lt;</span><span class="mi">128</span><span class="o">&gt;</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">ElementsPerThread</span><span class="o">&lt;</span><span class="mi">8</span><span class="o">&gt;</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">FFTsPerBlock</span><span class="o">&lt;</span><span class="mi">1</span><span class="o">&gt;</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">BlockDim</span><span class="o">&lt;</span><span class="mi">8</span><span class="o">&gt;</span></code> - INCORRECT, 8 is less than <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">size_of</span><span class="o">&lt;</span><span class="n">Description</span><span class="o">&gt;::</span><span class="n">value</span><span class="o">/</span><span class="n">Description</span><span class="o">::</span><span class="n">elements_per_thread</span></code> (16)</div>
+<div class="line">FFT <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Size</span><span class="o">&lt;</span><span class="mi">128</span><span class="o">&gt;</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">ElementsPerThread</span><span class="o">&lt;</span><span class="mi">8</span><span class="o">&gt;</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">FFTsPerBlock</span><span class="o">&lt;</span><span class="mi">6</span><span class="o">&gt;</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">BlockDim</span><span class="o">&lt;</span><span class="mi">64</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="o">&gt;</span></code> - INCORRECT, 2 is less than <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Description</span><span class="o">::</span><span class="n">ffts_per_block</span></code> (6)</div>
+<div class="line">FFT <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Size</span><span class="o">&lt;</span><span class="mi">128</span><span class="o">&gt;</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">ElementsPerThread</span><span class="o">&lt;</span><span class="mi">8</span><span class="o">&gt;</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">FFTsPerBlock</span><span class="o">&lt;</span><span class="mi">6</span><span class="o">&gt;</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Precision</span><span class="o">&lt;</span><span class="n">__half</span><span class="o">&gt;</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">BlockDim</span><span class="o">&lt;</span><span class="mi">64</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="o">&gt;</span></code> - OK, due to implicit batching caused by the use of __half precision.</div>
+</div>
+</div>
+<p>If only <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">BlockDim</span><span class="o">&lt;</span><span class="n">X</span><span class="p">,</span><span class="w"> </span><span class="n">Y</span><span class="p">,</span><span class="w"> </span><span class="n">Z</span><span class="o">&gt;</span></code> is provided, the FFT execution will be configured to use the best possible <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">elements_per_thread</span></code> and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">ffts_per_block</span></code> that fit the block dimension. For example,
+for an FFT <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Size</span><span class="o">&lt;</span><span class="mi">128</span><span class="o">&gt;</span></code>, Precision&lt;float&gt; and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">BlockDim</span><span class="o">&lt;</span><span class="mi">32</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">1</span><span class="o">&gt;</span></code>, the FFT execution will be configured to use the best elements per thread that makes <code class="code highlight cpp docutils literal highlight-cpp"><span class="mi">32</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">size_of</span><span class="o">&lt;</span><span class="n">Description</span><span class="o">&gt;::</span><span class="n">value</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">elements_per_thread</span></code>.
+For the case of ffts_per_block, the best value will be <code class="code highlight cpp docutils literal highlight-cpp"><span class="mi">4</span></code>.
+These values can be overridden by adding the ElementsPerThread and FFTsPerBlock operators.
+Since not all threads will participate equally in the FFT execution, we provide a new trait to properly handle input output for the participating threads. Check the ::<code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Working</span><span class="w"> </span><span class="n">group</span><span class="o">&lt;</span><span class="n">working</span><span class="o">-</span><span class="n">group</span><span class="o">-</span><span class="n">trait</span><span class="o">-</span><span class="n">label</span><span class="o">&gt;</span></code> for more information.</p>
+<p>See <a class="reference internal" href="traits.html#blockdim-block-trait-label"><span class="std std-ref">FFT::block_dim</span></a>.</p>
+</section>
+<section id="dynamic-batching">
+<span id="dynamic-batching-operator-label"></span><h4>Dynamic Batching<a class="headerlink" href="#dynamic-batching" title="Link to this heading">#</a></h4>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">cufftdx</span><span class="o">::</span><span class="n">experimental</span><span class="o">::</span><span class="n">DynamicBatching</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>When added to the description, the FFT execution will be configured to use dynamic batching.</p>
+<p>When the FFT execution is configured to use dynamic batching, the number of FFTs per block is not fixed and can be set at runtime depending on the y dimension of the runtime block. The DynamicBatching operator is not compatible with the <a class="reference internal" href="#blockdim-operator-label"><span class="std std-ref">BlockDim Operator</span></a> operator or the <a class="reference internal" href="#fftsperblock-operator-label"><span class="std std-ref">FFTs Per Block Operator</span></a> operator.</p>
+<div class="hint admonition">
+<p class="admonition-title">Examples</p>
+<div class="line-block">
+<div class="line">FFT <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Size</span><span class="o">&lt;</span><span class="mi">128</span><span class="o">&gt;</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">ElementsPerThread</span><span class="o">&lt;</span><span class="mi">8</span><span class="o">&gt;</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">DynamicBatching</span></code>, runtime block dimensions <code class="code highlight cpp docutils literal highlight-cpp"><span class="p">(</span><span class="mi">16</span><span class="p">,</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span></code> - Executed FFTs per block: 8</div>
+<div class="line">FFT <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Size</span><span class="o">&lt;</span><span class="mi">128</span><span class="o">&gt;</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">ElementsPerThread</span><span class="o">&lt;</span><span class="mi">8</span><span class="o">&gt;</span></code>, runtime block dimensions <code class="code highlight cpp docutils literal highlight-cpp"><span class="p">(</span><span class="mi">16</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span></code> - Executed FFTs per block: 1</div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The dynamic batching operator is experimental and may be changed or removed in future releases.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>When using the DynamicBatching operator, the number of FFTs per block is not fixed at compile time. The user must allocate sufficient shared memory based on the actual number of FFTs to be computed.</p>
+<p>To compute the required shared memory:</p>
+<ul class="simple">
+<li><p>Use the helper function <a class="reference internal" href="other_methods.html#shared-memory-compute-for-dynamic-batching-label"><span class="std std-ref">get_shared_memory_size_for_dynamic_batching</span></a>, or</p></li>
+<li><p>Manually calculate: <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">total_shared_memory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FFT</span><span class="o">::</span><span class="n">shared_memory_size</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="n">ffts_per_block</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">FFT</span><span class="o">::</span><span class="n">implicit_type_batching</span><span class="p">)</span></code></p></li>
+</ul>
+<p>where <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">ffts_per_block</span></code> is the runtime number of FFTs you intend to compute per block.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Only the y dimension of the runtime block can be dynamic. Runtime block dimensions for x and z must coincide with the <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">FFT</span><span class="o">::</span><span class="n">block_dim</span></code> trait dimensions obtained from the execution in order to ensure correct results.</p>
+</div>
+</section>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../performance.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Achieving High Performance</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="traits.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Traits</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#description-operators">Description Operators</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#size-operator">Size Operator</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#direction-operator">Direction Operator</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#type-operator">Type Operator</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#precision-operator">Precision Operator</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sm-operator">SM Operator</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#realfftoptions-operator">RealFFTOptions Operator</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#codetype-operator">CodeType Operator</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#execution-operators">Execution Operators</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#thread-operator">Thread Operator</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#block-operator">Block Operator</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#block-configuration-operators">Block Configuration Operators</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ffts-per-block-operator">FFTs Per Block Operator</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#elements-per-thread-operator">Elements Per Thread Operator</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#blockdim-operator">BlockDim Operator</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#dynamic-batching">Dynamic Batching</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5"></script>
+
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+<a class="footer-brand logo" href="https://www.nvidia.com">
+  <img src="../_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="../_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+</a></div>
+      
+        <div class="footer-item">
+
+<div class="footer-links">
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/">Privacy Policy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Your Privacy Choices</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/">Terms of Service</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/accessibility/">Accessibility</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/company-policies/">Corporate Policies</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/product-security/">Product Security</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/contact/">Contact</a>
+  
+  
+  
+</div>
+</div>
+      
+        <div class="footer-item">
+
+
+
+
+  <p class="copyright">
+    
+      Copyright © 2022-2026, NVIDIA Corporation &amp; Affiliates. All rights reserved.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+  </body>
+</html>

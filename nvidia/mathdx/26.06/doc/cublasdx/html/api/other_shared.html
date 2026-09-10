@@ -1,0 +1,812 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Shared Memory Management &#8212; cuBLASDx</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
+    <link rel="stylesheet" type="text/css" href="../_static/diagram.css?v=21e9147c" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
+
+
+
+    <script src="../_static/documentation_options.js?v=26f1c5af"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/other_shared';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://docs.nvidia.com/cuda/cublasdx/_static/switcher.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.7.1';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+
+    <link rel="icon" href="../_static/nvidia.ico"/>
+
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="cuBLASDx Python Frontends" href="../python_bindings.html" />
+    <link rel="prev" title="Tensors" href="other_tensors.html" />
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.7.1" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+
+
+  </head>
+
+  <body data-default-mode="">
+
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="cuBLASDx - Home"/>
+    <img src="../_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="cuBLASDx - Home"/>
+  
+  
+    <p class="title logo__title">cuBLASDx</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="cuBLASDx - Home"/>
+    <img src="../_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="cuBLASDx - Home"/>
+  
+  
+    <p class="title logo__title">cuBLASDx</p>
+  
+</a>
+
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Table of Contents">
+  <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
+  <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Documentation Home</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../requirements_func.html">Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../using_cublasdx.html">Using cuBLASDx GEMM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../using_pipelines.html">Using Pipelined GEMM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../using_trsm.html">Using cuBLASDx TRSM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../performance.html">Achieving High Performance</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="operators.html">Operators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="traits.html">Traits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="shared_methods.html">Input / Output Format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gemm_methods.html">GEMM Execution Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="trsm_methods.html">TRSM Execution Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pipeline.html">Pipeline Creation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="other_methods.html">Other Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="other_tensors.html">Tensor Manipulation</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Shared Memory Management</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Python</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../python_bindings.html">cuBLASDx Python Bindings</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../examples_learning_path.html">Learning Path Through Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../release_notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/NVIDIA/CUDALibrarySamples/tree/main/MathDx/cuBLASDx">GitHub Samples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">MathDx</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/cublasdx-downloads">cuBLASDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/cufftdx-downloads">cuFFTDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/cusolverdx-downloads">cuSolverDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/curanddx-downloads">cuRANDDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/nvcompdx-downloads">nvCOMPDx</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Shared Memory Management</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="shared-memory-management">
+<h1>Shared Memory Management<a class="headerlink" href="#shared-memory-management" title="Link to this heading">#</a></h1>
+<p>cuBLASDx’s GEMM requires input matrices to be in shared memory with an option for C matrix to be partitioned between threads’ registers.
+The use of shared memory imposes certain rules (alignment) and limitations (limited shared memory space).
+cuBLASDx provides shared memory management tools to make it easier for all users to operate on it correctly.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Starting with cuBLASDx 0.3.0 the <code class="code highlight cpp docutils literal highlight-cpp"><span class="o">::</span><span class="n">shared_memory_size</span></code> traits and <code class="code highlight cpp docutils literal highlight-cpp"><span class="o">::</span><span class="n">shared_memory_size</span><span class="p">()</span></code> methods no longer exist and have
+been replaced with new APIs described in this chapter.</p>
+</div>
+<section id="shared-storage-size-utilities">
+<h2>Shared Storage Size Utilities<a class="headerlink" href="#shared-storage-size-utilities" title="Link to this heading">#</a></h2>
+<p>CUDA requires the user to specify amount of used dynamic shared memory upfront during kernel launch. For executing a GEMM such size
+will be dependent on:</p>
+<ol class="arabic simple">
+<li><p>Problem size (<code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Size</span><span class="o">&lt;</span><span class="n">M</span><span class="p">,</span><span class="w"> </span><span class="n">N</span><span class="p">,</span><span class="w"> </span><span class="n">K</span><span class="o">&gt;</span></code>).</p></li>
+<li><p>Chosen input type (since cuBLASDx 0.3.0 input precision can be different than compute precision, see <a class="reference internal" href="operators.html#precision-operator-label"><span class="std std-ref">Precision Operator</span></a>).</p></li>
+<li><p>Chosen alignments of matrices (<code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Alignment</span><span class="o">&lt;</span><span class="n">A</span><span class="p">,</span><span class="w"> </span><span class="n">B</span><span class="p">,</span><span class="w"> </span><span class="n">C</span><span class="o">&gt;</span></code>).</p></li>
+<li><p>API which will be used to execute GEMM (register or shared memory).</p></li>
+</ol>
+<p>Since this information is neither contained in the <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">BLAS</span></code> type (since input precision is decoupled from compute precision)
+nor in the tensors (they are missing alignment information), helper utilities have been created to help with streamlining the process:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Shared memory API</span>
+<span class="k">template</span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">BLAS</span><span class="p">,</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">AValueType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">BLAS</span><span class="o">::</span><span class="n">a_value_type</span><span class="p">,</span>
+<span class="w">                     </span><span class="k">class</span><span class="w"> </span><span class="nc">BValueType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">BLAS</span><span class="o">::</span><span class="n">b_value_type</span><span class="p">,</span>
+<span class="w">                     </span><span class="k">class</span><span class="w"> </span><span class="nc">CValueType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">BLAS</span><span class="o">::</span><span class="n">c_value_type</span><span class="p">,</span>
+<span class="w">                     </span><span class="k">class</span><span class="w"> </span><span class="nc">ALayout</span><span class="p">,</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">BLayout</span><span class="p">,</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">CLayout</span><span class="o">&gt;</span>
+<span class="n">__host__</span><span class="w"> </span><span class="n">__device__</span><span class="w"> </span><span class="n">__forceinline__</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">unsigned</span>
+<span class="n">get_shared_storage_size</span><span class="p">(</span><span class="n">ALayout</span><span class="w"> </span><span class="k">const</span><span class="o">&amp;</span><span class="w"> </span><span class="n">a_layout</span><span class="p">,</span>
+<span class="w">                        </span><span class="n">BLayout</span><span class="w"> </span><span class="k">const</span><span class="o">&amp;</span><span class="w"> </span><span class="n">b_layout</span><span class="p">,</span>
+<span class="w">                        </span><span class="n">CLayout</span><span class="w"> </span><span class="k">const</span><span class="o">&amp;</span><span class="w"> </span><span class="n">c_layout</span><span class="p">);</span>
+
+<span class="k">template</span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">BLAS</span><span class="p">,</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">AValueType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">BLAS</span><span class="o">::</span><span class="n">a_value_type</span><span class="p">,</span>
+<span class="w">                     </span><span class="k">class</span><span class="w"> </span><span class="nc">BValueType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">BLAS</span><span class="o">::</span><span class="n">b_value_type</span><span class="p">,</span>
+<span class="w">                     </span><span class="k">class</span><span class="w"> </span><span class="nc">CValueType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">BLAS</span><span class="o">::</span><span class="n">c_value_type</span><span class="o">&gt;</span>
+<span class="n">__host__</span><span class="w"> </span><span class="n">__device__</span><span class="w"> </span><span class="n">__forceinline__</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">unsigned</span>
+<span class="n">get_shared_storage_size</span><span class="p">(</span><span class="kt">unsigned</span><span class="w"> </span><span class="n">lda</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">leading_dimension_of</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;::</span><span class="n">a</span><span class="p">,</span>
+<span class="w">                        </span><span class="kt">unsigned</span><span class="w"> </span><span class="n">ldb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">leading_dimension_of</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;::</span><span class="n">b</span><span class="p">,</span>
+<span class="w">                        </span><span class="kt">unsigned</span><span class="w"> </span><span class="n">ldc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">leading_dimension_of</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;::</span><span class="n">c</span><span class="p">);</span>
+
+<span class="c1">// Register API</span>
+<span class="k">template</span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">BLAS</span><span class="p">,</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">AValueType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">BLAS</span><span class="o">::</span><span class="n">a_value_type</span><span class="p">,</span>
+<span class="w">                     </span><span class="k">class</span><span class="w"> </span><span class="nc">BValueType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">BLAS</span><span class="o">::</span><span class="n">b_value_type</span><span class="p">,</span>
+<span class="w">                     </span><span class="k">class</span><span class="w"> </span><span class="nc">ALayout</span><span class="p">,</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">BLayout</span><span class="o">&gt;</span>
+<span class="n">__host__</span><span class="w"> </span><span class="n">__device__</span><span class="w"> </span><span class="n">__forceinline__</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">unsigned</span>
+<span class="n">get_shared_storage_size_ab</span><span class="p">(</span><span class="n">ALayout</span><span class="w"> </span><span class="k">const</span><span class="o">&amp;</span><span class="w"> </span><span class="n">a_layout</span><span class="p">,</span>
+<span class="w">                           </span><span class="n">BLayout</span><span class="w"> </span><span class="k">const</span><span class="o">&amp;</span><span class="w"> </span><span class="n">b_layout</span><span class="p">);</span>
+
+<span class="k">template</span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">BLAS</span><span class="p">,</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">AValueType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">BLAS</span><span class="o">::</span><span class="n">a_value_type</span><span class="p">,</span>
+<span class="w">                     </span><span class="k">class</span><span class="w"> </span><span class="nc">BValueType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">BLAS</span><span class="o">::</span><span class="n">b_value_type</span><span class="o">&gt;</span>
+<span class="n">__host__</span><span class="w"> </span><span class="n">__device__</span><span class="w"> </span><span class="n">__forceinline__</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">unsigned</span>
+<span class="n">get_shared_storage_size_ab</span><span class="p">(</span><span class="kt">unsigned</span><span class="w"> </span><span class="n">lda</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">leading_dimension_of</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;::</span><span class="n">a</span><span class="p">,</span>
+<span class="w">                           </span><span class="kt">unsigned</span><span class="w"> </span><span class="n">ldb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">leading_dimension_of</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;::</span><span class="n">b</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Resulting value is size of the shared memory in bytes required to allocate input and output matrices, and perform computations.</p>
+<p>The value is determined by size of <a class="reference internal" href="traits.html#valuetype-block-trait-label"><span class="std std-ref">value types</span></a>, <a class="reference internal" href="traits.html#matrixsize-block-trait-label"><span class="std std-ref">matrix sizes</span></a> and <a class="reference internal" href="traits.html#alignment-exec-trait-label"><span class="std std-ref">alignments</span></a>.</p>
+<p>Note that <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cublasdx</span><span class="o">::</span><span class="n">get_shared_storage_size</span></code> accepts arbitrary <a class="reference external" href="https://docs.nvidia.com/cutlass/latest/media/docs/cpp/cute/01_layout.html">CuTe layouts</a>.
+Class <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">ALayout</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">BLayout</span></code> and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">CLayout</span></code> in the above function prototype could be either
+<a class="reference external" href="https://github.com/NVIDIA/cutlass/blob/main/include/cute/layout.hpp">cute::Layout</a> or
+<a class="reference external" href="https://github.com/NVIDIA/cutlass/blob/main/include/cute/layout_composed.hpp">cute::ComposedLayout</a>.</p>
+<p>These functions can be used as follows:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Shared API - Regular execution</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">shared_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">get_shared_storage_size</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;</span><span class="p">();</span>
+
+<span class="c1">// Shared API - Decoupled input precision execution</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">shared_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">get_shared_storage_size</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="p">,</span><span class="w"> </span><span class="n">InputTypeA</span><span class="p">,</span><span class="w"> </span><span class="n">InputTypeB</span><span class="p">,</span><span class="w"> </span><span class="n">InputTypeC</span><span class="o">&gt;</span><span class="p">();</span>
+
+
+<span class="c1">// Shared API - Regular execution</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">shared_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">get_shared_storage_size_ab</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;</span><span class="p">();</span>
+
+<span class="c1">// Shared API - Decoupled input precision execution</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">shared_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">get_shared_storage_size_ab</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="p">,</span><span class="w"> </span><span class="n">InputTypeA</span><span class="p">,</span><span class="w"> </span><span class="n">InputTypeB</span><span class="p">,</span><span class="w"> </span><span class="n">InputTypeC</span><span class="o">&gt;</span><span class="p">();</span>
+</pre></div>
+</div>
+<p>For special cases cuBLASDx offers a shared memory size calculator:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">shared_storage_calculator</span><span class="w"> </span><span class="nf">make_shared_storage_calculator</span><span class="p">();</span>
+</pre></div>
+</div>
+<p>it exposes the following API:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">Layout</span><span class="o">&gt;</span>
+<span class="n">shared_storage_calculator</span><span class="o">&amp;</span><span class="w"> </span><span class="n">add</span><span class="p">(</span><span class="kt">unsigned</span><span class="w"> </span><span class="n">alignment</span><span class="p">,</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="n">elem_size</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">Layout</span><span class="o">&amp;</span><span class="w"> </span><span class="n">layout</span><span class="p">);</span>
+
+<span class="n">__host__</span><span class="w"> </span><span class="n">__device__</span><span class="w"> </span><span class="n">__forceinline__</span><span class="w"> </span><span class="k">constexpr</span>
+<span class="n">shared_storage_calculator</span><span class="o">&amp;</span><span class="w"> </span><span class="n">add</span><span class="p">(</span><span class="kt">unsigned</span><span class="w"> </span><span class="n">alignment</span><span class="p">,</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="n">matrix_size_bytes</span><span class="p">);</span>
+
+<span class="n">__host__</span><span class="w"> </span><span class="n">__device__</span><span class="w"> </span><span class="n">__forceinline__</span><span class="w"> </span><span class="k">constexpr</span>
+<span class="n">shared_storage_calculator</span><span class="o">&amp;</span><span class="w"> </span><span class="n">add</span><span class="p">(</span><span class="kt">unsigned</span><span class="w"> </span><span class="n">alignment</span><span class="p">,</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="n">elem_size</span><span class="p">,</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="n">num_elements</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>It can be used to calculate shared memory requirements for pipelined register API execution:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// 2 Stage pipelined register memory execution</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">shared_memory_size</span><span class="w"> </span><span class="o">=</span>
+<span class="w">  </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">make_shared_storage_calculator</span><span class="p">()</span>
+<span class="w">     </span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">cublasdx</span><span class="o">::</span><span class="n">alignment_of_v_a</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">AInputType</span><span class="p">),</span><span class="w"> </span><span class="n">BLAS</span><span class="o">::</span><span class="n">suggest_layout_smem_a</span><span class="p">())</span>
+<span class="w">     </span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">cublasdx</span><span class="o">::</span><span class="n">alignment_of_v_b</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">BInputType</span><span class="p">),</span><span class="w"> </span><span class="n">BLAS</span><span class="o">::</span><span class="n">suggest_layout_smem_b</span><span class="p">())</span>
+<span class="w">     </span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">cublasdx</span><span class="o">::</span><span class="n">alignment_of_v_a</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">AInputType</span><span class="p">),</span><span class="w"> </span><span class="n">BLAS</span><span class="o">::</span><span class="n">suggest_layout_smem_a</span><span class="p">())</span>
+<span class="w">     </span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">cublasdx</span><span class="o">::</span><span class="n">alignment_of_v_b</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">BInputType</span><span class="p">),</span><span class="w"> </span><span class="n">BLAS</span><span class="o">::</span><span class="n">suggest_layout_smem_b</span><span class="p">())</span>
+<span class="w">     </span><span class="p">.</span><span class="n">get</span><span class="p">();</span>
+</pre></div>
+</div>
+<section id="shared-memory-slicing">
+<span id="slice-shared-memory-other-label"></span><h3>Shared Memory Slicing<a class="headerlink" href="#shared-memory-slicing" title="Link to this heading">#</a></h3>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Starting with cuBLASDx 0.3.0 the <code class="code highlight cpp docutils literal highlight-cpp"><span class="o">::</span><span class="n">slice_shared_memory</span><span class="p">()</span></code> methods no longer exist and have
+been moved to APIs described below.</p>
+</div>
+<p>The shared memory slicing free functions work with <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">BLAS</span></code> if its <a class="reference internal" href="traits.html#isblascompleteexecution-trait-label"><span class="std std-ref">is_complete_blas_execution Trait</span></a> is <code class="code highlight cpp docutils literal highlight-cpp"><span class="nb">true</span></code>.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// #1a Slice shared memory with default leading dimensions and default matrices layouts for data from A, B and C matrices</span>
+<span class="k">template</span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">BLAS</span><span class="p">,</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">AValueType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">BLAS</span><span class="o">::</span><span class="n">a_value_type</span><span class="p">,</span>
+<span class="w">                     </span><span class="k">class</span><span class="w"> </span><span class="nc">BValueType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">BLAS</span><span class="o">::</span><span class="n">b_value_type</span><span class="p">,</span>
+<span class="w">                     </span><span class="k">class</span><span class="w"> </span><span class="nc">CValueType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">BLAS</span><span class="o">::</span><span class="n">c_value_type</span><span class="o">&gt;</span>
+<span class="n">cute</span><span class="o">::</span><span class="n">tuple</span><span class="o">&lt;</span><span class="n">AValueType</span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="n">BValueType</span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="n">CValueType</span><span class="o">*&gt;</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">slice_shared_memory</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">smem_ptr</span><span class="p">);</span>
+
+<span class="c1">// #1b Slice shared memory with default leading dimensions and default matrices layouts for data from A and B matrices</span>
+<span class="k">template</span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">BLAS</span><span class="p">,</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">AValueType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">BLAS</span><span class="o">::</span><span class="n">a_value_type</span><span class="p">,</span>
+<span class="w">                     </span><span class="k">class</span><span class="w"> </span><span class="nc">BValueType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">BLAS</span><span class="o">::</span><span class="n">b_value_type</span><span class="p">,</span>
+<span class="w">                     </span><span class="k">class</span><span class="w"> </span><span class="nc">CValueType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">BLAS</span><span class="o">::</span><span class="n">c_value_type</span><span class="o">&gt;</span>
+<span class="n">cute</span><span class="o">::</span><span class="n">tuple</span><span class="o">&lt;</span><span class="n">AValueType</span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="n">BValueType</span><span class="o">*&gt;</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">slice_shared_memory_ab</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">smem_ptr</span><span class="p">);</span>
+
+<span class="c1">// #2a: Slice shared memory with dynamic leading dimensions</span>
+<span class="k">template</span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">BLAS</span><span class="p">,</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">AValueType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">BLAS</span><span class="o">::</span><span class="n">a_value_type</span><span class="p">,</span>
+<span class="w">                     </span><span class="k">class</span><span class="w"> </span><span class="nc">BValueType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">BLAS</span><span class="o">::</span><span class="n">b_value_type</span><span class="p">,</span>
+<span class="w">                     </span><span class="k">class</span><span class="w"> </span><span class="nc">CValueType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">BLAS</span><span class="o">::</span><span class="n">c_value_type</span><span class="o">&gt;</span>
+<span class="n">cute</span><span class="o">::</span><span class="n">tuple</span><span class="o">&lt;</span><span class="n">AValueType</span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="n">BValueType</span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="n">CValueType</span><span class="o">*&gt;</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">slice_shared_memory</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">smem_ptr</span><span class="p">,</span>
+<span class="w">                              </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">lda</span><span class="p">,</span>
+<span class="w">                              </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">ldb</span><span class="p">,</span>
+<span class="w">                              </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">ldc</span><span class="p">);</span>
+
+<span class="c1">// #2b: Slice shared memory with dynamic leading dimensions</span>
+<span class="k">template</span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">BLAS</span><span class="p">,</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">AValueType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">BLAS</span><span class="o">::</span><span class="n">a_value_type</span><span class="p">,</span>
+<span class="w">                     </span><span class="k">class</span><span class="w"> </span><span class="nc">BValueType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">BLAS</span><span class="o">::</span><span class="n">b_value_type</span><span class="o">&gt;</span>
+<span class="n">cute</span><span class="o">::</span><span class="n">tuple</span><span class="o">&lt;</span><span class="n">AValueType</span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="n">BValueType</span><span class="o">*&gt;</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">slice_shared_memory_ab</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">smem_ptr</span><span class="p">,</span>
+<span class="w">                                 </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">lda</span><span class="p">,</span>
+<span class="w">                                 </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">ldb</span><span class="p">);</span>
+
+<span class="c1">// #3a: Slice shared memory with custom matrices layouts</span>
+<span class="k">template</span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">BLAS</span><span class="p">,</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">AValueType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">BLAS</span><span class="o">::</span><span class="n">a_value_type</span><span class="p">,</span>
+<span class="w">                     </span><span class="k">class</span><span class="w"> </span><span class="nc">BValueType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">BLAS</span><span class="o">::</span><span class="n">b_value_type</span><span class="p">,</span>
+<span class="w">                     </span><span class="k">class</span><span class="w"> </span><span class="nc">CValueType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">BLAS</span><span class="o">::</span><span class="n">c_value_type</span><span class="p">,</span>
+<span class="w">                     </span><span class="k">class</span><span class="w"> </span><span class="nc">ALayout</span><span class="p">,</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">BLayout</span><span class="p">,</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">CLayout</span><span class="o">&gt;</span>
+<span class="n">cute</span><span class="o">::</span><span class="n">tuple</span><span class="o">&lt;</span><span class="n">AValueType</span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="n">BValueType</span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="n">CValueType</span><span class="o">*&gt;</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">slice_shared_memory</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">smem_ptr</span><span class="p">,</span>
+<span class="w">                              </span><span class="n">ALayout</span><span class="w"> </span><span class="n">a_layout</span><span class="p">,</span>
+<span class="w">                              </span><span class="n">BLayout</span><span class="w"> </span><span class="n">b_layout</span><span class="p">,</span>
+<span class="w">                              </span><span class="n">CLayout</span><span class="w"> </span><span class="n">c_layout</span><span class="p">);</span>
+
+<span class="c1">// #3b: Slice shared memory with custom matrices layouts</span>
+<span class="k">template</span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">BLAS</span><span class="p">,</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">AValueType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">BLAS</span><span class="o">::</span><span class="n">a_value_type</span><span class="p">,</span>
+<span class="w">                     </span><span class="k">class</span><span class="w"> </span><span class="nc">BValueType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">BLAS</span><span class="o">::</span><span class="n">b_value_type</span><span class="p">,</span>
+<span class="w">                     </span><span class="k">class</span><span class="w"> </span><span class="nc">ALayout</span><span class="p">,</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">BLayout</span><span class="o">&gt;</span>
+<span class="n">cute</span><span class="o">::</span><span class="n">tuple</span><span class="o">&lt;</span><span class="n">AValueType</span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="n">BValueType</span><span class="o">*&gt;</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">slice_shared_memory_ab</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">smem_ptr</span><span class="p">,</span>
+<span class="w">                                 </span><span class="n">ALayout</span><span class="w"> </span><span class="n">a_layout</span><span class="p">,</span>
+<span class="w">                                 </span><span class="n">BLayout</span><span class="w"> </span><span class="n">b_layout</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Methods <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cublasdx</span><span class="o">::</span><span class="n">slice_shared_memory</span><span class="p">(...)</span></code> and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cublasdx</span><span class="o">::</span><span class="n">slice_shared_memory_ab</span><span class="p">(...)</span></code> slice shared memory into chunks, one for either <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">A</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">B</span></code> and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">C</span></code> or only <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">A</span></code> and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">B</span></code> depending on the variant.</p>
+<p>The return values are pointers to the first element of the slices for chosen matrices.
+They follow the <a class="reference internal" href="traits.html#alignment-exec-trait-label"><span class="std std-ref">alignments</span></a> in <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">BLAS</span></code> description and at the same time, are not over-aligned, i.e., bytes between two slices are less
+than the alignments.</p>
+<p>Note that <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cublasdx</span><span class="o">::</span><span class="n">slice_shared_memory</span><span class="p">(...)</span></code> and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cublasdx</span><span class="o">::</span><span class="n">slice_shared_memory_ab</span><span class="p">(...)</span></code> accept arbitrary <a class="reference external" href="https://docs.nvidia.com/cutlass/latest/media/docs/cpp/cute/01_layout.html">CuTe layouts</a>.
+Class <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">ALayout</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">BLayout</span></code> (and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">CLayout</span></code> for <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cublasdx</span><span class="o">::</span><span class="n">slice_shared_memory</span><span class="p">(...)</span></code>) in the above function prototype could be either of
+<a class="reference external" href="https://github.com/NVIDIA/cutlass/blob/main/include/cute/layout.hpp">cute::Layout</a> or
+<a class="reference external" href="https://github.com/NVIDIA/cutlass/blob/main/include/cute/layout_composed.hpp">cute::ComposedLayout</a> concepts.</p>
+<div class="hint admonition">
+<p class="admonition-title">Example</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">BLAS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">decltype</span><span class="p">(...);</span>
+
+<span class="k">extern</span><span class="w"> </span><span class="n">__shared__</span><span class="w"> </span><span class="nf">__align__</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">byte</span><span class="w"> </span><span class="n">smem</span><span class="p">[];</span>
+
+<span class="c1">// use structured binding</span>
+<span class="k">auto</span><span class="w"> </span><span class="p">[</span><span class="n">smem_a</span><span class="p">,</span><span class="w"> </span><span class="n">smem_b</span><span class="p">,</span><span class="w"> </span><span class="n">smem_c</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">slice_shared_memory</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;</span><span class="p">(</span><span class="n">smem</span><span class="p">);</span>
+
+<span class="c1">// or</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">smem_slices</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">slice_shared_memory</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;</span><span class="p">(</span><span class="n">smem</span><span class="p">);</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">smem_a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cute</span><span class="o">::</span><span class="n">get</span><span class="o">&lt;</span><span class="mi">0</span><span class="o">&gt;</span><span class="p">(</span><span class="n">smem_slices</span><span class="p">);</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">smem_b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cute</span><span class="o">::</span><span class="n">get</span><span class="o">&lt;</span><span class="mi">1</span><span class="o">&gt;</span><span class="p">(</span><span class="n">smem_slices</span><span class="p">);</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">smem_c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cute</span><span class="o">::</span><span class="n">get</span><span class="o">&lt;</span><span class="mi">2</span><span class="o">&gt;</span><span class="p">(</span><span class="n">smem_slices</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<p>cuBLASDx also offers an advanced generic slicing APIs allowing for arbitrary number of input matrices:</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The following functions are available in <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cublasdx</span><span class="o">::</span><span class="n">shared_memory</span></code> namespace not in <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cublasdx</span></code> namespace,
+as they are shared between different Device Extensions libraries.</p>
+</div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// 1. Use type, alignment and number of elements to slice into pointers</span>
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">class</span><span class="p">...</span><span class="w"> </span><span class="n">Ts</span><span class="p">,</span><span class="w"> </span><span class="k">class</span><span class="p">...</span><span class="w"> </span><span class="n">Args</span><span class="o">&gt;</span>
+<span class="n">__host__</span><span class="w"> </span><span class="n">__device__</span><span class="w"> </span><span class="n">__forceinline__</span>
+<span class="n">cute</span><span class="o">::</span><span class="n">tuple</span><span class="o">&lt;</span><span class="n">Ts</span><span class="o">*</span><span class="p">...</span><span class="o">&gt;</span><span class="w"> </span><span class="n">slice_into_pointers</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">smem</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">Args</span><span class="p">...</span><span class="w"> </span><span class="n">args</span><span class="p">);</span>
+
+<span class="c1">// 2. Use type, alignment and layout to slice into tensors</span>
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">class</span><span class="p">...</span><span class="w"> </span><span class="n">Ts</span><span class="p">,</span><span class="w"> </span><span class="k">class</span><span class="p">...</span><span class="w"> </span><span class="n">Args</span><span class="o">&gt;</span>
+<span class="n">__host__</span><span class="w"> </span><span class="n">__device__</span><span class="w"> </span><span class="n">__forceinline__</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">slice_into_tensors</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">smem</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">Args</span><span class="p">...</span><span class="w"> </span><span class="n">args</span><span class="p">);</span>
+
+<span class="c1">// 3. Accept types, alignments and either count of elements or layouts to get</span>
+<span class="c1">// appropriate combination of outputs</span>
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">class</span><span class="p">...</span><span class="w"> </span><span class="n">PointerTypes</span><span class="p">,</span><span class="w"> </span><span class="k">class</span><span class="p">...</span><span class="w"> </span><span class="n">Args</span><span class="o">&gt;</span>
+<span class="n">__host__</span><span class="w"> </span><span class="n">__device__</span><span class="w"> </span><span class="n">__forceinline__</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">slice</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">smem</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">Args</span><span class="p">...</span><span class="w"> </span><span class="n">args</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The last variant offers the largest configurability in a single call for experienced users as it incorporates functionality of the first two API variants which can be seen as simplified helpers.</p>
+<p>It can be used in the following way to properly slice shared memory into tensors for 2-stage pipelined GEMM execution:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Slice shared memory into tensors for proper alignment in 2-stage pipelining</span>
+<span class="k">auto</span><span class="w"> </span><span class="p">[</span><span class="n">s_a</span><span class="p">,</span><span class="w"> </span><span class="n">s_b</span><span class="p">,</span><span class="w"> </span><span class="n">s_a_n</span><span class="p">,</span><span class="w"> </span><span class="n">s_b_n</span><span class="p">]</span><span class="w"> </span><span class="o">=</span>
+<span class="w">    </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">shared_memory</span><span class="o">::</span><span class="n">slice</span><span class="o">&lt;</span><span class="n">AValueType</span><span class="p">,</span><span class="w"> </span><span class="n">BValueType</span><span class="p">,</span><span class="w"> </span><span class="n">AValueType</span><span class="p">,</span><span class="w"> </span><span class="n">BValueType</span><span class="o">&gt;</span><span class="p">(</span>
+<span class="w">        </span><span class="n">smem</span><span class="p">,</span>
+<span class="w">        </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">alignment_of_v_a</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">BLAS</span><span class="o">::</span><span class="n">suggest_layout_smem_a</span><span class="p">(),</span>
+<span class="w">        </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">alignment_of_v_b</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">BLAS</span><span class="o">::</span><span class="n">suggest_layout_smem_b</span><span class="p">(),</span>
+<span class="w">        </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">alignment_of_v_a</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">BLAS</span><span class="o">::</span><span class="n">suggest_layout_smem_a</span><span class="p">(),</span>
+<span class="w">        </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">alignment_of_v_b</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">BLAS</span><span class="o">::</span><span class="n">suggest_layout_smem_b</span><span class="p">()</span>
+<span class="w">    </span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Depending whether layout or count of elements is provided, the function will return either tensors or pointers.</p>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="other_tensors.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Tensors</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../python_bindings.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">cuBLASDx Python Frontends</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#shared-storage-size-utilities">Shared Storage Size Utilities</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#shared-memory-slicing">Shared Memory Slicing</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5"></script>
+
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+<a class="footer-brand logo" href="https://www.nvidia.com">
+  <img src="../_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="../_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+</a></div>
+      
+        <div class="footer-item">
+
+<div class="footer-links">
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/">Privacy Policy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Your Privacy Choices</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/">Terms of Service</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/accessibility/">Accessibility</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/company-policies/">Corporate Policies</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/product-security/">Product Security</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/contact/">Contact</a>
+  
+  
+  
+</div>
+</div>
+      
+        <div class="footer-item">
+
+
+
+
+  <p class="copyright">
+    
+      Copyright © 2022-2026, NVIDIA Corporation &amp; Affiliates. All rights reserved.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+  </body>
+</html>

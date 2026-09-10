@@ -1,0 +1,57 @@
+[
+    {
+        "name": "0.7.1 (current release)",
+        "version": "0.7.1",
+        "url": "https://docs.nvidia.com/cuda/cublasdx/"
+    },
+    {
+        "name": "0.7.0",
+        "version": "0.7.0",
+        "url": "https://docs.nvidia.com/cuda/cublasdx/0.7.0/"
+    },
+    {
+        "name": "0.6.0",
+        "version": "0.6.0",
+        "url": "https://docs.nvidia.com/cuda/cublasdx/0.6.0/"
+    },
+    {
+        "name": "0.5.1",
+        "version": "0.5.1",
+        "url": "https://docs.nvidia.com/cuda/cublasdx/0.5.1/"
+    },
+    {
+        "name": "0.5.0",
+        "version": "0.5.0",
+        "url": "https://docs.nvidia.com/cuda/cublasdx/0.5.0/"
+    },
+    {
+        "name": "0.4.1",
+        "version": "0.4.1",
+        "url": "https://docs.nvidia.com/cuda/cublasdx/0.4.1/"
+    },
+    {
+        "name": "0.4.0",
+        "version": "0.4.0",
+        "url": "https://docs.nvidia.com/cuda/cublasdx/0.4.0/"
+    },
+    {
+        "name": "0.3.1",
+        "version": "0.3.1",
+        "url": "https://docs.nvidia.com/cuda/cublasdx/0.3.1/"
+    },
+    {
+        "name": "0.3.0",
+        "version": "0.3.0",
+        "url": "https://docs.nvidia.com/cuda/cublasdx/0.3.0/"
+    },
+    {
+        "name": "0.2.0",
+        "version": "0.2.0",
+        "url": "https://docs.nvidia.com/cuda/cublasdx/0.2.0/"
+    },
+    {
+        "name": "0.1.0",
+        "version": "0.1.0",
+        "url": "https://docs.nvidia.com/cuda/cublasdx/0.1.0/"
+    }
+]

@@ -1,0 +1,847 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Quick Installation Guide &#8212; cuFFTDx</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
+
+
+
+    <script src="_static/documentation_options.js?v=702cf1bd"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'installation';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://docs.nvidia.com/cuda/cufftdx/_static/switcher.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '1.7.3';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+
+    <link rel="icon" href="_static/nvidia.ico"/>
+
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="First FFT Using cuFFTDx" href="introduction1.html" />
+    <link rel="prev" title="Requirements and Functionality" href="requirements_func.html" />
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="1.7.3" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+
+
+  </head>
+
+  <body data-default-mode="">
+
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="cuFFTDx - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="cuFFTDx - Home"/>
+  
+  
+    <p class="title logo__title">cuFFTDx</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="cuFFTDx - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="cuFFTDx - Home"/>
+  
+  
+    <p class="title logo__title">cuFFTDx</p>
+  
+</a>
+
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Table of Contents">
+  <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
+  <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Documentation home</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="requirements_func.html">Requirements</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="introduction1.html">Using cuFFTDx</a></li>
+<li class="toctree-l1"><a class="reference internal" href="introduction2.html">Your Next Custom FFT Kernels</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="cufft_lto/index.html">Using cuFFTDx with cuFFT LTO</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="cufft_lto/augment_with_lto.html">Augment cuFFTDx with LTO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cufft_lto/custom_lto_helper.html">Customize LTO Helper</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="performance.html">Achieving High Performance</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="api/operators.html">Operators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/traits.html">Traits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/methods.html">Execution Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/other_methods.html">Other Methods</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">cuFFT API Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="cufft_api/device_api.html">cuFFT Device API</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Python Bindings</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="python_bindings.html">Python Bindings</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lto_examples.html">LTO Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lto_helper.html">LTO Helper</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="release_notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/NVIDIA/CUDALibrarySamples/tree/main/MathDx/cuFFTDx">GitHub Samples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">MathDx</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/cufftdx-downloads">cuFFTDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/cusolverdx-downloads">cuSolverDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/cublasdx-downloads">cuBLASDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/curanddx-downloads">cuRANDDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/nvcompdx-downloads">nvCOMPDx</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Quick Installation Guide</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="quick-installation-guide">
+<span id="quick-installation-guide-label"></span><h1>Quick Installation Guide<a class="headerlink" href="#quick-installation-guide" title="Link to this heading">#</a></h1>
+<p>The <a class="reference external" href="https://developer.nvidia.com/cufftdx-downloads">cuFFTDx</a> library is distributed as a part of the MathDx package.
+To download the most recent release of the MathDx package including cuFFTDx go to the <a class="reference external" href="https://developer.nvidia.com/cufftdx-downloads">https://developer.nvidia.com/cufftdx-downloads</a> website.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>MathDx package contains:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://developer.nvidia.com/cublasdx-downloads">cuBLASDx</a> for selected linear algebra functions like General Matrix Multiplication (GEMM),</p></li>
+<li><p><a class="reference external" href="https://developer.nvidia.com/cufftdx-downloads">cuFFTDx</a> for FFT calculations,</p></li>
+<li><p><a class="reference external" href="https://developer.nvidia.com/cusolverdx-downloads">cuSolverDx</a> for selected dense matrix factorization and solve routines,</p></li>
+<li><p><a class="reference external" href="https://developer.nvidia.com/curanddx-downloads">cuRANDDx</a> for random number generation.</p></li>
+<li><p><a class="reference external" href="https://developer.nvidia.com/nvcompdx-downloads">nvCOMPDx</a> for compression/decompression of data.</p></li>
+</ul>
+<p>MathDx libraries are designed to work together in a single project.</p>
+<p>Note that for a project where multiple device extensions libraries are used all the libraries must come from the same MathDx release. Examples of such fusion are included in the package.</p>
+</div>
+<section id="cufftdx-in-your-project">
+<h2>cuFFTDx In Your Project<a class="headerlink" href="#cufftdx-in-your-project" title="Link to this heading">#</a></h2>
+<p>cuFFTDx is a header-only library, thus to use it users just need to the include the directory with <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cufftdx</span><span class="p">.</span><span class="n">hpp</span></code> and commonDx
+into their compilation commands. All other requirements are listed in the <a class="reference internal" href="requirements_func.html#requirements-label"><span class="std std-ref">Requirements</span></a> section. The
+easiest way is to use the MathDx include directory:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nvcc<span class="w"> </span>-std<span class="o">=</span>c++17<span class="w"> </span>-arch<span class="w"> </span>sm_XY<span class="w"> </span><span class="o">(</span>...<span class="o">)</span><span class="w"> </span>-I&lt;mathdx_include_dir&gt;<span class="w"> </span><span class="se">\</span>
+<span class="w">     </span>&lt;your_source_file&gt;.cu<span class="w"> </span>-o<span class="w"> </span>&lt;your_binary&gt;
+</pre></div>
+</div>
+<p>When you unpack MathDx YY.MM package tarball into in <code class="code highlight cpp docutils literal highlight-cpp"><span class="o">&lt;</span><span class="n">your_directory</span><span class="o">&gt;</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cufftdx</span><span class="p">.</span><span class="n">hpp</span></code> file will be available at the following
+locations:</p>
+<ul class="simple">
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="o">&lt;</span><span class="n">your_directory</span><span class="o">&gt;/</span><span class="n">nvidia</span><span class="o">/</span><span class="n">mathdx</span><span class="o">/</span><span class="n">yy</span><span class="p">.</span><span class="n">mm</span><span class="o">/</span><span class="n">include</span><span class="o">/</span></code></p></li>
+</ul>
+<p>You can review <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Makefile</span></code> shipped alongside cuFFTDx examples to check how they are compiled.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Since version 1.3.0 cuFFTDx provides a way to optimize the final binary size for user projects. This works by linking all executables to a shared object
+with pre-calculated constants required for FFT calculations thus sharing them between translation units. It is especially recommended when including
+a large number of translation units (.cu source files) with cuFFTDx kernels in an executable.
+To compile with this new optimization it’s enough to add <code class="code highlight cpp docutils literal highlight-cpp"><span class="o">-</span><span class="n">DCUFFTDX_USE_SEPARATE_TWIDDLES</span><span class="w"> </span><span class="o">-</span><span class="n">rdc</span><span class="o">=</span><span class="nb">true</span></code> to the compilation command as well as
+including <code class="code highlight cpp docutils literal highlight-cpp"><span class="o">&lt;</span><span class="n">mathdx_dir</span><span class="o">&gt;/</span><span class="n">src</span><span class="o">/</span><span class="n">cufftdx</span><span class="o">/</span><span class="n">lut</span><span class="p">.</span><span class="n">cu</span></code> to be compiled.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nvcc<span class="w"> </span>-DCUFFTDX_USE_SEPARATE_TWIDDLES<span class="w"> </span>-std<span class="o">=</span>c++17<span class="w"> </span>-arch<span class="w"> </span>sm_XY<span class="w"> </span><span class="se">\</span>
+<span class="w">     </span><span class="o">(</span>...<span class="o">)</span><span class="w"> </span>-rdc<span class="o">=</span><span class="nb">true</span><span class="w"> </span>-I&lt;mathdx_include_dir&gt;<span class="w"> </span><span class="se">\</span>
+<span class="w">     </span>&lt;cufftdx_include_dir&gt;/liblut/lut.cu<span class="w"> </span><span class="se">\</span>
+<span class="w">     </span>&lt;your_source_file&gt;.cu<span class="w"> </span>&lt;mathdx_include_dir&gt;<span class="w"> </span><span class="se">\</span>
+<span class="w">     </span>-o<span class="w"> </span>&lt;your_binary&gt;
+</pre></div>
+</div>
+<p>The <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Makefile</span></code> included alongside cuFFTDx examples contains these additional compilation flags. The following command
+will build the examples with this optimization.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>make<span class="w"> </span>all_twiddles
+</pre></div>
+</div>
+</div>
+<section id="using-cufft-lto-database-with-cufftdx">
+<span id="using-lto-database-in-cufftdx-label"></span><h3>Using cuFFT LTO Database with cuFFTDx<a class="headerlink" href="#using-cufft-lto-database-with-cufftdx" title="Link to this heading">#</a></h3>
+<section id="use-case-i-offline-kernel-generation">
+<h4>Use Case I: Offline Kernel Generation<a class="headerlink" href="#use-case-i-offline-kernel-generation" title="Link to this heading">#</a></h4>
+<p>To enhance your cuFFTDx library via cuFFT-generated code, additional compilation steps are required.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For the offline kernel generation use case, cuFFT is only needed to generate the initial LTO database files. Once generated, you can build and run your application without cuFFT.</p>
+</div>
+<ol class="arabic">
+<li><p><strong>Create the LTO database using cuFFT</strong>:</p>
+<p>Using either</p>
+<ul class="simple">
+<li><p>the provided <a class="reference internal" href="lto_helper.html#lto-helper-label"><span class="std std-ref">LTO Helper</span></a> utility (see <a class="reference internal" href="cufft_lto/augment_with_lto.html#offline-lto-kernel-generation-label"><span class="std std-ref">Use Case I: Offline Kernel Generation</span></a> for illustration), or</p></li>
+<li><p>the <a class="reference internal" href="cufft_api/device_api.html#cufft-device-api-label"><span class="std std-ref">cuFFT device API</span></a> (see <a class="reference internal" href="cufft_lto/custom_lto_helper.html#cufft-device-api-example-label"><span class="std std-ref">cuFFT Device API through Example</span></a> for illustration)</p></li>
+</ul>
+<p>for the LTO database generation. The output includes a C++ header file (<code class="code highlight cpp docutils literal highlight-cpp"><span class="n">lto_database</span><span class="p">.</span><span class="n">hpp</span><span class="p">.</span><span class="n">inc</span></code>) as well as <code class="code highlight cpp docutils literal highlight-cpp"><span class="p">.</span><span class="n">ltoir</span></code> and <code class="code highlight cpp docutils literal highlight-cpp"><span class="p">.</span><span class="n">fatbin</span></code> files.</p>
+</li>
+<li><p><strong>Include the generated C++ header file and compile cuFFTDx application code into LTOIRs</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nvcc<span class="w"> </span>-std<span class="o">=</span>c++17<span class="w"> </span><span class="se">\</span>
+<span class="w">     </span>-dc<span class="w"> </span><span class="se">\</span>
+<span class="w">     </span>--generate-code<span class="w"> </span><span class="nv">arch</span><span class="o">=</span>compute_75,code<span class="o">=</span>lto_75<span class="w"> </span><span class="se">\</span>
+<span class="w">     </span>-I&lt;cufftdx_include_dir&gt;<span class="w"> </span><span class="se">\</span>
+<span class="w">     </span>-I/path/to/directory/containing/lto_database.hpp.inc<span class="w"> </span><span class="se">\</span>
+<span class="w">     </span>&lt;your_source_file&gt;.cu<span class="w"> </span>-o<span class="w"> </span>&lt;your_source_file&gt;.o
+</pre></div>
+</div>
+<p>Replace <code class="code highlight cpp docutils literal highlight-cpp"><span class="mi">75</span></code> with the target CUDA architecture.</p>
+</li>
+<li><p><strong>Device link with LTOIRs</strong>:</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>NVCC cannot link device code objects compiled with different fast-math settings.
+Because cuFFT LTO is built without fast-math flags, your code must also be compiled without fast-math flags when linking against it.
+If you need to use fast-math flags to compile your kernel containing cuFFTDx with cuFFT LTO, consider using the online kernel
+generation workflow with nvJitLink instead.</p>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nvcc<span class="w"> </span>-dlink<span class="w"> </span><span class="se">\</span>
+<span class="w">     </span>-dlto<span class="w"> </span><span class="se">\</span>
+<span class="w">     </span>--generate-code<span class="w"> </span><span class="nv">arch</span><span class="o">=</span>compute_75,code<span class="o">=</span>sm_75<span class="w"> </span><span class="se">\</span>
+<span class="w">     </span>database_X.fatbin<span class="w"> </span>...<span class="w"> </span><span class="se">\</span>
+<span class="w">     </span>database_X.ltoir<span class="w"> </span>...<span class="w"> </span><span class="se">\</span>
+<span class="w">     </span>&lt;your_source_file&gt;.o<span class="w"> </span>-o<span class="w"> </span>&lt;your_source_file&gt;_dlink.o
+</pre></div>
+</div>
+</li>
+<li><p><strong>Host link the object files to produce the final executable</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>g++<span class="w"> </span>-L<span class="si">${</span><span class="nv">CUDA_PATH</span><span class="si">}</span>/lib64<span class="w"> </span>-lcudart<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>&lt;your_source_file&gt;.o<span class="w"> </span>&lt;your_source_file&gt;_dlink.o<span class="w"> </span>-o<span class="w"> </span>&lt;your_binary&gt;
+</pre></div>
+</div>
+</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">lto_database</span><span class="p">.</span><span class="n">hpp</span><span class="p">.</span><span class="n">inc</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="p">.</span><span class="n">fatbin</span></code> and <code class="code highlight cpp docutils literal highlight-cpp"><span class="p">.</span><span class="n">ltoir</span></code> files must be generated with descriptions that are consistent with the traits of the cuFFTDx operators
+in your project and the target architectures.</p>
+<p>If there is a mismatch, cuFFTDx will fall back to using the PTX implementation instead of the LTOIR implementation,
+causing this assertion to fail:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">static_assert</span><span class="p">(</span>
+<span class="w">    </span><span class="n">FFT</span><span class="o">::</span><span class="n">code</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">experimental</span><span class="o">::</span><span class="n">code_type</span><span class="o">::</span><span class="n">ltoir</span><span class="p">,</span>
+<span class="w">    </span><span class="s">&quot;Selected implementation code type is not LTOIR.&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="use-case-ii-online-kernel-generation">
+<h4>Use Case II: Online Kernel Generation<a class="headerlink" href="#use-case-ii-online-kernel-generation" title="Link to this heading">#</a></h4>
+<p>When building the NVRTC codes, one needs to take into account the following:</p>
+<ul class="simple">
+<li><p>Link with the two extra dependencies, cuFFT and nvJitLink</p></li>
+<li><p>Define the <code class="docutils literal notranslate"><span class="pre">CUFFT_ENABLE_EXPERIMENTAL_API</span></code> macro for using <a class="reference internal" href="cufft_api/device_api.html#cufft-device-api-label"><span class="std std-ref">cuFFT Device API</span></a>.</p></li>
+<li><p>Define the <code class="docutils literal notranslate"><span class="pre">CUFFTDX_ENABLE_CUFFT_DEPENDENCY</span></code> macro for using the <a class="reference internal" href="api/other_methods.html#get-database-and-ltoir-label"><span class="std std-ref">(online) LTO Database Creation</span></a> helper function.</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>g++<span class="w"> </span>-DCUFFTDX_ENABLE_CUFFT_DEPENDENCY<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-DCUFFT_ENABLE_EXPERIMENTAL_API<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-L&lt;cufft_lib_path&gt;<span class="w"> </span>-I&lt;cufft_include_path&gt;<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-I&lt;cufftdx_include_path&gt;<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-lcufft<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-lnvJitLink<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-lnvrtc<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-L&lt;cuda_lib_path&gt;<span class="w"> </span>-lcuda<span class="w"> </span>&lt;your_source_file&gt;.cu<span class="w"> </span>-o<span class="w"> </span>&lt;your_binary&gt;
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="cufftdx-in-your-cmake-project">
+<h2>cuFFTDx In Your CMake Project<a class="headerlink" href="#cufftdx-in-your-cmake-project" title="Link to this heading">#</a></h2>
+<p>The MathDx package provides configuration files that simplify using cuFFTDx in other CMake projects. After
+finding <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">mathdx</span></code> using <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">find_package</span></code>, users have to link <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">mathdx</span><span class="o">::</span><span class="n">cufftdx</span></code> to their target. This propagates the include directory
+<code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cufftdx_INCLUDE_DIRS</span></code>, the <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">mathdx</span><span class="o">::</span><span class="n">commondx</span></code> dependency, and the C++17 requirement to their target.</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">find_package</span><span class="p">(</span><span class="s">mathdx</span><span class="w"> </span><span class="s">REQUIRED</span><span class="w"> </span><span class="s">COMPONENTS</span><span class="w"> </span><span class="s">cufftdx</span><span class="w"> </span><span class="s">CONFIG</span><span class="p">)</span>
+<span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">YourProgram</span><span class="w"> </span><span class="s">mathdx::cufftdx</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You can pass the path to MathDx package using <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">PATHS</span></code> option:</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">find_package</span><span class="p">(</span><span class="s">mathdx</span><span class="w"> </span><span class="s">REQUIRED</span><span class="w"> </span><span class="s">COMPONENTS</span><span class="w"> </span><span class="s">cufftdx</span><span class="w"> </span><span class="s">CONFIG</span>
+<span class="w">             </span><span class="s">PATHS</span><span class="w"> </span><span class="s2">&quot;&lt;your_directory&gt;/nvidia/mathdx/yy.mm/&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Alternatively, you can set <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">mathdx_ROOT</span></code> during cmake configuration of your project:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cmake<span class="w"> </span>-Dmathdx_ROOT<span class="o">=</span><span class="s2">&quot;&lt;your_directory&gt;/nvidia/mathdx/yy.mm/&quot;</span><span class="w"> </span><span class="o">(</span>...<span class="o">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Since version 1.3.0 a new target is provided that allows the optimization of the final binary size when including cuFFTDx.
+This works by linking all executables to a shared object with pre-calculated constants required for FFT calculations thus sharing them between translation units.
+It is especially recommended when including a large number of translation units (.cu source files) with cuFFTDx kernels in an executable.
+You have to set the architectures for compilation of that target by adding <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">set</span><span class="p">(</span><span class="n">cufftdx_SEPARATE_TWIDDLES_CUDA_ARCHITECTURES</span><span class="w"> </span><span class="o">&lt;</span><span class="n">your</span><span class="w"> </span><span class="n">cuda</span><span class="w"> </span><span class="n">architectures</span><span class="o">&gt;</span><span class="p">)</span></code>
+or setting the default variable <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">CMAKE_CUDA_ARCHITECTURES</span></code>, for example, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">set</span><span class="p">(</span><span class="n">cufftdx_SEPARATE_TWIDDLES_CUDA_ARCHITECTURES</span><span class="w"> </span><span class="mi">90</span><span class="o">-</span><span class="n">real</span><span class="p">)</span></code>.
+It must be made set before <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">find_package</span><span class="p">(...)</span></code> is performed.
+Also, as a separate object file is created for the pre-calculated values, your executable target should enable cuda separable compilation:
+<code class="code highlight cpp docutils literal highlight-cpp"><span class="n">set_property</span><span class="p">(</span><span class="n">TARGET</span><span class="w"> </span><span class="n">YourProgram</span><span class="w"> </span><span class="n">PROPERTY</span><span class="w"> </span><span class="n">CUDA_SEPARABLE_COMPILATION</span><span class="w"> </span><span class="n">ON</span><span class="p">)</span></code>.</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">set</span><span class="p">(</span><span class="s">cufftdx_SEPARATE_TWIDDLES_CUDA_ARCHITECTURES</span><span class="w"> </span><span class="s">YourChosenArchitecture</span><span class="p">)</span>
+<span class="nb">find_package</span><span class="p">(</span><span class="s">mathdx</span><span class="w"> </span><span class="s">REQUIRED</span><span class="w"> </span><span class="s">COMPONENTS</span><span class="w"> </span><span class="s">cufftdx</span><span class="w"> </span><span class="s">CONFIG</span><span class="p">)</span>
+<span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">YourProgram</span><span class="w"> </span><span class="s">mathdx::cufftdx_separate_twiddles_lut</span><span class="p">)</span>
+<span class="nb">set_property</span><span class="p">(</span><span class="s">TARGET</span><span class="w"> </span><span class="s">YourProgram</span><span class="w"> </span><span class="s">PROPERTY</span><span class="w"> </span><span class="s">CUDA_SEPARABLE_COMPILATION</span><span class="w"> </span><span class="s">ON</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<section id="using-cufft-lto-database-with-cufftdx-in-cmake">
+<span id="installation-with-cmake-lto-label"></span><h3>Using cuFFT LTO Database with cuFFTDx in CMake<a class="headerlink" href="#using-cufft-lto-database-with-cufftdx-in-cmake" title="Link to this heading">#</a></h3>
+<p>Following shows how to incorporate the steps from <a class="reference internal" href="#using-lto-database-in-cufftdx-label"><span class="std std-ref">Using cuFFT LTO Database with cuFFTDx</span></a> using CMake.</p>
+<p>For the <strong>offline kernel generation</strong> use case:</p>
+<ul class="simple">
+<li><p>Run the <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">run_cufft_lto_helper</span></code> CMake function provided in the <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">lto_helper</span><span class="p">.</span><span class="n">cmake</span></code> script in the <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">example</span><span class="o">/</span><span class="n">lto_helper</span></code> directory to generate the LTO database.</p>
+<ul>
+<li><p>After running, the <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">$</span><span class="p">{</span><span class="n">OUTPUT_NAME</span><span class="p">}</span><span class="n">_lto_lib</span></code> library will be available to be linked with your program.</p></li>
+</ul>
+</li>
+<li><p>Set both <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">CUDA_SEPARABLE_COMPILATION</span></code> and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">INTERPROCEDURAL_OPTIMIZATION</span></code> properties to <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">ON</span></code> for enabling link time optimization and compiling your source code into LTOIRs.</p></li>
+</ul>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">include</span><span class="p">(</span><span class="o">${</span><span class="nv">cufftdx_ROOT</span><span class="o">}</span><span class="s">/cufftdx/example/lto_helper/lto_helper.cmake</span><span class="p">)</span>
+
+<span class="nb">run_cufft_lto_helper</span><span class="p">(</span>
+<span class="w">  </span><span class="s">SRC_DIR</span><span class="w"> </span><span class="o">${</span><span class="nv">cufftdx_ROOT</span><span class="o">}</span><span class="s">/cufftdx/example/lto_helper/</span>
+<span class="w">  </span><span class="s">BUILD_DIR</span><span class="w"> </span><span class="o">${</span><span class="nv">CMAKE_CURRENT_BINARY_DIR</span><span class="o">}</span>
+<span class="w">  </span><span class="s">OUTPUT_NAME</span><span class="w"> </span><span class="s">my_fft</span>
+<span class="w">  </span><span class="s">DESCS</span><span class="w"> </span><span class="o">${</span><span class="nv">CMAKE_SOURCE_DIR</span><span class="o">}</span><span class="s">/input.csv</span>
+<span class="w">  </span><span class="s">ARCHITECTURES</span><span class="w"> </span><span class="s">70,80</span>
+<span class="p">)</span>
+
+<span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">YourProgram</span><span class="w"> </span><span class="s">PRIVATE</span><span class="w"> </span><span class="s">my_fft_lto_lib</span><span class="p">)</span>
+
+<span class="nb">set_target_properties</span><span class="p">(</span><span class="s">YourProgram</span>
+<span class="w">  </span><span class="s">PROPERTIES</span>
+<span class="w">    </span><span class="s">CUDA_SEPARABLE_COMPILATION</span><span class="w"> </span><span class="s">ON</span>
+<span class="w">    </span><span class="s">INTERPROCEDURAL_OPTIMIZATION</span><span class="w"> </span><span class="s">ON</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>For the <strong>online kernel generation</strong> use case:</p>
+<ul>
+<li><p>Define the <code class="docutils literal notranslate"><span class="pre">CUFFT_ENABLE_EXPERIMENTAL_API</span></code> and <code class="docutils literal notranslate"><span class="pre">CUFFTDX_ENABLE_CUFFT_DEPENDENCY</span></code> macros.</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">target_compile_definitions</span><span class="p">(</span><span class="s">YourProgram</span><span class="w"> </span><span class="s">PRIVATE</span><span class="w"> </span><span class="s">CUFFTDX_ENABLE_CUFFT_DEPENDENCY</span><span class="p">)</span>
+<span class="nb">target_compile_definitions</span><span class="p">(</span><span class="s">YourProgram</span><span class="w"> </span><span class="s">PRIVATE</span><span class="w"> </span><span class="s">CUFFT_ENABLE_EXPERIMENTAL_API</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p>Add <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Findcufft</span><span class="p">.</span><span class="n">cmake</span></code> (shipped with cuFFTDx) to your project’s CMake module path and use <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">find_package</span></code> to locate <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cufft</span></code>:</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">list</span><span class="p">(</span><span class="s">APPEND</span><span class="w"> </span><span class="s">CMAKE_MODULE_PATH</span><span class="w"> </span><span class="s2">&quot;${cufftdx_cufft_MODULE_PATH}&quot;</span><span class="p">)</span><span class="w"> </span><span class="c"># Path to Findcufft.cmake</span>
+<span class="nb">find_package</span><span class="p">(</span><span class="s">cufft</span><span class="w"> </span><span class="s">REQUIRED</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You can set <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cufft_ROOT</span></code> during cmake configuration of your project:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cmake<span class="w"> </span>-Dcufft_ROOT<span class="o">=</span><span class="s2">&quot;&lt;your_ctk_directory&gt;/&quot;</span><span class="w"> </span><span class="o">(</span>...<span class="o">)</span>
+</pre></div>
+</div>
+</li>
+<li><p>Link with the two extra dependencies, cuFFT and the nvJitLink.</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">YourProgram</span>
+<span class="w">  </span><span class="s">PRIVATE</span>
+<span class="w">    </span><span class="s">cufft::cufft_static</span><span class="w"> </span><span class="c"># or, cufft::cufft</span>
+<span class="w">    </span><span class="s">CUDA::nvJitLink</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</section>
+<section id="defined-variables">
+<h3>Defined Variables<a class="headerlink" href="#defined-variables" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">mathdx_cufftdx_FOUND</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cufftdx_FOUND</span></code></dt><dd><p>True if cuFFTDx was found.</p>
+</dd>
+<dt><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cufftdx_INCLUDE_DIRS</span></code></dt><dd><p>cuFFTDx include directories.</p>
+</dd>
+<dt><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">mathdx_INCLUDE_DIRS</span></code></dt><dd><p>MathDx include directories.</p>
+</dd>
+<dt><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">mathdx_VERSION</span></code></dt><dd><p>MathDx package version number in <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">X</span><span class="p">.</span><span class="n">Y</span><span class="p">.</span><span class="n">Z</span></code> format.</p>
+</dd>
+<dt><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cuFFTDx_VERSION</span></code></dt><dd><p>cuFFTDx version number in <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">X</span><span class="p">.</span><span class="n">Y</span><span class="p">.</span><span class="n">Z</span></code> format.</p>
+</dd>
+</dl>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="requirements_func.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Requirements and Functionality</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="introduction1.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">First FFT Using cuFFTDx</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cufftdx-in-your-project">cuFFTDx In Your Project</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-cufft-lto-database-with-cufftdx">Using cuFFT LTO Database with cuFFTDx</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#use-case-i-offline-kernel-generation">Use Case I: Offline Kernel Generation</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#use-case-ii-online-kernel-generation">Use Case II: Online Kernel Generation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cufftdx-in-your-cmake-project">cuFFTDx In Your CMake Project</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-cufft-lto-database-with-cufftdx-in-cmake">Using cuFFT LTO Database with cuFFTDx in CMake</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#defined-variables">Defined Variables</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5"></script>
+
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+<a class="footer-brand logo" href="https://www.nvidia.com">
+  <img src="_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+</a></div>
+      
+        <div class="footer-item">
+
+<div class="footer-links">
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/">Privacy Policy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Your Privacy Choices</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/">Terms of Service</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/accessibility/">Accessibility</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/company-policies/">Corporate Policies</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/product-security/">Product Security</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/contact/">Contact</a>
+  
+  
+  
+</div>
+</div>
+      
+        <div class="footer-item">
+
+
+
+
+  <p class="copyright">
+    
+      Copyright © 2022-2026, NVIDIA Corporation &amp; Affiliates. All rights reserved.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+  </body>
+</html>

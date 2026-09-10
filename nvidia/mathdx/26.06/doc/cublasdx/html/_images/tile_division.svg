@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="860" height="360" viewBox="0 0 860 360" role="img" aria-labelledby="title desc" style="background: transparent; color-scheme: light dark;">
+  <title id="title">C tile division and CUDA grid mapping</title>
+  <desc id="desc">The C matrix is divided into tile_m by tile_n output tiles. A two-dimensional CUDA grid maps each blockIdx pair to one tile.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#76b900"/></marker>
+    <style><![CDATA[
+      .box { fill: #ffffff; fill: light-dark(#ffffff, #111827); stroke: #1f2937; stroke: light-dark(#1f2937, #76b900); stroke-width: 1.5; }
+      .tile { fill: #f3f7ec; fill: light-dark(#f3f7ec, #13220c); stroke: #76b900; stroke: light-dark(#76b900, #93d85b); stroke-width: 2; }
+      .text { fill: #111827; fill: light-dark(#111827, #f9fafb); font: 14px Arial, sans-serif; }
+      .small { fill: #374151; fill: light-dark(#374151, #d1d5db); font: 12px Arial, sans-serif; }
+      .label { fill: #111827; fill: light-dark(#111827, #f9fafb); font: bold 14px Arial, sans-serif; }
+      .grid { stroke: #6b7280; stroke: light-dark(#6b7280, #9ca3af); stroke-width: 1; fill: none; }
+      .line { stroke: #76b900; stroke-width: 2.2; fill: none; marker-end: url(#arrow); }
+    ]]></style>
+  </defs>
+
+  <rect x="30" y="20" width="342" height="34" rx="8" class="box"/>
+  <text x="201" y="43" text-anchor="middle" class="label">C tile indices map to a 2D CUDA grid</text>
+
+  <rect x="42" y="84" width="336" height="220" rx="10" class="box"/>
+  <rect x="42" y="84" width="336" height="34" rx="10" class="box"/>
+  <text x="210" y="107" text-anchor="middle" class="label">C matrix: M x N</text>
+  <path d="M 98 118 L 98 272 M 154 118 L 154 272 M 210 118 L 210 272 M 266 118 L 266 272 M 322 118 L 322 272 M 42 156 L 378 156 M 42 194 L 378 194 M 42 232 L 378 232 M 42 272 L 378 272" class="grid"/>
+  <rect x="210" y="156" width="56" height="38" class="tile"/>
+  <text x="238" y="179" text-anchor="middle" class="small">(row, col)</text>
+  <rect x="94" y="282" width="232" height="28" rx="7" class="box"/>
+  <text x="210" y="301" text-anchor="middle" class="small">tile_m x tile_n output tiles</text>
+
+  <rect x="486" y="88" width="290" height="84" rx="10" class="box"/>
+  <text x="631" y="116" text-anchor="middle" class="label">Launch grid</text>
+  <text x="631" y="143" text-anchor="middle" class="text">dim3{M / tile_m, N / tile_n, 1}</text>
+
+  <rect x="486" y="226" width="290" height="86" rx="10" class="box"/>
+  <text x="631" y="254" text-anchor="middle" class="label">Inside kernel</text>
+  <text x="631" y="280" text-anchor="middle" class="text">tile_row = blockIdx.x</text>
+  <text x="631" y="300" text-anchor="middle" class="text">tile_col = blockIdx.y</text>
+
+  <path d="M 378 174 L 481 130" class="line"/>
+  <path d="M 631 172 L 631 221" class="line"/>
+  <path d="M 486 270 C 420 270 350 214 270 177" class="line"/>
+</svg>

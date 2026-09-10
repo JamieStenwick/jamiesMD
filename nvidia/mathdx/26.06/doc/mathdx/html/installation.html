@@ -1,0 +1,880 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Installation Guide &#8212; MathDx</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
+
+
+
+    <script src="_static/documentation_options.js?v=13000535"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'installation';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://docs.nvidia.com/cuda/mathdx/_static/switcher.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '26.06.1';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+
+    <link rel="icon" href="_static/nvidia.ico"/>
+
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Python" href="python.html" />
+    <link rel="prev" title="NVIDIA MathDx Package" href="index.html" />
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="26.06.1" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+
+
+  </head>
+
+  <body data-default-mode="">
+
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="MathDx - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="MathDx - Home"/>
+  
+  
+    <p class="title logo__title">MathDx</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="MathDx - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="MathDx - Home"/>
+  
+  
+    <p class="title logo__title">MathDx</p>
+  
+</a>
+
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Table of Contents">
+  <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
+  <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Home</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">NVIDIA MathDx Device Extensions</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Install MathDx</a></li>
+<li class="toctree-l1"><a class="reference internal" href="python.html">Python</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference external" href="https://docs.nvidia.com/cuda/cublasdx/">cuBLASDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://docs.nvidia.com/cuda/cufftdx/">cuFFTDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://docs.nvidia.com/cuda/cusolverdx/">cuSolverDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://docs.nvidia.com/cuda/curanddx/">cuRANDDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://docs.nvidia.com/cuda/nvcompdx/">nvCOMPDx</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Libraries Download Pages</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/cublasdx-downloads">cuBLASDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/cufftdx-downloads">cuFFTDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/cusolverdx-downloads">cuSolverDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/curanddx-downloads">cuRANDDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/nvcompdx-downloads">nvCOMPDx</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="release_notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/NVIDIA/CUDALibrarySamples/tree/main/MathDx/">GitHub Samples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Installation Guide</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="installation-guide">
+<span id="installation-guide-label"></span><h1>Installation Guide<a class="headerlink" href="#installation-guide" title="Link to this heading">#</a></h1>
+<p>All device extension libraries are shipped in a single package (tarball/zip).
+Every supported CUDA Toolkit major version has its own separate package.
+They can be downloaded from the download page of any Dx library, as all libraries host the same package.
+Installation instructions for each library are in the corresponding library’s documentation.</p>
+<dl class="simple">
+<dt><strong>cuBLASDx</strong></dt><dd><p><a class="reference external" href="https://developer.nvidia.com/cublasdx-downloads">Download</a> |
+<a class="reference external" href="https://docs.nvidia.com/cuda/cublasdx/installation.html">Installation</a></p>
+</dd>
+<dt><strong>cuFFTDx</strong></dt><dd><p><a class="reference external" href="https://developer.nvidia.com/cufftdx-downloads">Download</a> |
+<a class="reference external" href="https://docs.nvidia.com/cuda/cufftdx/installation.html">Installation</a></p>
+</dd>
+<dt><strong>cuSolverDx</strong></dt><dd><p><a class="reference external" href="https://developer.nvidia.com/cusolverdx-downloads">Download</a> |
+<a class="reference external" href="https://docs.nvidia.com/cuda/cusolverdx/get_started/installation.html">Installation</a></p>
+</dd>
+<dt><strong>cuRANDDx</strong></dt><dd><p><a class="reference external" href="https://developer.nvidia.com/curanddx-downloads">Download</a> |
+<a class="reference external" href="https://docs.nvidia.com/cuda/curanddx/get_started/installation.html">Installation</a></p>
+</dd>
+<dt><strong>nvCOMPDx</strong></dt><dd><p><a class="reference external" href="https://developer.nvidia.com/nvcompdx-downloads">Download</a> |
+<a class="reference external" href="https://docs.nvidia.com/cuda/nvcompdx/installation.html">Installation</a></p>
+</dd>
+</dl>
+<section id="dx-library-in-your-project">
+<h2>Dx Library In Your Project<a class="headerlink" href="#dx-library-in-your-project" title="Link to this heading">#</a></h2>
+<p>Most of the device extension libraries are header-only libraries. To use them, simply add the MathDx include directory
+in compilation commands. It is also necessary to add paths to the dependencies, CUTLASS and commonDx, which are
+shipped with the MathDx package.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Library</p></th>
+<th class="head"><p>Header-only</p></th>
+<th class="head"><p>Header</p></th>
+<th class="head"><p>LTO Library</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>cuBLASDx</p></td>
+<td><p><strong>No/Yes</strong></p></td>
+<td><p>cublasdx.hpp</p></td>
+<td><div class="line-block">
+<div class="line">libcublasdx.fatbin</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p>cuFFTDx</p></td>
+<td><p>Yes</p></td>
+<td><p>cufftdx.hpp</p></td>
+<td><p>No (See <a class="reference internal" href="#note-experimental-lto-support-for-cufftdx"><span class="std std-ref">note</span></a> below)</p></td>
+</tr>
+<tr class="row-even"><td><p>cuSolverDx</p></td>
+<td><p><strong>No</strong></p></td>
+<td><p>cusolverdx.hpp</p></td>
+<td><div class="line-block">
+<div class="line">libcusolverdx.a</div>
+<div class="line">libcusolverdx.fatbin</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p>cuRANDDx</p></td>
+<td><p>Yes</p></td>
+<td><p>curanddx.hpp</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="row-even"><td><p>nvCOMPDx</p></td>
+<td><p><strong>No</strong></p></td>
+<td><p>nvcompdx.hpp</p></td>
+<td><div class="line-block">
+<div class="line">libnvcompdx.a</div>
+<div class="line">libnvcompdx.fatbin</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Since version 0.6.0, cuBLASDx includes an LTO library for TRSM functionality.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>cuBLASDx provides a header-only library target (<code class="code highlight cpp docutils literal highlight-cpp"><span class="n">mathdx</span><span class="o">::</span><span class="n">cublasdx_no_lto</span></code>) that does not require linking to the LTO library.</p>
+</div>
+<div class="admonition note" id="note-experimental-lto-support-for-cufftdx">
+<p class="admonition-title">Note</p>
+<p>Starting from version 1.6.0, cuFFTDx provides an experimental feature that extends functionality and improves
+performance by reusing optimized code from the cuFFT library.
+See the <a class="reference external" href="https://docs.nvidia.com/cuda/cufftdx/index.html">cuFFTDx documentation</a> for more details.</p>
+</div>
+<p>After unpacking the <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">MathDx</span><span class="w"> </span><span class="n">YY</span><span class="p">.</span><span class="n">MM</span></code> package into <code class="code highlight cpp docutils literal highlight-cpp"><span class="o">&lt;</span><span class="n">your_directory</span><span class="o">&gt;</span></code>, the Dx header files are available at the following location:</p>
+<ul class="simple">
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="o">&lt;</span><span class="n">your_directory</span><span class="o">&gt;/</span><span class="n">nvidia</span><span class="o">/</span><span class="n">mathdx</span><span class="o">/</span><span class="n">YY</span><span class="p">.</span><span class="n">MM</span><span class="o">/</span><span class="n">include</span><span class="o">/</span></code></p></li>
+</ul>
+<p>The commonDx include directory is (same as for Dx headers):</p>
+<ul class="simple">
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="o">&lt;</span><span class="n">your_directory</span><span class="o">&gt;/</span><span class="n">nvidia</span><span class="o">/</span><span class="n">mathdx</span><span class="o">/</span><span class="n">YY</span><span class="p">.</span><span class="n">MM</span><span class="o">/</span><span class="n">include</span></code></p></li>
+</ul>
+<p>The CUTLASS include directory is:</p>
+<ul class="simple">
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="o">&lt;</span><span class="n">your_directory</span><span class="o">&gt;/</span><span class="n">nvidia</span><span class="o">/</span><span class="n">mathdx</span><span class="o">/</span><span class="n">YY</span><span class="p">.</span><span class="n">MM</span><span class="o">/</span><span class="n">external</span><span class="o">/</span><span class="n">cutlass</span><span class="o">/</span><span class="n">include</span></code></p></li>
+</ul>
+<div class="hint admonition">
+<p class="admonition-title">Examples</p>
+<p>The simplest way to use MathDx is to add all required include directories to
+the <a class="reference external" href="https://docs.nvidia.com/cuda/cuda-compiler-driver-nvcc/">NVCC</a> compilation command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nvcc<span class="w"> </span>-std<span class="o">=</span>c++17<span class="w"> </span>-arch<span class="o">=</span>sm_XY<span class="w"> </span><span class="o">(</span>...<span class="o">)</span><span class="w"> </span>-I&lt;mathdx_include_dir&gt;<span class="w"> </span>-I&lt;cutlass_include_dir&gt;<span class="w"> </span>&lt;your_source_file&gt;.cu<span class="w"> </span>-o<span class="w"> </span>&lt;your_binary&gt;
+</pre></div>
+</div>
+</div>
+<section id="linking-lto">
+<h3>Linking LTO<a class="headerlink" href="#linking-lto" title="Link to this heading">#</a></h3>
+<p>cuBLASDx (for TRSM), cuSolverDx, and nvCOMPDx require linking to the corresponding LTO
+(<a class="reference external" href="https://developer.nvidia.com/blog/cuda-12-0-compiler-support-for-runtime-lto-using-nvjitlink-library/">Link Time Optimization</a>) libraries.
+cuSolverDx and nvCOMPDx are provided in two forms: static library <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">lib</span><span class="o">&lt;</span><span class="n">library_name</span><span class="o">&gt;</span><span class="p">.</span><span class="n">a</span></code> and fatbin <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">lib</span><span class="o">&lt;</span><span class="n">library_name</span><span class="o">&gt;</span><span class="p">.</span><span class="n">fatbin</span></code>.
+cuBLASDx provides only <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">libcublasdx</span><span class="p">.</span><span class="n">fatbin</span></code>.</p>
+<p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">lib</span><span class="o">&lt;</span><span class="n">library_name</span><span class="o">&gt;</span><span class="p">.</span><span class="n">fatbin</span></code>, in contrast to <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">lib</span><span class="o">&lt;</span><span class="n">library_name</span><span class="o">&gt;</span><span class="p">.</span><span class="n">a</span></code>,
+contains only device code and thus is host platform agnostic.
+For example, it can be safely used on the AARCH64 platform,
+whereas <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">lib</span><span class="o">&lt;</span><span class="n">library_name</span><span class="o">&gt;</span><span class="p">.</span><span class="n">a</span></code> can only be used for x86_64 Linux builds.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>When using LTO libraries, please observe the following requirements:
+* The <a class="reference external" href="https://docs.nvidia.com/cuda/cuda-compiler-driver-nvcc/">NVCC</a> /
+<a class="reference external" href="https://docs.nvidia.com/cuda/nvrtc/index.html">NVRTC</a> used to compile must be from the same
+or older CUDA Toolkit than the <a class="reference external" href="https://docs.nvidia.com/cuda/cuda-compiler-driver-nvcc/">NVCC</a> /
+<a class="reference external" href="https://docs.nvidia.com/cuda/nvjitlink/index.html">nvJitLink</a> used to perform the linking stage.
+* Both the compiler and the linker must be from the same CUDA toolkit major version.
+* MathDx provides a package for every supported CUDA toolkit major version.</p>
+<div class="hint admonition">
+<p class="admonition-title">Example</p>
+<p>For example, cuSolverDx 0.4.0 from MathDx 26.03.0 package supports CUDA Toolkit 13.0 or newer.
+It is therefore required to use <a class="reference external" href="https://docs.nvidia.com/cuda/cuda-compiler-driver-nvcc/">NVCC</a> / <a class="reference external" href="https://docs.nvidia.com/cuda/nvrtc/index.html">NVRTC</a> 13.0 or newer to compile,
+and <a class="reference external" href="https://docs.nvidia.com/cuda/cuda-compiler-driver-nvcc/">NVCC</a> / <a class="reference external" href="https://docs.nvidia.com/cuda/nvjitlink/index.html">nvJitLink</a>  13.0 or newer to perform a linking stage.</p>
+</div>
+</div>
+<p>When compiling with <a class="reference external" href="https://docs.nvidia.com/cuda/cuda-compiler-driver-nvcc/">NVCC</a>,
+it is necessary to link to the corresponding LTO library file:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># When using lib&lt;library_name&gt;.a</span>
+nvcc<span class="w"> </span>-dlto<span class="w"> </span>-std<span class="o">=</span>c++17<span class="w"> </span>-arch<span class="w"> </span>sm_XY<span class="w"> </span><span class="o">(</span>...<span class="o">)</span><span class="w"> </span>-I&lt;mathdx_include_dir&gt;<span class="w"> </span>-I&lt;cutlass_include_dir&gt;<span class="w"> </span>&lt;your_source_file&gt;.cu<span class="w"> </span>-o<span class="w"> </span>&lt;your_binary&gt;<span class="w"> </span>-l&lt;library_name&gt;
+
+<span class="c1"># When using lib&lt;library_name&gt;.fatbin</span>
+nvcc<span class="w"> </span>-dlto<span class="w"> </span>-std<span class="o">=</span>c++17<span class="w"> </span>-arch<span class="w"> </span>sm_XY<span class="w"> </span><span class="o">(</span>...<span class="o">)</span><span class="w"> </span>-I&lt;mathdx_include_dir&gt;<span class="w"> </span>-I&lt;cutlass_include_dir&gt;<span class="w"> </span>&lt;your_source_file&gt;.cu<span class="w"> </span>-o<span class="w"> </span>&lt;your_binary&gt;<span class="w"> </span>lib&lt;library_name&gt;.fatbin
+</pre></div>
+</div>
+<p>The <code class="code highlight cpp docutils literal highlight-cpp"><span class="o">-</span><span class="n">dlto</span></code> option at link time instructs the linker to retrieve the LTO IR from the library object and perform optimization
+on the resulting IR for code generation.</p>
+<p>When using NVRTC and nvJitLink for runtime kernel compilation and linking, it is possible to use either
+fatbin file <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">lib</span><span class="o">&lt;</span><span class="n">library_name</span><span class="o">&gt;</span><span class="p">.</span><span class="n">fatbin</span></code> or <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">lib</span><span class="o">&lt;</span><span class="n">library_name</span><span class="o">&gt;</span><span class="p">.</span><span class="n">a</span></code>.
+The fatbin must be used for platforms other than x86_64 Linux.</p>
+</section>
+</section>
+<section id="dx-library-in-your-cmake-project">
+<h2>Dx Library In Your CMake Project<a class="headerlink" href="#dx-library-in-your-cmake-project" title="Link to this heading">#</a></h2>
+<p>The MathDx package provides a configuration file that simplifies using Dx libraries in other CMake projects.
+After finding <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">mathdx</span></code> using <a href="https://cmake.org/cmake/help/latest/command/find_package.html" target="_blank">find_package</a>,
+users must link <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">mathdx</span><span class="o">::&lt;</span><span class="n">library_name</span><span class="o">&gt;</span></code> to their target (see <a class="reference internal" href="#targets-label"><span class="std std-ref">MathDx CMake targets</span></a>).
+This propagates the include directory <code class="code highlight cpp docutils literal highlight-cpp"><span class="o">&lt;</span><span class="n">library_name</span><span class="o">&gt;</span><span class="n">_INCLUDE_DIRS</span></code>, required dependencies,
+and the C++17 requirement to their target.</p>
+<p>For example, linking cuBLASDx and cuRANDDx to the <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">YourProgram</span></code> CMake target can be done as follows:</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">find_package</span><span class="p">(</span><span class="s">mathdx</span><span class="w"> </span><span class="s">REQUIRED</span><span class="w"> </span><span class="s">COMPONENTS</span><span class="w"> </span><span class="s">cublasdx</span><span class="w"> </span><span class="s">curanddx</span><span class="w"> </span><span class="s">CONFIG</span><span class="p">)</span>
+<span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">YourProgram</span><span class="w"> </span><span class="s">mathdx::cublasdx</span><span class="w"> </span><span class="s">mathdx::curanddx</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You can pass the path to the MathDx package using the <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">PATHS</span></code> option:</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">find_package</span><span class="p">(</span><span class="s">mathdx</span><span class="w"> </span><span class="s">REQUIRED</span><span class="w"> </span><span class="s">COMPONENTS</span><span class="w"> </span><span class="s">&lt;libraries&gt;</span><span class="w"> </span><span class="s">CONFIG</span><span class="w"> </span><span class="s">PATHS</span><span class="w"> </span><span class="s2">&quot;&lt;your_directory&gt;/nvidia/mathdx/yy.mm/&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Alternatively, you can set <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">mathdx_ROOT</span></code> during cmake configuration of your project:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cmake<span class="w"> </span>-Dmathdx_ROOT<span class="o">=</span><span class="s2">&quot;&lt;your_directory&gt;/nvidia/mathdx/yy.mm/&quot;</span><span class="w"> </span><span class="o">(</span>...<span class="o">)</span>
+</pre></div>
+</div>
+<section id="id1">
+<h3>Linking LTO<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<p>To enable LTO in CMake for a target, set <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">INTERPROCEDURAL_OPTIMIZATION</span></code> to true,
+and to allow separate compilation of device code set <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">CUDA_SEPARABLE_COMPILATION</span></code> to true.
+Both properties are required when linking device extension libraries that use LTO, both for targets
+relying on static library <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">lib</span><span class="o">&lt;</span><span class="n">library_name</span><span class="o">&gt;</span><span class="p">.</span><span class="n">a</span></code> and for targets relying on fatbin library <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">lib</span><span class="o">&lt;</span><span class="n">library_name</span><span class="o">&gt;</span><span class="p">.</span><span class="n">fatbin</span></code>.</p>
+<p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">mathdx</span><span class="o">::&lt;</span><span class="n">library_name</span><span class="o">&gt;</span><span class="n">_fatbin</span></code> targets can be used instead of <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">mathdx</span><span class="o">::&lt;</span><span class="n">library_name</span><span class="o">&gt;</span></code>.
+They rely on fatbin library <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">lib</span><span class="o">&lt;</span><span class="n">library_name</span><span class="o">&gt;</span><span class="p">.</span><span class="n">fatbin</span></code>.</p>
+<p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">lib</span><span class="o">&lt;</span><span class="n">library_name</span><span class="o">&gt;</span><span class="p">.</span><span class="n">fatbin</span></code>, in contrast to <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">lib</span><span class="o">&lt;</span><span class="n">library_name</span><span class="o">&gt;</span><span class="p">.</span><span class="n">a</span></code>,
+contains only device code and thus is host platform agnostic.
+For example, it can be safely used on the AARCH64 platform,
+whereas <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">lib</span><span class="o">&lt;</span><span class="n">library_name</span><span class="o">&gt;</span><span class="p">.</span><span class="n">a</span></code> can only be used for x86_64 Linux builds.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>cuBLASDx provides the <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cublasdx</span><span class="o">::</span><span class="n">cublasdx</span></code> target that relies on the fatbin library <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">libcublasdx</span><span class="p">.</span><span class="n">fatbin</span></code> when
+CUDA Toolkit 13.2.0 or later is used; otherwise it is a header-only library target.
+There is also a <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cublasdx</span><span class="o">::</span><span class="n">cublasdx_fatbin</span></code> target that always includes the fatbin library.
+cuBLASDx does not provide a static library target (<code class="code highlight cpp docutils literal highlight-cpp"><span class="n">libcublasdx</span><span class="p">.</span><span class="n">a</span></code>).
+Check <a class="reference external" href="https://docs.nvidia.com/cuda/cublasdx/installation.html">the cuBLASDx documentation</a> for more details.</p>
+</div>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>When using LTO libraries, please observe the following requirements:
+* The <a class="reference external" href="https://docs.nvidia.com/cuda/cuda-compiler-driver-nvcc/">NVCC</a> /
+<a class="reference external" href="https://docs.nvidia.com/cuda/nvrtc/index.html">NVRTC</a> used to compile must be from the same
+or older CUDA Toolkit than the <a class="reference external" href="https://docs.nvidia.com/cuda/cuda-compiler-driver-nvcc/">NVCC</a> /
+<a class="reference external" href="https://docs.nvidia.com/cuda/nvjitlink/index.html">nvJitLink</a> used to perform the linking stage.
+* Both the compiler and the linker must be from the same CUDA toolkit major version.
+* MathDx provides a package for every supported CUDA toolkit major version.</p>
+<div class="hint admonition">
+<p class="admonition-title">Example</p>
+<p>For example, cuSolverDx 0.4.0 from MathDx 26.03.0 package supports CUDA Toolkit 13.0 or newer.
+It is therefore required to use <a class="reference external" href="https://docs.nvidia.com/cuda/cuda-compiler-driver-nvcc/">NVCC</a> / <a class="reference external" href="https://docs.nvidia.com/cuda/nvrtc/index.html">NVRTC</a> 13.0 or newer to compile,
+and <a class="reference external" href="https://docs.nvidia.com/cuda/cuda-compiler-driver-nvcc/">NVCC</a> / <a class="reference external" href="https://docs.nvidia.com/cuda/nvjitlink/index.html">nvJitLink</a>  13.0 or newer to perform a linking stage.</p>
+</div>
+</div>
+<p>For example, linking cuSolverDx to the <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">YourProgram</span></code> CMake target can be done as follows:</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="c"># find cuSolverDx</span>
+<span class="nb">find_package</span><span class="p">(</span><span class="s">mathdx</span><span class="w"> </span><span class="s">REQUIRED</span><span class="w"> </span><span class="s">COMPONENTS</span><span class="w"> </span><span class="s">cusolverdx</span><span class="w"> </span><span class="s">CONFIG</span><span class="p">)</span>
+<span class="c"># enable LTO in your target</span>
+<span class="nb">set_target_properties</span><span class="p">(</span><span class="s">YourProgram</span>
+<span class="w">      </span><span class="s">PROPERTIES</span>
+<span class="w">          </span><span class="s">CUDA_SEPARABLE_COMPILATION</span><span class="w"> </span><span class="s">ON</span>
+<span class="w">          </span><span class="s">INTERPROCEDURAL_OPTIMIZATION</span><span class="w"> </span><span class="s">ON</span><span class="p">)</span>
+<span class="c"># link against mathdx::cusolverdx</span>
+<span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">YourProgram</span><span class="w"> </span><span class="s">mathdx::cusolverdx</span><span class="p">)</span>
+<span class="c"># or, alternatively, against mathdx::cusolverdx_fatbin</span>
+<span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">YourProgram</span><span class="w"> </span><span class="s">mathdx::cusolverdx_fatbin</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="targets">
+<span id="targets-label"></span><h3>Targets<a class="headerlink" href="#targets" title="Link to this heading">#</a></h3>
+<p>For all details about the targets, please refer to the documentation of the corresponding library.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Library</p></th>
+<th class="head"><p>CMake Target(s)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>cuBLASDx</p></td>
+<td><div class="line-block">
+<div class="line"><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">mathdx</span><span class="o">::</span><span class="n">cublasdx</span></code></div>
+<div class="line"><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">mathdx</span><span class="o">::</span><span class="n">cublasdx_fatbin</span></code></div>
+<div class="line"><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">mathdx</span><span class="o">::</span><span class="n">cublasdx_no_lto</span></code></div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p>cuFFTDx</p></td>
+<td><div class="line-block">
+<div class="line"><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">mathdx</span><span class="o">::</span><span class="n">cufftdx</span></code></div>
+<div class="line"><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">mathdx</span><span class="o">::</span><span class="n">cufftdx_separate_twiddles_lut</span></code></div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p>cuRANDDx</p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">mathdx</span><span class="o">::</span><span class="n">curanddx</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>cuSolverDx</p></td>
+<td><div class="line-block">
+<div class="line"><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">mathdx</span><span class="o">::</span><span class="n">cusolverdx</span></code></div>
+<div class="line"><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">mathdx</span><span class="o">::</span><span class="n">cusolverdx_fatbin</span></code></div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p>nvCOMPDx</p></td>
+<td><div class="line-block">
+<div class="line"><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">mathdx</span><span class="o">::</span><span class="n">nvcompdx</span></code></div>
+<div class="line"><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">mathdx</span><span class="o">::</span><span class="n">nvcompdx_fatbin</span></code></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Starting from versions 0.5.0 for cuSolverDx and 0.1.4 for nvCOMPDx, static LTO libraries are deprecated.
+They are still available, but they will be removed in the future. Corresponding CMake targets will be
+rerouted to the fatbin targets instead.</p>
+</div>
+</section>
+<section id="defined-variables">
+<h3>Defined Variables<a class="headerlink" href="#defined-variables" title="Link to this heading">#</a></h3>
+<p>For all details about the defined variables, please refer to the documentation of the corresponding library.</p>
+<dl class="simple">
+<dt><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">mathdx_FOUND</span></code></dt><dd><p>True if MathDx was found.</p>
+</dd>
+<dt><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">mathdx_VERSION</span></code></dt><dd><p>MathDx package version number in <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">X</span><span class="p">.</span><span class="n">Y</span><span class="p">.</span><span class="n">Z</span></code> format.</p>
+</dd>
+<dt><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">mathdx_INCLUDE_DIRS</span></code></dt><dd><p>MathDx include directories.</p>
+</dd>
+<dt><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">mathdx_</span><span class="o">&lt;</span><span class="n">library_name</span><span class="o">&gt;</span><span class="n">_FOUND</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="o">&lt;</span><span class="n">library_name</span><span class="o">&gt;</span><span class="n">_FOUND</span></code></dt><dd><p>True if <code class="code highlight cpp docutils literal highlight-cpp"><span class="o">&lt;</span><span class="n">library_name</span><span class="o">&gt;</span></code> was found.
+Example: <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">mathdx_cublasdx_FOUND</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cublasdx_FOUND</span></code>.</p>
+</dd>
+<dt><code class="code highlight cpp docutils literal highlight-cpp"><span class="o">&lt;</span><span class="n">library_name</span><span class="o">&gt;</span><span class="n">_VERSION</span></code></dt><dd><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="o">&lt;</span><span class="n">library_name</span><span class="o">&gt;</span></code> version number in <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">X</span><span class="p">.</span><span class="n">Y</span><span class="p">.</span><span class="n">Z</span></code> format.
+Example: <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cublasdx_VERSION</span></code>.</p>
+</dd>
+<dt><code class="code highlight cpp docutils literal highlight-cpp"><span class="o">&lt;</span><span class="n">library_name</span><span class="o">&gt;</span><span class="n">_INCLUDE_DIRS</span></code></dt><dd><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="o">&lt;</span><span class="n">library_name</span><span class="o">&gt;</span></code> include directories.
+Example: <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cublasdx_INCLUDE_DIRS</span></code>.</p>
+</dd>
+</dl>
+<p>Additionally, the following variables are defined for libraries with LTO:</p>
+<dl class="simple">
+<dt><code class="code highlight cpp docutils literal highlight-cpp"><span class="o">&lt;</span><span class="n">library_name</span><span class="o">&gt;</span><span class="n">_LIBRARIES</span></code></dt><dd><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="o">&lt;</span><span class="n">library_name</span><span class="o">&gt;</span></code> library target, which uses static library <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">lib</span><span class="o">&lt;</span><span class="n">library_name</span><span class="o">&gt;</span><span class="p">.</span><span class="n">a</span></code>.
+This variable does not exist for cuBLASDx, which only provides the fatbin library.
+Example: <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cusolverdx_LIBRARIES</span></code>.</p>
+</dd>
+<dt><code class="code highlight cpp docutils literal highlight-cpp"><span class="o">&lt;</span><span class="n">library_name</span><span class="o">&gt;</span><span class="n">_FATBIN</span></code></dt><dd><p>Path to <code class="code highlight cpp docutils literal highlight-cpp"><span class="o">&lt;</span><span class="n">library_name</span><span class="o">&gt;</span></code> fatbin library <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">lib</span><span class="o">&lt;</span><span class="n">library_name</span><span class="o">&gt;</span><span class="p">.</span><span class="n">fatbin</span></code>.
+Example: <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cusolverdx_FATBIN</span></code>.</p>
+</dd>
+</dl>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">NVIDIA MathDx Package</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="python.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Python</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dx-library-in-your-project">Dx Library In Your Project</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#linking-lto">Linking LTO</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dx-library-in-your-cmake-project">Dx Library In Your CMake Project</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Linking LTO</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#targets">Targets</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#defined-variables">Defined Variables</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5"></script>
+
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+<a class="footer-brand logo" href="https://www.nvidia.com">
+  <img src="_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+</a></div>
+      
+        <div class="footer-item">
+
+<div class="footer-links">
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/">Privacy Policy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Your Privacy Choices</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/">Terms of Service</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/accessibility/">Accessibility</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/company-policies/">Corporate Policies</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/product-security/">Product Security</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/contact/">Contact</a>
+  
+  
+  
+</div>
+</div>
+      
+        <div class="footer-item">
+
+
+
+
+  <p class="copyright">
+    
+      Copyright © 2025-2026, NVIDIA Corporation &amp; Affiliates. All rights reserved.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+  </body>
+</html>

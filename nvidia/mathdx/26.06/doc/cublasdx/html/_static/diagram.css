@@ -1,0 +1,19 @@
+img.diagram {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    margin: 1.5rem auto 2rem;
+}
+
+img.diagram-medium {
+    max-width: min(100%, 58rem);
+}
+
+img.diagram-compact {
+    max-width: min(100%, 48rem);
+}
+
+img.diagram-narrow {
+    max-width: min(100%, 34rem);
+}

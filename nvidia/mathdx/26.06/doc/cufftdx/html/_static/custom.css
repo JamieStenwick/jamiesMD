@@ -1,0 +1,10 @@
+
+table {
+    table-layout: fixed; /* Forces table to respect column widths */
+    width: 100%;         /* Makes table take full container width */
+}
+
+table td {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}

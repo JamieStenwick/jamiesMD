@@ -1,0 +1,52 @@
+[
+    {
+        "name": "1.7.3 (current release)",
+        "version": "1.7.3",
+        "url": "https://docs.nvidia.com/cuda/cufftdx/"
+    },
+    {
+        "name": "1.7.1",
+        "version": "1.7.1",
+        "url": "https://docs.nvidia.com/cuda/cufftdx/1.7.1/"
+    },
+    {
+        "name": "1.7.0",
+        "version": "1.7.0",
+        "url": "https://docs.nvidia.com/cuda/cufftdx/1.7.0/"
+    },
+    {
+        "name": "1.6.1",
+        "version": "1.6.1",
+        "url": "https://docs.nvidia.com/cuda/cufftdx/1.6.1/"
+    },
+    {
+        "name": "1.6.0",
+        "version": "1.6.0",
+        "url": "https://docs.nvidia.com/cuda/cufftdx/1.6.0/"
+    },
+    {
+        "name": "1.5.1",
+        "version": "1.5.1",
+        "url": "https://docs.nvidia.com/cuda/cufftdx/1.5.1/"
+    },
+    {
+        "name": "1.5.0",
+        "version": "1.5.0",
+        "url": "https://docs.nvidia.com/cuda/cufftdx/1.5.0/"
+    },
+    {
+        "name": "1.4.0 (early access)",
+        "version": "1.4.0",
+        "url": "https://docs.nvidia.com/cuda/cufftdx/1.4.0-ea/"
+    },
+    {
+        "name": "1.3.1",
+        "version": "1.3.1",
+        "url": "https://docs.nvidia.com/cuda/cufftdx/1.3.1/"
+    },
+    {
+        "name": "1.3.0",
+        "version": "1.3.0",
+        "url": "https://docs.nvidia.com/cuda/cufftdx/1.3.0/"
+    }
+]

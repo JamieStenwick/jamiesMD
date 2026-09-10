@@ -1,0 +1,905 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Other Methods &#8212; cuFFTDx</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
+
+
+
+    <script src="../_static/documentation_options.js?v=702cf1bd"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/other_methods';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://docs.nvidia.com/cuda/cufftdx/_static/switcher.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '1.7.3';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+
+    <link rel="icon" href="../_static/nvidia.ico"/>
+
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="cuFFT Device API Reference" href="../cufft_api/device_api.html" />
+    <link rel="prev" title="Execution Methods" href="methods.html" />
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="1.7.3" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+
+
+  </head>
+
+  <body data-default-mode="">
+
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="cuFFTDx - Home"/>
+    <img src="../_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="cuFFTDx - Home"/>
+  
+  
+    <p class="title logo__title">cuFFTDx</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="cuFFTDx - Home"/>
+    <img src="../_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="cuFFTDx - Home"/>
+  
+  
+    <p class="title logo__title">cuFFTDx</p>
+  
+</a>
+
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Table of Contents">
+  <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
+  <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Documentation home</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../requirements_func.html">Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../introduction1.html">Using cuFFTDx</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../introduction2.html">Your Next Custom FFT Kernels</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../cufft_lto/index.html">Using cuFFTDx with cuFFT LTO</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../cufft_lto/augment_with_lto.html">Augment cuFFTDx with LTO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cufft_lto/custom_lto_helper.html">Customize LTO Helper</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../performance.html">Achieving High Performance</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="operators.html">Operators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="traits.html">Traits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="methods.html">Execution Methods</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Other Methods</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">cuFFT API Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../cufft_api/device_api.html">cuFFT Device API</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Python Bindings</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../python_bindings.html">Python Bindings</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lto_examples.html">LTO Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lto_helper.html">LTO Helper</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../release_notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/NVIDIA/CUDALibrarySamples/tree/main/MathDx/cuFFTDx">GitHub Samples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">MathDx</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/cufftdx-downloads">cuFFTDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/cusolverdx-downloads">cuSolverDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/cublasdx-downloads">cuBLASDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/curanddx-downloads">cuRANDDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/nvcompdx-downloads">nvCOMPDx</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Other Methods</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="other-methods">
+<span id="other-methods-lto-label"></span><h1>Other Methods<a class="headerlink" href="#other-methods" title="Link to this heading">#</a></h1>
+<section id="frontend-to-backend-traits-conversion">
+<span id="frontend-to-backend-label"></span><h2>Frontend to Backend Traits Conversion<a class="headerlink" href="#frontend-to-backend-traits-conversion" title="Link to this heading">#</a></h2>
+<p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cufftdx</span><span class="o">::</span><span class="n">experimental</span><span class="o">::</span><span class="n">utils</span><span class="o">::</span><span class="n">frontend_to_backend</span><span class="p">(...)</span></code> converts a frontend FFT description to a effective backend traits that
+is used to query the cuFFTDx databases.</p>
+<p>In combination with <a class="reference internal" href="../cufft_api/device_api.html#cufft-device-api-label"><span class="std std-ref">cuFFT Device API</span></a>, this function can be used to generate the LTO database containing
+both device function code and metadata (a C++ header file) for a specified FFT operation. See <a class="reference internal" href="../cufft_lto/custom_lto_helper.html#customize-lto-helper-label"><span class="std std-ref">Custom LTO Helper</span></a> for
+an example.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;cufftdx/utils.hpp&quot;</span>
+
+<span class="k">namespace</span><span class="w"> </span><span class="nn">cufftdx</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="k">namespace</span><span class="w"> </span><span class="nn">utils</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">enum</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">algorithm</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="n">ct</span><span class="p">,</span>
+<span class="w">         </span><span class="n">bluestein</span><span class="p">,</span>
+<span class="w">      </span><span class="p">};</span>
+
+<span class="w">      </span><span class="k">enum</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">execution_type</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="kr">thread</span><span class="p">,</span>
+<span class="w">         </span><span class="n">block</span><span class="p">,</span>
+<span class="w">      </span><span class="p">};</span>
+<span class="w">   </span><span class="p">}</span><span class="w"> </span><span class="c1">// namespace utils</span>
+
+<span class="w">   </span><span class="k">namespace</span><span class="w"> </span><span class="nn">experimental</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">namespace</span><span class="w"> </span><span class="nn">utils</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="k">struct</span><span class="w"> </span><span class="nc">backend_impl_traits</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w">  </span><span class="n">size</span><span class="p">;</span>
+<span class="w">            </span><span class="n">fft_type</span><span class="w">      </span><span class="n">type</span><span class="p">;</span>
+<span class="w">            </span><span class="n">fft_direction</span><span class="w"> </span><span class="n">direction</span><span class="p">;</span>
+<span class="w">            </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w">  </span><span class="n">sm</span><span class="p">;</span>
+<span class="w">            </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w">  </span><span class="n">elements_per_thread</span><span class="p">;</span>
+<span class="w">            </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w">  </span><span class="n">min_elements_per_thread</span><span class="p">;</span>
+<span class="w">         </span><span class="p">};</span>
+
+<span class="w">         </span><span class="n">backend_impl_traits</span><span class="w"> </span><span class="n">backend_traits</span><span class="w"> </span><span class="o">=</span>
+<span class="w">            </span><span class="n">frontend_to_backend</span><span class="p">(</span>
+<span class="w">               </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">utils</span><span class="o">::</span><span class="n">algorithm</span><span class="w"> </span><span class="n">algo</span><span class="p">,</span>
+<span class="w">               </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">utils</span><span class="o">::</span><span class="n">execution_type</span><span class="w"> </span><span class="n">exec_type</span><span class="p">,</span>
+<span class="w">               </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">fft_size</span>
+<span class="w">                   </span><span class="cm">/* size_of&lt;FFT&gt;::value */</span><span class="p">,</span>
+<span class="w">               </span><span class="n">fft_type</span><span class="w"> </span><span class="n">type</span>
+<span class="w">                   </span><span class="cm">/* type_of&lt;FFT&gt;::value */</span><span class="p">,</span>
+<span class="w">               </span><span class="n">fft_direction</span><span class="w"> </span><span class="n">direction</span>
+<span class="w">                   </span><span class="cm">/* direction_of&lt;FFT&gt;::value */</span><span class="p">,</span>
+<span class="w">               </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">sm</span>
+<span class="w">                   </span><span class="cm">/* sm_of&lt;FFT&gt;::value */</span><span class="p">,</span>
+<span class="w">               </span><span class="n">real_mode</span><span class="w"> </span><span class="n">real_mode</span>
+<span class="w">                   </span><span class="cm">/* real_mode_of&lt;FFT&gt;::value */</span><span class="p">,</span>
+<span class="w">               </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">elements_per_thread</span>
+<span class="w">                   </span><span class="cm">/* elements_per_thread_of&lt;FFT&gt;::value or</span>
+<span class="cm">                    * 0 if not set */</span><span class="p">,</span>
+<span class="w">               </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">block_dim_x</span>
+<span class="w">                   </span><span class="cm">/* block_dim_of&lt;FFT&gt;::x or 0 if not set */</span><span class="p">,</span>
+<span class="w">               </span><span class="n">experimental</span><span class="o">::</span><span class="n">code_type</span><span class="w"> </span><span class="n">code_type</span>
+<span class="w">                   </span><span class="cm">/* experimental::code_type_of&lt;FFT&gt;::value */</span>
+<span class="w">            </span><span class="p">);</span>
+<span class="w">      </span><span class="p">}</span><span class="w"> </span><span class="c1">// namespace utils</span>
+<span class="w">   </span><span class="p">}</span><span class="w"> </span><span class="c1">// namespace experimental</span>
+<span class="p">}</span><span class="w"> </span><span class="c1">// namespace cufftdx</span>
+</pre></div>
+</div>
+</section>
+<section id="runtime-database-query">
+<span id="runtime-database-query-label"></span><h2>Runtime Database Query<a class="headerlink" href="#runtime-database-query" title="Link to this heading">#</a></h2>
+<p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cufftdx</span><span class="o">::</span><span class="n">experimental</span><span class="o">::</span><span class="n">utils</span><span class="o">::</span><span class="n">query_database</span><span class="p">(...)</span></code> and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cufftdx</span><span class="o">::</span><span class="n">experimental</span><span class="o">::</span><span class="n">utils</span><span class="o">::</span><span class="n">get_all_implementations</span><span class="p">(...)</span></code> provide runtime access to the cuFFTDx internal database.
+Both methods are useful when FFT configuration is selected dynamically, for example based on user inputs. It can be used to check if a given FFT configuration is supported
+without workspace. To better understand the difference between non workspace and workspace required FFTs please check <a class="reference internal" href="../requirements_func.html#functionality-label"><span class="std std-ref">Supported Functionality</span></a>.
+<code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cufftdx</span><span class="o">::</span><span class="n">experimental</span><span class="o">::</span><span class="n">utils</span><span class="o">::</span><span class="n">query_database</span><span class="p">(...)</span></code> returns the optimal implementation as <code class="docutils literal notranslate"><span class="pre">std::optional&lt;cufftdx::experimental::utils::frontend_impl_traits&gt;</span></code>.
+If no implementation is found for the provided configuration, it returns <code class="docutils literal notranslate"><span class="pre">std::nullopt</span></code>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">code_type</span></code> parameter is of type <code class="docutils literal notranslate"><span class="pre">cufftdx::experimental::query_code_type</span></code> and selects which database
+backend the call dispatches to:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">experimental::query_code_type::ptx</span></code> – query the built-in offline PTX database that ships with cuFFTDx (default).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">experimental::query_code_type::ltoir_offline</span></code> – query an offline LTO database that has been generated ahead of time
+with the LTO helper (see <a class="reference internal" href="../cufft_lto/custom_lto_helper.html#customize-lto-helper-label"><span class="std std-ref">Custom LTO Helper</span></a>) and included in the translation unit.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">experimental::query_code_type::ltoir_online</span></code> – forward the request to the cuFFT Device API at runtime via
+<a class="reference internal" href="#query-all-cufft-implementations-label"><span class="std std-ref">query_all_cufft_implementations</span></a>. This mode additionally
+requires <code class="docutils literal notranslate"><span class="pre">CUFFTDX_ENABLE_CUFFT_DEPENDENCY</span></code> to be defined and the application to be linked against cuFFT.</p></li>
+</ul>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">std</span><span class="o">::</span><span class="n">optional</span><span class="o">&lt;</span><span class="n">cufftdx</span><span class="o">::</span><span class="n">experimental</span><span class="o">::</span><span class="n">utils</span><span class="o">::</span><span class="n">frontend_impl_traits</span><span class="o">&gt;</span>
+<span class="n">cufftdx</span><span class="o">::</span><span class="n">experimental</span><span class="o">::</span><span class="n">utils</span><span class="o">::</span><span class="n">query_database</span><span class="p">(</span>
+<span class="w">    </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w">                    </span><span class="n">fft_size</span><span class="p">,</span>
+<span class="w">    </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">fft_direction</span><span class="w">          </span><span class="n">dir</span><span class="p">,</span>
+<span class="w">    </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">fft_type</span><span class="w">               </span><span class="n">type</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w">                    </span><span class="n">sm</span><span class="p">,</span>
+<span class="w">    </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">utils</span><span class="o">::</span><span class="n">execution_type</span><span class="w">  </span><span class="n">execution</span><span class="p">,</span>
+<span class="w">    </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">precision</span><span class="w">              </span><span class="n">prec</span><span class="w"> </span><span class="o">=</span>
+<span class="w">        </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">precision</span><span class="o">::</span><span class="n">f32</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w">                    </span><span class="n">fft_ept</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w">                    </span><span class="n">ffts_per_block</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">tuple</span><span class="o">&lt;</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="o">&gt;</span>
+<span class="w">        </span><span class="n">block_dim</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">},</span>
+<span class="w">    </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">complex_layout</span><span class="w">         </span><span class="n">layout</span><span class="w"> </span><span class="o">=</span>
+<span class="w">        </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">complex_layout</span><span class="o">::</span><span class="n">natural</span><span class="p">,</span>
+<span class="w">    </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">real_mode</span><span class="w">              </span><span class="n">rmode</span><span class="w"> </span><span class="o">=</span>
+<span class="w">        </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">real_mode</span><span class="o">::</span><span class="n">normal</span><span class="p">,</span>
+<span class="w">    </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">experimental</span><span class="o">::</span><span class="n">query_code_type</span><span class="w"> </span><span class="n">code_type</span><span class="w"> </span><span class="o">=</span>
+<span class="w">        </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">experimental</span><span class="o">::</span><span class="n">query_code_type</span><span class="o">::</span><span class="n">ptx</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cufftdx</span><span class="o">::</span><span class="n">experimental</span><span class="o">::</span><span class="n">utils</span><span class="o">::</span><span class="n">get_all_implementations</span><span class="p">(...)</span></code> returns all matching implementations as <code class="docutils literal notranslate"><span class="pre">std::vector&lt;cufftdx::experimental::utils::frontend_impl_traits&gt;</span></code>.
+If no implementation is found, it returns an empty vector.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">cufftdx</span><span class="o">::</span><span class="n">experimental</span><span class="o">::</span><span class="n">utils</span><span class="o">::</span><span class="n">frontend_impl_traits</span><span class="o">&gt;</span>
+<span class="n">cufftdx</span><span class="o">::</span><span class="n">experimental</span><span class="o">::</span><span class="n">utils</span><span class="o">::</span><span class="n">get_all_implementations</span><span class="p">(</span>
+<span class="w">    </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w">                    </span><span class="n">fft_size</span><span class="p">,</span>
+<span class="w">    </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">fft_direction</span><span class="w">          </span><span class="n">dir</span><span class="p">,</span>
+<span class="w">    </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">fft_type</span><span class="w">               </span><span class="n">type</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w">                    </span><span class="n">sm</span><span class="p">,</span>
+<span class="w">    </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">utils</span><span class="o">::</span><span class="n">execution_type</span><span class="w">  </span><span class="n">execution</span><span class="p">,</span>
+<span class="w">    </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">precision</span><span class="w">              </span><span class="n">prec</span><span class="w"> </span><span class="o">=</span>
+<span class="w">        </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">precision</span><span class="o">::</span><span class="n">f32</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w">                    </span><span class="n">fft_ept</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w">                    </span><span class="n">ffts_per_block</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">tuple</span><span class="o">&lt;</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="o">&gt;</span>
+<span class="w">        </span><span class="n">block_dim</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">},</span>
+<span class="w">    </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">complex_layout</span><span class="w">         </span><span class="n">layout</span><span class="w"> </span><span class="o">=</span>
+<span class="w">        </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">complex_layout</span><span class="o">::</span><span class="n">natural</span><span class="p">,</span>
+<span class="w">    </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">real_mode</span><span class="w">              </span><span class="n">rmode</span><span class="w"> </span><span class="o">=</span>
+<span class="w">        </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">real_mode</span><span class="o">::</span><span class="n">normal</span><span class="p">,</span>
+<span class="w">    </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">experimental</span><span class="o">::</span><span class="n">query_code_type</span><span class="w"> </span><span class="n">code_type</span><span class="w"> </span><span class="o">=</span>
+<span class="w">        </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">experimental</span><span class="o">::</span><span class="n">query_code_type</span><span class="o">::</span><span class="n">ptx</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>For an example on how to use these APIs, please check the <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">nvrtc_query_database_fft_block</span></code> example.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>These APIs are available only when <code class="docutils literal notranslate"><span class="pre">CUFFTDX_ENABLE_RUNTIME_DATABASE</span></code> is defined.
+The default <code class="docutils literal notranslate"><span class="pre">experimental::query_code_type::ptx</span></code> mode only sees FFT sizes present in the PTX database that ships with
+cuFFTDx (i.e. those that do not require a workspace). To extend the queryable set of sizes, use one of the
+LTO modes: <code class="docutils literal notranslate"><span class="pre">experimental::query_code_type::ltoir_offline</span></code> (after generating an offline LTO database with the LTO helper,
+see <a class="reference internal" href="../cufft_lto/custom_lto_helper.html#customize-lto-helper-label"><span class="std std-ref">Custom LTO Helper</span></a>) or <code class="docutils literal notranslate"><span class="pre">experimental::query_code_type::ltoir_online</span></code> (which delegates to the cuFFT
+Device API at runtime and additionally requires <code class="docutils literal notranslate"><span class="pre">CUFFTDX_ENABLE_CUFFT_DEPENDENCY</span></code>).</p>
+<p>The LTO query modes are only supported for LTO databases generated with cuFFT 12.3 or later
+(from CUDA Toolkit 13.3).</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Compilation time can significantly increase when using these APIs.</p>
+</div>
+</section>
+<section id="online-lto-database-creation">
+<span id="get-database-and-ltoir-label"></span><h2>(online) LTO Database Creation<a class="headerlink" href="#online-lto-database-creation" title="Link to this heading">#</a></h2>
+<p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cufftdx</span><span class="o">::</span><span class="n">utils</span><span class="o">::</span><span class="n">get_database_and_ltoir</span><span class="p">()</span></code> returns a tuple containing:</p>
+<ul class="simple">
+<li><p>Database string (<code class="docutils literal notranslate"><span class="pre">std::string</span></code>) to be inserted into the cuFFTDx headers.</p></li>
+<li><p>Vector of LTOIRs (<code class="docutils literal notranslate"><span class="pre">std::vector&lt;std::vector&lt;char&gt;&gt;</span></code>) for building device functions for the specified FFT operation.</p></li>
+<li><p>Required CUDA block dimensions (<code class="docutils literal notranslate"><span class="pre">dim3</span></code>) for executing the FFT operation.</p></li>
+<li><p>Required shared memory size (<code class="docutils literal notranslate"><span class="pre">unsigned</span></code>, in bytes) for executing the FFT operation.</p></li>
+</ul>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">std</span><span class="o">::</span><span class="n">tuple</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">&gt;&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">dim3</span><span class="p">,</span>
+<span class="w">           </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="o">&gt;</span>
+<span class="n">cufftdx</span><span class="o">::</span><span class="n">utils</span><span class="o">::</span><span class="n">get_database_and_ltoir</span><span class="p">(</span>
+<span class="w">    </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w">                    </span><span class="n">fft_size</span><span class="p">,</span>
+<span class="w">    </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">fft_direction</span><span class="w">          </span><span class="n">dir</span><span class="p">,</span>
+<span class="w">    </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">fft_type</span><span class="w">               </span><span class="n">type</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w">                    </span><span class="n">sm</span><span class="p">,</span>
+<span class="w">    </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">utils</span><span class="o">::</span><span class="n">execution_type</span><span class="w">  </span><span class="n">execution</span><span class="p">,</span>
+<span class="w">    </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">precision</span><span class="w">              </span><span class="n">prec</span><span class="w"> </span><span class="o">=</span>
+<span class="w">        </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">precision</span><span class="o">::</span><span class="n">f32</span><span class="p">,</span>
+<span class="w">    </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">complex_layout</span><span class="w">         </span><span class="n">layout</span><span class="w"> </span><span class="o">=</span>
+<span class="w">        </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">complex_layout</span><span class="o">::</span><span class="n">natural</span><span class="p">,</span>
+<span class="w">    </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">real_mode</span><span class="w">              </span><span class="n">rmode</span><span class="w"> </span><span class="o">=</span>
+<span class="w">        </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">real_mode</span><span class="o">::</span><span class="n">normal</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w">                    </span><span class="n">fft_ept</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">        </span><span class="cm">/* use heuristic */</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w">                    </span><span class="n">ffts_per_block</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">        </span><span class="cm">/* 0: use suggested ffts_per_block */</span><span class="p">,</span>
+<span class="w">    </span><span class="n">dim3</span><span class="w">                            </span><span class="n">block_dim</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dim3</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+<span class="w">        </span><span class="cm">/* 0: use suggested block_dim */</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="hint admonition">
+<p class="admonition-title">Example</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Assuming the following FFT operator is defined in the NVRTC-compiled code:</span>
+<span class="c1">// using FFT = decltype(cufftdx::Block() +</span>
+<span class="c1">//                      cufftdx::Size&lt;128&gt;() +</span>
+<span class="c1">//                      cufftdx::Type&lt;cufftdx::fft_type::c2c&gt;() +</span>
+<span class="c1">//                      cufftdx::Direction&lt;cufftdx::fft_direction::forward&gt;() +</span>
+<span class="c1">//                      cufftdx::Precision&lt;float&gt;() +</span>
+<span class="c1">//                      cufftdx::ElementsPerThread&lt;8&gt;() +</span>
+<span class="c1">//                      cufftdx::FFTsPerBlock&lt;2&gt;() +</span>
+<span class="c1">//                      cufftdx::SM&lt;750&gt;());</span>
+
+<span class="c1">// You can get the database string and LTOIRs for the FFT operation by calling:</span>
+<span class="k">auto</span><span class="w"> </span><span class="p">[</span><span class="n">lto_db</span><span class="p">,</span><span class="w"> </span><span class="n">ltoirs</span><span class="p">,</span><span class="w"> </span><span class="n">block_dim</span><span class="p">,</span><span class="w"> </span><span class="n">sm_size</span><span class="p">]</span><span class="w"> </span><span class="o">=</span>
+<span class="w">   </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">utils</span><span class="o">::</span><span class="n">get_database_and_ltoir</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span>
+<span class="w">                                          </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">fft_direction</span><span class="o">::</span><span class="n">forward</span><span class="p">,</span>
+<span class="w">                                          </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">fft_type</span><span class="o">::</span><span class="n">c2c</span><span class="p">,</span>
+<span class="w">                                          </span><span class="mi">750</span><span class="p">,</span>
+<span class="w">                                          </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">utils</span><span class="o">::</span><span class="n">execution_type</span><span class="o">::</span><span class="n">block</span><span class="p">,</span>
+<span class="w">                                          </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">precision</span><span class="o">::</span><span class="n">f32</span><span class="p">,</span>
+<span class="w">                                          </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">complex_layout</span><span class="o">::</span><span class="n">natural</span><span class="p">,</span>
+<span class="w">                                          </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">real_mode</span><span class="o">::</span><span class="n">normal</span><span class="p">,</span>
+<span class="w">                                          </span><span class="mi">8</span><span class="p">,</span>
+<span class="w">                                          </span><span class="mi">2</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<p>After obtaining the database string and LTOIRs, you can insert the database string into the cuFFTDx header file and link the LTOIRs to the
+user code as shown in <a class="reference internal" href="../cufft_lto/augment_with_lto.html#online-lto-kernel-generation-label"><span class="std std-ref">Use Case II: Online Kernel Generation</span></a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">cufftdx::utils::get_database_and_ltoir()</span></code> function is a wrapper around cuFFT Device APIs (see <a class="reference internal" href="../cufft_api/device_api.html#cufft-device-api-label"><span class="std std-ref">cuFFT Device API Reference</span></a>). To use this function:</p>
+<ol class="arabic simple">
+<li><p>Define <code class="docutils literal notranslate"><span class="pre">CUFFTDX_ENABLE_CUFFT_DEPENDENCY</span></code>.</p></li>
+<li><p>Link against the cuFFT library.</p></li>
+</ol>
+</div>
+</section>
+<section id="querying-all-cufft-online-lto-implementations">
+<span id="query-all-cufft-implementations-label"></span><h2>Querying All cuFFT Online LTO Implementations<a class="headerlink" href="#querying-all-cufft-online-lto-implementations" title="Link to this heading">#</a></h2>
+<p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cufftdx</span><span class="o">::</span><span class="n">utils</span><span class="o">::</span><span class="n">query_all_cufft_implementations</span><span class="p">()</span></code> is the “list all candidates” counterpart to <a class="reference internal" href="#get-database-and-ltoir-label"><span class="std std-ref">get_database_and_ltoir</span></a>.
+It queries the cuFFT Device API for every LTOIR implementation that matches the requested FFT configuration and returns them as a
+<code class="docutils literal notranslate"><span class="pre">std::vector&lt;cufftdx::experimental::utils::frontend_impl_traits&gt;</span></code>. Each returned entry has a distinct elements-per-thread value, so the caller can inspect the
+full set of valid choices (for example, to autotune across them) before calling <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">get_database_and_ltoir</span><span class="p">()</span></code> for the chosen configuration.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">cufftdx</span><span class="o">::</span><span class="n">experimental</span><span class="o">::</span><span class="n">utils</span><span class="o">::</span><span class="n">frontend_impl_traits</span><span class="o">&gt;</span>
+<span class="n">cufftdx</span><span class="o">::</span><span class="n">utils</span><span class="o">::</span><span class="n">query_all_cufft_implementations</span><span class="p">(</span>
+<span class="w">    </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w">                    </span><span class="n">fft_size</span><span class="p">,</span>
+<span class="w">    </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">fft_direction</span><span class="w">          </span><span class="n">dir</span><span class="p">,</span>
+<span class="w">    </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">fft_type</span><span class="w">               </span><span class="n">type</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w">                    </span><span class="n">sm</span><span class="p">,</span>
+<span class="w">    </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">utils</span><span class="o">::</span><span class="n">execution_type</span><span class="w">  </span><span class="n">execution</span><span class="p">,</span>
+<span class="w">    </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">precision</span><span class="w">              </span><span class="n">prec</span><span class="w"> </span><span class="o">=</span>
+<span class="w">        </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">precision</span><span class="o">::</span><span class="n">f32</span><span class="p">,</span>
+<span class="w">    </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">complex_layout</span><span class="w">         </span><span class="n">layout</span><span class="w"> </span><span class="o">=</span>
+<span class="w">        </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">complex_layout</span><span class="o">::</span><span class="n">natural</span><span class="p">,</span>
+<span class="w">    </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">real_mode</span><span class="w">              </span><span class="n">rmode</span><span class="w"> </span><span class="o">=</span>
+<span class="w">        </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">real_mode</span><span class="o">::</span><span class="n">normal</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w">                    </span><span class="n">fft_ept</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">        </span><span class="cm">/* use heuristic */</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w">                    </span><span class="n">ffts_per_block</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">        </span><span class="cm">/* 0: use suggested ffts_per_block */</span><span class="p">,</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">tuple</span><span class="o">&lt;</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="o">&gt;</span>
+<span class="w">        </span><span class="n">block_dim</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">});</span>
+</pre></div>
+</div>
+<p>This function is the backend for <code class="docutils literal notranslate"><span class="pre">query_code_type::ltoir_online</span></code> in <a class="reference internal" href="#runtime-database-query-label"><span class="std std-ref">query_database / get_all_implementations</span></a>.
+For a complete autotuning example that enumerates all implementations, benchmarks each one, and then calls <code class="docutils literal notranslate"><span class="pre">get_database_and_ltoir()</span></code> for the
+selected configuration, see <code class="docutils literal notranslate"><span class="pre">example/cufftdx/04_nvrtc_fft/nvrtc_query_autotune_lto.cu</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Like <code class="docutils literal notranslate"><span class="pre">get_database_and_ltoir()</span></code>, this function is a wrapper around the cuFFT Device API and requires
+<code class="docutils literal notranslate"><span class="pre">CUFFTDX_ENABLE_CUFFT_DEPENDENCY</span></code> to be defined and the application to be linked against cuFFT.</p>
+</div>
+</section>
+<section id="shared-memory-compute-for-dynamic-batching">
+<span id="shared-memory-compute-for-dynamic-batching-label"></span><h2>Shared Memory Compute For Dynamic Batching<a class="headerlink" href="#shared-memory-compute-for-dynamic-batching" title="Link to this heading">#</a></h2>
+<p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cufftdx</span><span class="o">::</span><span class="n">experimental</span><span class="o">::</span><span class="n">utils</span><span class="o">::</span><span class="n">get_shared_memory_size_for_dynamic_batching</span><span class="o">&lt;</span><span class="n">FFT</span><span class="o">&gt;</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">ffts_per_block</span><span class="p">)</span></code> computes the total shared memory bytes required for computing multiple FFTs with the <a class="reference internal" href="operators.html#dynamic-batching-operator-label"><span class="std std-ref">DynamicBatching operator</span></a>.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">FFT</span><span class="o">&gt;</span>
+<span class="k">constexpr</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span>
+<span class="n">get_shared_memory_size_for_dynamic_batching</span><span class="p">(</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">ffts_per_block</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>This function is useful when you need to determine shared memory requirements at runtime, particularly when the number of FFTs per block varies dynamically.</p>
+<p><strong>Parameters:</strong></p>
+<ul class="simple">
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">ffts_per_block</span></code> - Number of FFTs to compute per block
+(user-defined, can be a runtime value)</p></li>
+</ul>
+<p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cufftdx</span><span class="o">::</span><span class="n">experimental</span><span class="o">::</span><span class="n">utils</span><span class="o">::</span><span class="n">get_shared_memory_size_for_dynamic_batching</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">shared_memory_size_per_fft</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">ffts_per_block</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">implicit_type_batching</span><span class="p">)</span></code> provides the same functionality at runtime, without creating a <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">FFT</span><span class="w"> </span><span class="n">Description</span></code>.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">constexpr</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span>
+<span class="nf">get_shared_memory_size_for_dynamic_batching</span><span class="p">(</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">shared_memory_size_per_fft</span><span class="p">,</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">ffts_per_block</span><span class="p">,</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">implicit_type_batching</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><strong>Parameters:</strong></p>
+<ul class="simple">
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">shared_memory_size_per_fft</span></code> - Shared memory size required for a
+single FFT (obtained from
+<a class="reference internal" href="traits.html#sharedmemory-block-trait-label"><span class="std std-ref">FFT::shared_memory_size</span></a>)</p></li>
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">ffts_per_block</span></code> - Number of FFTs to compute per block
+(user-defined, can be a runtime value)</p></li>
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">implicit_type_batching</span></code> - Number of FFTs batched per value type
+(obtained from
+<a class="reference internal" href="traits.html#implicit-type-batching-block-trait-label"><span class="std std-ref">FFT::implicit_type_batching</span></a>)</p></li>
+</ul>
+<div class="hint admonition">
+<p class="admonition-title">Example</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">FFT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">decltype</span><span class="p">(</span><span class="n">Size</span><span class="o">&lt;</span><span class="mi">128</span><span class="o">&gt;</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">Precision</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">()</span><span class="w"> </span><span class="o">+</span>
+<span class="w">               </span><span class="n">Type</span><span class="o">&lt;</span><span class="n">fft_type</span><span class="o">::</span><span class="n">c2c</span><span class="o">&gt;</span><span class="p">()</span><span class="w"> </span><span class="o">+</span>
+<span class="w">               </span><span class="n">Direction</span><span class="o">&lt;</span><span class="n">fft_direction</span><span class="o">::</span><span class="n">forward</span><span class="o">&gt;</span><span class="p">()</span><span class="w"> </span><span class="o">+</span>
+<span class="w">               </span><span class="n">ElementsPerThread</span><span class="o">&lt;</span><span class="mi">8</span><span class="o">&gt;</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">DynamicBatching</span><span class="p">());</span>
+
+<span class="c1">// Query compile-time traits</span>
+<span class="k">constexpr</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">shared_memory_size_per_fft</span><span class="w"> </span><span class="o">=</span>
+<span class="w">    </span><span class="n">FFT</span><span class="o">::</span><span class="n">shared_memory_size</span><span class="p">;</span>
+<span class="k">constexpr</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">implicit_type_batching</span><span class="w"> </span><span class="o">=</span>
+<span class="w">    </span><span class="n">FFT</span><span class="o">::</span><span class="n">implicit_type_batching</span><span class="p">;</span>
+
+<span class="c1">// Runtime value chosen by user</span>
+<span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">ffts_per_block</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">8</span><span class="p">;</span>
+
+<span class="c1">// Compute total shared memory requirement</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">total_shared_memory_size_bytes</span><span class="w"> </span><span class="o">=</span>
+<span class="w">    </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">experimental</span><span class="o">::</span><span class="n">utils</span><span class="o">::</span>
+<span class="w">        </span><span class="n">get_shared_memory_size_for_dynamic_batching</span><span class="p">(</span>
+<span class="w">            </span><span class="n">shared_memory_size_per_fft</span><span class="p">,</span>
+<span class="w">            </span><span class="n">ffts_per_block</span><span class="p">,</span>
+<span class="w">            </span><span class="n">implicit_type_batching</span><span class="p">);</span>
+
+<span class="k">auto</span><span class="w"> </span><span class="n">total_shared_memory_size_bytes_with_desc</span><span class="w"> </span><span class="o">=</span>
+<span class="w">    </span><span class="n">cufftdx</span><span class="o">::</span><span class="n">experimental</span><span class="o">::</span><span class="n">utils</span><span class="o">::</span>
+<span class="w">        </span><span class="n">get_shared_memory_size_for_dynamic_batching</span><span class="o">&lt;</span><span class="n">FFT</span><span class="o">&gt;</span><span class="p">(</span>
+<span class="w">            </span><span class="n">ffts_per_block</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>These functions only return a valid result when using traits from a description with the <a class="reference internal" href="operators.html#dynamic-batching-operator-label"><span class="std std-ref">DynamicBatching operator</span></a>. For obtaining the shared memory bytes required for other descriptions, see <a class="reference internal" href="traits.html#sharedmemory-block-trait-label"><span class="std std-ref">Shared Memory Size Trait</span></a>.</p>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="methods.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Execution Methods</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../cufft_api/device_api.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">cuFFT Device API Reference</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#frontend-to-backend-traits-conversion">Frontend to Backend Traits Conversion</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#runtime-database-query">Runtime Database Query</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#online-lto-database-creation">(online) LTO Database Creation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#querying-all-cufft-online-lto-implementations">Querying All cuFFT Online LTO Implementations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#shared-memory-compute-for-dynamic-batching">Shared Memory Compute For Dynamic Batching</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5"></script>
+
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+<a class="footer-brand logo" href="https://www.nvidia.com">
+  <img src="../_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="../_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+</a></div>
+      
+        <div class="footer-item">
+
+<div class="footer-links">
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/">Privacy Policy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Your Privacy Choices</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/">Terms of Service</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/accessibility/">Accessibility</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/company-policies/">Corporate Policies</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/product-security/">Product Security</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/contact/">Contact</a>
+  
+  
+  
+</div>
+</div>
+      
+        <div class="footer-item">
+
+
+
+
+  <p class="copyright">
+    
+      Copyright © 2022-2026, NVIDIA Corporation &amp; Affiliates. All rights reserved.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+  </body>
+</html>

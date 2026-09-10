@@ -1,0 +1,165 @@
+/*
+ * SPDX-FileCopyrightText: Copyright (c) 2025 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+#include <iostream>
+#include <vector>
+
+#include <cuda_runtime_api.h>
+#include <cublasdx.hpp>
+
+#include "../common/common.hpp"
+#include "../reference/reference.hpp"
+
+template<class BLAS>
+__launch_bounds__(BLAS::max_threads_per_block) __global__ void gemm_kernel(const typename BLAS::a_value_type* a,
+                                                                           const typename BLAS::b_value_type* b,
+                                                                           typename BLAS::c_value_type*       c,
+                                                                           const typename BLAS::c_value_type  alpha,
+                                                                           const typename BLAS::c_value_type  beta) {
+    CUBLASDX_SKIP_IF_NOT_APPLICABLE_SM(BLAS);
+    extern __shared__ __align__(16) cublasdx::byte smem[];
+
+    auto a_global_tensor = cublasdx::make_tensor(a, BLAS::get_layout_gmem_a());
+    auto b_global_tensor = cublasdx::make_tensor(b, BLAS::get_layout_gmem_b());
+    auto c_global_tensor = cublasdx::make_tensor(c, BLAS::get_layout_gmem_c());
+
+    auto [smem_a, smem_b, smem_c] = cublasdx::slice_shared_memory<BLAS>(smem);
+    auto a_shared_tensor          = cublasdx::make_tensor(smem_a, BLAS::get_layout_smem_a());
+    auto b_shared_tensor          = cublasdx::make_tensor(smem_b, BLAS::get_layout_smem_b());
+    auto c_shared_tensor          = cublasdx::make_tensor(smem_c, BLAS::get_layout_smem_c());
+
+    using alignment = cublasdx::alignment_of<BLAS>;
+    cublasdx::copy<BLAS, alignment::a>(a_global_tensor, a_shared_tensor);
+    cublasdx::copy<BLAS, alignment::b>(b_global_tensor, b_shared_tensor);
+    cublasdx::copy<BLAS, alignment::c>(c_global_tensor, c_shared_tensor);
+    cublasdx::copy_wait();
+
+    BLAS().execute(alpha, a_shared_tensor, b_shared_tensor, beta, c_shared_tensor);
+
+    __syncthreads();
+    cublasdx::copy<BLAS, alignment::c>(c_shared_tensor, c_global_tensor);
+}
+
+// This is an example of general matrix-matrix multiplication (GEMM) with 8-bit floating point format
+// performanced in a single CUDA block:
+//
+//              C = alpha * A * B + beta * C
+//
+// * A is the input matrix containing complex FP8 e4m3 data format, B is another input matrix containing complex FP8 e5m2 data format,
+// * C is the output matrix containing complex FP32 data format, and alpha and beta are complex FP32 values.
+// If (A, B, C) are any of the following data formats:
+//    (e4m3, e4m3, FP32)
+//    (e4m3, e5m2, FP32)
+//    (e5m2, e4m3, FP32)
+//    (e5m2, e5m2, FP32)
+// and GEMM is executed on SM89 or higher GPUs, then matrix multiply-and-accumulation (MMA) instructions are used.
+//
+// Input data is generated on host using random number generators, and later copied to
+// the global memory. Next, kernel with GEMM is executed, and then the matrix C (the result)
+// is copied back to host memory. The results are verified against cuBLAS.
+//
+template<unsigned int Arch>
+int simple_gemm() {
+    // Parameters m, n, k define the dimensions of matrices A, B, and C
+    constexpr unsigned int m = 64;
+    constexpr unsigned int n = 64;
+    constexpr unsigned int k = 32;
+
+    // GEMM definition using cuBLASDx operators:
+    // 1. The size, the precision, and the type (real or complex) are set.
+    // 2. The BLAS function is selected: MM (matrix multiplication).
+    // 3. The data arrangements of A, B matrices are set (C is defaulted to column major).
+    //    - Optional
+    // 4. The data alignment of A, B and C matrices is set to the max accepted value using alias MaxAlignment.
+    //    - Optional
+    // 4. Block operator informs that GEMM should be performed on CUDA block level.
+    // 5. Targeted CUDA compute capability is selected with SM operator.
+    using BLAS = decltype(cublasdx::Size<m, n, k>() + cublasdx::Precision<__nv_fp8_e4m3, __nv_fp8_e5m2, float>() +
+                          cublasdx::Type<cublasdx::type::complex>() + cublasdx::Function<cublasdx::function::MM>() +
+                          cublasdx::Arrangement<cublasdx::row_major, cublasdx::col_major>() +
+                          cublasdx::Alignment<2, 2, 8>() + cublasdx::Block() + cublasdx::SM<Arch>());
+
+    // Allocate device memory for a, b, c
+
+    using TA = typename BLAS::a_value_type;
+    using TB = typename BLAS::b_value_type;
+    using TC = typename BLAS::c_value_type;
+
+    TA* a;
+    TB* b;
+    TC* c;
+
+    constexpr auto global_a_size = example::global_memory_size_of<BLAS>::a_size;
+    constexpr auto global_b_size = example::global_memory_size_of<BLAS>::b_size;
+    constexpr auto global_c_size = example::global_memory_size_of<BLAS>::c_size;
+
+    CUDA_CHECK_AND_EXIT(cudaMalloc(&a, global_a_size * sizeof(TA)));
+    CUDA_CHECK_AND_EXIT(cudaMalloc(&b, global_b_size * sizeof(TB)));
+    CUDA_CHECK_AND_EXIT(cudaMalloc(&c, global_c_size * sizeof(TC)));
+
+    auto alpha = TC(1.0, 1.0);
+    auto beta  = TC(2.0, 1.0);
+
+    // Fill the A, B, C matrices with random values
+    auto host_a = example::get_random_data<TA>(global_a_size);
+    auto host_b = example::get_random_data<TB>(global_b_size);
+    auto host_c = example::get_random_data<TC>(global_c_size);
+    CUDA_CHECK_AND_EXIT(cudaMemcpy(a, host_a.data(), global_a_size * sizeof(TA), cudaMemcpyHostToDevice));
+    CUDA_CHECK_AND_EXIT(cudaMemcpy(b, host_b.data(), global_b_size * sizeof(TB), cudaMemcpyHostToDevice));
+    CUDA_CHECK_AND_EXIT(cudaMemcpy(c, host_c.data(), global_c_size * sizeof(TC), cudaMemcpyHostToDevice));
+    CUDA_CHECK_AND_EXIT(cudaDeviceSynchronize());
+
+    // Increase max dynamic shared memory for the kernel if needed
+    CUDA_CHECK_AND_EXIT(cudaFuncSetAttribute(
+        gemm_kernel<BLAS>, cudaFuncAttributeMaxDynamicSharedMemorySize, cublasdx::get_shared_storage_size<BLAS>()));
+
+    // Execute kernel
+    gemm_kernel<BLAS><<<1, BLAS::block_dim, cublasdx::get_shared_storage_size<BLAS>()>>>(a, b, c, alpha, beta);
+    CUDA_CHECK_AND_EXIT(cudaDeviceSynchronize());
+
+    // Copy results back to host
+    std::vector<TC> host_output(global_c_size);
+    CUDA_CHECK_AND_EXIT(cudaMemcpy(host_output.data(), c, global_c_size * sizeof(TC), cudaMemcpyDeviceToHost));
+    CUDA_CHECK_AND_EXIT(cudaDeviceSynchronize());
+
+    // Free device memory
+    CUDA_CHECK_AND_EXIT(cudaFree(a));
+    CUDA_CHECK_AND_EXIT(cudaFree(b));
+    CUDA_CHECK_AND_EXIT(cudaFree(c));
+
+    // Calculate reference
+    auto reference_host_output = example::reference_gemm<BLAS>(alpha, host_a, host_b, beta, host_c);
+
+    // Check against reference
+    if (example::check_error<BLAS>(host_output, reference_host_output)) {
+        std::cout << "Success" << std::endl;
+        return 0;
+    }
+    std::cout << "Failure" << std::endl;
+    return 1;
+}
+
+struct simple_gemm_functor {
+    template<int Arch, cublasdx::sm_modifier Modifier>
+    int operator()(std::integral_constant<int, Arch>, std::integral_constant<cublasdx::sm_modifier, Modifier>) {
+        return simple_gemm<Arch>();
+    }
+};
+
+int main(int, char**) {
+    return example::sm_runner(simple_gemm_functor {});
+}

@@ -1,0 +1,1082 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Using Pipelined GEMM &#8212; cuBLASDx</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
+    <link rel="stylesheet" type="text/css" href="_static/diagram.css?v=21e9147c" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
+
+
+
+    <script src="_static/documentation_options.js?v=26f1c5af"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'using_pipelines';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://docs.nvidia.com/cuda/cublasdx/_static/switcher.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.7.1';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+
+    <link rel="icon" href="_static/nvidia.ico"/>
+
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Using cuBLASDx TRSM" href="using_trsm.html" />
+    <link rel="prev" title="Using cuBLASDx GEMM" href="using_cublasdx.html" />
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.7.1" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+
+
+  </head>
+
+  <body data-default-mode="">
+
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="cuBLASDx - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="cuBLASDx - Home"/>
+  
+  
+    <p class="title logo__title">cuBLASDx</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="cuBLASDx - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="cuBLASDx - Home"/>
+  
+  
+    <p class="title logo__title">cuBLASDx</p>
+  
+</a>
+
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Table of Contents">
+  <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
+  <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Documentation Home</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="requirements_func.html">Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="using_cublasdx.html">Using cuBLASDx GEMM</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Using Pipelined GEMM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="using_trsm.html">Using cuBLASDx TRSM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance.html">Achieving High Performance</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="api/operators.html">Operators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/traits.html">Traits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/shared_methods.html">Input / Output Format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/gemm_methods.html">GEMM Execution Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/trsm_methods.html">TRSM Execution Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/pipeline.html">Pipeline Creation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/other_methods.html">Other Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/other_tensors.html">Tensor Manipulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/other_shared.html">Shared Memory Management</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Python</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="python_bindings.html">cuBLASDx Python Bindings</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="examples_learning_path.html">Learning Path Through Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="release_notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/NVIDIA/CUDALibrarySamples/tree/main/MathDx/cuBLASDx">GitHub Samples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">MathDx</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/cublasdx-downloads">cuBLASDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/cufftdx-downloads">cuFFTDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/cusolverdx-downloads">cuSolverDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/curanddx-downloads">cuRANDDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/nvcompdx-downloads">nvCOMPDx</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Using Pipelined GEMM</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="using-pipelined-gemm">
+<span id="intro2-label"></span><h1>Using Pipelined GEMM<a class="headerlink" href="#using-pipelined-gemm" title="Link to this heading">#</a></h1>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<img alt="Diagram of pipelined GEMM overlapping asynchronous load stages with asynchronous compute stages before an epilogue." class="dark-light diagram align-center" src="_images/pipelined_execution.svg" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Starting with <code class="docutils literal notranslate"><span class="pre">cuBLASDx</span> <span class="pre">0.5.0</span></code>, the pipelining extension allows users to combine multiple
+per-tile operations (the operations exposed by regular <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">BLAS</span></code> descriptors) into asynchronous pipelines that expose advanced CUDA
+features such as <code class="docutils literal notranslate"><span class="pre">TMA</span></code>, <code class="docutils literal notranslate"><span class="pre">Hopper</span> <span class="pre">WGMMA</span></code>, <code class="docutils literal notranslate"><span class="pre">Blackwell</span> <span class="pre">1SM</span> <span class="pre">UTCMMA</span></code>, <code class="docutils literal notranslate"><span class="pre">Blackwell</span> <span class="pre">TMEM</span></code>, and others.</p>
+<p>The pipelining interface <strong>emphasizes fusion opportunities</strong> by moving the level of <code class="docutils literal notranslate"><span class="pre">cuBLASDx</span> <span class="pre">execution</span></code> higher,
+starting from the global memory level, while allowing users to wrap their device GEMM into a single fusable and optimized function call.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p><code class="docutils literal notranslate"><span class="pre">cuBLASDx</span> <span class="pre">Pipelining</span> <span class="pre">API</span></code> is an interface allowing the users to apply <code class="docutils literal notranslate"><span class="pre">cuBLASDx</span></code> routines to efficiently decompose and
+compute big global-memory GEMM problems.</p>
+</div>
+<p>This section is based on the <a class="reference internal" href="examples.html#examples-introduction-examples-label"><span class="std std-ref">introduction_pipeline.cu</span></a> example included with cuBLASDx.
+See the <a class="reference internal" href="examples.html#examples-label"><span class="std std-ref">Examples</span></a> section for additional cuBLASDx samples.</p>
+<p>To measure GEMM device performance and compare with a reference implementation, see the <a class="reference internal" href="examples.html#examples-gemm-performance-label"><span class="std std-ref">device_gemm_performance.cu</span></a> example included with cuBLASDx.</p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<img alt="Diagram of the cuBLASDx pipeline lifecycle from host pipeline creation to per-block tile pipeline execution." class="dark-light diagram align-center" src="_images/pipeline_lifecycle.svg" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<section id="pipelining">
+<h2>Pipelining<a class="headerlink" href="#pipelining" title="Link to this heading">#</a></h2>
+<p>The regular <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">MathDx</span></code> operations are performed on the shared memory tile level, assuming that inputs are ready to be safely
+used, so it usually looks like this:</p>
+<ol class="arabic simple">
+<li><p>Load data from shared into registers</p></li>
+<li><p>Perform computations using shared memory as scratchpad (if needed)</p></li>
+<li><p>Store results back to shared memory</p></li>
+</ol>
+<p>This allows the libraries to utilize the out of order capabilities only on the <code class="docutils literal notranslate"><span class="pre">shared</span> <span class="pre">--&gt;</span> <span class="pre">registers</span></code> memory level,
+leaving the remaining operations to the users.</p>
+<p>Pipelining’s main pillar is overlapping staged data loading with staged computation, thus maximizing the number of bytes
+and instructions in flight. Load stages and compute stages can both be asynchronous; after the K-stage accumulation is
+complete, a single epilogue stage consumes the final accumulator and stores or updates the output tile. An advanced
+extension of pipelining is the producer-consumer model, where separate threads are responsible for loading data into
+buffers and separate for computing results of the loaded elements.</p>
+<p><code class="docutils literal notranslate"><span class="pre">cuBLASDx</span> <span class="pre">0.2.0</span></code> introduced <a class="reference internal" href="api/other_tensors.html#copy-tensor-other-label"><span class="std std-ref">cublasdx::copy</span></a>, an asynchronous copy mechanism allowing for limited overlapping of
+per-tile computations and memory loads for next batch, allowing for fuller utilization of available hardware resources.
+Although this release provided building blocks for asynchronous execution, it left construction of entire scaffold to
+the user and did not provide space for more sophisticated synchronization schemes, such as <code class="docutils literal notranslate"><span class="pre">mbarriers</span></code>, thus blocking
+the use of <a class="reference external" href="https://docs.nvidia.com/cuda/hopper-tuning-guide/index.html#tensor-memory-accelerator">Tensor Memory Accelerator</a>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">cuBLASDx</span> <span class="pre">0.5.0</span> <span class="pre">Pipelining</span> <span class="pre">API</span></code> exposes:</p>
+<ul class="simple">
+<li><p>same interface for performing optimized GEMM on all architectures,</p></li>
+<li><p>arbitrary depth scaffolding for performing pipelined Generalized Matrix Multiplication (GEMM) with multiple load and compute stages in flight,</p></li>
+<li><p>autovectorizing copy mechanism choosing between <code class="docutils literal notranslate"><span class="pre">TMA</span></code> / <code class="docutils literal notranslate"><span class="pre">LDGSTS</span></code> / <code class="docutils literal notranslate"><span class="pre">LDG+STS</span></code> based on provided layouts and architecture,</p></li>
+<li><p>synchronization dependent asynchronous MMA instructions, available only in pipelined mode (<code class="docutils literal notranslate"><span class="pre">WGMMA</span></code> / <code class="docutils literal notranslate"><span class="pre">1SM</span> <span class="pre">UTCMMA</span></code>), and</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mbarrier</span></code> based synchronization mechanism, internally choosing between warp-specialized and unified execution paths</p></li>
+</ul>
+</section>
+<section id="quick-start-guide">
+<h2>Quick Start Guide<a class="headerlink" href="#quick-start-guide" title="Link to this heading">#</a></h2>
+<section id="pipeline-creation">
+<h3>Pipeline Creation<a class="headerlink" href="#pipeline-creation" title="Link to this heading">#</a></h3>
+<p>To use the pipelining API, two host-side setup steps are necessary:</p>
+<ol class="arabic simple">
+<li><dl class="simple">
+<dt>On host, create your block-level BLAS description for per-tile operation.</dt><dd><ol class="loweralpha simple">
+<li><p>Add <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Block</span></code> and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">BlockDim</span></code> operators for a block-level GEMM tile.</p></li>
+<li><p>Add <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">WithPipeline</span></code> operator to inform the library that this tile will be used in a pipelined context.</p></li>
+<li><p>(performance) If you won’t be using any per-element input preprocessing, add <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">EnableInputStreaming</span></code> operator.</p></li>
+<li><p>(performance) If you won’t use more threads than specified in <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">BlockDim</span></code> operator, add <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">StaticBlockDim</span></code> operator.</p></li>
+</ol>
+</dd>
+</dl>
+</li>
+</ol>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cublasdx.hpp&gt;</span>
+<span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">cublasdx</span><span class="p">;</span>
+
+<span class="k">using</span><span class="w"> </span><span class="n">GEMM</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">decltype</span><span class="p">(</span><span class="n">Size</span><span class="o">&lt;</span><span class="mi">128</span><span class="w"> </span><span class="cm">/* m */</span><span class="p">,</span><span class="w"> </span><span class="mi">128</span><span class="w"> </span><span class="cm">/* n */</span><span class="p">,</span><span class="w"> </span><span class="mi">32</span><span class="w"> </span><span class="cm">/* k */</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">                      </span><span class="o">+</span><span class="w"> </span><span class="n">Precision</span><span class="o">&lt;</span><span class="n">__half</span><span class="p">,</span><span class="w"> </span><span class="n">__half</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">                      </span><span class="o">+</span><span class="w"> </span><span class="n">Type</span><span class="o">&lt;</span><span class="n">type</span><span class="o">::</span><span class="n">real</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">                      </span><span class="o">+</span><span class="w"> </span><span class="n">Function</span><span class="o">&lt;</span><span class="n">function</span><span class="o">::</span><span class="n">MM</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">                      </span><span class="o">+</span><span class="w"> </span><span class="n">Arrangement</span><span class="o">&lt;</span><span class="n">cublasdx</span><span class="o">::</span><span class="n">row_major</span><span class="w"> </span><span class="cm">/* A */</span><span class="p">,</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">col_major</span><span class="w"> </span><span class="cm">/* B */</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">                      </span><span class="o">+</span><span class="w"> </span><span class="n">Alignment</span><span class="o">&lt;</span><span class="mi">16</span><span class="p">,</span><span class="w"> </span><span class="mi">16</span><span class="p">,</span><span class="w"> </span><span class="mi">16</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">                      </span><span class="o">+</span><span class="w"> </span><span class="n">SM</span><span class="o">&lt;</span><span class="mi">890</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">                      </span><span class="o">+</span><span class="w"> </span><span class="n">Block</span><span class="p">()</span>
+<span class="w">                      </span><span class="o">+</span><span class="w"> </span><span class="n">BlockDim</span><span class="o">&lt;</span><span class="mi">256</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">                      </span><span class="o">+</span><span class="w"> </span><span class="n">WithPipeline</span><span class="p">()</span>
+<span class="w">                      </span><span class="o">+</span><span class="w"> </span><span class="n">EnableInputStreaming</span><span class="p">()</span>
+<span class="w">                      </span><span class="o">+</span><span class="w"> </span><span class="n">StaticBlockDim</span><span class="p">());</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><dl class="simple">
+<dt>On host, use the description from step 1 to create a <code class="docutils literal notranslate"><span class="pre">host</span> <span class="pre">pipeline</span></code> object.</dt><dd><ol class="loweralpha simple">
+<li><p>Create global memory tensors for global A and B matrices</p></li>
+<li><p>Pass them as arguments to the <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">suggest_pipeline</span></code> function.</p></li>
+<li><p>Verify if the <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cublasdx</span><span class="o">::</span><span class="n">detail</span><span class="o">::</span><span class="n">expected</span></code> return value contains a valid pipeline.</p></li>
+</ol>
+</dd>
+</dl>
+</li>
+</ol>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cublasdx.hpp&gt;</span>
+<span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">cublasdx</span><span class="p">;</span>
+
+<span class="k">using</span><span class="w"> </span><span class="n">BLAS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">decltype</span><span class="p">(...</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">WithPipeline</span><span class="p">());</span>
+
+<span class="c1">// Create global descriptors for full A and B matrices (not only tiles)</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">global_a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">make_gmem_tensor</span><span class="o">&lt;</span><span class="n">cublasdx</span><span class="o">::</span><span class="n">row_major</span><span class="o">&gt;</span><span class="p">(</span><span class="n">a_device_pointer</span><span class="p">,</span><span class="w"> </span><span class="n">m</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="p">,</span><span class="w"> </span><span class="n">lda</span><span class="p">);</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">global_b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">make_gmem_tensor</span><span class="o">&lt;</span><span class="n">cublasdx</span><span class="o">::</span><span class="n">col_major</span><span class="o">&gt;</span><span class="p">(</span><span class="n">b_device_pointer</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="n">ldb</span><span class="p">);</span>
+
+<span class="k">constexpr</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">pipeline_depth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">pipeline</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">suggest_pipeline</span><span class="o">&lt;</span><span class="n">pipeline_depth</span><span class="p">,</span><span class="w"> </span><span class="n">BLAS</span><span class="o">&gt;</span><span class="p">(</span><span class="n">global_a</span><span class="p">,</span><span class="w"> </span><span class="n">global_b</span><span class="p">);</span>
+
+<span class="k">if</span><span class="p">(</span><span class="k">not</span><span class="w"> </span><span class="n">pipeline</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="k">const</span><span class="o">&amp;</span><span class="w"> </span><span class="n">error</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pipeline</span><span class="p">.</span><span class="n">error</span><span class="p">();</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Failed to create pipeline&quot;</span><span class="p">;</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">error</span><span class="p">.</span><span class="n">code</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">pipeline_error_code</span><span class="o">::</span><span class="n">none</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;: &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">pipeline_error_string</span><span class="p">(</span><span class="n">error</span><span class="p">.</span><span class="n">code</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">error</span><span class="p">.</span><span class="n">get_cuda_error</span><span class="p">()</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">cudaSuccess</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot; (&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">cudaGetErrorString</span><span class="p">(</span><span class="n">error</span><span class="p">.</span><span class="n">get_cuda_error</span><span class="p">())</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;)&quot;</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">    </span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Pipeline Creation returns a value-or-error result. A successful result provides the host pipeline object that owns
+launch metadata and any host-side resources. A failed result provides <code class="docutils literal notranslate"><span class="pre">cublasdx::pipeline_error</span></code> for logging or
+programmatic recovery.</p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<img alt="Diagram of pipeline creation returning either a host pipeline or a recoverable pipeline error." class="dark-light diagram align-center" src="_images/pipeline_error_flow.svg" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Requirements on pipeline creation:</p>
+<ol class="arabic simple">
+<li><p><strong>Correct problem definition</strong>: A and B matrices must be compatible, i.e. have the same <code class="docutils literal notranslate"><span class="pre">K</span></code> dimension</p></li>
+<li><p><strong>Global problem divisibility</strong>: global problem size must be divisible by descriptor specified tile size (this limitation might be removed in the future).</p></li>
+<li><dl class="simple">
+<dt>Number of pipeline stages (depth) must be less than or equal to the total number of K tiles</dt><dd><ol class="loweralpha simple">
+<li><p>The number of K tiles is <code class="docutils literal notranslate"><span class="pre">global_k</span> <span class="pre">/</span> <span class="pre">tile_k</span></code>. A chosen pipeline depth must not exceed this value.</p></li>
+</ol>
+</dd>
+</dl>
+</li>
+<li><p><strong>Flexible-precision emulation K limit</strong>: pipelines using <code class="docutils literal notranslate"><span class="pre">RequiredMantissaBits</span></code> require
+<code class="docutils literal notranslate"><span class="pre">global_k</span> <span class="pre">&lt;=</span> <span class="pre">floor((2^31</span> <span class="pre">-</span> <span class="pre">1)</span> <span class="pre">/</span> <span class="pre">((2^8</span> <span class="pre">-</span> <span class="pre">1)</span> <span class="pre">*</span> <span class="pre">(2^8</span> <span class="pre">-</span> <span class="pre">1)))</span></code>, or
+<code class="docutils literal notranslate"><span class="pre">global_k</span> <span class="pre">&lt;=</span> <span class="pre">33025</span></code>. The emulation implementation slices inputs to <code class="docutils literal notranslate"><span class="pre">int8</span></code> and accumulates
+products of sliced 8-bit values in an internal <code class="docutils literal notranslate"><span class="pre">int32</span></code> GEMM path.
+Use split-K for larger emulation problems.</p></li>
+</ol>
+<p>If any of these requirements fails, <code class="docutils literal notranslate"><span class="pre">suggest_pipeline</span></code> and <code class="docutils literal notranslate"><span class="pre">make_pipeline</span></code> return <code class="docutils literal notranslate"><span class="pre">cublasdx::pipeline_error</span></code> in the
+<code class="docutils literal notranslate"><span class="pre">error()</span></code> branch. Host code can inspect <code class="docutils literal notranslate"><span class="pre">error.code</span></code> for the pipeline error code and call
+<code class="docutils literal notranslate"><span class="pre">error.get_cuda_error()</span></code> for CUDA runtime status. If CUDA emulation preprocessing fails after cuBLASDx validation succeeds, <code class="docutils literal notranslate"><span class="pre">error.code</span></code> is
+<code class="docutils literal notranslate"><span class="pre">pipeline_error_code::cuda</span></code> and <code class="docutils literal notranslate"><span class="pre">error.get_cuda_error()</span></code> reports the CUDA status.</p>
+<p>For the complete list of error codes and the host pipeline accessors returned on success, see
+<a class="reference internal" href="api/pipeline.html#pipeline-api-reference-label"><span class="std std-ref">Pipeline Creation Result</span></a>.</p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p><strong>Why are pipelines created on host?</strong></p>
+<p>Some elements of the CUDA SDK require driver calls; one example is <code class="docutils literal notranslate"><span class="pre">Tensor</span> <span class="pre">Memory</span> <span class="pre">Accelerator</span></code> descriptor creation.
+To expose <code class="docutils literal notranslate"><span class="pre">TMA</span></code> as one of the automatically chosen options underneath, cuBLASDx must adhere to this limitation.</p>
+</div>
+</section>
+<section id="passing-pipeline-to-kernels">
+<h3>Passing Pipeline To Kernels<a class="headerlink" href="#passing-pipeline-to-kernels" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>After a host pipeline has been successfully created, it exposes the properties needed to configure a kernel launch efficiently.</dt><dd><ul class="simple">
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">buffer_alignment</span><span class="p">()</span></code> describes alignment of single shared memory buffer owned by the pipeline.</p></li>
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">buffer_size</span><span class="p">()</span></code> describes size of single shared memory buffer owned by the pipeline.</p></li>
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">get_block_dim</span><span class="p">()</span></code> describes the required block configuration to run this pipeline.</p></li>
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">get_device_handle</span><span class="p">()</span></code> returns the device pipeline object that should be passed by value to a kernel.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Example of a kernel execution configuration:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// ... pipeline creation</span>
+
+<span class="k">auto</span><span class="w"> </span><span class="n">shared_memory_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">make_shared_storage_calculator</span><span class="p">()</span>
+<span class="w">                          </span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">pipeline</span><span class="o">-&gt;</span><span class="n">buffer_alignment</span><span class="p">(),</span><span class="w"> </span><span class="n">pipeline</span><span class="o">-&gt;</span><span class="n">buffer_size</span><span class="p">())</span>
+<span class="w">                          </span><span class="p">.</span><span class="n">get</span><span class="p">();</span>
+
+<span class="k">auto</span><span class="w"> </span><span class="n">block_dim</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pipeline</span><span class="o">-&gt;</span><span class="n">get_block_dim</span><span class="p">();</span>
+
+<span class="n">kernel</span><span class="o">&lt;&lt;&lt;</span><span class="n">grid_dim</span><span class="p">,</span><span class="w"> </span><span class="n">block_dim</span><span class="p">,</span><span class="w"> </span><span class="n">shared_memory_size</span><span class="o">&gt;&gt;&gt;</span><span class="p">(</span><span class="n">pipeline</span><span class="o">-&gt;</span><span class="n">get_device_handle</span><span class="p">(),</span><span class="w"> </span><span class="p">...);</span>
+</pre></div>
+</div>
+</section>
+<section id="taking-pipeline-as-argument">
+<h3>Taking Pipeline As Argument<a class="headerlink" href="#taking-pipeline-as-argument" title="Link to this heading">#</a></h3>
+<p>The device handle returned by <code class="docutils literal notranslate"><span class="pre">pipeline-&gt;get_device_handle()</span></code> can be passed only to <code class="docutils literal notranslate"><span class="pre">__global__</span></code> functions
+(not <code class="docutils literal notranslate"><span class="pre">__device__</span></code>) when annotated with <code class="docutils literal notranslate"><span class="pre">__grid_constant__</span></code>.</p>
+<p>Additionally, a <code class="code highlight cpp docutils literal highlight-cpp"><span class="o">::</span><span class="n">max_threads_per_block</span></code> trait can be used for getting new launch bounds limiting value.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">BLAS</span><span class="p">,</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">Alpha</span><span class="p">,</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">Beta</span><span class="p">,</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">CTensor</span><span class="p">,</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">DevicePipeline</span><span class="o">&gt;</span>
+<span class="n">__launch_bounds__</span><span class="p">(</span><span class="n">DevicePipeline</span><span class="o">::</span><span class="n">max_threads_per_block</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="n">__global__</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">gemm_kernel</span><span class="p">(</span><span class="n">Alpha</span><span class="w"> </span><span class="k">const</span><span class="w">                            </span><span class="n">alpha</span><span class="p">,</span>
+<span class="w">                     </span><span class="n">Beta</span><span class="w"> </span><span class="k">const</span><span class="w">                             </span><span class="n">beta</span><span class="p">,</span>
+<span class="w">                     </span><span class="n">CTensor</span><span class="w">                                </span><span class="n">global_c</span><span class="p">,</span>
+<span class="w">                     </span><span class="n">__grid_constant__</span><span class="w"> </span><span class="n">DevicePipeline</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">device_pipeline</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</pre></div>
+</div>
+</section>
+<section id="initializing-tile-pipeline-in-kernels">
+<h3>Initializing Tile Pipeline In Kernels<a class="headerlink" href="#initializing-tile-pipeline-in-kernels" title="Link to this heading">#</a></h3>
+<p>The <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">device_pipeline</span></code> object should remain a kernel argument and should not be copied to on-chip memory.
+Convert it to a per-block <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">tile_pipeline</span></code> object by indexing:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">extern</span><span class="w"> </span><span class="n">__shared__</span><span class="w"> </span><span class="nf">__align__</span><span class="p">(</span><span class="n">device_pipeline</span><span class="p">.</span><span class="n">buffer_alignment</span><span class="p">())</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">byte</span><span class="w"> </span><span class="n">smem</span><span class="p">[];</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">tile_pipeline</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">device_pipeline</span><span class="p">.</span><span class="n">get_tile</span><span class="p">(</span><span class="n">smem</span><span class="p">,</span><span class="w"> </span><span class="n">blockIdx</span><span class="p">.</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">blockIdx</span><span class="p">.</span><span class="n">y</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Alternatively, smem can be sliced to fit something other than pipeline itself:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">extern</span><span class="w"> </span><span class="n">__shared__</span><span class="w"> </span><span class="nf">__align__</span><span class="p">(</span><span class="n">device_pipeline</span><span class="p">.</span><span class="n">buffer_alignment</span><span class="p">())</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">byte</span><span class="w"> </span><span class="n">smem</span><span class="p">[];</span>
+<span class="k">auto</span><span class="w"> </span><span class="p">[</span><span class="n">smem_pipeline</span><span class="p">,</span><span class="w"> </span><span class="n">smem_c_tensor</span><span class="p">]</span><span class="w"> </span><span class="o">=</span>
+<span class="w">    </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">shared_memory</span><span class="o">::</span><span class="n">slice</span><span class="o">&lt;</span><span class="kt">char</span><span class="p">,</span><span class="w"> </span><span class="n">CType</span><span class="o">&gt;</span><span class="p">(</span>
+<span class="w">        </span><span class="n">smem</span><span class="p">,</span>
+<span class="w">        </span><span class="n">device_pipeline</span><span class="p">.</span><span class="n">buffer_alignment</span><span class="p">(),</span>
+<span class="w">        </span><span class="n">device_pipeline</span><span class="p">.</span><span class="n">buffer_size</span><span class="p">(),</span>
+<span class="w">        </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">alignment_of_v_c</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;</span><span class="p">,</span>
+<span class="w">        </span><span class="n">BLAS</span><span class="o">::</span><span class="n">suggest_layout_smem_c</span><span class="p">());</span>
+
+<span class="k">auto</span><span class="w"> </span><span class="n">tile_pipeline</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">device_pipeline</span><span class="p">.</span><span class="n">get_tile</span><span class="p">(</span><span class="n">smem_pipeline</span><span class="p">,</span><span class="w"> </span><span class="n">blockIdx</span><span class="p">.</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">blockIdx</span><span class="p">.</span><span class="n">y</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><strong>How to partition global tensor into tiles?</strong></p>
+<p>The general device GEMM looks like the following, where total global GEMM dimensions are <code class="docutils literal notranslate"><span class="pre">MxNxK</span></code> and
+per-block tile-dimensions are <code class="docutils literal notranslate"><span class="pre">tile_m</span> <span class="pre">x</span> <span class="pre">tile_n</span> <span class="pre">x</span> <span class="pre">tile_k</span></code>:</p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<img alt="Diagram of device GEMM partitioning where each CUDA block computes one C tile across the K dimension." class="dark-light diagram align-center" src="_images/device_gemm.svg" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>The C matrix determines problem partitioning because it is the reduction output tensor.
+Its size (<code class="docutils literal notranslate"><span class="pre">M</span> <span class="pre">x</span> <span class="pre">N</span></code>) is divided into <code class="docutils literal notranslate"><span class="pre">tile_m</span> <span class="pre">x</span> <span class="pre">tile_n</span></code> independent sub-problems, each of which
+is solved by an independent CUDA block. These sub-problems could be addressed in the following manner:</p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<img alt="Diagram mapping C matrix output tiles to a two-dimensional CUDA grid." class="dark-light diagram align-center" src="_images/tile_division.svg" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>The simplest way to perform this partitioning is to launch a CUDA grid of size:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">dim3</span><span class="w"> </span><span class="n">grid_dim</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dim3</span><span class="w"> </span><span class="p">{</span><span class="n">m</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">tile_m</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">tile_n</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">};</span>
+</pre></div>
+</div>
+<p>With this convention, <code class="docutils literal notranslate"><span class="pre">blockIdx.x</span></code> is the output tile row and <code class="docutils literal notranslate"><span class="pre">blockIdx.y</span></code> is the output tile
+column:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 30.0%" />
+<col style="width: 40.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Grid dimension</p></th>
+<th class="head"><p>Block index</p></th>
+<th class="head"><p>Tile coordinate</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">gridDim.x</span> <span class="pre">=</span> <span class="pre">m</span> <span class="pre">/</span> <span class="pre">tile_m</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">blockIdx.x</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">tile_row</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">gridDim.y</span> <span class="pre">=</span> <span class="pre">n</span> <span class="pre">/</span> <span class="pre">tile_n</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">blockIdx.y</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">tile_col</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>This way there will be exactly 1 block for each 1 sub-problem, and the block index will be
+the same as the sub-problem tile index. There are other, more advanced, software ways of scheduling
+work, such as <a class="reference external" href="https://developer.nvidia.com/blog/optimizing-compute-shaders-for-l2-locality-using-thread-group-id-swizzling/">threadblock swizzling</a> or
+<a class="reference external" href="https://research.colfax-intl.com/cutlass-tutorial-persistent-kernels-and-stream-k/">persistent stream-k scheduling</a>.</p>
+</section>
+<section id="resetting-a-pipeline">
+<h3>Resetting A Pipeline<a class="headerlink" href="#resetting-a-pipeline" title="Link to this heading">#</a></h3>
+<p>If a persistent execution is chosen, the pipeline needs to reset its state and start executing with
+a new output tile. This is possible with a call to <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">device_pipeline</span><span class="p">.</span><span class="n">reset_tile</span><span class="p">()</span></code>.</p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<img alt="Diagram of persistent pipeline reset_tile flow across multiple output tiles." class="dark-light diagram align-center" src="_images/pipeline_reset_tile.svg" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">device_pipeline</span><span class="p">.</span><span class="n">reset_tile</span><span class="p">(</span><span class="n">tile_pipeline</span><span class="p">,</span>
+<span class="w">                           </span><span class="n">new_tile_idx_row</span><span class="p">,</span>
+<span class="w">                           </span><span class="n">new_tile_idx_col</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><code class="docutils literal notranslate"><span class="pre">tile_pipeline</span></code> object has a destructive constructor and destructor, which can be called
+only once per kernel execution. It’s important to avoid creating new <code class="docutils literal notranslate"><span class="pre">tile_pipeline</span></code> every
+loop iteration and use <code class="docutils literal notranslate"><span class="pre">reset_tile</span></code> instead.</p>
+</div>
+</section>
+<section id="executing-pipelined-gemm">
+<h3>Executing Pipelined GEMM<a class="headerlink" href="#executing-pipelined-gemm" title="Link to this heading">#</a></h3>
+<p>Depending on the chosen accumulation mode, there are two ways of executing a pipelined GEMM:</p>
+<p>In both modes, <code class="docutils literal notranslate"><span class="pre">tile_pipeline.execute</span></code> drives the staged GEMM pipeline: asynchronous load stages prepare K tiles while
+asynchronous compute stages issue MMA work for previously prepared tiles. More than one load stage and more than one
+compute stage can be in flight. After those K-stage accumulations are complete, exactly one epilogue stage consumes the
+final accumulator for the output tile.</p>
+<ol class="arabic simple">
+<li><p>Execute with internal accumulation (pipeline owns the accumulator).</p></li>
+</ol>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span><span class="w"> </span><span class="n">tile_pipeline</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">device_pipeline</span><span class="p">.</span><span class="n">get_tile</span><span class="p">(</span><span class="n">smem</span><span class="p">,</span><span class="w"> </span><span class="n">blockIdx</span><span class="p">.</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">blockIdx</span><span class="p">.</span><span class="n">y</span><span class="p">);</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">tile_gmem_c</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">get_tile</span><span class="p">(</span><span class="n">global_c</span><span class="p">,</span><span class="w"> </span><span class="n">BLAS</span><span class="o">::</span><span class="n">c_shape</span><span class="p">,</span><span class="w"> </span><span class="n">blockIdx</span><span class="p">.</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">blockIdx</span><span class="p">.</span><span class="n">y</span><span class="p">);</span>
+
+<span class="c1">// Prepare epilogue functor</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">epilogue_functor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="o">&amp;</span><span class="p">](</span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">accumulator</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">d_fragment</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">accumulator</span><span class="p">.</span><span class="n">make_partition_and_copy</span><span class="p">(</span><span class="n">tile_gmem_c</span><span class="p">);</span>
+<span class="w">    </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">axpby</span><span class="p">(</span><span class="n">alpha</span><span class="p">,</span><span class="w"> </span><span class="n">accumulator</span><span class="p">.</span><span class="n">get_results</span><span class="p">(),</span><span class="w"> </span><span class="n">beta</span><span class="p">,</span><span class="w"> </span><span class="n">d_fragment</span><span class="p">);</span>
+<span class="w">    </span><span class="n">accumulator</span><span class="p">.</span><span class="n">partition_and_copy</span><span class="p">(</span><span class="n">d_fragment</span><span class="p">,</span><span class="w"> </span><span class="n">tile_gmem_c</span><span class="p">);</span>
+<span class="p">};</span>
+
+<span class="n">tile_pipeline</span><span class="p">.</span><span class="n">execute</span><span class="p">(</span><span class="n">epilogue_functor</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>In this interface the results of the GEMM are accessed via epilogue functor, getting accumulator
+as its only argument.</p>
+<p><strong>What is available in the epilogue functor?</strong></p>
+<p>Epilogue functor always:</p>
+<ul class="simple">
+<li><p>operates on the number of threads used as the value in <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">BlockDim</span></code> operator</p></li>
+<li><p>can be synchronized using <code class="docutils literal notranslate"><span class="pre">tile_pipeline.epilogue_sync()</span></code></p></li>
+</ul>
+<p>This is also true when <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">heuristic_blocksize</span></code> mode of pipeline execution is used. This synchronization
+operation has the same memory guarantees as a regular <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">syncthreads</span></code> (<code class="code highlight cpp docutils literal highlight-cpp"><span class="n">bar</span><span class="p">.</span><span class="n">sync</span></code>).</p>
+<ol class="arabic simple" start="2">
+<li><p>Execute with reusable accumulation (user owns the accumulator).</p></li>
+</ol>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span><span class="w"> </span><span class="n">tile_pipeline</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">device_pipeline</span><span class="p">.</span><span class="n">get_tile</span><span class="p">(</span><span class="n">smem</span><span class="p">,</span><span class="w"> </span><span class="n">blockIdx</span><span class="p">.</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">blockIdx</span><span class="p">.</span><span class="n">y</span><span class="p">);</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">tile_gmem_c</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">get_tile</span><span class="p">(</span><span class="n">global_c</span><span class="p">,</span><span class="w"> </span><span class="n">BLAS</span><span class="o">::</span><span class="n">c_shape</span><span class="p">,</span><span class="w"> </span><span class="n">blockIdx</span><span class="p">.</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">blockIdx</span><span class="p">.</span><span class="n">y</span><span class="p">);</span>
+
+<span class="k">auto</span><span class="w"> </span><span class="n">accumulator</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tile_pipeline</span><span class="p">.</span><span class="n">get_accumulator</span><span class="p">();</span>
+
+<span class="n">tile_pipeline</span><span class="p">.</span><span class="n">execute</span><span class="p">(</span><span class="n">accumulator</span><span class="p">);</span>
+<span class="c1">// Use the same thread scope as execute(accumulator); do not guard this with if(accumulator.is_thread_active()).</span>
+<span class="n">tile_pipeline</span><span class="p">.</span><span class="n">finish_accumulation</span><span class="p">();</span>
+
+<span class="c1">// Inlined epilogue</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">d_fragment</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">accumulator</span><span class="p">.</span><span class="n">make_partition_and_copy</span><span class="p">(</span><span class="n">tile_gmem_c</span><span class="p">);</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">axpby</span><span class="p">(</span><span class="n">alpha</span><span class="p">,</span><span class="w"> </span><span class="n">accumulator</span><span class="p">.</span><span class="n">get_results</span><span class="p">(),</span><span class="w"> </span><span class="n">beta</span><span class="p">,</span><span class="w"> </span><span class="n">d_fragment</span><span class="p">);</span>
+<span class="n">accumulator</span><span class="p">.</span><span class="n">partition_and_copy</span><span class="p">(</span><span class="n">d_fragment</span><span class="p">,</span><span class="w"> </span><span class="n">tile_gmem_c</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>In this manual interface the accumulator is owned by user code. <code class="docutils literal notranslate"><span class="pre">finish_accumulation()</span></code> is required after
+<code class="docutils literal notranslate"><span class="pre">execute(accumulator)</span></code> and before reading accumulator contents, including <code class="docutils literal notranslate"><span class="pre">get_results()</span></code>, <code class="docutils literal notranslate"><span class="pre">axpby()</span></code>,
+<code class="docutils literal notranslate"><span class="pre">partition_and_store()</span></code>, or <code class="docutils literal notranslate"><span class="pre">reduce_and_store()</span></code> style epilogues. The convenience
+<code class="docutils literal notranslate"><span class="pre">tile_pipeline.epilogue(accumulator,</span> <span class="pre">functor)</span></code> path calls <code class="docutils literal notranslate"><span class="pre">finish_accumulation()</span></code> internally.
+Call <code class="docutils literal notranslate"><span class="pre">finish_accumulation()</span></code> with the same thread scope as <code class="docutils literal notranslate"><span class="pre">tile_pipeline.execute(accumulator)</span></code>. Do not guard it with
+<code class="docutils literal notranslate"><span class="pre">if(accumulator.is_thread_active())</span></code>; internal warp-specialization may require threads that do not own accumulator
+elements to participate in the finish step.</p>
+</section>
+</section>
+<section id="advanced-pipeline-configuration-options">
+<h2>Advanced Pipeline Configuration Options<a class="headerlink" href="#advanced-pipeline-configuration-options" title="Link to this heading">#</a></h2>
+<section id="heuristic-based-pipeline-depth-choice">
+<h3>Heuristic Based Pipeline Depth Choice<a class="headerlink" href="#heuristic-based-pipeline-depth-choice" title="Link to this heading">#</a></h3>
+<p>Pipeline depth is an argument that can be either carefully chosen and specified, or left to the library, which
+will try to fill as much of shared memory as possible, by choosing the architecturally maximal depth.
+Depth controls how many K tiles can be staged by the pipeline. On architectures that support it, this can mean multiple
+asynchronous load stages and multiple asynchronous compute stages in flight at the same time; it does not create multiple
+epilogue stages for one output tile.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Explicit choice version</span>
+<span class="k">constexpr</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">pipeline_depth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">pipeline</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">suggest_pipeline</span><span class="o">&lt;</span><span class="n">pipeline_depth</span><span class="p">,</span><span class="w"> </span><span class="n">BLAS</span><span class="o">&gt;</span><span class="p">(</span><span class="n">global_a</span><span class="p">,</span><span class="w"> </span><span class="n">global_b</span><span class="p">);</span>
+
+<span class="c1">// Heuristic version</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">pipeline</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">suggest_pipeline</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;</span><span class="p">(</span><span class="n">global_a</span><span class="p">,</span><span class="w"> </span><span class="n">global_b</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="result-storage-options">
+<h3>Result Storage Options<a class="headerlink" href="#result-storage-options" title="Link to this heading">#</a></h3>
+<p>The public result-storage mode names are <code class="docutils literal notranslate"><span class="pre">cublasdx::internal_accumulator</span></code> and <code class="docutils literal notranslate"><span class="pre">cublasdx::reusable_accumulator</span></code>.
+They replace the older <code class="docutils literal notranslate"><span class="pre">internal_accumulation</span></code> / <code class="docutils literal notranslate"><span class="pre">external_accumulation</span></code> terminology.</p>
+<p>This advanced option controls ownership of pipeline results. The accumulator can be owned by the pipeline and
+exposed only as an epilogue lambda argument:</p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<img alt="Diagram comparing internal pipeline accumulator ownership with reusable user-owned accumulator storage." class="dark-light diagram align-center" src="_images/pipeline_result_storage.svg" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<div class="pst-scrollable-table-container"><table class="table" id="id1">
+<caption><span class="caption-number">Table 1 </span><span class="caption-text">Pipelined GEMM result ownership</span><a class="headerlink" href="#id1" title="Link to this table">#</a></caption>
+<colgroup>
+<col style="width: 28.0%" />
+<col style="width: 36.0%" />
+<col style="width: 36.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Mode</p></th>
+<th class="head"><p>Owner</p></th>
+<th class="head"><p>Required flow</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">internal_accumulator</span></code></p></td>
+<td><p>Pipeline</p></td>
+<td><p>Call <code class="docutils literal notranslate"><span class="pre">tile_pipeline.execute(epilogue_functor)</span></code> and store/update <code class="docutils literal notranslate"><span class="pre">C</span></code> inside the epilogue functor.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">reusable_accumulator</span></code></p></td>
+<td><p>User code</p></td>
+<td><p>Call <code class="docutils literal notranslate"><span class="pre">get_accumulator()</span></code>, <code class="docutils literal notranslate"><span class="pre">execute(accumulator)</span></code>, then <code class="docutils literal notranslate"><span class="pre">finish_accumulation()</span></code> with the same thread scope as <code class="docutils literal notranslate"><span class="pre">execute(accumulator)</span></code> before reading results.
+Do not guard it with <code class="docutils literal notranslate"><span class="pre">if(accumulator.is_thread_active())</span></code>; alternatively, use <code class="docutils literal notranslate"><span class="pre">tile_pipeline.epilogue</span></code>.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Pipeline owns the accumulator</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">pipeline</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">suggest_pipeline</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="p">,</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">internal_accumulator</span><span class="o">&gt;</span><span class="p">(</span><span class="n">global_a</span><span class="p">,</span><span class="w"> </span><span class="n">global_b</span><span class="p">);</span>
+
+<span class="c1">// ... later in device code</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">epilogue_functor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[](</span><span class="k">auto</span><span class="w"> </span><span class="k">const</span><span class="o">&amp;</span><span class="w"> </span><span class="n">accumulator</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// some epilogue</span>
+<span class="p">};</span>
+
+<span class="n">tile_pipeline</span><span class="p">.</span><span class="n">execute</span><span class="p">(</span><span class="n">epilogue_functor</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Alternatively, if more flexibility is required, the accumulator can be reusable and owned by user code. This may
+lead to performance regressions on some architectures.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// User owns the reusable accumulator</span>
+
+<span class="c1">// host code</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">pipeline</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">suggest_pipeline</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="p">,</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">reusable_accumulator</span><span class="o">&gt;</span><span class="p">(</span><span class="n">global_a</span><span class="p">,</span><span class="w"> </span><span class="n">global_b</span><span class="p">);</span>
+
+<span class="c1">// ... later in device code</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">accumulator</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tile_pipeline</span><span class="p">.</span><span class="n">get_accumulator</span><span class="p">();</span>
+<span class="n">tile_pipeline</span><span class="p">.</span><span class="n">execute</span><span class="p">(</span><span class="n">accumulator</span><span class="p">);</span>
+<span class="c1">// Use the same thread scope as execute(accumulator); do not guard this with if(accumulator.is_thread_active()).</span>
+<span class="n">tile_pipeline</span><span class="p">.</span><span class="n">finish_accumulation</span><span class="p">();</span>
+<span class="n">some_epilogue</span><span class="p">(</span><span class="n">accumulator</span><span class="p">.</span><span class="n">get_results</span><span class="p">());</span>
+
+<span class="c1">// tile_pipeline.epilogue(accumulator, functor) remains compatible, calls finish_accumulation() internally,</span>
+<span class="c1">// and preserves the required thread scope.</span>
+</pre></div>
+</div>
+<p>When using <code class="docutils literal notranslate"><span class="pre">tile_pipeline.epilogue(accumulator,</span> <span class="pre">functor)</span></code>, the functor must consume the accumulator through
+<code class="docutils literal notranslate"><span class="pre">get_results()</span></code>, <code class="docutils literal notranslate"><span class="pre">axpby()</span></code>, <code class="docutils literal notranslate"><span class="pre">partition_and_store()</span></code>, or <code class="docutils literal notranslate"><span class="pre">reduce_and_store()</span></code>.
+The <code class="docutils literal notranslate"><span class="pre">reduce_and_store(output,</span> <span class="pre">lambda)</span></code> epilogue calls the lambda as <code class="docutils literal notranslate"><span class="pre">lambda(result_element,</span> <span class="pre">output_element,</span> <span class="pre">coord)</span></code>,
+where <code class="docutils literal notranslate"><span class="pre">coord</span></code> is the element’s <code class="docutils literal notranslate"><span class="pre">(m,</span> <span class="pre">n)</span></code> coordinate within the output tile; for memory-backed outputs, padded
+out-of-bounds elements of a predicated GEMM are skipped.
+Use <code class="docutils literal notranslate"><span class="pre">finish_accumulation()</span></code> directly for custom flows that do not read the accumulator inside the epilogue functor.
+Call it with the same thread scope as <code class="docutils literal notranslate"><span class="pre">tile_pipeline.execute(accumulator)</span></code>; it is unsafe to call it under
+<code class="docutils literal notranslate"><span class="pre">if(accumulator.is_thread_active())</span></code> because internal warp-specialization may require broader participation.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><strong>Why reusable accumulation can cause performance regressions?</strong></p>
+<p>cuBLASDx internally applies <code class="docutils literal notranslate"><span class="pre">register</span> <span class="pre">trading</span></code> in warp-specialized kernels, allowing some threads to own more registers than others. This
+optimization is disabled when user wants to own the results.</p>
+</div>
+</section>
+<section id="blocksize-strategy-options">
+<h3>Blocksize Strategy Options<a class="headerlink" href="#blocksize-strategy-options" title="Link to this heading">#</a></h3>
+<p>By default, a <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cuBLASDx</span><span class="w"> </span><span class="n">pipeline</span></code> expects the kernel launch to use <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">pipeline</span><span class="o">-&gt;</span><span class="n">get_block_dim</span><span class="p">()</span></code> as the block dimension. This allows the internal implementation to use optimizations such as warp-specialization, adding extra threads to only act as producers.</p>
+<p>Alternatively, as an advanced option, the user can specify <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cublasdx</span><span class="o">::</span><span class="n">fixed_blocksize</span></code> which forces the pipeline to use the same block-dimension rules as the
+<code class="code highlight cpp docutils literal highlight-cpp"><span class="n">BlockDim</span></code> operator. This choice provides more control and flexibility, but disables warp-specialized kernel paths.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Default - heuristic</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">pipeline</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">suggest_pipeline</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="p">,</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">internal_accumulator</span><span class="p">,</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">heuristic_blocksize</span><span class="o">&gt;</span><span class="p">(</span><span class="n">global_a</span><span class="p">,</span><span class="w"> </span><span class="n">global_b</span><span class="p">);</span>
+
+<span class="c1">// Fixed - explicit user choice</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">pipeline</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">suggest_pipeline</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="p">,</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">internal_accumulator</span><span class="p">,</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">fixed_blocksize</span><span class="o">&gt;</span><span class="p">(</span><span class="n">global_a</span><span class="p">,</span><span class="w"> </span><span class="n">global_b</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="using_cublasdx.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Using cuBLASDx GEMM</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="using_trsm.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Using cuBLASDx TRSM</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pipelining">Pipelining</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quick-start-guide">Quick Start Guide</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pipeline-creation">Pipeline Creation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#passing-pipeline-to-kernels">Passing Pipeline To Kernels</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#taking-pipeline-as-argument">Taking Pipeline As Argument</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#initializing-tile-pipeline-in-kernels">Initializing Tile Pipeline In Kernels</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#resetting-a-pipeline">Resetting A Pipeline</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#executing-pipelined-gemm">Executing Pipelined GEMM</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-pipeline-configuration-options">Advanced Pipeline Configuration Options</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#heuristic-based-pipeline-depth-choice">Heuristic Based Pipeline Depth Choice</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#result-storage-options">Result Storage Options</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#blocksize-strategy-options">Blocksize Strategy Options</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5"></script>
+
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+<a class="footer-brand logo" href="https://www.nvidia.com">
+  <img src="_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+</a></div>
+      
+        <div class="footer-item">
+
+<div class="footer-links">
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/">Privacy Policy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Your Privacy Choices</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/">Terms of Service</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/accessibility/">Accessibility</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/company-policies/">Corporate Policies</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/product-security/">Product Security</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/contact/">Contact</a>
+  
+  
+  
+</div>
+</div>
+      
+        <div class="footer-item">
+
+
+
+
+  <p class="copyright">
+    
+      Copyright © 2022-2026, NVIDIA Corporation &amp; Affiliates. All rights reserved.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+  </body>
+</html>

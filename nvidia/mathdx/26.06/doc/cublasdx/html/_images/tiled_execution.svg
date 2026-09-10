@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420" role="img" aria-labelledby="title desc" style="background: transparent; color-scheme: light dark;">
+  <title id="title">cuBLASDx tile execution model</title>
+  <desc id="desc">A CUDA thread block owns one output tile, cooperatively moves A and B tiles through shared memory or registers, executes the BLAS operation, then updates the corresponding C tile.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#76b900"/>
+    </marker>
+    <style><![CDATA[
+      .frame { fill: #ffffff; fill: light-dark(#ffffff, #0b1220); stroke: #d1d5db; stroke: light-dark(#d1d5db, #4b5563); stroke-width: 1.3; }
+      .box { fill: #ffffff; fill: light-dark(#ffffff, #111827); stroke: #1f2937; stroke: light-dark(#1f2937, #76b900); stroke-width: 1.6; }
+      .soft { fill: #f3f7ec; fill: light-dark(#f3f7ec, #13220c); stroke: #76b900; stroke: light-dark(#76b900, #93d85b); stroke-width: 1.6; }
+      .stage { fill: #fff7ed; fill: light-dark(#fff7ed, #25190b); stroke: #f97316; stroke: light-dark(#f97316, #fb923c); stroke-width: 1.5; }
+      .grid { fill: #ffffff; fill: light-dark(#ffffff, #111827); stroke: #1f2937; stroke: light-dark(#1f2937, #76b900); stroke-width: 1.1; }
+      .tile { fill: #f3f7ec; fill: light-dark(#f3f7ec, #13220c); stroke: #76b900; stroke: light-dark(#76b900, #93d85b); stroke-width: 2.2; }
+      .title { fill: #111827; fill: light-dark(#111827, #f9fafb); font: bold 18px Arial, sans-serif; }
+      .label { fill: #111827; fill: light-dark(#111827, #f9fafb); font: bold 16px Arial, sans-serif; }
+      .text { fill: #111827; fill: light-dark(#111827, #f9fafb); font: 16px Arial, sans-serif; }
+      .small { fill: #374151; fill: light-dark(#374151, #d1d5db); font: 13px Arial, sans-serif; }
+      .line { stroke: #76b900; stroke-width: 2.4; fill: none; marker-end: url(#arrow); }
+      .thin { stroke: #76b900; stroke-width: 1.5; fill: none; marker-end: url(#arrow); }
+    ]]></style>
+  </defs>
+
+  <rect x="28" y="16" width="560" height="36" rx="8" class="box"/>
+  <text x="308" y="40" text-anchor="middle" class="title">One CUDA block cooperatively executes one BLAS tile</text>
+
+  <rect x="36" y="68" width="250" height="272" rx="12" class="frame"/>
+  <text x="161" y="98" text-anchor="middle" class="label">Global memory</text>
+  <rect x="70" y="128" width="78" height="104" rx="8" class="box"/>
+  <text x="109" y="172" text-anchor="middle" class="text">A</text>
+  <text x="109" y="198" text-anchor="middle" class="small">M x K</text>
+  <rect x="174" y="128" width="78" height="104" rx="8" class="box"/>
+  <text x="213" y="172" text-anchor="middle" class="text">B</text>
+  <text x="213" y="198" text-anchor="middle" class="small">K x N</text>
+  <rect x="78" y="270" width="166" height="54" rx="8" class="box"/>
+  <text x="161" y="302" text-anchor="middle" class="text">C tile</text>
+
+  <rect x="370" y="68" width="320" height="272" rx="12" class="frame"/>
+  <text x="530" y="98" text-anchor="middle" class="label">Thread block</text>
+  <rect x="410" y="128" width="112" height="76" rx="8" class="soft"/>
+  <text x="466" y="155" text-anchor="middle" class="text">A tile</text>
+  <text x="466" y="176" text-anchor="middle" class="small">shared memory</text>
+  <text x="466" y="193" text-anchor="middle" class="small">or registers</text>
+  <rect x="540" y="128" width="112" height="76" rx="8" class="soft"/>
+  <text x="596" y="155" text-anchor="middle" class="text">B tile</text>
+  <text x="596" y="176" text-anchor="middle" class="small">shared memory</text>
+  <text x="596" y="193" text-anchor="middle" class="small">or registers</text>
+  <rect x="436" y="242" width="190" height="72" rx="8" class="stage"/>
+  <text x="531" y="270" text-anchor="middle" class="label">GEMM or TRSM</text>
+  <text x="531" y="293" text-anchor="middle" class="small">all participating threads</text>
+  <path d="M 466 204 L 501 236" class="thin"/>
+  <path d="M 596 204 L 561 236" class="thin"/>
+
+  <rect x="770" y="68" width="154" height="272" rx="12" class="frame"/>
+  <text x="847" y="98" text-anchor="middle" class="label">Output grid</text>
+  <g transform="translate(793 132)">
+    <rect x="0" y="0" width="108" height="108" class="grid"/>
+    <path d="M 27 0 L 27 108 M 54 0 L 54 108 M 81 0 L 81 108 M 0 27 L 108 27 M 0 54 L 108 54 M 0 81 L 108 81" class="grid"/>
+    <rect x="54" y="27" width="27" height="27" class="tile"/>
+  </g>
+  <rect x="795" y="260" width="104" height="48" rx="7" class="box"/>
+  <text x="847" y="280" text-anchor="middle" class="small">blockIdx selects</text>
+  <text x="847" y="297" text-anchor="middle" class="small">one C tile</text>
+
+  <path d="M 286 194 L 365 170" class="line"/>
+  <path d="M 626 278 L 765 188" class="line"/>
+</svg>

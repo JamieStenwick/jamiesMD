@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="940" height="390" viewBox="0 0 940 390" role="img" aria-labelledby="title desc" style="background: transparent; color-scheme: light dark;">
+  <title id="title">TRSM BatchesPerBlock indexing</title>
+  <desc id="desc">A CUDA block maps to the first batch index blockIdx.x times BatchesPerBlock, then processes that many consecutive TRSM instances.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#76b900"/></marker>
+    <style><![CDATA[
+      .box { fill: #ffffff; fill: light-dark(#ffffff, #111827); stroke: #1f2937; stroke: light-dark(#1f2937, #76b900); stroke-width: 1.5; }
+      .batch { fill: #f3f7ec; fill: light-dark(#f3f7ec, #13220c); stroke: #76b900; stroke: light-dark(#76b900, #93d85b); stroke-width: 1.5; }
+      .block { fill: #eef6ff; fill: light-dark(#eef6ff, #0f1d2e); stroke: #2563eb; stroke: light-dark(#2563eb, #60a5fa); stroke-width: 1.4; }
+      .warn { fill: #fff7ed; fill: light-dark(#fff7ed, #25190b); stroke: #f97316; stroke: light-dark(#f97316, #fb923c); stroke-width: 1.4; }
+      .text { fill: #111827; fill: light-dark(#111827, #f9fafb); font: 15px Arial, sans-serif; }
+      .small { fill: #374151; fill: light-dark(#374151, #d1d5db); font: 12px Arial, sans-serif; }
+      .label { fill: #111827; fill: light-dark(#111827, #f9fafb); font: bold 15px Arial, sans-serif; }
+      .line { stroke: #76b900; stroke-width: 2.2; fill: none; marker-end: url(#arrow); }
+      .brace { stroke: #f97316; stroke: light-dark(#f97316, #fb923c); stroke-width: 2; fill: none; }
+    ]]></style>
+  </defs>
+
+  <rect x="30" y="18" width="280" height="34" rx="8" class="box"/>
+  <text x="170" y="41" text-anchor="middle" class="label">TRSM batch indexing with BPB</text>
+
+  <rect x="54" y="84" width="96" height="58" rx="8" class="block"/>
+  <text x="102" y="109" text-anchor="middle" class="text">blockIdx.x</text>
+  <text x="102" y="130" text-anchor="middle" class="small">CUDA block</text>
+
+  <rect x="214" y="84" width="180" height="58" rx="8" class="warn"/>
+  <text x="304" y="108" text-anchor="middle" class="text">first_batch</text>
+  <text x="304" y="130" text-anchor="middle" class="small">blockIdx.x * BPB</text>
+  <path d="M 150 113 L 209 113" class="line"/>
+
+  <rect x="462" y="76" width="414" height="76" rx="10" class="box"/>
+  <text x="669" y="104" text-anchor="middle" class="label">get_batch(global_tensor, layout, first_batch)</text>
+  <text x="669" y="130" text-anchor="middle" class="small">returns a 2D tile for BPB=1, or a 3D tile covering BPB consecutive instances</text>
+  <path d="M 394 113 L 457 113" class="line"/>
+
+  <text x="80" y="210" class="label">Flat batch dimension</text>
+  <g>
+    <rect x="72" y="232" width="74" height="54" rx="6" class="batch"/>
+    <text x="109" y="264" text-anchor="middle" class="small">batch 0</text>
+    <rect x="154" y="232" width="74" height="54" rx="6" class="batch"/>
+    <text x="191" y="264" text-anchor="middle" class="small">batch 1</text>
+    <rect x="236" y="232" width="74" height="54" rx="6" class="batch"/>
+    <text x="273" y="264" text-anchor="middle" class="small">batch 2</text>
+    <rect x="318" y="232" width="74" height="54" rx="6" class="batch"/>
+    <text x="355" y="264" text-anchor="middle" class="small">batch 3</text>
+    <rect x="400" y="232" width="74" height="54" rx="6" class="batch"/>
+    <text x="437" y="264" text-anchor="middle" class="small">batch 4</text>
+    <rect x="482" y="232" width="74" height="54" rx="6" class="batch"/>
+    <text x="519" y="264" text-anchor="middle" class="small">batch 5</text>
+    <rect x="564" y="232" width="74" height="54" rx="6" class="batch"/>
+    <text x="601" y="264" text-anchor="middle" class="small">batch 6</text>
+    <rect x="646" y="232" width="74" height="54" rx="6" class="batch"/>
+    <text x="683" y="264" text-anchor="middle" class="small">batch 7</text>
+  </g>
+
+  <path d="M 236 306 C 236 328 392 328 392 306" class="brace"/>
+  <text x="314" y="352" text-anchor="middle" class="small">blockIdx.x = 1, BPB = 2, first_batch = 2</text>
+  <path d="M 400 306 C 400 328 556 328 556 306" class="brace"/>
+  <text x="478" y="374" text-anchor="middle" class="small">blockIdx.x = 2, BPB = 2, first_batch = 4</text>
+
+  <rect x="742" y="218" width="148" height="82" rx="8" class="warn"/>
+  <text x="816" y="246" text-anchor="middle" class="text">batch count</text>
+  <text x="816" y="268" text-anchor="middle" class="small">pad to a multiple</text>
+  <text x="816" y="287" text-anchor="middle" class="small">of BPB</text>
+</svg>

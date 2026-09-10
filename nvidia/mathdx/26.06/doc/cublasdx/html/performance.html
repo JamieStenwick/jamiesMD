@@ -1,0 +1,781 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Achieving High Performance &#8212; cuBLASDx</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
+    <link rel="stylesheet" type="text/css" href="_static/diagram.css?v=21e9147c" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
+
+
+
+    <script src="_static/documentation_options.js?v=26f1c5af"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'performance';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://docs.nvidia.com/cuda/cublasdx/_static/switcher.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.7.1';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+
+    <link rel="icon" href="_static/nvidia.ico"/>
+
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Operators" href="api/operators.html" />
+    <link rel="prev" title="Using cuBLASDx TRSM" href="using_trsm.html" />
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.7.1" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+
+
+  </head>
+
+  <body data-default-mode="">
+
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="cuBLASDx - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="cuBLASDx - Home"/>
+  
+  
+    <p class="title logo__title">cuBLASDx</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="cuBLASDx - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="cuBLASDx - Home"/>
+  
+  
+    <p class="title logo__title">cuBLASDx</p>
+  
+</a>
+
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Table of Contents">
+  <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
+  <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Documentation Home</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="requirements_func.html">Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="using_cublasdx.html">Using cuBLASDx GEMM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="using_pipelines.html">Using Pipelined GEMM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="using_trsm.html">Using cuBLASDx TRSM</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Achieving High Performance</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="api/operators.html">Operators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/traits.html">Traits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/shared_methods.html">Input / Output Format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/gemm_methods.html">GEMM Execution Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/trsm_methods.html">TRSM Execution Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/pipeline.html">Pipeline Creation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/other_methods.html">Other Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/other_tensors.html">Tensor Manipulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/other_shared.html">Shared Memory Management</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Python</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="python_bindings.html">cuBLASDx Python Bindings</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="examples_learning_path.html">Learning Path Through Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="release_notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/NVIDIA/CUDALibrarySamples/tree/main/MathDx/cuBLASDx">GitHub Samples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">MathDx</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/cublasdx-downloads">cuBLASDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/cufftdx-downloads">cuFFTDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/cusolverdx-downloads">cuSolverDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/curanddx-downloads">cuRANDDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/nvcompdx-downloads">nvCOMPDx</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Achieving High Performance</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="achieving-high-performance">
+<span id="high-perf-label"></span><h1>Achieving High Performance<a class="headerlink" href="#achieving-high-performance" title="Link to this heading">#</a></h1>
+<p>Below, we present general advice and examples to help you achieve high performance with cuBLASDx.</p>
+<section id="building-advice">
+<h2>Building Advice<a class="headerlink" href="#building-advice" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Use the newest CUDA SDK available</p></li>
+<li><p>Prefer CMake as a build system</p></li>
+<li><dl class="simple">
+<dt>Always use <code class="code highlight cpp docutils literal highlight-cpp"><span class="o">-</span><span class="n">O3</span><span class="w"> </span><span class="o">-</span><span class="n">DNDEBUG</span></code> flags for compilation (or <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">CMake</span><span class="w"> </span><span class="n">Release</span><span class="w"> </span><span class="n">build</span><span class="w"> </span><span class="n">type</span></code>)</dt><dd><ul>
+<li><p>cuBLASDx and CuTe make extensive use of runtime asserts, included only in debug builds</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="general-advice">
+<h2>General Advice<a class="headerlink" href="#general-advice" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Use pipelining API whenever possible</p></li>
+<li><p>Use suggested layouts whenever possible</p></li>
+<li><p>Start with the library-provided defaults for optimal compute performance.</p></li>
+<li><p>Prefer the register fragment API over the shared memory API.</p></li>
+<li><p>The best parameters for compute-bound and memory-bound kernels may differ.</p></li>
+<li><p>Whenever possible, batch BLAS operations so that enough CUDA blocks are launched in a grid to fully utilize the GPU for peak performance.</p></li>
+<li><p>Merge adjacent memory-bound kernels (pre- and post-processing) with a BLAS kernel to reduce global memory accesses.</p></li>
+<li><p>If possible, use a combination of <a class="reference internal" href="api/operators.html#precision-operator-label"><span class="std std-ref">precisions</span></a> that has <a class="reference internal" href="requirements_func.html#mixed-precision-label"><span class="std std-ref">MMA support</span></a>.</p></li>
+<li><p>Use the tensor <a class="reference internal" href="api/gemm_methods.html#block-execute-method-label"><span class="std std-ref">execute(…)</span></a> API for improved I/O and matrix multiplication performance.</p></li>
+<li><p>Use <a class="reference internal" href="api/other_tensors.html#copy-tensor-other-label"><span class="std std-ref">cublasdx::copy</span></a> for copying shared and global memory tensors. This should automatically vectorize loads and stores.</p></li>
+<li><p>Use <a class="reference internal" href="api/other_tensors.html#copy-register-tensor-other-label"><span class="std std-ref">cublasdx::copy_fragment</span></a> for copying register fragments to shared and global memory tensors. This should also automatically vectorize loads and stores.</p></li>
+<li><p>Use 16-byte (128-bit) aligned pointers, and use <a class="reference internal" href="api/operators.html#alignment-operator-label"><span class="std std-ref">MaxAlignment</span></a> (an alias for <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Alignment</span><span class="o">&lt;</span><span class="mi">16</span><span class="p">,</span><span class="w"> </span><span class="mi">16</span><span class="p">,</span><span class="w"> </span><span class="mi">16</span><span class="o">&gt;</span></code>).</p></li>
+</ul>
+</section>
+<section id="matrix-layouts">
+<h2>Matrix Layouts<a class="headerlink" href="#matrix-layouts" title="Link to this heading">#</a></h2>
+<p>We recommend using the tensor API along with <a class="reference internal" href="api/other_methods.html#get-layout-other-label"><span class="std std-ref">get_layout_smem_*()</span></a>,
+<a class="reference internal" href="api/other_methods.html#suggest-layout-other-label"><span class="std std-ref">suggest_layout_smem_*()</span></a>, and <a class="reference internal" href="api/other_tensors.html#create-tensor-other-label"><span class="std std-ref">cublasdx::make_tensor</span></a> functions.
+This allows you to use custom layouts for matrices, which can provide better performance and better match your kernel’s requirements.</p>
+<ul class="simple">
+<li><p>Try using <a class="reference internal" href="api/other_methods.html#suggest-layout-other-label"><span class="std std-ref">suggest_layout_smem_*()</span></a>, especially for <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">A</span></code> and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">B</span></code> matrices, to achieve better GEMM and I/O performance.</p></li>
+<li><p>Use <a class="reference internal" href="api/other_methods.html#get-layout-other-label"><span class="std std-ref">get_layout_smem_*()</span></a> for a matrix if you need it to be in plain column- or row-major order.</p></li>
+<li><p>The best layouts for GEMM may differ from the best layouts for the entire kernel; experiment with various approaches.</p></li>
+<li><p>For use cases that do not have dedicated MMA (such as fp32-fp32-fp32), try using <a class="reference internal" href="api/other_methods.html#get-layout-other-label"><span class="std std-ref">get_layout_smem_*()</span></a> and <a class="reference internal" href="api/traits.html#suggested-leading-dimension-of-trait-label"><span class="std std-ref">suggested_leading_dimension_of</span></a> to improve shared memory access patterns.</p></li>
+<li><dl class="simple">
+<dt>For register fragment APIs, always choose an accumulator that matches your layouts:</dt><dd><ul>
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">suggest_accumulator</span><span class="p">()</span></code> for <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">suggest_layout_smem_</span><span class="o">*</span><span class="p">()</span></code></p></li>
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">get_accumulator</span><span class="p">()</span></code> for <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">get_layout_smem_</span><span class="o">*</span><span class="p">()</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<div class="hint admonition">
+<p class="admonition-title">Example</p>
+<p>Example of using <a class="reference internal" href="api/operators.html#alignment-operator-label"><span class="std std-ref">maximum alignment</span></a>, <a class="reference internal" href="api/other_tensors.html#copy-tensor-other-label"><span class="std std-ref">cublasdx::copy</span></a>, and
+<a class="reference internal" href="api/other_methods.html#suggest-layout-other-label"><span class="std std-ref">suggested layouts</span></a> for shared memory to increase performance.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">BLAS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">decltype</span><span class="p">(</span><span class="n">Size</span><span class="o">&lt;</span><span class="mi">128</span><span class="p">,</span><span class="w"> </span><span class="mi">128</span><span class="p">,</span><span class="w"> </span><span class="mi">128</span><span class="o">&gt;</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">Type</span><span class="o">&lt;</span><span class="n">type</span><span class="o">::</span><span class="n">real</span><span class="o">&gt;</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">Precision</span><span class="o">&lt;</span><span class="n">__half</span><span class="p">,</span><span class="w"> </span><span class="n">__half</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="o">&gt;</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">MaxAlignment</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">Block</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">...);</span>
+
+<span class="c1">// Tensors with global memory data</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">a_global_tensor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">make_tensor</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">BLAS</span><span class="o">::</span><span class="n">get_layout_gmem_a</span><span class="p">());</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">b_global_tensor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">make_tensor</span><span class="p">(</span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="n">BLAS</span><span class="o">::</span><span class="n">get_layout_gmem_b</span><span class="p">());</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">c_global_tensor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">make_tensor</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="w"> </span><span class="n">BLAS</span><span class="o">::</span><span class="n">get_layout_gmem_c</span><span class="p">());</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">out_global_tensor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">make_tensor</span><span class="p">(</span><span class="n">output</span><span class="p">,</span><span class="w"> </span><span class="n">BLAS</span><span class="o">::</span><span class="n">get_layout_gmem_c</span><span class="p">());</span>
+
+<span class="c1">// Tensors with shared memory data</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">a_shared_tensor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">make_tensor</span><span class="p">(</span><span class="n">smem_a</span><span class="p">,</span><span class="w"> </span><span class="n">BLAS</span><span class="o">::</span><span class="n">suggest_layout_smem_a</span><span class="p">());</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">b_shared_tensor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">make_tensor</span><span class="p">(</span><span class="n">smem_b</span><span class="p">,</span><span class="w"> </span><span class="n">BLAS</span><span class="o">::</span><span class="n">suggest_layout_smem_b</span><span class="p">());</span>
+
+<span class="c1">// 16-byte (128-bit) alignment helps vectorize (if possible) copying between shared and global memory</span>
+<span class="k">using</span><span class="w"> </span><span class="n">blas_alignment</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">alignment_of</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;</span><span class="p">;</span><span class="w"> </span><span class="c1">// 16, 16, 16</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">copy</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="p">,</span><span class="w"> </span><span class="n">blas_alignment</span><span class="o">::</span><span class="n">a</span><span class="o">&gt;</span><span class="p">(</span><span class="n">a_global_tensor</span><span class="p">,</span><span class="w"> </span><span class="n">a_shared_tensor</span><span class="p">);</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">copy</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="p">,</span><span class="w"> </span><span class="n">blas_alignment</span><span class="o">::</span><span class="n">b</span><span class="o">&gt;</span><span class="p">(</span><span class="n">b_global_tensor</span><span class="p">,</span><span class="w"> </span><span class="n">b_shared_tensor</span><span class="p">);</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">copy_wait</span><span class="p">();</span>
+
+<span class="c1">// Get suggested accumulator, matching shared memory layouts for A and B</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">accumulator</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BLAS</span><span class="o">::</span><span class="n">suggest_accumulator</span><span class="p">();</span>
+
+<span class="c1">// 16-byte (128-bit) alignment and suggested layouts help improve shared memory IO in GEMM</span>
+<span class="n">BLAS</span><span class="p">().</span><span class="n">execute</span><span class="p">(</span><span class="n">a_shared_tensor</span><span class="p">,</span><span class="w"> </span><span class="n">b_shared_tensor</span><span class="p">,</span><span class="w"> </span><span class="n">accumulator</span><span class="p">);</span>
+
+<span class="k">auto</span><span class="w"> </span><span class="n">d_fragment</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">accumulator</span><span class="p">.</span><span class="n">make_partition_and_copy</span><span class="p">(</span><span class="n">c_global_tensor</span><span class="p">);</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">axpby</span><span class="p">(</span><span class="n">alpha</span><span class="p">,</span><span class="w"> </span><span class="n">accumulator</span><span class="p">.</span><span class="n">get_results</span><span class="p">(),</span><span class="w"> </span><span class="n">beta</span><span class="p">,</span><span class="w"> </span><span class="n">d_fragment</span><span class="p">);</span>
+
+
+<span class="c1">// Partition out_global_tensor and copy this thread&#39;s elements into appropriate locations</span>
+<span class="n">accumulator</span><span class="p">.</span><span class="n">partition_and_copy</span><span class="p">(</span><span class="n">d_fragment</span><span class="p">,</span><span class="w"> </span><span class="n">out_global_tensor</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="memory-management">
+<h2>Memory Management<a class="headerlink" href="#memory-management" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Avoid unnecessary reads/writes to global memory.</p></li>
+<li><p>Ensure global memory accesses are coalesced.</p></li>
+<li><p>Use shared memory or extra registers to store temporary data.</p></li>
+<li><p>Offload any element-wise pre- and post-processing to transform functors that can be passed to <a class="reference internal" href="api/gemm_methods.html#block-execute-method-transform-label"><span class="std std-ref">execute(…)</span></a> to avoid trips to shared memory.</p></li>
+</ul>
+</section>
+<section id="advanced">
+<h2>Advanced<a class="headerlink" href="#advanced" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>If matrix-wide pre- and/or post-processing is required, try to partition data into registers to avoid shared memory accesses.</p></li>
+<li><p>For BLAS loads that do not fully utilize the GPU, consider running parallel kernels in separate streams.</p></li>
+<li><p>Use the <a class="reference external" href="https://docs.nvidia.com/nsight-compute/NsightCompute/index.html#occupancy-calculator">Nsight Compute Occupancy Calculator</a> <a class="footnote-reference brackets" href="#id11" id="id12" role="doc-noteref"><span class="fn-bracket">[</span>6<span class="fn-bracket">]</span></a> and/or the <a class="reference external" href="https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__OCCUPANCY.html">cudaOccupancyMaxActiveBlocksPerMultiprocessor</a> <a class="footnote-reference brackets" href="#id16" id="id17" role="doc-noteref"><span class="fn-bracket">[</span>8<span class="fn-bracket">]</span></a> function to determine the optimal launch parameters</p></li>
+<li><p>Use the <a class="reference external" href="https://docs.nvidia.com/nsight-compute/NsightCompute/index.html#occupancy-calculator">Nsight Compute Occupancy Calculator</a> <a class="footnote-reference brackets" href="#id11" id="id13" role="doc-noteref"><span class="fn-bracket">[</span>6<span class="fn-bracket">]</span></a> or <a class="reference external" href="https://docs.nvidia.com/nsight-compute/NsightCompute/index.html">Nsight Compute</a> <a class="footnote-reference brackets" href="#id14" id="id15" role="doc-noteref"><span class="fn-bracket">[</span>7<span class="fn-bracket">]</span></a> to determine what extra resources are available without reducing occupancy.</p></li>
+</ul>
+</section>
+<section id="pipelining">
+<h2>Pipelining<a class="headerlink" href="#pipelining" title="Link to this heading">#</a></h2>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<img alt="Diagram of GEMM performance tuning tradeoffs among tile shape, pipeline depth, alignment, block size, and occupancy." class="dark-light diagram align-center" src="_images/performance_tuning.svg" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<ul class="simple">
+<li><p>Start with default pipeline depth (skip this template argument)</p></li>
+<li><p>Make sure <code class="docutils literal notranslate"><span class="pre">K</span> <span class="pre">/</span> <span class="pre">tile_k</span></code> is at least the chosen pipeline depth; otherwise there are not enough K tiles to keep all stages valid.</p></li>
+<li><p>Tune <code class="docutils literal notranslate"><span class="pre">tile_m</span></code>, <code class="docutils literal notranslate"><span class="pre">tile_n</span></code>, <code class="docutils literal notranslate"><span class="pre">tile_k</span></code>, <code class="docutils literal notranslate"><span class="pre">tile_threads</span></code>, alignment, and pipeline depth together. Larger tiles and deeper pipelines can improve reuse and overlap by keeping more asynchronous load and compute stages in flight, but also increase shared-memory pressure and may reduce occupancy.</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">EnableInputStreaming</span></code> when no per-element input preprocessing is required.</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">StaticBlockDim</span></code> only when the kernel will not use more threads than the descriptor’s <code class="docutils literal notranslate"><span class="pre">BlockDim</span></code>.</p></li>
+<li><dl class="simple">
+<dt>If you don’t need extra flexibility, use the <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">internal_accumulator</span></code> API</dt><dd><ul>
+<li><p>on architectures not supporting TMEM, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">reusable_accumulator</span></code> may cause increased register pressure and performance decrease</p></li>
+<li><p>if you use the manual <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">execute</span><span class="p">(</span><span class="n">accumulator</span><span class="p">)</span></code> flow, call <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">finish_accumulation</span><span class="p">()</span></code> with the same thread scope before reading accumulator results; do not guard it with <code class="code highlight cpp docutils literal highlight-cpp"><span class="k">if</span><span class="p">(</span><span class="n">accumulator</span><span class="p">.</span><span class="n">is_thread_active</span><span class="p">())</span></code> because internal warp-specialization may require broader participation. <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">epilogue</span><span class="p">(</span><span class="n">accumulator</span><span class="p">,</span><span class="w"> </span><span class="n">functor</span><span class="p">)</span></code> calls it internally</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>If possible, stick to <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">heuristic_blocksize</span></code> and use <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">epilogue_sync</span></code> inside epilogue functor</dt><dd><ul>
+<li><p>this is necessary to allow warp-specialization with register trading in some cases</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>For full-device GEMM examples, interpret timings in context: block-level examples measure one tile configuration, while device-level examples include grid scheduling and compare against a reference path whose heuristic/setup cost may be excluded.</p></li>
+</ul>
+</section>
+<section id="further-reading">
+<h2>Further Reading<a class="headerlink" href="#further-reading" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://docs.nvidia.com/cuda/cuda-c-best-practices-guide/index.html">CUDA Best Practices Guide</a> <a class="footnote-reference brackets" href="#id1" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a></p></li>
+<li><p><a class="reference external" href="https://docs.nvidia.com/cuda/turing-tuning-guide/index.html">Turing Tuning Guide</a> <a class="footnote-reference brackets" href="#id3" id="id4" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a></p></li>
+<li><p><a class="reference external" href="https://docs.nvidia.com/cuda/ampere-tuning-guide/index.html">Ampere Tuning Guide</a> <a class="footnote-reference brackets" href="#id5" id="id6" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a></p></li>
+<li><p><a class="reference external" href="https://docs.nvidia.com/cuda/hopper-tuning-guide/index.html">Hopper Tuning Guide</a> <a class="footnote-reference brackets" href="#id7" id="id8" role="doc-noteref"><span class="fn-bracket">[</span>4<span class="fn-bracket">]</span></a></p></li>
+<li><p><a class="reference external" href="https://docs.nvidia.com/cuda/blackwell-tuning-guide/index.html">Blackwell Tuning Guide</a> <a class="footnote-reference brackets" href="#id9" id="id10" role="doc-noteref"><span class="fn-bracket">[</span>5<span class="fn-bracket">]</span></a></p></li>
+</ul>
+<section id="references">
+<h3>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h3>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id1" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">1</a><span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="https://docs.nvidia.com/cuda/cuda-c-best-practices-guide/index.html">https://docs.nvidia.com/cuda/cuda-c-best-practices-guide/index.html</a></p>
+</aside>
+<aside class="footnote brackets" id="id3" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id4">2</a><span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="https://docs.nvidia.com/cuda/turing-tuning-guide/index.html">https://docs.nvidia.com/cuda/turing-tuning-guide/index.html</a></p>
+</aside>
+<aside class="footnote brackets" id="id5" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id6">3</a><span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="https://docs.nvidia.com/cuda/ampere-tuning-guide/index.html">https://docs.nvidia.com/cuda/ampere-tuning-guide/index.html</a></p>
+</aside>
+<aside class="footnote brackets" id="id7" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id8">4</a><span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="https://docs.nvidia.com/cuda/hopper-tuning-guide/index.html">https://docs.nvidia.com/cuda/hopper-tuning-guide/index.html</a></p>
+</aside>
+<aside class="footnote brackets" id="id9" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id10">5</a><span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="https://docs.nvidia.com/cuda/blackwell-tuning-guide/index.html">https://docs.nvidia.com/cuda/blackwell-tuning-guide/index.html</a></p>
+</aside>
+<aside class="footnote brackets" id="id11" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span>6<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id12">1</a>,<a role="doc-backlink" href="#id13">2</a>)</span>
+<p><a class="reference external" href="https://docs.nvidia.com/nsight-compute/NsightCompute/index.html#occupancy-calculator">https://docs.nvidia.com/nsight-compute/NsightCompute/index.html#occupancy-calculator</a></p>
+</aside>
+<aside class="footnote brackets" id="id14" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id15">7</a><span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="https://docs.nvidia.com/nsight-compute/NsightCompute/index.html">https://docs.nvidia.com/nsight-compute/NsightCompute/index.html</a></p>
+</aside>
+<aside class="footnote brackets" id="id16" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id17">8</a><span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__OCCUPANCY.html">https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__OCCUPANCY.html</a></p>
+</aside>
+</aside>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="using_trsm.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Using cuBLASDx TRSM</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="api/operators.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Operators</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#building-advice">Building Advice</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#general-advice">General Advice</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#matrix-layouts">Matrix Layouts</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#memory-management">Memory Management</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced">Advanced</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pipelining">Pipelining</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#further-reading">Further Reading</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5"></script>
+
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+<a class="footer-brand logo" href="https://www.nvidia.com">
+  <img src="_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+</a></div>
+      
+        <div class="footer-item">
+
+<div class="footer-links">
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/">Privacy Policy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Your Privacy Choices</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/">Terms of Service</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/accessibility/">Accessibility</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/company-policies/">Corporate Policies</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/product-security/">Product Security</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/contact/">Contact</a>
+  
+  
+  
+</div>
+</div>
+      
+        <div class="footer-item">
+
+
+
+
+  <p class="copyright">
+    
+      Copyright © 2022-2026, NVIDIA Corporation &amp; Affiliates. All rights reserved.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+  </body>
+</html>

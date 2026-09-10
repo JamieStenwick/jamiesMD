@@ -1,0 +1,1136 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Tensors &#8212; cuBLASDx</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
+    <link rel="stylesheet" type="text/css" href="../_static/diagram.css?v=21e9147c" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
+
+
+
+    <script src="../_static/documentation_options.js?v=26f1c5af"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/other_tensors';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://docs.nvidia.com/cuda/cublasdx/_static/switcher.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.7.1';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+
+    <link rel="icon" href="../_static/nvidia.ico"/>
+
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Shared Memory Management" href="other_shared.html" />
+    <link rel="prev" title="Other Methods" href="other_methods.html" />
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.7.1" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+
+
+  </head>
+
+  <body data-default-mode="">
+
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="cuBLASDx - Home"/>
+    <img src="../_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="cuBLASDx - Home"/>
+  
+  
+    <p class="title logo__title">cuBLASDx</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="cuBLASDx - Home"/>
+    <img src="../_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="cuBLASDx - Home"/>
+  
+  
+    <p class="title logo__title">cuBLASDx</p>
+  
+</a>
+
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Table of Contents">
+  <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
+  <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Documentation Home</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../requirements_func.html">Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../using_cublasdx.html">Using cuBLASDx GEMM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../using_pipelines.html">Using Pipelined GEMM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../using_trsm.html">Using cuBLASDx TRSM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../performance.html">Achieving High Performance</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="operators.html">Operators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="traits.html">Traits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="shared_methods.html">Input / Output Format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gemm_methods.html">GEMM Execution Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="trsm_methods.html">TRSM Execution Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pipeline.html">Pipeline Creation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="other_methods.html">Other Methods</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Tensor Manipulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="other_shared.html">Shared Memory Management</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Python</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../python_bindings.html">cuBLASDx Python Bindings</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../examples_learning_path.html">Learning Path Through Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../release_notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/NVIDIA/CUDALibrarySamples/tree/main/MathDx/cuBLASDx">GitHub Samples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">MathDx</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/cublasdx-downloads">cuBLASDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/cufftdx-downloads">cuFFTDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/cusolverdx-downloads">cuSolverDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/curanddx-downloads">cuRANDDx</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://developer.nvidia.com/nvcompdx-downloads">nvCOMPDx</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Tensors</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="tensors">
+<h1>Tensors<a class="headerlink" href="#tensors" title="Link to this heading">#</a></h1>
+<section id="cublasdx-tensor">
+<span id="tensor-other-label"></span><h2>cuBLASDx Tensor<a class="headerlink" href="#cublasdx-tensor" title="Link to this heading">#</a></h2>
+<p>cuBLASDx exposes <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cublasdx</span><span class="o">::</span><span class="n">tensor</span></code> class which is an alias of a
+<a class="reference external" href="https://docs.nvidia.com/cutlass/latest/media/docs/cpp/cute/03_tensor.html">cute::Tensor</a> class from CuTe
+library (see <a class="reference external" href="https://github.com/NVIDIA/cutlass">CUTLASS</a>).</p>
+</section>
+<section id="tensor-creation">
+<span id="create-tensor-other-label"></span><h2>Tensor Creation<a class="headerlink" href="#tensor-creation" title="Link to this heading">#</a></h2>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// #1: Wrapper of cute::make_tensor</span>
+<span class="k">template</span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">Iterator</span><span class="p">,</span><span class="w"> </span><span class="k">class</span><span class="p">...</span><span class="w"> </span><span class="n">Args</span><span class="o">&gt;</span>
+<span class="n">__device__</span><span class="w"> </span><span class="n">__host__</span>
+<span class="k">constexpr</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">tensor</span><span class="w"> </span><span class="n">make_tensor</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Iterator</span><span class="o">&amp;</span><span class="w"> </span><span class="n">iter</span><span class="p">,</span><span class="w"> </span><span class="n">Args</span><span class="w"> </span><span class="k">const</span><span class="o">&amp;</span><span class="p">...</span><span class="w"> </span><span class="n">args</span><span class="p">);</span>
+
+<span class="c1">// #2: With pointer layout returned by the get_&lt;smem/gmem&gt;_layout_&lt;a/b/c&gt;, suggest_layout_smem_&lt;a/b/c&gt; method from the BLAS description.</span>
+<span class="k">template</span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">T</span><span class="p">,</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">PointerLayout</span><span class="o">&gt;</span>
+<span class="n">__device__</span><span class="w"> </span><span class="n">__host__</span>
+<span class="k">constexpr</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">tensor</span><span class="w"> </span><span class="n">make_tensor</span><span class="p">(</span><span class="n">T</span><span class="o">*</span><span class="w"> </span><span class="n">ptr</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">PointerLayout</span><span class="o">&amp;</span><span class="w"> </span><span class="n">pl</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cublasdx</span><span class="o">::</span><span class="n">make_tensor</span></code> is helper function for creating <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cublasdx</span><span class="o">::</span><span class="n">tensor</span></code> objects.</p>
+<p>There are two variants.
+The first one is simply a wrapper of <a class="reference external" href="https://docs.nvidia.com/cutlass/latest/media/docs/cpp/cute/03_tensor.html#tensor-creation">cute::make_tensor(…)</a>,
+which usually requires manually tagging the raw pointer with its memory space.
+The other one works together with the <a class="reference internal" href="other_methods.html#get-layout-other-label"><span class="std std-ref">Get Memory Layout</span></a> and the <a class="reference internal" href="other_methods.html#suggest-layout-other-label"><span class="std std-ref">Suggested Shared Memory Layout</span></a> methods.
+It creates a global or shared memory tensor with the returned pointer layout.
+In contrast to the first variant, it will pick up the memory space information from the pointer layouts and tag the raw pointer correspondingly.</p>
+<div class="hint admonition">
+<p class="admonition-title">Example</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">BLAS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">decltype</span><span class="p">(</span><span class="n">Size</span><span class="o">&lt;</span><span class="mi">128</span><span class="p">,</span><span class="w"> </span><span class="mi">128</span><span class="p">,</span><span class="w"> </span><span class="mi">128</span><span class="o">&gt;</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">Type</span><span class="o">&lt;</span><span class="n">type</span><span class="o">::</span><span class="n">real</span><span class="o">&gt;</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">Precision</span><span class="o">&lt;</span><span class="kt">float</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="o">&gt;</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">Block</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">...);</span>
+
+<span class="c1">// tensor with global memory data</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">a_global_tensor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">make_tensor</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">BLAS</span><span class="o">::</span><span class="n">get_layout_gmem_a</span><span class="p">());</span>
+
+<span class="c1">// tensor with shared memory data</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">a_shared_tensor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">make_tensor</span><span class="p">(</span><span class="n">smem_a</span><span class="p">,</span><span class="w"> </span><span class="n">BLAS</span><span class="o">::</span><span class="n">get_layout_smem_a</span><span class="p">());</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">a_shared_tensor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">make_tensor</span><span class="p">(</span><span class="n">smem_a</span><span class="p">,</span><span class="w"> </span><span class="n">BLAS</span><span class="o">::</span><span class="n">suggest_layout_smem_a</span><span class="p">());</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="accumulator-and-register-fragment-tensors">
+<span id="accumulator-register-tensor-other-label"></span><h2>Accumulator And Register Fragment Tensors<a class="headerlink" href="#accumulator-and-register-fragment-tensors" title="Link to this heading">#</a></h2>
+<p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cuBLASDx</span><span class="w"> </span><span class="mf">0.3.0</span></code> introduces 2 new memory objects: <strong>register fragment tensors</strong> and <strong>accumulators</strong>.</p>
+<p>Since register memory is limited to a thread, it’s not used to store entire tensors, only small parts of them. A division
+of a global / shared memory tensor into threads taking part in a BLAS is called a <strong>partitioning</strong>. In cuBLASDx the
+BLAS operation is a source of partitioning pattern.</p>
+<p>In every BLAS execution each thread is assigned some elements of result matrix <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">C</span></code> which it calculates. This selection
+is dependent upon 3 things:</p>
+<ol class="arabic simple">
+<li><p>number of threads,</p></li>
+<li><p>chosen MMA instruction, and</p></li>
+<li><p>tiling chosen for the MMA instruction.</p></li>
+</ol>
+<p>User of cuBLASDx has direct control over only 1 of these 3 options, hence the partitioning information must be opaque
+and used only with BLAS object which defined it. cuBLASDx exposes this opaque information by means of a <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">accumulator</span></code>.</p>
+<section id="accumulator">
+<h3>Accumulator<a class="headerlink" href="#accumulator" title="Link to this heading">#</a></h3>
+<p>Accumulator objects can be obtained from BLAS type in 2 ways:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// #1a As pre-requested default accumulator</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">accumulator</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BLAS</span><span class="o">::</span><span class="n">get_accumulator</span><span class="p">();</span>
+
+<span class="c1">// #1b As pre-requested suggested accumulator</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">accumulator</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BLAS</span><span class="o">::</span><span class="n">suggest_accumulator</span><span class="p">();</span>
+
+<span class="c1">// #2 As result of register API without accumulator call</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">accumulator</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BLAS</span><span class="p">().</span><span class="n">execute</span><span class="p">(</span><span class="n">a_shared_tensor</span><span class="p">,</span><span class="w"> </span><span class="n">b_shared_tensor</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Options #1a and #1b require the user to choose version coherent with used layouts. <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Suggested</span></code> accumulator only with suggested layouts and <code class="code highlight cpp docutils literal highlight-cpp"><span class="k">default</span></code> accumulator with any other layouts.</p>
+</div>
+<p>Accumulator is an opaque object exposing the following API:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">__device__</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">is_predicated</span><span class="p">();</span>
+<span class="n">__device__</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">is_thread_active</span><span class="p">();</span>
+<span class="n">__device__</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">make_empty_fragment</span><span class="p">();</span>
+<span class="n">__device__</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">get_results</span><span class="p">();</span>
+<span class="n">__device__</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">clear</span><span class="p">();</span>
+
+<span class="c1">// Partitioning interfaces</span>
+
+<span class="k">template</span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">CTensor</span><span class="o">&gt;</span>
+<span class="n">__forceinline__</span><span class="w"> </span><span class="n">__device__</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">partition_like_C</span><span class="p">(</span><span class="n">CTensor</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">ctensor</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="k">template</span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="n">Coords</span><span class="o">&gt;</span>
+<span class="n">__forceinline__</span><span class="w"> </span><span class="n">__device__</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">map_fragment_index</span><span class="p">(</span><span class="n">Coords</span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="n">coords</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="k">template</span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="n">Coords</span><span class="o">&gt;</span>
+<span class="n">__forceinline__</span><span class="w"> </span><span class="n">__device__</span>
+<span class="kt">bool</span><span class="w"> </span><span class="n">is_index_in_bounds</span><span class="p">(</span><span class="n">Coords</span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="n">coords</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="k">template</span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">Coord</span><span class="o">&gt;</span>
+<span class="n">__forceinline__</span><span class="w"> </span><span class="n">__device__</span>
+<span class="kt">bool</span><span class="w"> </span><span class="n">is_coord_in_bounds</span><span class="p">(</span><span class="n">Coord</span><span class="w"> </span><span class="k">const</span><span class="o">&amp;</span><span class="w"> </span><span class="n">coord</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="c1">// Partitioning and data copying interfaces</span>
+
+<span class="k">template</span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">Fragment</span><span class="p">,</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">CTensor</span><span class="o">&gt;</span>
+<span class="n">__forceinline__</span><span class="w"> </span><span class="n">__device__</span>
+<span class="kt">void</span><span class="w"> </span><span class="n">partition_and_copy</span><span class="p">(</span><span class="n">Fragment</span><span class="w"> </span><span class="k">const</span><span class="o">&amp;</span><span class="w"> </span><span class="n">fragment</span><span class="p">,</span><span class="w"> </span><span class="n">CTensor</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">ctensor</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="k">template</span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">CTensor</span><span class="p">,</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">Fragment</span><span class="o">&gt;</span>
+<span class="n">__forceinline__</span><span class="w"> </span><span class="n">__device__</span>
+<span class="kt">void</span><span class="w"> </span><span class="n">partition_and_copy</span><span class="p">(</span><span class="n">CTensor</span><span class="w"> </span><span class="k">const</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ctensor</span><span class="p">,</span><span class="w"> </span><span class="n">Fragment</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">fragment</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="k">template</span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">CTensor</span><span class="o">&gt;</span>
+<span class="n">__forceinline__</span><span class="w"> </span><span class="n">__device__</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">make_partition_and_copy</span><span class="p">(</span><span class="n">CTensor</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">ctensor</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="k">template</span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">CTensor</span><span class="o">&gt;</span>
+<span class="n">__forceinline__</span><span class="w"> </span><span class="n">__device__</span>
+<span class="kt">void</span><span class="w"> </span><span class="n">partition_and_store</span><span class="p">(</span><span class="n">CTensor</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">ctensor</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="c1">// Epilogue interfaces</span>
+
+<span class="k">template</span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">CTensor</span><span class="p">,</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">Lambda</span><span class="o">&gt;</span>
+<span class="n">__forceinline__</span><span class="w"> </span><span class="n">__device__</span>
+<span class="kt">void</span><span class="w"> </span><span class="n">reduce_and_store</span><span class="p">(</span><span class="n">CTensor</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">ctensor</span><span class="p">,</span><span class="w"> </span><span class="n">Lambda</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">lambda</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>There are 4 methods that can be used to get basic information about the partitioning pattern, or retrieve a register fragment.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Partitioning properties</span>
+<span class="n">__device__</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">is_predicated</span><span class="p">();</span>
+<span class="n">__device__</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">is_thread_active</span><span class="p">();</span>
+
+<span class="c1">// Copies results to a register fragment and returns it to the user</span>
+<span class="n">__device__</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">get_results</span><span class="p">();</span>
+<span class="n">__device__</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">make_empty_fragment</span><span class="p">();</span>
+</pre></div>
+</div>
+<p>As mentioned in <a class="reference internal" href="#accumulator-register-tensor-other-label"><span class="std std-ref">Accumulator And Register Fragment Tensors</span></a> the division of elements among threads happens by tiling
+an MMA instruction over the BLAS defined problem size. Each instruction is responsible for computing certain shape, and
+it’s possible that the problem shape is not divisible by primitive instruction shape. In such cases the “extra” instruction
+elements are filled with 0s instead of reading from memory, and skipped when storing results. This is called element
+predication. The <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">is_predicated</span><span class="p">()</span></code> member function can be used to retrieve that information.</p>
+<p>Due to cuBLASDx supporting execution within kernels with CUDA thread block sizes not matching the <a class="reference internal" href="operators.html#blockdim-operator-label"><span class="std std-ref">BlockDim Operator</span></a>,
+not always will all threads take part in a GEMM operation. This implies that <strong>some threads may not have any elements
+assigned to them</strong>. <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">is_thread_active</span><span class="p">()</span></code> member function can be used to check exactly whether this is the case
+for the calling thread.</p>
+<p>Whether the return bool value can be known at compile time or runtime will depend on the specific BLAS configuration used.</p>
+<p>The <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">clear</span><span class="p">()</span></code> will effectively clear the accumulator for the next MMA execution.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><code class="code highlight cpp docutils literal highlight-cpp"><span class="p">.</span><span class="n">clear</span><span class="p">()</span></code> method may just set a special flag to next performed multiplication, it’s valid only in connection
+with subsequent <code class="code highlight cpp docutils literal highlight-cpp"><span class="p">.</span><span class="n">execute</span><span class="p">()</span></code> call.</p>
+</div>
+<p>The final argumentless method - <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">make_empty_fragment</span><span class="p">()</span></code> can be used to retrieve a non-initialized register fragment
+tensor corresponding to BLAS execution from which the accumulator was retrieved.</p>
+<p>Please see code below for an example of use of all 3 methods.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">CTensor</span><span class="o">&gt;</span>
+<span class="n">__forceinline__</span><span class="w"> </span><span class="n">__device__</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">partition_like_C</span><span class="p">(</span><span class="n">CTensor</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">ctensor</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>This method will return a non-owning view of its argument’s subtensor assigned to the calling thread,
+corresponding to its local register fragment.</p>
+<p>All these methods can be used for manual copying of unpredicated GEMM as follows:</p>
+</section>
+<section id="accumulator-example-1">
+<span id="accumulator-manual-first-example-other-label"></span><h3>Accumulator Example #1<a class="headerlink" href="#accumulator-example-1" title="Link to this heading">#</a></h3>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span><span class="w"> </span><span class="n">c_global_tensor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">...;</span>
+
+<span class="c1">// Get accumulator</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">accumulator</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BLAS</span><span class="o">::</span><span class="n">get_accumulator</span><span class="p">();</span>
+<span class="c1">// Create local register fragment</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">d_register_fragment</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">accumulator</span><span class="p">.</span><span class="n">make_empty_fragment</span><span class="p">();</span>
+<span class="c1">// Get view of this thread&#39;s global memory subtensor</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">c_global_partition</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">accumulator</span><span class="p">.</span><span class="n">partition_like_C</span><span class="p">(</span><span class="n">c_global_tensor</span><span class="p">);</span>
+
+<span class="c1">// Ensure that all elements are in-bounds and</span>
+<span class="c1">// no predication is necessary</span>
+<span class="k">static_assert</span><span class="p">(</span><span class="k">not</span><span class="w"> </span><span class="n">accumulator</span><span class="p">.</span><span class="n">is_predicated</span><span class="p">());</span>
+
+<span class="c1">// If this thread takes part in GEMM</span>
+<span class="k">if</span><span class="p">(</span><span class="n">accumulator</span><span class="p">.</span><span class="n">is_thread_active</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="c1">// For each element of register fragment</span>
+<span class="w">   </span><span class="k">for</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">size</span><span class="p">(</span><span class="n">d_register_fragment</span><span class="p">);</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="c1">// Copy respective global element into it</span>
+<span class="w">      </span><span class="n">d_register_fragment</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">c_global_partition</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+<span class="w">   </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// C += A * B</span>
+<span class="n">BLAS</span><span class="p">().</span><span class="n">execute</span><span class="p">(</span><span class="n">a_shared_tensor</span><span class="p">,</span><span class="w"> </span><span class="n">b_shared_tensor</span><span class="p">,</span><span class="w"> </span><span class="n">accumulator</span><span class="p">);</span>
+
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">axpby</span><span class="p">(</span><span class="n">alpha</span><span class="p">,</span><span class="w"> </span><span class="n">accumulator</span><span class="p">.</span><span class="n">get_results</span><span class="p">(),</span><span class="w"> </span><span class="n">beta</span><span class="p">,</span><span class="w"> </span><span class="n">d_register_fragment</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>If a GEMM is predicated, more information will be necessary:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="n">Coords</span><span class="o">&gt;</span>
+<span class="n">__forceinline__</span><span class="w"> </span><span class="n">__device__</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">map_fragment_index</span><span class="p">(</span><span class="n">Coords</span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="n">coords</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="k">template</span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="n">Coords</span><span class="o">&gt;</span>
+<span class="n">__forceinline__</span><span class="w"> </span><span class="n">__device__</span>
+<span class="kt">bool</span><span class="w"> </span><span class="n">is_index_in_bounds</span><span class="p">(</span><span class="n">Coords</span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="n">coords</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="k">template</span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">Coord</span><span class="o">&gt;</span>
+<span class="n">__forceinline__</span><span class="w"> </span><span class="n">__device__</span>
+<span class="kt">bool</span><span class="w"> </span><span class="n">is_coord_in_bounds</span><span class="p">(</span><span class="n">Coord</span><span class="w"> </span><span class="k">const</span><span class="o">&amp;</span><span class="w"> </span><span class="n">coord</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>These functions extend <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">is_predicated</span><span class="p">()</span></code> by mapping a local register-fragment index to
+its source (global or shared) tensor index, as well as checking whether a fragment index
+(<code class="code highlight cpp docutils literal highlight-cpp"><span class="n">is_index_in_bounds</span></code>) or an already-mapped <code class="code highlight cpp docutils literal highlight-cpp"><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="p">)</span></code> coordinate (<code class="code highlight cpp docutils literal highlight-cpp"><span class="n">is_coord_in_bounds</span></code>)
+lies inside the <code class="code highlight cpp docutils literal highlight-cpp"><span class="p">(</span><span class="n">M</span><span class="p">,</span><span class="w"> </span><span class="n">N</span><span class="p">)</span></code> problem shape.</p>
+<p>All these methods can be used to perform a bound-checked loading of elements from global to register tensor:</p>
+</section>
+<section id="accumulator-example-2">
+<span id="accumulator-manual-second-example-other-label"></span><h3>Accumulator Example #2<a class="headerlink" href="#accumulator-example-2" title="Link to this heading">#</a></h3>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span><span class="w"> </span><span class="n">c_global_tensor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">...;</span>
+
+<span class="c1">// Get accumulator</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">accumulator</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BLAS</span><span class="o">::</span><span class="n">get_accumulator</span><span class="p">();</span>
+<span class="c1">// Create local register fragment</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">d_register_fragment</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">accumulator</span><span class="p">.</span><span class="n">make_empty_fragment</span><span class="p">();</span>
+
+<span class="c1">// If this thread takes part in GEMM</span>
+<span class="k">if</span><span class="p">(</span><span class="n">accumulator</span><span class="p">.</span><span class="n">is_thread_active</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="c1">// For each element of register fragment</span>
+<span class="w">   </span><span class="k">for</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">size</span><span class="p">(</span><span class="n">d_register_fragment</span><span class="p">);</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">auto</span><span class="w"> </span><span class="n">global_index</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">accumulator</span><span class="p">.</span><span class="n">map_fragment_index</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+<span class="w">      </span><span class="k">if</span><span class="p">((</span><span class="k">not</span><span class="w"> </span><span class="n">accumulator</span><span class="p">.</span><span class="n">is_predicated</span><span class="p">())</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="n">accumulator</span><span class="p">.</span><span class="n">is_index_in_bounds</span><span class="p">(</span><span class="n">i</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="c1">// Copy respective global element into it</span>
+<span class="w">         </span><span class="n">d_register_fragment</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">load_op</span><span class="p">(</span><span class="n">c_global_tensor</span><span class="p">(</span><span class="n">global_index</span><span class="p">));</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">   </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// C += A * B</span>
+<span class="n">BLAS</span><span class="p">().</span><span class="n">execute</span><span class="p">(</span><span class="n">a_shared_tensor</span><span class="p">,</span><span class="w"> </span><span class="n">b_shared_tensor</span><span class="p">,</span><span class="w"> </span><span class="n">accumulator</span><span class="p">);</span>
+
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">axpby</span><span class="p">(</span><span class="n">alpha</span><span class="p">,</span><span class="w"> </span><span class="n">accumulator</span><span class="p">.</span><span class="n">get_results</span><span class="p">(),</span><span class="w"> </span><span class="n">beta</span><span class="p">,</span><span class="w"> </span><span class="n">d_register_fragment</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>It would be very tedious to have to do such loading manually every time, hence cuBLASDx offers optimized
+and auto-vectorizing global/shared ⟷ register fragment copying functions. See <a class="reference internal" href="#copy-register-tensor-other-label"><span class="std std-ref">Copying Register Tensors</span></a>
+for more information</p>
+</section>
+<section id="reduce-and-store">
+<h3>Reduce and Store<a class="headerlink" href="#reduce-and-store" title="Link to this heading">#</a></h3>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">CTensor</span><span class="p">,</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">Lambda</span><span class="o">&gt;</span>
+<span class="n">__forceinline__</span><span class="w"> </span><span class="n">__device__</span>
+<span class="kt">void</span><span class="w"> </span><span class="n">reduce_and_store</span><span class="p">(</span><span class="n">CTensor</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">ctensor</span><span class="p">,</span><span class="w"> </span><span class="n">Lambda</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">lambda</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+</pre></div>
+</div>
+<p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">reduce_and_store</span><span class="p">(</span><span class="n">output</span><span class="p">,</span><span class="w"> </span><span class="n">lambda</span><span class="p">)</span></code> combines the accumulator results with an existing output tensor
+element by element, without the caller having to partition, load, or index anything manually. The
+output can be a global or shared CTA-wide <code class="code highlight cpp docutils literal highlight-cpp"><span class="p">(</span><span class="n">M</span><span class="p">,</span><span class="w"> </span><span class="n">N</span><span class="p">)</span></code> tensor, or a register fragment matching the
+accumulator’s fragment.</p>
+<p>For every element owned by the calling thread, the lambda is invoked as:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">new_output_value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lambda</span><span class="p">(</span><span class="n">result_element</span><span class="p">,</span><span class="w"> </span><span class="n">output_element</span><span class="p">,</span><span class="w"> </span><span class="n">coord</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>where <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">coord</span></code> is the element’s <code class="code highlight cpp docutils literal highlight-cpp"><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="p">)</span></code> coordinate within the CTA output tile - the same value
+<code class="code highlight cpp docutils literal highlight-cpp"><span class="n">map_fragment_index</span><span class="p">(...)</span></code> returns for the corresponding fragment index. Its components can be
+accessed with structured bindings or <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cublasdx</span><span class="o">::</span><span class="n">get</span><span class="o">&lt;</span><span class="mi">0</span><span class="o">&gt;</span></code> / <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cublasdx</span><span class="o">::</span><span class="n">get</span><span class="o">&lt;</span><span class="mi">1</span><span class="o">&gt;</span></code>. For CTA-wide memory
+outputs, elements that fall outside the <code class="code highlight cpp docutils literal highlight-cpp"><span class="p">(</span><span class="n">M</span><span class="p">,</span><span class="w"> </span><span class="n">N</span><span class="p">)</span></code> problem shape of a predicated GEMM are skipped:
+they are never handed to the lambda and their output slots are left untouched. A register output
+must match the accumulator fragment size and the lambda runs over the whole fragment - including
+padded slots, whose coordinates lie outside <code class="code highlight cpp docutils literal highlight-cpp"><span class="p">(</span><span class="n">M</span><span class="p">,</span><span class="w"> </span><span class="n">N</span><span class="p">)</span></code>; lambdas that index by coordinate can guard
+against them with <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">is_coord_in_bounds</span><span class="p">(</span><span class="n">coord</span><span class="p">)</span></code>.</p>
+</section>
+<section id="accumulator-example-3">
+<h3>Accumulator Example #3<a class="headerlink" href="#accumulator-example-3" title="Link to this heading">#</a></h3>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span><span class="w"> </span><span class="n">c_global_tensor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">...;</span>
+
+<span class="c1">// Get accumulator and run GEMM</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">accumulator</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BLAS</span><span class="o">::</span><span class="n">get_accumulator</span><span class="p">();</span>
+<span class="n">BLAS</span><span class="p">().</span><span class="n">execute</span><span class="p">(</span><span class="n">a_shared_tensor</span><span class="p">,</span><span class="w"> </span><span class="n">b_shared_tensor</span><span class="p">,</span><span class="w"> </span><span class="n">accumulator</span><span class="p">);</span>
+
+<span class="c1">// C = alpha * (A * B) + beta * C with a per-element scale lookup</span>
+<span class="n">accumulator</span><span class="p">.</span><span class="n">reduce_and_store</span><span class="p">(</span><span class="n">c_global_tensor</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="o">&amp;</span><span class="p">](</span><span class="k">auto</span><span class="w"> </span><span class="k">const</span><span class="o">&amp;</span><span class="w"> </span><span class="n">result</span><span class="p">,</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="k">const</span><span class="o">&amp;</span><span class="w"> </span><span class="n">c</span><span class="p">,</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="k">const</span><span class="o">&amp;</span><span class="w"> </span><span class="n">coord</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="p">[</span><span class="n">row</span><span class="p">,</span><span class="w"> </span><span class="n">column</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">coord</span><span class="p">;</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">alpha</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nf">row_scale</span><span class="p">(</span><span class="n">row</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">beta</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">c</span><span class="p">;</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+</section>
+<section id="imported-tensor-utilities">
+<h3>Imported Tensor Utilities<a class="headerlink" href="#imported-tensor-utilities" title="Link to this heading">#</a></h3>
+<p>Since cuBLASDx integrated CuTe library, it exposes some of its tensor and layout functionality, sometimes adding
+compatibility layers to enable its own types support. Currently following functions are supported:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Aliased</span>
+<span class="k">using</span><span class="w"> </span><span class="n">cute</span><span class="o">::</span><span class="n">clear</span><span class="p">;</span>
+<span class="k">using</span><span class="w"> </span><span class="n">cute</span><span class="o">::</span><span class="n">transform</span><span class="p">;</span>
+<span class="k">using</span><span class="w"> </span><span class="n">cute</span><span class="o">::</span><span class="n">make_fragment_like</span><span class="p">;</span>
+
+<span class="c1">// With compatibility layers</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">size</span><span class="p">;</span><span class="w">   </span><span class="c1">// (cute::size)</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">cosize</span><span class="p">;</span><span class="w"> </span><span class="c1">// (cute::cosize)</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">axpby</span><span class="p">;</span><span class="w">  </span><span class="c1">// (cute::axpby)</span>
+</pre></div>
+</div>
+<p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cublasdx</span><span class="o">::</span><span class="n">clear</span></code> takes a register fragment as input and sets all its values to 0.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span><span class="w"> </span><span class="n">accumulator</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BLAS</span><span class="o">::</span><span class="n">get_accumulator</span><span class="p">();</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">c_register_fragment</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">accumulator</span><span class="p">.</span><span class="n">make_empty_fragment</span><span class="p">();</span>
+
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">clear</span><span class="p">(</span><span class="n">c_register_fragment</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cublasdx</span><span class="o">::</span><span class="n">transform_fragment</span></code> applies an elementwise functor to all elements of passed register tensor.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span><span class="w"> </span><span class="n">c_global_tensor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">...</span>
+
+<span class="k">auto</span><span class="w"> </span><span class="n">accumulator</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BLAS</span><span class="o">::</span><span class="n">get_accumulator</span><span class="p">();</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">c_register_fragment</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">accumulator</span><span class="p">.</span><span class="n">make_empty_fragment</span><span class="p">();</span>
+
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">copy_fragment</span><span class="o">&lt;</span><span class="n">alignment_of</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;::</span><span class="n">c</span><span class="o">&gt;</span><span class="p">(</span><span class="n">c_global_tensor</span><span class="p">,</span><span class="w"> </span><span class="n">c_register_fragment</span><span class="p">,</span><span class="w"> </span><span class="n">accumulator</span><span class="p">);</span>
+
+<span class="c1">// in-place</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">transform_fragment</span><span class="p">(</span><span class="n">c_register_fragment</span><span class="p">,</span><span class="w"> </span><span class="p">[](</span><span class="k">auto</span><span class="w"> </span><span class="n">v</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">v</span><span class="p">;</span><span class="w"> </span><span class="p">});</span>
+
+<span class="c1">// out-of-place</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">d_register_fragment</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">accumulator</span><span class="p">.</span><span class="n">make_empty_fragment</span><span class="p">();</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">transform_fragment</span><span class="p">(</span><span class="n">c_register_fragment</span><span class="p">,</span><span class="w"> </span><span class="n">d_register_fragment</span><span class="p">,</span><span class="w"> </span><span class="p">[](</span><span class="k">auto</span><span class="w"> </span><span class="n">v</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">v</span><span class="p">;</span><span class="w"> </span><span class="p">});</span>
+</pre></div>
+</div>
+<p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cublasdx</span><span class="o">::</span><span class="n">make_fragment_like</span></code> can be used to create a register fragment with the same layout and type as its argument tensor.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span><span class="w"> </span><span class="n">c_global_tensor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">...</span>
+
+<span class="k">auto</span><span class="w"> </span><span class="n">accumulator</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BLAS</span><span class="o">::</span><span class="n">get_accumulator</span><span class="p">();</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">c_global_partition</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">accumulator</span><span class="p">.</span><span class="n">partition_like_C</span><span class="p">(</span><span class="n">c_global_tensor</span><span class="p">);</span>
+
+<span class="c1">// Same type</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">c_register_fragment</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">make_fragment_like</span><span class="p">(</span><span class="n">c_global_partition</span><span class="p">);</span>
+
+<span class="c1">// Other type</span>
+<span class="k">using</span><span class="w"> </span><span class="n">new_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">double</span><span class="p">;</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">c_register_fragment</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">make_fragment_like</span><span class="o">&lt;</span><span class="n">new_type</span><span class="o">&gt;</span><span class="p">(</span><span class="n">c_global_partition</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The following functions should be used only in their cuBLASDx form, as it offers compatibility layers and
+automatic conversions.</p>
+</div>
+<p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cublasdx</span><span class="o">::</span><span class="n">axpby</span></code> performs a <span class="math notranslate nohighlight">\(\mathbf{D}_{m\times n}  = {\alpha} \times \mathbf{C}_{m\times n} + {\beta} \times \mathbf{D}_{m\times n}\)</span></p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span><span class="w"> </span><span class="n">c_global_tensor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">...</span>
+
+<span class="k">auto</span><span class="w"> </span><span class="n">a_shared_tensor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">...</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">b_shared_tensor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">...</span>
+
+<span class="k">auto</span><span class="w"> </span><span class="n">accumulator</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BLAS</span><span class="o">::</span><span class="n">get_accumulator</span><span class="p">();</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">d_register_fragment</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">accumulator</span><span class="p">.</span><span class="n">make_empty_fragment</span><span class="p">();</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">copy_fragment</span><span class="o">&lt;</span><span class="n">alignment_of</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;::</span><span class="n">c</span><span class="o">&gt;</span><span class="p">(</span><span class="n">c_global_tensor</span><span class="p">,</span><span class="w"> </span><span class="n">c_register_fragment</span><span class="p">,</span><span class="w"> </span><span class="n">accumulator</span><span class="p">);</span>
+
+<span class="c1">// These 2 functions combined perform the classic GEMM: C = alpha * A * B + beta * C;</span>
+<span class="n">BLAS</span><span class="p">().</span><span class="n">execute</span><span class="p">(</span><span class="n">a_shared_tensor</span><span class="p">,</span><span class="w"> </span><span class="n">b_shared_tensor</span><span class="p">,</span><span class="w"> </span><span class="n">accumulator</span><span class="p">);</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">axpby</span><span class="p">(</span><span class="n">alpha</span><span class="p">,</span><span class="w"> </span><span class="n">accumulator</span><span class="p">.</span><span class="n">get_results</span><span class="p">(),</span><span class="w"> </span><span class="n">beta</span><span class="p">,</span><span class="w"> </span><span class="n">d_register_fragment</span><span class="p">);</span>
+
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">copy_fragment</span><span class="o">&lt;</span><span class="n">alignment_of</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;::</span><span class="n">c</span><span class="o">&gt;</span><span class="p">(</span><span class="n">d_register_fragment</span><span class="p">,</span><span class="w"> </span><span class="n">c_global_tensor</span><span class="p">,</span><span class="w"> </span><span class="n">accumulator</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cublasdx</span><span class="o">::</span><span class="n">size</span></code> returns a number of valid elements in a tensor. This is simply a product of all <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">shape</span></code> dimensions.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span><span class="w"> </span><span class="n">a_shared_layout</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BLAS</span><span class="o">::</span><span class="n">get_layout_smem_a</span><span class="p">();</span>
+
+<span class="c1">// Same as size_of&lt;BLAS&gt;::m * size_of&lt;BLAS&gt;::k</span>
+<span class="k">constexpr</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">layout_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">size</span><span class="p">(</span><span class="n">a_shared_layout</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cublasdx</span><span class="o">::</span><span class="n">cosize</span></code> returns a distance from last element of a tensor to its first element. It describes how many elements
+does the argument layout span. This is the same as <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cublasdx</span><span class="o">::</span><span class="n">size</span></code> for layouts which are compact, or have no “holes”
+(e.g. as result of extra leading dimension elements)</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Default leading dimension</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">BLAS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">decltype</span><span class="p">(...</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">Size</span><span class="o">&lt;</span><span class="n">M</span><span class="p">,</span><span class="w"> </span><span class="n">N</span><span class="p">,</span><span class="w"> </span><span class="n">K</span><span class="o">&gt;</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">LeadingDimension</span><span class="o">&lt;</span><span class="n">M</span><span class="p">,</span><span class="w"> </span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="n">M</span><span class="o">&gt;</span><span class="p">());</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">a_shared_layout</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BLAS</span><span class="o">::</span><span class="n">get_layout_smem_a</span><span class="p">();</span>
+
+<span class="k">constexpr</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">layout_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">size</span><span class="p">(</span><span class="n">a_shared_layout</span><span class="p">);</span>
+<span class="k">constexpr</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">layout_cosize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">cosize</span><span class="p">(</span><span class="n">a_shared_layout</span><span class="p">);</span>
+
+<span class="k">static_assert</span><span class="p">(</span><span class="n">layout_size</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">layout_cosize</span><span class="p">);</span>
+
+<span class="c1">// Extra elements leading dimension</span>
+<span class="k">constexpr</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">lda</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">M</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="c1">// Add padding to avoid shared memory bank conflicts</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">BLAS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">decltype</span><span class="p">(...</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">Size</span><span class="o">&lt;</span><span class="n">M</span><span class="p">,</span><span class="w"> </span><span class="n">N</span><span class="p">,</span><span class="w"> </span><span class="n">K</span><span class="o">&gt;</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">LeadingDimension</span><span class="o">&lt;</span><span class="n">lda</span><span class="p">,</span><span class="w"> </span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="n">M</span><span class="o">&gt;</span><span class="p">());</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">a_shared_layout</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BLAS</span><span class="o">::</span><span class="n">get_layout_smem_a</span><span class="p">();</span>
+
+<span class="k">constexpr</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">layout_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">size</span><span class="p">(</span><span class="n">a_shared_layout</span><span class="p">);</span>
+<span class="k">constexpr</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">layout_cosize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">cosize</span><span class="p">(</span><span class="n">a_shared_layout</span><span class="p">);</span>
+
+<span class="k">static_assert</span><span class="p">(</span><span class="n">layout_size</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">layout_cosize</span><span class="p">);</span>
+<span class="k">static_assert</span><span class="p">(</span><span class="n">layout_size</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">layout_cosize</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="copying-tensors">
+<span id="copy-tensor-other-label"></span><h2>Copying Tensors<a class="headerlink" href="#copying-tensors" title="Link to this heading">#</a></h2>
+<section id="cooperative-global-shared-copying">
+<h3>Cooperative Global ⟷ Shared Copying<a class="headerlink" href="#cooperative-global-shared-copying" title="Link to this heading">#</a></h3>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">template</span><span class="o">&lt;</span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">NumThreads</span><span class="p">,</span><span class="w">       </span><span class="c1">// Number of threads performing copy operation</span>
+<span class="w">         </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">AlignmentInBytes</span><span class="p">,</span><span class="w"> </span><span class="c1">// Pointer alignment of src and dst tensor (minimum of them if they are different)</span>
+<span class="w">         </span><span class="k">class</span><span class="w"> </span><span class="nc">SrcEngine</span><span class="p">,</span>
+<span class="w">         </span><span class="k">class</span><span class="w"> </span><span class="nc">SrcLayout</span><span class="p">,</span>
+<span class="w">         </span><span class="k">class</span><span class="w"> </span><span class="nc">DstEngine</span><span class="p">,</span>
+<span class="w">         </span><span class="k">class</span><span class="w"> </span><span class="nc">DstLayout</span><span class="o">&gt;</span>
+<span class="n">__forceinline__</span><span class="w"> </span><span class="n">__device__</span>
+<span class="kt">void</span><span class="w"> </span><span class="n">copy</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w">                            </span><span class="n">tid</span><span class="p">,</span><span class="w"> </span><span class="c1">// Thread index in CUDA block</span>
+<span class="w">          </span><span class="k">const</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">tensor</span><span class="o">&lt;</span><span class="n">SrcEngine</span><span class="p">,</span><span class="w"> </span><span class="n">SrcLayout</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">src</span><span class="p">,</span>
+<span class="w">          </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">tensor</span><span class="o">&lt;</span><span class="n">DstEngine</span><span class="p">,</span><span class="w"> </span><span class="n">DstLayout</span><span class="o">&gt;&amp;</span><span class="w">       </span><span class="n">dst</span><span class="p">)</span>
+
+<span class="c1">// Assumes pointers in both dst and src tensors are not extra aligned</span>
+<span class="k">template</span><span class="o">&lt;</span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">NumThreads</span><span class="p">,</span><span class="w"> </span><span class="c1">// Number of threads performing copy operation</span>
+<span class="w">         </span><span class="k">class</span><span class="w"> </span><span class="nc">SrcEngine</span><span class="p">,</span>
+<span class="w">         </span><span class="k">class</span><span class="w"> </span><span class="nc">SrcLayout</span><span class="p">,</span>
+<span class="w">         </span><span class="k">class</span><span class="w"> </span><span class="nc">DstEngine</span><span class="p">,</span>
+<span class="w">         </span><span class="k">class</span><span class="w"> </span><span class="nc">DstLayout</span><span class="o">&gt;</span>
+<span class="n">__forceinline__</span><span class="w"> </span><span class="n">__device__</span>
+<span class="kt">void</span><span class="w"> </span><span class="n">copy</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w">                            </span><span class="n">tid</span><span class="p">,</span><span class="w"> </span><span class="c1">// Thread index in CUDA block</span>
+<span class="w">          </span><span class="k">const</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">tensor</span><span class="o">&lt;</span><span class="n">SrcEngine</span><span class="p">,</span><span class="w"> </span><span class="n">SrcLayout</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">src</span><span class="p">,</span>
+<span class="w">          </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">tensor</span><span class="o">&lt;</span><span class="n">DstEngine</span><span class="p">,</span><span class="w"> </span><span class="n">DstLayout</span><span class="o">&gt;&amp;</span><span class="w">       </span><span class="n">dst</span><span class="p">)</span>
+
+<span class="k">template</span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">BLAS</span><span class="p">,</span><span class="w">                </span><span class="c1">// BLAS description which provides the number of threads</span>
+<span class="w">         </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">AlignmentInBytes</span><span class="p">,</span><span class="w"> </span><span class="c1">// Pointer alignment of src and dst tensor (minimum of them if they are different)</span>
+<span class="w">         </span><span class="k">class</span><span class="w"> </span><span class="nc">SrcEngine</span><span class="p">,</span>
+<span class="w">         </span><span class="k">class</span><span class="w"> </span><span class="nc">SrcLayout</span><span class="p">,</span>
+<span class="w">         </span><span class="k">class</span><span class="w"> </span><span class="nc">DstEngine</span><span class="p">,</span>
+<span class="w">         </span><span class="k">class</span><span class="w"> </span><span class="nc">DstLayout</span><span class="o">&gt;</span>
+<span class="n">__forceinline__</span><span class="w"> </span><span class="n">__device__</span>
+<span class="kt">void</span><span class="w"> </span><span class="n">copy</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">tensor</span><span class="o">&lt;</span><span class="n">SrcEngine</span><span class="p">,</span><span class="w"> </span><span class="n">SrcLayout</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">src</span><span class="p">,</span>
+<span class="w">          </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">tensor</span><span class="o">&lt;</span><span class="n">DstEngine</span><span class="p">,</span><span class="w"> </span><span class="n">DstLayout</span><span class="o">&gt;&amp;</span><span class="w">       </span><span class="n">dst</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cublasdx</span><span class="o">::</span><span class="n">copy</span></code> is helper function for copying data between tensors that are either in shared or global memory.</p>
+<p>The copy is done cooperatively. All threads, indicated either by <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">NumThreads</span></code> or by <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">BLAS</span><span class="o">::</span><span class="n">block_dim</span></code>, will participate in the copy.
+The function accounts for the given alignments and attempts to vectorize load and store instructions when possible.</p>
+<p>Requirements:</p>
+<ul class="simple">
+<li><p>Data in tensors has to be in shared or global memory. Copying from or to registers is not supported.</p></li>
+<li><p>Both <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">src</span></code> and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">dst</span></code> tensors must represent tensors of the same underlying element types (<code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cublasdx</span><span class="o">::</span><span class="n">tensor</span><span class="o">&lt;</span><span class="n">Engine</span><span class="p">,</span><span class="w"> </span><span class="n">Layout</span><span class="o">&gt;::</span><span class="n">value_type</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Engine</span><span class="o">::</span><span class="n">value_type</span></code>).</p></li>
+<li><p>Both <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">src</span></code> and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">dst</span></code> tensors must have the same size, i.e. the number of elements.</p></li>
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">AlignmentInBytes</span></code> must be a multiple of the alignment of the underlying element type of tensors.</p></li>
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">AlignmentInBytes</span></code> must be equal to 1, 2, 4, 8 or 16, or equal to the alignment of the underlying element type of tensors.</p></li>
+<li><p>Underlying pointers in <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">src</span></code> and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">dst</span></code> tensors must be aligned to <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">AlignmentInBytes</span></code> bytes.</p></li>
+</ul>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Synchronization step required after cublasdx::copy and before the use of dst tensor</span>
+<span class="n">__forceinline__</span><span class="w"> </span><span class="n">__device__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">copy_wait</span><span class="p">();</span>
+</pre></div>
+</div>
+<p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cublasdx</span><span class="o">::</span><span class="n">copy_wait</span></code> creates synchronization point. It has to be called after <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cublasdx</span><span class="o">::</span><span class="n">copy</span></code> operation, before any consequent
+read or write to <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">dst</span></code> tensor, and before any consequent write to <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">src</span></code> tensor. Otherwise, the result of copying operation is
+undefined. It’s important to note that it’s always not 1-to-1 equivalent of <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">__syncthreads</span><span class="p">()</span></code> as it also handles asynchronous data copying
+(see <a class="reference external" href="https://docs.nvidia.com/cuda/parallel-thread-execution/index.html#data-movement-and-conversion-instructions-cp-async">cp.async family of instructions</a>)</p>
+<p>If a copy is the final operation that writes a result to global memory and no later instruction in the same kernel reads
+or overwrites the source or destination tensor, examples may rely on kernel completion instead of an explicit trailing
+<code class="code highlight cpp docutils literal highlight-cpp"><span class="n">copy_wait</span><span class="p">()</span></code>. Add <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">copy_wait</span><span class="p">()</span></code> whenever the copied data participates in more work inside the same kernel.</p>
+<div class="hint admonition">
+<p class="admonition-title">Example</p>
+<p>Example of copying A matrix from global to shared memory and back.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">BLAS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">decltype</span><span class="p">(</span><span class="n">Size</span><span class="o">&lt;</span><span class="mi">128</span><span class="p">,</span><span class="w"> </span><span class="mi">128</span><span class="p">,</span><span class="w"> </span><span class="mi">128</span><span class="o">&gt;</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">Type</span><span class="o">&lt;</span><span class="n">type</span><span class="o">::</span><span class="n">real</span><span class="o">&gt;</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">Precision</span><span class="o">&lt;</span><span class="kt">float</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="o">&gt;</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">Block</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">...);</span>
+<span class="k">extern</span><span class="w"> </span><span class="n">__shared__</span><span class="w"> </span><span class="nf">__align__</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">byte</span><span class="w"> </span><span class="n">smem</span><span class="p">[];</span>
+
+<span class="c1">// Slice shared memory</span>
+<span class="k">auto</span><span class="w"> </span><span class="p">[</span><span class="n">smem_a</span><span class="p">,</span><span class="w"> </span><span class="n">smem_b</span><span class="p">,</span><span class="w"> </span><span class="n">smem_c</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">slice_shared_memory</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;</span><span class="p">(</span><span class="n">smem</span><span class="p">);</span>
+
+<span class="k">auto</span><span class="w"> </span><span class="n">gmem_tensor_a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">make_tensor</span><span class="p">(</span><span class="n">a_gmem_pointer</span><span class="p">,</span><span class="w"> </span><span class="n">BLAS</span><span class="o">::</span><span class="n">get_layout_gmem_a</span><span class="p">());</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">smem_tensor_a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">make_tensor</span><span class="p">(</span><span class="n">smem_a</span><span class="p">,</span><span class="w"> </span><span class="n">BLAS</span><span class="o">::</span><span class="n">suggest_layout_smem_a</span><span class="p">());</span>
+
+<span class="c1">// Copy from global to shared</span>
+<span class="k">using</span><span class="w"> </span><span class="n">alignment</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cublasdx</span><span class="o">::</span><span class="n">alignment_of</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">copy</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="p">,</span><span class="w"> </span><span class="n">alignment</span><span class="o">::</span><span class="n">a</span><span class="o">&gt;</span><span class="p">(</span><span class="n">gmem_tensor_a</span><span class="p">,</span><span class="w"> </span><span class="n">smem_tensor_a</span><span class="p">);</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">copy_wait</span><span class="p">();</span>
+
+<span class="c1">// Copy from shared to global</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">copy</span><span class="o">&lt;</span><span class="n">BLAS</span><span class="p">,</span><span class="w"> </span><span class="n">alignment</span><span class="o">::</span><span class="n">a</span><span class="o">&gt;</span><span class="p">(</span><span class="n">smem_tensor_a</span><span class="p">,</span><span class="w"> </span><span class="n">gmem_tensor_a</span><span class="p">);</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">copy_wait</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="copying-register-tensors">
+<span id="copy-register-tensor-other-label"></span><h3>Copying Register Tensors<a class="headerlink" href="#copying-register-tensors" title="Link to this heading">#</a></h3>
+<p>Register fragments can be copied to either global or shared memory tensors manually using <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">accumulator</span><span class="w"> </span><span class="n">API</span></code>, or with use of <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cublasdx</span><span class="o">::</span><span class="n">copy_fragment</span></code>.</p>
+<p>Accumulator API allows for 2 distinct approaches to copying:</p>
+<ol class="arabic simple">
+<li><p>Create a subtensor view of calling thread’s elements and copy using register fragment index space (see <a class="reference internal" href="#accumulator-manual-first-example-other-label"><span class="std std-ref">Accumulator Example #1</span></a>).</p></li>
+<li><p>Map local register fragment index to global index space and address global / shared tensor directly, allowing for location-aware processing (see <a class="reference internal" href="#accumulator-manual-second-example-other-label"><span class="std std-ref">Accumulator Example #2</span></a>).</p></li>
+</ol>
+<p>The second way is based on a bidirectional copying method <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">cublasdx</span><span class="o">::</span><span class="n">copy_fragment</span></code>, which works per-thread:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#1 Store fragment: partition and copy from register fragment to global / shared memory tensor</span>
+<span class="k">template</span><span class="o">&lt;</span><span class="kt">unsigned</span><span class="w"> </span><span class="n">AlignmentInBytes</span><span class="p">,</span><span class="w">    </span><span class="c1">// Alignment of global / shared memory tensor pointer</span>
+<span class="w">         </span><span class="k">class</span><span class="w"> </span><span class="nc">TRC</span><span class="p">,</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">CFragLayout</span><span class="p">,</span><span class="w"> </span><span class="c1">// Register Memory Fragment Tensor</span>
+<span class="w">         </span><span class="k">class</span><span class="w"> </span><span class="nc">TC</span><span class="p">,</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">CLayout</span><span class="p">,</span><span class="w">      </span><span class="c1">// Global or Shared Memory tensor</span>
+<span class="w">         </span><span class="k">class</span><span class="w"> </span><span class="nc">Accumulator</span><span class="o">&gt;</span>
+<span class="n">__forceinline__</span><span class="w"> </span><span class="n">__device__</span>
+<span class="n">copy_fragment</span><span class="p">(</span><span class="n">tensor</span><span class="o">&lt;</span><span class="n">TRC</span><span class="p">,</span><span class="w"> </span><span class="n">CFragLayout</span><span class="o">&gt;</span><span class="w"> </span><span class="k">const</span><span class="o">&amp;</span><span class="w"> </span><span class="n">tS</span><span class="p">,</span><span class="w"> </span><span class="c1">// Calling thread&#39;s register fragment tensor</span>
+<span class="w">              </span><span class="n">tensor</span><span class="o">&lt;</span><span class="n">TC</span><span class="p">,</span><span class="w"> </span><span class="n">CLayout</span><span class="o">&gt;</span><span class="w">           </span><span class="o">&amp;</span><span class="w"> </span><span class="n">tD</span><span class="p">,</span><span class="w"> </span><span class="c1">// Entire non-partitioned global / shared tensor</span>
+<span class="w">              </span><span class="n">Accumulator</span><span class="w">              </span><span class="k">const</span><span class="o">&amp;</span><span class="w"> </span><span class="n">p</span><span class="p">);</span>
+
+<span class="cp">#2 Load fragment: partition and copy from global / shared memory tensor to register fragment</span>
+<span class="k">template</span><span class="o">&lt;</span><span class="kt">unsigned</span><span class="w"> </span><span class="n">AlignmentInBytes</span><span class="p">,</span><span class="w">    </span><span class="c1">// Alignment of global / shared memory tensor pointer</span>
+<span class="w">         </span><span class="k">class</span><span class="w"> </span><span class="nc">TRC</span><span class="p">,</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">CFragLayout</span><span class="p">,</span><span class="w"> </span><span class="c1">// Register Memory Fragment Tensor</span>
+<span class="w">         </span><span class="k">class</span><span class="w"> </span><span class="nc">TC</span><span class="p">,</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">CLayout</span><span class="p">,</span><span class="w">      </span><span class="c1">// Global or Shared Memory tensor</span>
+<span class="w">         </span><span class="k">class</span><span class="w"> </span><span class="nc">Accumulator</span><span class="o">&gt;</span>
+<span class="n">__forceinline__</span><span class="w"> </span><span class="n">__device__</span>
+<span class="n">copy_fragment</span><span class="p">(</span><span class="n">tensor</span><span class="o">&lt;</span><span class="n">TC</span><span class="p">,</span><span class="w"> </span><span class="n">CLayout</span><span class="o">&gt;</span><span class="w">      </span><span class="k">const</span><span class="o">&amp;</span><span class="w"> </span><span class="n">tS</span><span class="p">,</span>
+<span class="w">              </span><span class="n">tensor</span><span class="o">&lt;</span><span class="n">TRC</span><span class="p">,</span><span class="w"> </span><span class="n">CFragLayout</span><span class="o">&gt;</span><span class="w">      </span><span class="o">&amp;</span><span class="w"> </span><span class="n">tD</span><span class="p">,</span>
+<span class="w">              </span><span class="n">Accumulator</span><span class="w">              </span><span class="k">const</span><span class="o">&amp;</span><span class="w"> </span><span class="n">p</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Depending on the defined semantics, these can be thought of as gather and scatter functions:</p>
+<ol class="arabic simple">
+<li><p>From global / shared tensor perspective: load fragment is scatter, store fragment is gather.</p></li>
+<li><p>From thread perspective: load fragment is gather, store fragment is scatter.</p></li>
+</ol>
+<p>It’s important to notice that each of these functions takes:</p>
+<ol class="arabic simple">
+<li><p>a template argument <code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">unsigned</span><span class="w"> </span><span class="n">integer</span></code> describing alignment of shared / global memory tensor,</p></li>
+<li><p>this thread’s register fragment tensor and an entire non-partitioned global / shared memory tensor,
+ordered by copy direction, and</p></li>
+<li><p>an accumulator.</p></li>
+</ol>
+<p>They are both safe to use with thread and value predicated fragment GEMMs, and will auto-vectorize to the extent described by passed alignment.</p>
+<p>Example of use, to perform <code class="code highlight cpp docutils literal highlight-cpp"><span class="k">register</span><span class="w"> </span><span class="n">API</span><span class="w"> </span><span class="n">GEMM</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">accumulator</span></code>:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span><span class="w"> </span><span class="n">accumulator</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GEMM</span><span class="o">::</span><span class="n">get_accumulator</span><span class="p">();</span>
+
+<span class="c1">// Load fragment</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">d_fragment</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">accumulator</span><span class="p">.</span><span class="n">make_empty_fragment</span><span class="p">();</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">copy_fragment</span><span class="o">&lt;</span><span class="n">alignment</span><span class="o">::</span><span class="n">c</span><span class="o">&gt;</span><span class="p">(</span><span class="n">c_global_tensor</span><span class="p">,</span><span class="w"> </span><span class="n">d_fragment</span><span class="p">,</span><span class="w"> </span><span class="n">accumulator</span><span class="p">);</span>
+<span class="c1">// alternatively</span>
+<span class="c1">// auto d_fragment = accumulator.make_partition_and_copy(c_global_tensor);</span>
+
+<span class="n">GEMM</span><span class="p">().</span><span class="n">execute</span><span class="p">(</span><span class="n">a_shared_tensor</span><span class="p">,</span><span class="w"> </span><span class="n">b_shared_tensor</span><span class="p">,</span><span class="w"> </span><span class="n">accumulator</span><span class="p">);</span>
+
+<span class="c1">// Store fragment</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">axpby</span><span class="p">(</span><span class="n">alpha</span><span class="p">,</span><span class="w"> </span><span class="n">accumulator</span><span class="p">.</span><span class="n">get_results</span><span class="p">(),</span><span class="w"> </span><span class="n">beta</span><span class="p">,</span><span class="w"> </span><span class="n">d_fragment</span><span class="p">);</span>
+<span class="n">cublasdx</span><span class="o">::</span><span class="n">copy_fragment</span><span class="o">&lt;</span><span class="n">alignment</span><span class="o">::</span><span class="n">c</span><span class="o">&gt;</span><span class="p">(</span><span class="n">d_fragment</span><span class="p">,</span><span class="w"> </span><span class="n">c_global_tensor</span><span class="p">,</span><span class="w"> </span><span class="n">accumulator</span><span class="p">);</span>
+
+<span class="c1">// Alternatively, partition, load, axpby and store in one call</span>
+<span class="c1">// accumulator.axpby(alpha, beta, c_global_tensor);</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="other_methods.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Other Methods</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="other_shared.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Shared Memory Management</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cublasdx-tensor">cuBLASDx Tensor</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tensor-creation">Tensor Creation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#accumulator-and-register-fragment-tensors">Accumulator And Register Fragment Tensors</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#accumulator">Accumulator</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#accumulator-example-1">Accumulator Example #1</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#accumulator-example-2">Accumulator Example #2</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reduce-and-store">Reduce and Store</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#accumulator-example-3">Accumulator Example #3</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#imported-tensor-utilities">Imported Tensor Utilities</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#copying-tensors">Copying Tensors</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cooperative-global-shared-copying">Cooperative Global ⟷ Shared Copying</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#copying-register-tensors">Copying Register Tensors</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5"></script>
+
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+<a class="footer-brand logo" href="https://www.nvidia.com">
+  <img src="../_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="../_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+</a></div>
+      
+        <div class="footer-item">
+
+<div class="footer-links">
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/">Privacy Policy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Your Privacy Choices</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/">Terms of Service</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/accessibility/">Accessibility</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/company-policies/">Corporate Policies</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/product-security/">Product Security</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/contact/">Contact</a>
+  
+  
+  
+</div>
+</div>
+      
+        <div class="footer-item">
+
+
+
+
+  <p class="copyright">
+    
+      Copyright © 2022-2026, NVIDIA Corporation &amp; Affiliates. All rights reserved.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+  </body>
+</html>
