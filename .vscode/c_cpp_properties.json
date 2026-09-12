@@ -3,7 +3,7 @@
         {
             "name": "Linux",
             "includePath": [
-                "${workspaceFolder}/**"
+                "${workspaceFolder}/include/**"
             ],
             "cStandard": "c17",
             "intelliSenseMode": "linux-gcc-x64",

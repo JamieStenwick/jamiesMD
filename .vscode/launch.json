@@ -1,17 +1,17 @@
 {
     "configurations": [
         {
-            "name": "C/C++: g++.exe build and debug active file",
+            "name": "C++ Debug",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${fileDirname}\\${fileBasenameNoExtension}.exe",
+            "program": "${workspaceFolder}/build/jamiesMD",
             "args": ["1e-4", "0.01", "273.15", "5.4", "7.2", "75", "20000", "50"],
             "stopAtEntry": true,
-            "cwd": "C:/Program Files/MSYS2/ucrt64/bin",
+            "cwd": "${workspaceFolder}",
             "environment": [],
             "externalConsole": false,
             "MIMode": "gdb",
-            "miDebuggerPath": "C:\\Program Files\\MSYS2\\ucrt64\\bin\\gdb.exe",
+            "miDebuggerPath": "/usr/bin/gdb",
             "setupCommands": [
                 {
                     "description": "Enable pretty-printing for gdb",
@@ -24,15 +24,7 @@
                     "ignoreFailures": true
                 }
             ],
-            "preLaunchTask": "C/C++: g++.exe build active file"
-        },
-
-        {
-            "name": "CUDA C++: Launch",
-            "type": "cuda-gdb",
-            "request": "launch",
-            "program": "${workspaceFolder}/main",
-            "preLaunchTask": "Build CUDA Debug"
+            "preLaunchTask": "CMake Build Debug"
         }
     ],
     "version": "2.0.0"
