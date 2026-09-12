@@ -6,38 +6,14 @@
 /* Jamie Stenwick; as simple of a molecular dynamics simulation as one can get.
 Assumptions / Current Conditions:
 Lennard-Jones Potential, V(r) = 4*eps[(sigma/r)^12 - (sigma/r)^6]
+Passed Potential function applies to all particle interactions
 All radii = 1
 All drag = 1
+r distance coordinate is center-center in radii
+Translational DOF only
 Cell list
 */
 
-/*
-struct SimParams {
-    Ordered doubles to reduce padding, constructor takes the vector of command line args
-    and initializes the members with the values, MUST pass cmd-line args in same order as
-    struct constructor. strtod and strtol require nullptr arg for some reason
-    SimParams(char* args[]) :
-        dt {std::strtod(args[1], nullptr)},
-        vol_frac {std::strtod(args[2], nullptr)},
-        temp {std::strtod(args[3], nullptr)},
-        epsilon {std::strtod(args[4], nullptr)},
-        sigma {std::strtod(args[5], nullptr)},
-
-        // long to int safe conversion
-        N {std::strtol(args[6], nullptr, 10)},
-        t_steps {std::strtol(args[7], nullptr, 10)},
-        frames {std::strtol(args[8], nullptr, 10)}
-        {}
-    double dt;
-    double vol_frac;
-    double temp;
-    double epsilon;
-    double sigma;
-    int N;
-    int t_steps;
-    int frames;
-};
-*/
 
 // Params testing
 std::ostream& operator<<(std::ostream& out, SimParams& p) {
@@ -45,10 +21,12 @@ std::ostream& operator<<(std::ostream& out, SimParams& p) {
     }
 
 
-std::array<double, 2> lJonesPotential(double radius, double epsilon, double sigma) {
+std::array<float, 2> lJonesPotential(float radius, std::vector<float> args) {
     using std::pow;
-    double V {4 * epsilon * (pow(sigma / radius, 12) - pow(sigma / radius, 6))};
-    double F {48 * epsilon * ((pow(sigma, 12) / pow(radius, 13)) - (pow(sigma, 6) / pow(radius, 7)))};
+    float epsilon {args[0]};
+    float sigma {args[1]};
+    float V {static_cast<float>(4 * epsilon * (pow(sigma / radius, 12) - pow(sigma / radius, 6)))};
+    float F {static_cast<float>(48 * epsilon * ((pow(sigma, 12) / pow(radius, 13)) - (pow(sigma, 6) / pow(radius, 7))))};
 
     return {V, F};
 }
@@ -57,7 +35,7 @@ std::array<double, 2> lJonesPotential(double radius, double epsilon, double sigm
 int main(int argc, char* argv[]) {
     /*Entry point for simulation*/
     if (argc != 9) {
-			std::cout << "Usage: .\\main <dt> <vol_frac> <temp> <epsilon>"
+			std::cout << "Usage: <executable> <dt> <vol_frac> <temp> <epsilon> "
                          "<sigma> <N> <t_steps> <frames>" << '\n';
 		return 1;
 	}
@@ -65,10 +43,15 @@ int main(int argc, char* argv[]) {
     const SimParams Params(argv); // Verified constructor
     // std::cout << Params;  Verified
 
-    Simulator Sim{Params}; // Verified constructor
-    // Sim.setPositionsLattice(); Verified
-    // Sim.writePositions(); Need to implement exception throw on filesystem error works
+    Simulator Sim{Params, &lJonesPotential}; // Compiles, will test further on implementing getRmin
+    // Sim.populateLattice(); // Verified
+    Sim.populateRandom(0.1f);
+    Sim.writePositions(); // Need to implement exception throw on filesystem error works
 
+    // Function Testing
+    // std::cout << getCellID(89.42, 69.67, 102.8, 5.623, 170.3) << '\n'; // Seems to work well enough
+    // std::vector<int> testList {getNeighborList(7845, 34)};
+    // for (const auto& cell : testList) {std::cout << cell << '\n';} Seems to work well enough
 
     return 0;
 }
