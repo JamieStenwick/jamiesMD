@@ -17,11 +17,11 @@ Cell list
 
 // Params testing
 std::ostream& operator<<(std::ostream& out, SimParams& p) {
-        return out << p.N << p.t_steps << p.dt << p.frames << p.vol_frac << p.temp << p.epsilon << p.sigma;
+        return out << p.N << p.t_steps << p.dt << p.frames << p.vol_frac << p.temp;
     }
 
 
-std::array<float, 2> lJonesPotential(float radius, std::vector<float> args) {
+std::array<float, 2> lJonesPotential(float radius, const std::vector<float>& args) {
     using std::pow;
     float epsilon {args[0]};
     float sigma {args[1]};
@@ -34,13 +34,14 @@ std::array<float, 2> lJonesPotential(float radius, std::vector<float> args) {
 
 int main(int argc, char* argv[]) {
     /*Entry point for simulation*/
-    if (argc != 9) {
-			std::cout << "Usage: <executable> <dt> <vol_frac> <temp> <epsilon> "
-                         "<sigma> <N> <t_steps> <frames>" << '\n';
+    constexpr int requiredArgs = 6;
+    if (argc < requiredArgs + 1) {
+			std::cout << "Usage: <executable> <dt> <vol_frac> <temp>"
+                         "<N> <t_steps> <frames> [potential_args]" << '\n';
 		return 1;
 	}
 
-    const SimParams Params(argv); // Verified constructor
+    SimParams Params(argc, argv); // Verified constructor
     // std::cout << Params;  Verified
 
     Simulator Sim{Params, &lJonesPotential}; // Compiles, will test further on implementing getRmin
