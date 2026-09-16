@@ -53,7 +53,7 @@ struct SimParticles {
         cellIDs(N) // Derived from positions
         {}
 
-    std::vector<float> positionsXYZ; // 3*N length x's first, y's second, then z's
+    std::vector<float> positionsXYZ; // 3*N length, ALL x's first, ALL y's second, then ALL z's
     std::vector<float> velocitiesXYZ;
     std::vector<float> radii;
     std::vector<int> cellIDs;

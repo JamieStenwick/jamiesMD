@@ -9,6 +9,7 @@ Lennard-Jones Potential, V(r) = 4*eps[(sigma/r)^12 - (sigma/r)^6]
 Passed Potential function applies to all particle interactions
 All radii = 1
 All drag = 1
+All mass = 1
 r distance coordinate is center-center in radii
 Translational DOF only
 Cell list
