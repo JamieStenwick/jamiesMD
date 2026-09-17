@@ -50,6 +50,8 @@ int main(int argc, char* argv[]) {
     Sim.populateRandom(0.1f);
     Sim.writePositions(); // Need to implement exception throw on filesystem error works
 
+    Sim.integrate();
+
     // Function Testing
     // std::cout << getCellID(89.42, 69.67, 102.8, 5.623, 170.3) << '\n'; // Seems to work well enough
     // std::vector<int> testList {getNeighborList(7845, 34)};

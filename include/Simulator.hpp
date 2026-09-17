@@ -107,6 +107,7 @@ public:
     void populateLattice();
     void populateRandom(float offset);
     void writePositions() const;
+    void integrate();
 
     friend void integrateKernelWrapper(Simulator* Sim);
     friend struct DeviceParams;

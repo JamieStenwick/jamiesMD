@@ -303,3 +303,8 @@ void Simulator::fillNeighborList() {
         }
     }
 }
+
+
+void Simulator::integrate() {
+    integrateKernelWrapper(this);
+}
