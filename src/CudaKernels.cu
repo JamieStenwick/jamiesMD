@@ -36,6 +36,7 @@ struct LookupTableData {
 
     float r_min;
     float r_max;
+    float stepSize;
 };
 
 
@@ -172,6 +173,7 @@ public:
         m_data.tableElements = Tables.N;
         m_data.r_min = Tables.r_min;
         m_data.r_max = Tables.r_max;
+        m_data.stepSize = (m_data.r_max - m_data.r_min) / m_data.tableElements;
 
         cudaMalloc(&m_data.forces, m_data.tableElements * sizeof(float));
         cudaMalloc(&m_data.energies, m_data.tableElements * sizeof(float));
@@ -260,28 +262,51 @@ void popRandKernelWrap(float hostOut[], const std::size_t N, const float boxLeng
 }
 
 
-__global__ void integrateKernel(ParticleData          Particles,
-                                const LookupTableData Tables,
-                                CellData              CellData,
-                                const DeviceParams       Params,
-                                const int                cellsPerBlock,
-                                const unsigned long long seed) {
+__device__ __forceinline__ float3 operator+(const float3& arr1, const float3& arr2) {
+    return {arr1.x + arr2.x, arr1.y + arr2.y, arr1.z + arr2.z};
+}
+
+
+__device__ __forceinline__ float3 operator*(const float3& arr, const float scalar) {
+    return {arr.x * scalar, arr.y * scalar, arr.z * scalar};
+}
+
+
+// Put this in a device friendly format
+__device__ __forceinline__ float4 getDistance(const float3& pos1, const float3& pos2, const float boxLength) {
+    /*Takes two particles' positions in float3, and returns a float4 with the .x .y .z .w
+    attributes equal to dx, dy, dz, and dr respectively. Handles periodic boundary conditions.*/
+    float dx {pos1.x - pos2.x};
+    dx -= boxLength * round(dx / boxLength);
+
+    float dy {pos1.y - pos2.y};
+    dy -= boxLength * round(dy / boxLength);
+
+    float dz {pos1.z - pos2.z};
+    dz -= boxLength * round(dz / boxLength);
+
+    return {dx, dy, dz, dr};
+}
+
+
+__global__ void forceSum(ParticleData          Particles,
+                         const CellData        Cells,
+                         const LookupTableData LookupTables,
+                         const DeviceParams    Params) {
     /*Assume a maximum of 32 particles per cell (block) for now. In future derive from
     Simulator parameters. Also, threads that don't own a particle in the center cell
     are effectively doing nothing for that entire iteration, even when there are more
     particles in a neighbor cell than there were in the center.*/
 
-    // __shared__ int sharedParticleIDs[nPerCell]; Can't be variable length i guess
-    extern __shared__ float sharedPos[];
-
-    int tid {blockDim.x * blockIdx.x + threadIdx.x};
+    __shared__ float sharedPos[3 * 32];
 
     // Bounds checking cellIDs
+    const int cellsPerBlock {cuda::ceil_div(Params.cellsTotal, gridDim.x)};
     if (blockIdx.x * cellsPerBlock >= Params.cellsTotal)
-        return; // break if we make a persistent kernel
-    const int iterations {min(cellsPerBlock, Params.cellsTotal - (blockIdx.x * cellsPerBlock))}; // inline min()
+        return;
 
     // First loop over each center cellID this block will process
+    const int iterations {min(cellsPerBlock, Params.cellsTotal - (blockIdx.x * cellsPerBlock))}; // inline min()
     for (int cellID{blockIdx.x * cellsPerBlock}; cellID < (blockIdx.x * cellsPerBlock) + iterations; ++cellID) {
         
         __syncthreads();
@@ -292,17 +317,26 @@ __global__ void integrateKernel(ParticleData          Particles,
         if (threadIdx.x >= particlesPerCell)
             continue;
 
-        // Particle assigned to this thread
+        // Particle i assigned to this thread and loading that position into shared mem
         const int particleID {CellData.cellList[CellData.cellIndex[cellID] + threadIdx.x]};
+        sharedPos[threadIdx.x] = Particles.oldPositions[particleID];
+        sharedPos[threadIdx.x + particlesPerCell] = Particles.oldPositions[particleID + Params.N];
+        sharedPos[threadIdx.x + 2 * particlesPerCell] = Particles.oldPositions[particleID + Params.N];
 
-        BAOA(); // Writes new positions (which we calculate this step's forces from)
-        grid.sync(); // Cooperative groups api
-
-        float Fx {0}, Fy {0}, Fz {0};
         // Loop over every particle j != i
+        float3 force{0, 0, 0};
         for (int offset{1}; offset < particlesPerCell; ++offset) {
-            const int idx {(offset + threadIdx.x) % particlesPerCell};
+            const int jthIdx {(offset + threadIdx.x) % particlesPerCell};
 
+            const float4 distance {getDistance({sharedPos[threadIdx.x], sharedPos[threadIdx.x + particlesPerCell], sharedPos[threadIdx.x + 2*particlesPerCell]},
+                                               {sharedPos[jthIdx], sharedPos[jthIdx + particlesPerCell], sharedPos[jthIdx + 2*particlesPerCell]})};
+
+            if (distance.w <= LookupTables.r_max && distance.w >= LookupTables.r_min) {
+                const float forceMagnitude {LookupTables.forces[round((distance.w - LookupTables.r_min) / LookupTables.stepSize)]};
+                force.x += forceMagnitude * distance.x / distance.w;
+                force.y += forceMagnitude * distance.y / distance.w;
+                force.z += forceMagnitude * distance.z / distance.w;
+            }
         }
 
         // Then loop over each neighbor cell
@@ -315,17 +349,12 @@ __global__ void integrateKernel(ParticleData          Particles,
 }
 
 
-__device__ __forceinline__ float3 operator+(const float3& arr1, const float3& arr2) {
-    return {arr1.x + arr2.x, arr1.y + arr2.y, arr1.z + arr2.z};
+
+
 }
 
 
-__device__ __forceinline__ float3 operator*(const float3& arr, const float scalar) {
-    return {arr.x * scalar, arr.y * scalar, arr.z * scalar};
-}
-
-
-__device__ inline float3 BAOA(int particleID, float3 velocity, float3 randomForce, ParticleData Particles, DeviceParams Params, float* sharedPos) {
+__device__ inline float3 BAOA(int particleID, float3 velocity, float3 randomForce, ParticleData Particles, DeviceParams Params) {
     /*Takes particleID to read last time step's force and position from VRAM,
     Takes velocity from register and updates it, and takes ptr to sharedPos to immediately
     write calculated positions into.*/
@@ -346,14 +375,7 @@ __device__ inline float3 BAOA(int particleID, float3 velocity, float3 randomForc
 
     position += velocity * (Params.dt / 2); // A
 
-    // Write new positions to both shared and global (for local and grid wide force sums)
-    sharedPos[threadIdx.x] = position.x;
-    sharedPos[threadIdx.x + blockDim.x] = position.y;
-    sharedPos[threadIdx.x + 2*blockDim.x] = position.z;
-
-    // I believe the current problem is that with the kernel set up right now,
-    // not every particles's positions is going to be updated when you start looping through neighboring cells,
-    // Not to mention they might not even be in the right cells
+    // Writing updated positions to global in preparation for force sum step
     Particles.newPositions[threadIdx.x] = position.x;
     Particles.newPositions[threadIdx.x + blockDim.x] = position.y;
     Particles.newPositions[threadIdx.x + 2*blockDim.x] = position.z;
@@ -362,6 +384,10 @@ __device__ inline float3 BAOA(int particleID, float3 velocity, float3 randomForc
 }
 
 
+// It makes way more sense to just fucking separate the force sum and BAOA integration, so that's what
+// we're going to do, remember: programming is like destiny 2 day one raiding, do the simplest possible thing
+// first to get the clear, then later you can optimize individual modules (operations) and overall design (algorithmic)
+// both are easier after having already programmed the whole thing
 void integrateKernelWrapper(Simulator* Sim) {
     /*Takes a pointer to a Simulator object, allocates device memory for integration,
     and orchestrates Simulator host actions and Integrator Device actions during the
