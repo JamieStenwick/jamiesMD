@@ -1,18 +1,16 @@
 #include <cuda/cmath>
 #include <chrono>
 #include <curanddx.hpp>
+#include <cub/device/device_scan.cuh>
 #include "Simulator.hpp"
 #include "CudaKernels.cuh"
 #include <iostream>
 
 
 struct ParticleData {
-    float* oldPositions {nullptr};
-    float* newPositions {nullptr};
-
-    float* oldVelocities {nullptr};
-    float* newVelocities {nullptr};
-    float* oldForces {nullptr};
+    float* positions {nullptr};
+    float* velocities {nullptr};
+    float* forces {nullptr};
 
     float* radii {nullptr};
     int* cellIDs {nullptr};
@@ -71,24 +69,18 @@ public:
     explicit DeviceParticles(int N) {
         m_data.N = N;
 
-        cudaMalloc(&m_data.oldPositions, N * 3 * sizeof(float));
-        cudaMalloc(&m_data.newPositions, N * 3 * sizeof(float));
-
-        cudaMalloc(&m_data.oldVelocities, N * 3 * sizeof(float));
-        cudaMalloc(&m_data.newVelocities, N * 3 * sizeof(float));
-        cudaMalloc(&m_data.oldForces, N * 3 * sizeof(float));
+        cudaMalloc(&m_data.positions, N * 3 * sizeof(float));
+        cudaMalloc(&m_data.velocities, N * 3 * sizeof(float));
+        cudaMalloc(&m_data.forces, N * 3 * sizeof(float));
 
         cudaMalloc(&m_data.radii, N * sizeof(float));
         cudaMalloc(&m_data.cellIDs, N * sizeof(float));
     }
 
     ~DeviceParticles() {
-        cudaFree(m_data.oldPositions);
-        cudaFree(m_data.newPositions);
-
-        cudaFree(m_data.oldVelocities);
-        cudaFree(m_data.newVelocities);
-        cudaFree(m_data.oldForces);
+        cudaFree(m_data.positions);
+        cudaFree(m_data.velocities);
+        cudaFree(m_data.forces);
 
         cudaFree(m_data.radii);
         cudaFree(m_data.cellIDs);
@@ -103,10 +95,10 @@ public:
 
     void copyFromHost(SimParticles& hostParticles) const {
         /*Copies the particle data owned by a simulator to gpu for integration*/
-        cudaMemcpy(m_data.oldPositions, hostParticles.positionsXYZ.data(),
+        cudaMemcpy(m_data.positions, hostParticles.positionsXYZ.data(),
                    m_data.N * 3 * sizeof(float), cudaMemcpyHostToDevice);
 
-        cudaMemcpy(m_data.oldVelocities, hostParticles.velocitiesXYZ.data(),
+        cudaMemcpy(m_data.velocities, hostParticles.velocitiesXYZ.data(),
                    m_data.N * 3 * sizeof(float), cudaMemcpyHostToDevice);
 
         cudaMemcpy(m_data.radii, hostParticles.radii.data(),
@@ -128,7 +120,7 @@ public:
     explicit DeviceCells(int N, int cells) {
         cudaMalloc(&m_data.cellList, N * sizeof(int));
         cudaMalloc(&m_data.particlesPerCell, cells * sizeof(int));
-        cudaMalloc(&m_data.cellIndex, cells * sizeof(int) + 1);
+        cudaMalloc(&m_data.cellIndex, cells * sizeof(int) + sizeof(int));
         cudaMalloc(&m_data.cellOffsets, cells * sizeof(int));
         cudaMalloc(&m_data.flatNeighborList, cells * 27 * sizeof(int));
     }
@@ -154,8 +146,11 @@ public:
         cudaMemcpy(m_data.cellList, hostCells.cellList.data(),
                    hostCells.cellList.size() * sizeof(int), cudaMemcpyHostToDevice);
 
-        cudaMemcpy(m_data.cellIndex, hostCells.cellIndex.data(),
+        cudaMemcpy(m_data.particlesPerCell, hostCells.particlesPerCell.data(),
                    hostCells.cellsTotal * sizeof(int), cudaMemcpyHostToDevice);
+
+        cudaMemcpy(m_data.cellIndex, hostCells.cellIndex.data(),
+                   hostCells.cellsTotal * sizeof(int) + sizeof(int), cudaMemcpyHostToDevice);
 
         cudaMemcpy(m_data.flatNeighborList, hostCells.flatNeighborList.data(),
                    hostCells.cellsTotal * 27 * sizeof(int), cudaMemcpyHostToDevice);
@@ -174,7 +169,7 @@ public:
         m_data.tableElements = Tables.N;
         m_data.r_min = Tables.r_min;
         m_data.r_max = Tables.r_max;
-        m_data.stepSize = (m_data.r_max - m_data.r_min) / m_data.tableElements;
+        m_data.stepSize = (m_data.r_max - m_data.r_min) / (m_data.tableElements - 1);
 
         cudaMalloc(&m_data.forces, m_data.tableElements * sizeof(float));
         cudaMalloc(&m_data.energies, m_data.tableElements * sizeof(float));
@@ -286,26 +281,54 @@ __device__ __forceinline__ float4 getDistance(const float3& pos1, const float3& 
     float dz {pos1.z - pos2.z};
     dz -= boxLength * round(dz / boxLength);
 
-    const float dr {dx*dx + dy*dy + dz*dz};
+    const float dr {sqrtf(dx*dx + dy*dy + dz*dz)};
     return {dx, dy, dz, dr};
+}
+
+
+__device__ __forceinline__ int getCellID(float3 pos, int cellsPerSide, float boxLength) {
+    // (0, 0, 0) is center of box but cellID 0 still starts in negative most corner
+    // and increases first along +x, then +y, then +z
+    // Periodic boundary condition is a half length around the box
+    if (fabsf(pos.x) > (boxLength) || fabsf(pos.y) > (boxLength) || fabsf(pos.z) > (boxLength)) {
+        return -1;
+    }
+
+    // Shift particle back to original box if in periodic boundary layer, boundary is half open for consistency
+    if (pos.x >= boxLength / 2.0f) pos.x -= boxLength;
+    if (pos.x < -boxLength / 2.0f) pos.x += boxLength;
+
+    if (pos.y >= boxLength / 2.0f) pos.y -= boxLength;
+    if (pos.y < -boxLength / 2.0f) pos.y += boxLength;
+
+    if (pos.z >= boxLength / 2.0f) pos.z -= boxLength;
+    if (pos.z < -boxLength / 2.0f) pos.z += boxLength;
+
+    // Shift center coordinates to corner before calculating cell index
+    float cellLength {boxLength / cellsPerSide};
+    const int x_cell {static_cast<int>((pos.x + boxLength / 2.0f) / cellLength)};
+    const int y_cell {static_cast<int>((pos.y + boxLength / 2.0f) / cellLength)};
+    const int z_cell {static_cast<int>((pos.z + boxLength / 2.0f) / cellLength)};
+
+    return x_cell + y_cell*cellsPerSide + z_cell*cellsPerSide*cellsPerSide;
 }
 
 
 __global__ void forceSum(ParticleData          Particles,
                          const CellData        Cells,
                          const LookupTableData LookupTables,
-                         const DeviceParams    Params) {
-    /*Assume a maximum of 32 particles per cell (block) for now. In future derive from
-    Simulator parameters. Also, threads that don't own a particle in the center cell
-    are effectively doing nothing for that entire iteration, even when there are more
-    particles in a neighbor cell than there were in the center.*/
+                         const DeviceParams    Params,
+                         int*                  errorFlag) {
+    /*Assume a maximum of 32 particles per cell (block) for now. Computes the sum of
+    conservative forces for every particle by iterating over every particle in every
+    neighbor cell.*/
 
     constexpr int maxParticlesPerCell {32};
     __shared__ float sharedPos[3 * maxParticlesPerCell];
 
     // Bounds checking cellIDs
     const int cellsPerBlock {cuda::ceil_div(Params.cellsTotal, gridDim.x)};
-    if (blockIdx.x * cellsPerBlock >= Params.cellsTotal)
+    if ((blockIdx.x * cellsPerBlock >= Params.cellsTotal) || (*errorFlag))
         return;
 
     // First loop over each center cellID this block will process
@@ -313,58 +336,33 @@ __global__ void forceSum(ParticleData          Particles,
     for (int cellID{blockIdx.x * cellsPerBlock}; cellID < (blockIdx.x * cellsPerBlock) + iterations; ++cellID) {
         
         __syncthreads();
-        // Center cell case is special because we need to loop over every particle j != i
 
-        // The threadIDs that exceed the particles per cell put a dummy value in shared mem but it doesn't get used
+        // Center cell case is special because we need to loop over every particle j != i
         // Particle i assigned to this thread and loading that position into shared mem
         int particlesPerCell {Cells.particlesPerCell[cellID]};
-        const int particleID {(threadIdx.x < particlesPerCell)
-                               ? Cells.cellList[Cells.cellIndex[cellID] + threadIdx.x]
-                               : 0};
+        const bool activeCenterThread {threadIdx.x < particlesPerCell};
 
-        const float3 pos {Particles.oldPositions[particleID],
-                          Particles.oldPositions[particleID + Particles.N],
-                          Particles.oldPositions[particleID + 2*Particles.N]};
+        int particleID;
+        float3 pos;
+        float3 force{0, 0, 0};
 
-        sharedPos[threadIdx.x] = pos.x;
-        sharedPos[threadIdx.x + particlesPerCell] = pos.y;
-        sharedPos[threadIdx.x + 2 * particlesPerCell] = pos.z;
-
+        if (activeCenterThread) {
+            particleID = Cells.cellList[Cells.cellIndex[cellID] + threadIdx.x];
+            pos = {Particles.positions[particleID],
+                   Particles.positions[particleID + Particles.N],
+                   Particles.positions[particleID + 2*Particles.N]};
+            
+            sharedPos[threadIdx.x] = pos.x;
+            sharedPos[threadIdx.x + particlesPerCell] = pos.y;
+            sharedPos[threadIdx.x + 2 * particlesPerCell] = pos.z;
+        }
         __syncthreads();
 
-        // Loop over every other particle in this cell
-        float3 force{0, 0, 0};
-        for (int offset{1}; offset < particlesPerCell; ++offset) {
-            const int idx {(offset + threadIdx.x) % particlesPerCell};
-            const float3 otherPos {sharedPos[idx], sharedPos[idx + particlesPerCell], sharedPos[idx + 2*particlesPerCell]};
-            const float4 distance {getDistance(pos, otherPos, Params.boxLength)};
-
-            if (distance.w <= LookupTables.r_max && distance.w >= LookupTables.r_min) {
-                const float forceMagnitude {LookupTables.forces[static_cast<size_t>(round((distance.w - LookupTables.r_min) / LookupTables.stepSize))]};
-                force.x += forceMagnitude * distance.x / distance.w;
-                force.y += forceMagnitude * distance.y / distance.w;
-                force.z += forceMagnitude * distance.z / distance.w;
-            }
-        }
-
-        // Then loop over each neighbor cell, +1 since we already did center cell
-        for (int neighborIdx{cellID * 27 + 1}; neighborIdx < cellID * 27 + 27; ++neighborIdx) {
-            const int neighborID {Cells.flatNeighborList[neighborIdx]};
-            particlesPerCell = Cells.particlesPerCell[neighborID];
-
-            // Particle this thread is loading into shared, this way previously inactive threads can do something useful
-            const int tempParticleID {(threadIdx.x < particlesPerCell)
-                                       ? Cells.cellList[Cells.cellIndex[neighborID] + threadIdx.x]
-                                       : 0};
-
-            sharedPos[threadIdx.x] = Particles.oldPositions[tempParticleID];
-            sharedPos[threadIdx.x + particlesPerCell] = Particles.oldPositions[tempParticleID + Particles.N];
-            sharedPos[threadIdx.x + 2 * particlesPerCell] = Particles.oldPositions[tempParticleID + Particles.N];
-            __syncthreads();
-
+        if (activeCenterThread) {
             // Loop over every other particle in this cell
-            for (int i{0}; i < particlesPerCell; ++i) {
-                const float3 otherPos {sharedPos[i], sharedPos[i + particlesPerCell], sharedPos[i + 2*particlesPerCell]};
+            for (int offset{1}; offset < particlesPerCell; ++offset) {
+                const int idx {(offset + threadIdx.x) % particlesPerCell};
+                const float3 otherPos {sharedPos[idx], sharedPos[idx + particlesPerCell], sharedPos[idx + 2*particlesPerCell]};
                 const float4 distance {getDistance(pos, otherPos, Params.boxLength)};
 
                 if (distance.w <= LookupTables.r_max && distance.w >= LookupTables.r_min) {
@@ -375,9 +373,44 @@ __global__ void forceSum(ParticleData          Particles,
                 }
             }
         }
-        Particles.oldForces[particleID] = force.x;
-        Particles.oldForces[particleID + Particles.N] = force.y;
-        Particles.oldForces[particleID + 2*Particles.N] = force.z;
+        __syncthreads();
+
+        // Then loop over each neighbor cell, +1 since we already did center cell
+        for (int neighborIdx{cellID * 27 + 1}; neighborIdx < cellID * 27 + 27; ++neighborIdx) {
+
+            const int neighborID {Cells.flatNeighborList[neighborIdx]};
+            particlesPerCell = Cells.particlesPerCell[neighborID];
+
+            // This thread loads a particle from neighbor cell into shared, this way previously inactive threads can do something useful
+            if (threadIdx.x < particlesPerCell) {
+                const int tempParticleID = Cells.cellList[Cells.cellIndex[neighborID] + threadIdx.x];
+                sharedPos[threadIdx.x] = Particles.positions[tempParticleID];
+                sharedPos[threadIdx.x + particlesPerCell] = Particles.positions[tempParticleID + Particles.N];
+                sharedPos[threadIdx.x + 2 * particlesPerCell] = Particles.positions[tempParticleID + 2*Particles.N];
+            }
+            __syncthreads();
+
+            if (activeCenterThread) {
+                // Loop over every particle in this neighbor cell
+                for (int i{0}; i < particlesPerCell; ++i) {
+                    const float3 otherPos {sharedPos[i], sharedPos[i + particlesPerCell], sharedPos[i + 2*particlesPerCell]};
+                    const float4 distance {getDistance(pos, otherPos, Params.boxLength)};
+
+                    if (distance.w <= LookupTables.r_max && distance.w >= LookupTables.r_min) {
+                        const float forceMagnitude {LookupTables.forces[static_cast<size_t>(round((distance.w - LookupTables.r_min) / LookupTables.stepSize))]};
+                        force.x += forceMagnitude * distance.x / distance.w;
+                        force.y += forceMagnitude * distance.y / distance.w;
+                        force.z += forceMagnitude * distance.z / distance.w;
+                    }
+                }
+            }
+            __syncthreads();
+        }
+        if (activeCenterThread) {
+            Particles.forces[particleID] = force.x;
+            Particles.forces[particleID + Particles.N] = force.y;
+            Particles.forces[particleID + 2*Particles.N] = force.z;
+        }
     }
 }
 
@@ -387,51 +420,141 @@ __global__ void step1BAOA(ParticleData         Particles,
                          const CellData        Cells,
                          const LookupTableData LookupTables,
                          const DeviceParams    Params,
+                         int*                  errorFlag,
                          RNG*                  rngState,
                          const unsigned long long seed) {
     /*Each thread assigned a particle, and does the half kick (B), both position drifts (A),
     and the random kick + drag (O) in the order BAOA. Then writes updated velocities and
-    positions, and then rebuilds cell list. Also writes rng state for next steps*/
+    positions, and then rebuilds cell list. Also writes rng state for future steps*/
     const int particleID {blockDim.x * blockIdx.x + threadIdx.x};
-    if (particleID >= Particles.N)
+    if ((particleID >= Particles.N) || (*errorFlag))
         return;
 
-    float3 velocity {Particles.oldVelocities[particleID],
-                     Particles.oldVelocities[particleID + Particles.N],
-                     Particles.oldVelocities[particleID + 2*Particles.N]};
+    float3 velocity {Particles.velocities[particleID],
+                     Particles.velocities[particleID + Particles.N],
+                     Particles.velocities[particleID + 2*Particles.N]};
 
-    float3 position {Particles.oldPositions[particleID],
-                     Particles.oldPositions[particleID + Particles.N],
-                     Particles.oldPositions[particleID + 2*Particles.N]};
+    float3 position {Particles.positions[particleID],
+                     Particles.positions[particleID + Particles.N],
+                     Particles.positions[particleID + 2*Particles.N]};
 
-    const float3 force {Particles.oldForces[particleID],
-                        Particles.oldForces[particleID + Particles.N],
-                        Particles.oldForces[particleID + 2*Particles.N]};
+    const float3 force {Particles.forces[particleID],
+                        Particles.forces[particleID + Particles.N],
+                        Particles.forces[particleID + 2*Particles.N]};
 
     velocity = velocity + force * (Params.dt / 2); // B, mass=1 in denominator
     position = position + velocity * (Params.dt / 2); // A
 
     const float c {expf(-Params.dt)}; // drag coef gamma=1 and mass=1, both in exponent
-    const float sigma {sqrtf(1.38 * Params.temp * (1 - c)*(1 - c))}; // kT will likely non-dimensionalize
+    const float sigma {sqrtf(5.0f * (1 - c)*(1 - c))}; // kT will likely non-dimensionalize
 
     curanddx::normal<float, curanddx::box_muller> normalDist(0, 1);
     RNG rng(seed, particleID, 0); // seed, subsequence, offset
-    float3 randomForce {normalDist.generate4(rng)};
+    float4 rand4 {normalDist.generate4(rng)};
+    float3 randomForce {rand4.x, rand4.y, rand4.z};
 
     velocity = (velocity * c) + (randomForce * sigma); // O
     position = position + velocity * (Params.dt / 2); // A
 
     // Writing updated positions and velocities to global in preparation for force sum step
-    Particles.newPositions[particleID] = position.x;
-    Particles.newPositions[particleID + Particles.N] = position.y;
-    Particles.newPositions[particleID + 2*Particles.N] = position.z;
+    Particles.positions[particleID] = position.x;
+    Particles.positions[particleID + Particles.N] = position.y;
+    Particles.positions[particleID + 2*Particles.N] = position.z;
 
-    Particles.newVelocities[particleID] = position.x;
-    Particles.newVelocities[particleID + Particles.N] = position.y;
-    Particles.newVelocities[particleID + 2*Particles.N] = position.z;
+    Particles.velocities[particleID] = velocity.x;
+    Particles.velocities[particleID + Particles.N] = velocity.y;
+    Particles.velocities[particleID + 2*Particles.N] = velocity.z;
 
     // Writing rng state for future time steps
     rngState[particleID] = rng;
+
+    // Write new cellID to particle list and particlesPerCell
+    const int newCellID {getCellID(position, Params.cellsPerSide, Params.boxLength)};
+    if (newCellID == -1) { // If particle escapes box and PBC
+        atomicExch(errorFlag, 1); // exchanges current value with 2nd argument
+        return;
+    }
+    Particles.cellIDs[particleID] = newCellID;
+    atomicAdd(Cells.particlesPerCell + newCellID, 1);
+}
+
+
+__global__ void buildCellList(const CellData     Cells,
+                              const ParticleData Particles,
+                              int*               errorFlag) {
+    /*Writes particleID into compact cell list according to the recently updated cellIndex
+    and cellIDs*/
+    const int particleID {blockDim.x * blockIdx.x + threadIdx.x};
+    if (particleID >= Particles.N || (*errorFlag)) {
+        return;
+    }
+    const int cellID {Particles.cellIDs[particleID]};
+    const int cellListIdx {atomicAdd(Cells.cellOffsets + cellID, 1)};
+
+    Cells.cellList[cellListIdx] = particleID;
+}
+
+
+template<class RNG> // Type of rng specified when calling kernel
+__global__ void stepBBAOA(ParticleData         Particles,
+                         const CellData        Cells,
+                         const LookupTableData LookupTables,
+                         const DeviceParams    Params,
+                         int*                  errorFlag,
+                         RNG*                  rngState) {
+    /*Each thread assigned a particle, and does the half kick (B), both position drifts (A),
+    and the random kick + drag (O) in the order BAOA. Then writes updated velocities and
+    positions, and then rebuilds cell list. Also writes rng state for future steps*/
+    const int particleID {blockDim.x * blockIdx.x + threadIdx.x};
+    if (particleID >= Particles.N || (*errorFlag))
+        return;
+
+    float3 velocity {Particles.velocities[particleID],
+                     Particles.velocities[particleID + Particles.N],
+                     Particles.velocities[particleID + 2*Particles.N]};
+
+    float3 position {Particles.positions[particleID],
+                     Particles.positions[particleID + Particles.N],
+                     Particles.positions[particleID + 2*Particles.N]};
+
+    const float3 force {Particles.forces[particleID],
+                        Particles.forces[particleID + Particles.N],
+                        Particles.forces[particleID + 2*Particles.N]};
+
+    velocity = velocity + force * Params.dt; // BB, mass=1 in denominator
+    position = position + velocity * (Params.dt / 2); // A
+
+    const float c {expf(-Params.dt)}; // drag coef gamma=1 and mass=1, both in exponent
+    const float sigma {sqrtf(5.0f * (1 - c)*(1 - c))}; // kT will likely non-dimensionalize, set to 5 rn
+
+    curanddx::normal<float, curanddx::box_muller> normalDist(0, 1);
+    RNG rng {rngState[particleID]};
+    float4 rand4 {normalDist.generate4(rng)};
+    float3 randomForce {rand4.x, rand4.y, rand4.z};
+
+    velocity = (velocity * c) + (randomForce * sigma); // O
+    position = position + velocity * (Params.dt / 2); // A
+
+    // Writing updated positions and velocities to global in preparation for force sum step
+    Particles.positions[particleID] = position.x;
+    Particles.positions[particleID + Particles.N] = position.y;
+    Particles.positions[particleID + 2*Particles.N] = position.z;
+
+    Particles.velocities[particleID] = velocity.x;
+    Particles.velocities[particleID + Particles.N] = velocity.y;
+    Particles.velocities[particleID + 2*Particles.N] = velocity.z;
+
+    // Writing rng state for future time steps
+    rngState[particleID] = rng;
+
+    // Write new cellID to particle list and particlesPerCell
+    const int newCellID {getCellID(position, Params.cellsPerSide, Params.boxLength)};
+    if (newCellID == -1) { // If particle escapes box and PBC
+        atomicExch(errorFlag, 1); // exchanges current value with 2nd argument
+        return;
+    }
+    Particles.cellIDs[particleID] = newCellID;
+    atomicAdd(Cells.particlesPerCell + newCellID, 1);
 }
 
 
@@ -449,12 +572,18 @@ void integrateKernelWrapper(Simulator* Sim) {
                    + curanddx::PhiloxRounds<6>()
                    + curanddx::SM<860>()
                    + curanddx::Thread());
-    RNG* rngState {nullptr};
     const unsigned long long seed = std::chrono::duration_cast<std::chrono::nanoseconds>(
         std::chrono::system_clock::now().time_since_epoch()).count();
     
     // Allocating GPU memory
+    RNG* rngState {nullptr};
     cudaMalloc(&rngState, Sim->m_Params.N * sizeof(RNG));
+
+    // For detecting if particle escapes box
+    int* d_errorFlag {nullptr};
+    cudaMalloc(&d_errorFlag, sizeof(int));
+    cudaMemset(d_errorFlag, 0, sizeof(int));
+
     DeviceParticles Particles{Sim->m_Params.N};
     DeviceCells Cells{Sim->m_Params.N, Sim->m_Cells.cellsTotal};
     DeviceLookupTables Tables{Sim->m_Tables};
@@ -466,16 +595,103 @@ void integrateKernelWrapper(Simulator* Sim) {
     Tables.copyFromHost(Sim->m_Tables);
 
     // Testing Kernel
-    int threads {Sim->m_Params.N};
-    int blocks {cuda::ceil_div(threads, 32)};
-    forceSum<<<blocks, threads>>>(Particles.data(), Cells.data(), Tables.data(), Params);
+    const int threads {32};
+    const int blocks {cuda::ceil_div(Sim->m_Params.N, threads)};
 
-    std::vector<float> forceTest(3 * Sim->m_Params.N);
-    cudaMemcpy(forceTest.data(), Particles.data().oldForces, 3 * Sim->m_Params.N * sizeof(float), cudaMemcpyDeviceToHost);
-    for (int i{0}; i < 3 * Sim->m_Params.N; ++i) {
-        std::cout << forceTest[i] << '\n';
+    // Page-locked memory for positions for every frame write, always write frame 1
+    float* framePositions {nullptr};
+    cudaMallocHost(&framePositions, Sim->m_Params.N * 3 * sizeof(float));
+    
+    // Write frame 1, time step 0
+    cudaMemcpy(framePositions, Particles.data().positions,
+               Sim->m_Params.N * 3 * sizeof(float), cudaMemcpyDeviceToHost);
+    writePositions(framePositions, Sim->m_Params.N, 1, true);
+
+    // Do time step 1
+    forceSum<<<blocks, threads>>>(Particles.data(), Cells.data(), Tables.data(), Params, d_errorFlag);
+
+    // Need to reset particlesPerCell before rebuilding cellList
+    cudaMemset(Cells.data().particlesPerCell, 0, Params.cellsTotal * sizeof(int));
+    step1BAOA<<<blocks, threads>>>(Particles.data(), Cells.data(), Tables.data(), Params, d_errorFlag, rngState, seed);
+
+    // Exclusive scan to generate cellIndex and writeOffsets, then kernel launch to write
+    // particleID into compact cell list
+    // Initial call to scan is to identify size of temporary scan storage, which is written into scanBytes
+    size_t scanBytes {0};
+    void* scanStorage {nullptr};
+    cub::DeviceScan::ExclusiveSum(nullptr,
+                                  scanBytes,
+                                  Cells.data().particlesPerCell,
+                                  Cells.data().cellIndex,
+                                  Params.cellsTotal);
+
+    cudaMalloc(&scanStorage, scanBytes); // Allocate memory for temporary scan storage
+    cub::DeviceScan::ExclusiveSum(scanStorage, // Actually scan particlesPerCell -> cellIndex
+                                  scanBytes,
+                                  Cells.data().particlesPerCell,
+                                  Cells.data().cellIndex,
+                                  Params.cellsTotal);
+
+    // Initialize offsets used to write particleIDs to unique index in cellList
+    cudaMemcpy(Cells.data().cellOffsets, Cells.data().cellIndex,
+               Params.cellsTotal * sizeof(int), cudaMemcpyDeviceToDevice);
+
+    // Launch kernel to write particleIDs into compact cellList
+    buildCellList<<<blocks, threads>>>(Cells.data(), Particles.data(), d_errorFlag);
+
+    // Number of time steps between each frame write, frames - 1 for initial write
+    constexpr int ERROR_CHECK_INTERVAL = 50;
+    const double frameSteps {static_cast<double>(Sim->m_Params.t_steps) / (Sim->m_Params.frames - 1)};
+    for (int t{1}, frame{2}; t <= Sim->m_Params.t_steps; ++t) {
+        std::cout << "Starting time step " << t << '\n';
+
+        // Checking for particle out of bounds
+        if (t % ERROR_CHECK_INTERVAL == 0) {
+            int errorFlag;
+            cudaMemcpy(&errorFlag, d_errorFlag, sizeof(int), cudaMemcpyDeviceToHost);
+
+            if (errorFlag) {
+                throw std::runtime_error("Particle escaped simulation box");
+            }
+        }
+
+        // Write frame
+        if (static_cast<int>(std::round(frameSteps * (frame - 1))) == t) {
+            cudaMemcpy(framePositions, Particles.data().positions,
+                       Sim->m_Params.N * 3 * sizeof(float), cudaMemcpyDeviceToHost);
+            writePositions(framePositions, Sim->m_Params.N, frame, false);
+            ++frame;
+        }
+        if (t == Sim->m_Params.t_steps)
+            break;
+
+        // Force sum step
+        forceSum<<<blocks, threads>>>(Particles.data(), Cells.data(), Tables.data(), Params, d_errorFlag);
+
+        // Need to reset particlesPerCell before rebuilding cellList
+        cudaMemset(Cells.data().particlesPerCell, 0, Params.cellsTotal * sizeof(int));
+        stepBBAOA<<<blocks, threads>>>(Particles.data(), Cells.data(), Tables.data(), Params, d_errorFlag, rngState);
+
+        // Creat cellIndex, cellOffsets, and rebuild cellList
+        cub::DeviceScan::ExclusiveSum(scanStorage,
+                                      scanBytes,
+                                      Cells.data().particlesPerCell,
+                                      Cells.data().cellIndex,
+                                      Params.cellsTotal);
+        cudaMemcpy(Cells.data().cellOffsets, Cells.data().cellIndex,
+                   Params.cellsTotal * sizeof(int), cudaMemcpyDeviceToDevice);
+        buildCellList<<<blocks, threads>>>(Cells.data(), Particles.data(), d_errorFlag);
     }
 
-    // Free rng state, everything else frees automatically in destructor (RAII)
+    // Check for error flag if loop doesn't end on multiple of 50
+    int errorFlag;
+    cudaMemcpy(&errorFlag, d_errorFlag, sizeof(int), cudaMemcpyDeviceToHost);
+    if (errorFlag) {
+        throw std::runtime_error("Particle escaped simulation box");
+    }
+
+    // Free rng state and scan storage, everything else frees automatically in destructor (RAII)
     cudaFree(rngState);
+    cudaFree(scanStorage);
+    cudaFreeHost(framePositions);
 }

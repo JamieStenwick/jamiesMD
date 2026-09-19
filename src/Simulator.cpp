@@ -17,7 +17,7 @@ constexpr int N_TABLE_ELEMENTS {100000};
 // Declaring in here for now, will probably move to separate functions file when we get enough non-Simulator functions
 std::array<float, 2> getRminRmax (PotentialFuncPtr potential) {
     // Do root finding according to desired tolerances to fin acceptable rmin and rmax
-    return {2.1f, 8.23467f};
+    return {2.1f, 10.23467f};
 }
 
 
@@ -45,7 +45,28 @@ int getCellID(float x, float y, float z, int cellsPerSide, float boxLength) {
     int z_cell {static_cast<int>((z + boxLength / 2.0f) / cellLength)};
 
     return x_cell + y_cell*cellsPerSide + z_cell*cellsPerSide*cellsPerSide;
+}
 
+
+void writePositions(const float* positionsXYZ, const int N, const int frame, const bool newFile) {
+    // Remember to try{} this, also will open in binary mode for during runtime
+    if (newFile) {
+        std::ofstream outfile{"positions.txt"};
+        // if (!outfile) {throw std::runtime_error("outfile could not be opened");}
+
+        outfile << "Frame " << frame << ":\n";
+        for (int i{0}; i < N; i++) {
+            outfile << positionsXYZ[i] << ' ' << positionsXYZ[i + N] << ' ' << positionsXYZ[i + 2*N] << '\n';
+        }
+    }
+    else {
+        std::ofstream outfile{"positions.txt", std::ios::app};
+        // if (!outfile) {throw std::runtime_error("outfile could not be opened");}
+        outfile << "Frame " << frame << ":\n";
+        for (int i{0}; i < N; i++) {
+            outfile << positionsXYZ[i] << ' ' << positionsXYZ[i + N] << ' ' << positionsXYZ[i + 2*N] << '\n';
+        }
+    }
 }
 
 
@@ -188,19 +209,6 @@ void Simulator::populateRandom(float offset) {
 }
 
 
-void Simulator::writePositions() const {
-    // Remember to try{} this, also will open in binary mode for during runtime
-    const std::vector<float>& posXYZ {m_Particles.positionsXYZ}; // shorter name
-    static std::ofstream outfile{"positions.txt"};
-    // if (!outfile) {throw std::runtime_error("outfile could not be opened");}
-
-    for (int i{0}; i < m_Params.N; i++) {
-        outfile << posXYZ[i] << ' ' << posXYZ[i + m_Params.N] << ' ' << posXYZ[i + 2*m_Params.N] << '\n';
-    }
-    outfile.close();
-}
-
-
 float Simulator::getDistance(int particleID1, int particleID2) const {
     /*If the distance to the particle exceeds half the box length then it would be more
     appropriate to consider the interaction through the periodic boundary condition.
@@ -221,19 +229,18 @@ float Simulator::getDistance(int particleID1, int particleID2) const {
 
 
 void Simulator::updateCellList() {
-    /*Rebuilds compact cell list from particle cell IDs*/
-    std::vector<int> particlesPerCell(m_Cells.cellsTotal);
+    /*Rebuilds compact cellList, cellIndex, and particlesPerCell from particle cell IDs*/
     m_Cells.cellIndex[m_Cells.cellsTotal] = m_Params.N; // for traversal consistency
 
     // Counting particles in each cell
     for (int particle{0}; particle < m_Params.N; ++particle) {
         const int cellID {m_Particles.cellIDs[particle]};
-        ++particlesPerCell[cellID];
+        ++m_Cells.particlesPerCell[cellID];
     }
     // Prefix sum over counts to get cell start position in the compact cell list
-    std::exclusive_scan(particlesPerCell.begin(), particlesPerCell.end(), m_Cells.cellIndex.begin(), 0);
+    std::exclusive_scan(m_Cells.particlesPerCell.begin(), m_Cells.particlesPerCell.end(), m_Cells.cellIndex.begin(), 0);
 
-    // We need to keep track of new location to write to not overwrite
+    // We need to keep track of new location to write to not overwrite cellIndex
     std::vector<int> writeOffsets {m_Cells.cellIndex};
     for (int particle{0}; particle < m_Params.N; ++particle) {
         const int cellID {m_Particles.cellIDs[particle]}; // Cell particle i is in
@@ -254,7 +261,8 @@ void Simulator::updateCellList() {
 
 
 void Simulator::fillLookupTables() {
-    float interval {(m_Tables.r_max - m_Tables.r_min) / m_Tables.N};
+    // Remember, N equally space elements means a spacing of (range) / (N - 1)
+    float interval {(m_Tables.r_max - m_Tables.r_min) / (m_Tables.N - 1)};
 
     for (int i{0}; i < m_Tables.N; ++i) {
         const float r {(i * interval) + m_Tables.r_min};

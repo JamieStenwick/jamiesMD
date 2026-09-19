@@ -8,6 +8,7 @@ using PotentialFuncPtr = std::array<float, 2> (*)(float r, const std::vector<flo
 // non-Simulator function forward declarations, once it gets long enough I'll move to separate file
 std::array<float, 2> getRminRmax (PotentialFuncPtr potential);
 int getCellID(float x, float y, float z, int cellsPerSide, float boxLength);
+void writePositions(const float* positionsXYZ, const int N, const int frame, const bool newFile);
 
 struct SimParams {
     /*First 6 parameters are necessary for every simulation, remaining params
@@ -67,6 +68,7 @@ struct SimCells {
         cellsTotal {cellsPerSide * cellsPerSide * cellsPerSide},
         cellList(N),
         cellIndex(cellsTotal + 1),
+        particlesPerCell(cellsTotal),
         flatNeighborList(cellsTotal * 27)
         {}
     const int cellsPerSide;
@@ -74,6 +76,7 @@ struct SimCells {
 
     std::vector<int> cellList;
     std::vector<int> cellIndex;
+    std::vector<int> particlesPerCell;
     std::vector<int> flatNeighborList;
 };
 
@@ -106,7 +109,6 @@ public:
     
     void populateLattice();
     void populateRandom(float offset);
-    void writePositions() const;
     void integrate();
 
     friend void integrateKernelWrapper(Simulator* Sim);

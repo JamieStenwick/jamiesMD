@@ -48,7 +48,6 @@ int main(int argc, char* argv[]) {
     Simulator Sim{Params, &lJonesPotential}; // Compiles, will test further on implementing getRmin
     // Sim.populateLattice(); // Verified
     Sim.populateRandom(0.1f);
-    Sim.writePositions(); // Need to implement exception throw on filesystem error works
 
     Sim.integrate();
 
