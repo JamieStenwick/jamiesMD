@@ -10,14 +10,94 @@
 #include "Simulator.hpp"
 #include "CudaKernels.cuh"
 #include <iostream>
+#include <boost/math/tools/roots.hpp>
 
 
-constexpr int N_TABLE_ELEMENTS {100000};
+// We are deriving r cutoffs from the maximum and minimum displacements i would want to allow
+// from conservative forces
+constexpr int N_TABLE_ELEMENTS {50000};
+constexpr double MAX_FORCE_DISPLACEMENT{0.01};
+constexpr double MIN_FORCE_DISPLACEMENT{1e-6};
 
 // Declaring in here for now, will probably move to separate functions file when we get enough non-Simulator functions
-std::array<float, 2> getRminRmax (PotentialFuncPtr potential) {
-    // Do root finding according to desired tolerances to fin acceptable rmin and rmax
-    return {2.1f, 10.23467f};
+double getRmin (PotentialFuncPtr potential, const std::vector<float>& args, const double maxForce) {
+    /*Do root finding according to desired maximum force to find acceptable rmin. Force rather
+    than energy is technically what matters since that will produce poorly defined integration
+    behavior. CURRENTLY LENNARD JONES SPECIFIC */
+    auto f {
+        [potential, args, maxForce](double r) {
+        return std::abs(potential(r, args)[1]) - maxForce;
+        }
+    };
+
+    // Make this a variable because actual iters are written into it
+    std::uintmax_t maxIter = 100;
+    
+    // Known upper bound for LJ, then scale back lower bound until we cross maxForce
+    const double upperBracket {std::pow(2.0, 1.0/6) * args[1]};
+    double lowerBracket {0.5 * upperBracket};
+    while (f(lowerBracket) < 0.0) {
+        lowerBracket *= 0.5;
+    }
+
+    auto result = boost::math::tools::toms748_solve(
+        f,
+        lowerBracket,
+        upperBracket,
+        boost::math::tools::eps_tolerance<double>(40), // Bits of precision (double has 53 for ref)
+        maxIter
+    );
+
+    return 0.5 * (result.first + result.second);
+}
+
+
+double getRmax (PotentialFuncPtr potential, const std::vector<float>& args, const double minForce) {
+    /*Takes a potential, args, and a tolerance as input and returns the radius at which the potential
+    crosses the tolerance in it's monotonically decreasing tail.*/
+    auto f {
+        [potential, args, minForce](double r) {
+        return std::abs(potential(r, args)[1]) - std::min(minForce, 0.02);
+        }
+    };
+
+    double tailStart {-1.0};
+    double rCurrent {2.0}; // Valid for all non-overlapping potentials
+
+    /*March forward by a multiplicative factor, accepting a tail if it's been monotonically
+    decreasing AND less than tolerance for two times the radius at the start of the tail,
+    resets if it starts increasing or leaves tolerance.*/
+    constexpr double growth {1.05};
+    constexpr double tailDistanceFactor {2.0};
+    while (true) {
+        const double rNext {rCurrent * growth};
+        const double fCurrent {f(rCurrent)};
+        const double fNext {f(rNext)};
+
+        if (fNext <= 0.0 && fNext < fCurrent) {
+            if (tailStart < 0.0)
+                tailStart = rCurrent;
+
+            if (rNext >= 2.0 * tailStart)
+                break;
+        }
+        else {
+            tailStart = -1.0;
+        }
+        rCurrent = rNext;
+    }
+
+    std::uintmax_t maxIter = 100;
+
+    auto result = boost::math::tools::toms748_solve(
+        f,
+        tailStart, // Lower bracket
+        rCurrent, // Upper bracket
+        boost::math::tools::eps_tolerance<double>(40), // Bits of precision (double has 53 for ref)
+        maxIter
+    );
+
+    return 0.5 * (result.first + result.second);
 }
 
 
@@ -54,7 +134,6 @@ void writePositions(const float* positionsXYZ, const int N, const int frame, con
         std::ofstream outfile{"positions.txt"};
         // if (!outfile) {throw std::runtime_error("outfile could not be opened");}
 
-        outfile << "Frame " << frame << ":\n";
         for (int i{0}; i < N; i++) {
             outfile << positionsXYZ[i] << ' ' << positionsXYZ[i + N] << ' ' << positionsXYZ[i + 2*N] << '\n';
         }
@@ -62,7 +141,7 @@ void writePositions(const float* positionsXYZ, const int N, const int frame, con
     else {
         std::ofstream outfile{"positions.txt", std::ios::app};
         // if (!outfile) {throw std::runtime_error("outfile could not be opened");}
-        outfile << "Frame " << frame << ":\n";
+
         for (int i{0}; i < N; i++) {
             outfile << positionsXYZ[i] << ' ' << positionsXYZ[i + N] << ' ' << positionsXYZ[i + 2*N] << '\n';
         }
@@ -72,7 +151,8 @@ void writePositions(const float* positionsXYZ, const int N, const int frame, con
 
 Simulator::Simulator(const SimParams& Params, const PotentialFuncPtr potential) : // Using vector to hold all possible other args for now, will come back to this
         m_Params {Params},
-        m_Tables {N_TABLE_ELEMENTS, potential},
+        m_Tables {N_TABLE_ELEMENTS, potential, Params.potentialArgs,
+                  MIN_FORCE_DISPLACEMENT, MAX_FORCE_DISPLACEMENT, Params.dt},
         m_Particles {m_Params.N},
         m_Cells {m_Params.N, m_Params.boxLength, m_Tables.r_max}
         {
@@ -262,13 +342,13 @@ void Simulator::updateCellList() {
 
 void Simulator::fillLookupTables() {
     // Remember, N equally space elements means a spacing of (range) / (N - 1)
-    float interval {(m_Tables.r_max - m_Tables.r_min) / (m_Tables.N - 1)};
+    const float interval {(m_Tables.r_max - m_Tables.r_min) / (N_TABLE_ELEMENTS - 1)};
 
-    for (int i{0}; i < m_Tables.N; ++i) {
+    for (int i{0}; i < N_TABLE_ELEMENTS; ++i) {
         const float r {(i * interval) + m_Tables.r_min};
         const std::array<float, 2> v_f {m_Tables.potential(r, m_Params.potentialArgs)};
-        m_Tables.energyTable[i] = v_f[0];
-        m_Tables.forceTable[i] = v_f[1];
+        m_Tables.forceEnergyTable[i] = v_f[1];
+        m_Tables.forceEnergyTable[i + N_TABLE_ELEMENTS] = v_f[0];
     }
 }
 

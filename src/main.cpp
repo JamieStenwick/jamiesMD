@@ -13,13 +13,8 @@ All mass = 1
 r distance coordinate is center-center in radii
 Translational DOF only
 Cell list
+Assume that
 */
-
-
-// Params testing
-std::ostream& operator<<(std::ostream& out, SimParams& p) {
-        return out << p.N << p.t_steps << p.dt << p.frames << p.vol_frac << p.temp;
-    }
 
 
 std::array<float, 2> lJonesPotential(float radius, const std::vector<float>& args) {
@@ -27,7 +22,7 @@ std::array<float, 2> lJonesPotential(float radius, const std::vector<float>& arg
     float epsilon {args[0]};
     float sigma {args[1]};
     float V {static_cast<float>(4 * epsilon * (pow(sigma / radius, 12) - pow(sigma / radius, 6)))};
-    float F {static_cast<float>(48 * epsilon * ((pow(sigma, 12) / pow(radius, 13)) - (pow(sigma, 6) / pow(radius, 7))))};
+    float F {static_cast<float>(24 * epsilon * (2 * (pow(sigma, 12) / pow(radius, 13)) - (pow(sigma, 6) / pow(radius, 7))))};
 
     return {V, F};
 }

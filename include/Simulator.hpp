@@ -6,7 +6,8 @@
 using PotentialFuncPtr = std::array<float, 2> (*)(float r, const std::vector<float>& args);
 
 // non-Simulator function forward declarations, once it gets long enough I'll move to separate file
-std::array<float, 2> getRminRmax (PotentialFuncPtr potential);
+double getRmin (PotentialFuncPtr potential, const std::vector<float>& args, const double maxForce);
+double getRmax (PotentialFuncPtr potential, const std::vector<float>& args, const double minForce);
 int getCellID(float x, float y, float z, int cellsPerSide, float boxLength);
 void writePositions(const float* positionsXYZ, const int N, const int frame, const bool newFile);
 
@@ -83,21 +84,24 @@ struct SimCells {
 
 struct SimTables {
     /*Container for force and energy lookup tables*/
-    SimTables(const int elements, PotentialFuncPtr potentialPtr) :
+    SimTables(const int elements, PotentialFuncPtr potentialPtr, const std::vector<float>& args,
+              const double deltaMin, const double deltaMax, const float dt) :
         N {elements},
-        forceTable(N),
-        energyTable(N),
+        forceEnergyTable(2*N),
 
         potential {potentialPtr},
-        r_min {getRminRmax(potential)[0]},
-        r_max {getRminRmax(potential)[1]}
+        minForce {2 * deltaMin / (dt*dt)},
+        maxForce {2 * deltaMax / (dt*dt)},
+        r_min {static_cast<float>(getRmin(potential, args, maxForce))},
+        r_max {static_cast<float>(getRmax(potential, args, minForce))}
         {}
 
     const int N;
-    std::vector<float> forceTable;
-    std::vector<float> energyTable;
+    std::vector<float> forceEnergyTable;
 
     const PotentialFuncPtr potential {nullptr};
+    const double minForce;
+    const double maxForce;
     const float r_min;
     const float r_max;
 };
