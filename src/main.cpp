@@ -7,13 +7,16 @@
 Assumptions / Current Conditions:
 Lennard-Jones Potential, V(r) = 4*eps[(sigma/r)^12 - (sigma/r)^6]
 Passed Potential function applies to all particle interactions
-All radii = 1
-All drag = 1
-All mass = 1
+All radii = 1 (reference length)
+Reference energy = kT_ref
+All mass = 1 (reference mass)
+The 3 indpendent units we will choose are length, energy, and mass
+L_0, E_0, M_0 are the reference length, energy, and mass respectively, in our simulation
+we take L_0 = a, a = particle radius, E_0 = kT_ref, M_0 = m_0, m_0 = particle mass
+Non-dimensional Drag = 1 (not a reference value, gamma * L_0 / sqrt(M_0 * E_0))
 r distance coordinate is center-center in radii
 Translational DOF only
 Cell list
-Assume that
 */
 
 

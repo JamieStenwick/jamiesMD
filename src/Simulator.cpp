@@ -13,17 +13,15 @@
 #include <boost/math/tools/roots.hpp>
 
 
-// We are deriving r cutoffs from the maximum and minimum displacements i would want to allow
-// from conservative forces
 constexpr int N_TABLE_ELEMENTS {50000};
-constexpr double MAX_FORCE_DISPLACEMENT{0.01};
-constexpr double MIN_FORCE_DISPLACEMENT{1e-6};
 
 // Declaring in here for now, will probably move to separate functions file when we get enough non-Simulator functions
-double getRmin (PotentialFuncPtr potential, const std::vector<float>& args, const double maxForce) {
-    /*Do root finding according to desired maximum force to find acceptable rmin. Force rather
-    than energy is technically what matters since that will produce poorly defined integration
-    behavior. CURRENTLY LENNARD JONES SPECIFIC */
+double getRmin (PotentialFuncPtr potential, const std::vector<float>& args) {
+    /*Analytically determine the r_min cutoff for the simulation by finding U(r_min)
+    such that at thermal equilibrium, the chances of finding a particle pair at that
+    separation is extremely low, according to the Boltzmann weights this isn't to say
+    it's impossible for it to be crossed though. U(r_min) - U(r_eq) = 20kT's is a good
+    start, since e^-20 ~ 2*10^-9.*/
     auto f {
         [potential, args, maxForce](double r) {
         return std::abs(potential(r, args)[1]) - maxForce;
@@ -52,52 +50,10 @@ double getRmin (PotentialFuncPtr potential, const std::vector<float>& args, cons
 }
 
 
-double getRmax (PotentialFuncPtr potential, const std::vector<float>& args, const double minForce) {
-    /*Takes a potential, args, and a tolerance as input and returns the radius at which the potential
-    crosses the tolerance in it's monotonically decreasing tail.*/
-    auto f {
-        [potential, args, minForce](double r) {
-        return std::abs(potential(r, args)[1]) - std::min(minForce, 0.02);
-        }
-    };
-
-    double tailStart {-1.0};
-    double rCurrent {2.0}; // Valid for all non-overlapping potentials
-
-    /*March forward by a multiplicative factor, accepting a tail if it's been monotonically
-    decreasing AND less than tolerance for two times the radius at the start of the tail,
-    resets if it starts increasing or leaves tolerance.*/
-    constexpr double growth {1.05};
-    constexpr double tailDistanceFactor {2.0};
-    while (true) {
-        const double rNext {rCurrent * growth};
-        const double fCurrent {f(rCurrent)};
-        const double fNext {f(rNext)};
-
-        if (fNext <= 0.0 && fNext < fCurrent) {
-            if (tailStart < 0.0)
-                tailStart = rCurrent;
-
-            if (rNext >= 2.0 * tailStart)
-                break;
-        }
-        else {
-            tailStart = -1.0;
-        }
-        rCurrent = rNext;
-    }
-
-    std::uintmax_t maxIter = 100;
-
-    auto result = boost::math::tools::toms748_solve(
-        f,
-        tailStart, // Lower bracket
-        rCurrent, // Upper bracket
-        boost::math::tools::eps_tolerance<double>(40), // Bits of precision (double has 53 for ref)
-        maxIter
-    );
-
-    return 0.5 * (result.first + result.second);
+double getRmax (const float sigma) {
+    /*Currently LJ specific, since it's dependent on sigma, though I believe it's better
+    than choosing an arbitrarily small force then using a root solver, for the LJ case at least.*/
+    return 3 * sigma;
 }
 
 

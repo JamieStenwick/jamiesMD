@@ -34,10 +34,10 @@ struct SimParams {
 
     const float dt;
     const float vol_frac;
-    const float temp;
+    const float kT;
 
     const int N;
-    const int t_steps;
+    const int timeTotal;
     const int frames;
     const float boxLength; // Derived from previous params
 
