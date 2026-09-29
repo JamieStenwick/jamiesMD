@@ -1,114 +1,19 @@
-#include <cstdlib>
-#include <numbers>
-#include <cmath>
 #include <algorithm>
-#include <fstream>
-#include <exception>
-#include <array>
+#include <cmath>
 #include <iterator>
 #include <numeric>
 #include "Simulator.hpp"
-#include "CudaKernels.cuh"
+#include "SimUtilities.hpp"
+#include "CudaWrappers.cuh"
 #include <iostream>
-#include <boost/math/tools/roots.hpp>
 
 
 constexpr int N_TABLE_ELEMENTS {50000};
 
-// Declaring in here for now, will probably move to separate functions file when we get enough non-Simulator functions
-double getRmin (PotentialFuncPtr potential, const std::vector<float>& args) {
-    /*Analytically determine the r_min cutoff for the simulation by finding U(r_min)
-    such that at thermal equilibrium, the chances of finding a particle pair at that
-    separation is extremely low, according to the Boltzmann weights this isn't to say
-    it's impossible for it to be crossed though. U(r_min) - U(r_eq) = 20kT's is a good
-    start, since e^-20 ~ 2*10^-9.*/
-    auto f {
-        [potential, args, maxForce](double r) {
-        return std::abs(potential(r, args)[1]) - maxForce;
-        }
-    };
-
-    // Make this a variable because actual iters are written into it
-    std::uintmax_t maxIter = 100;
-    
-    // Known upper bound for LJ, then scale back lower bound until we cross maxForce
-    const double upperBracket {std::pow(2.0, 1.0/6) * args[1]};
-    double lowerBracket {0.5 * upperBracket};
-    while (f(lowerBracket) < 0.0) {
-        lowerBracket *= 0.5;
-    }
-
-    auto result = boost::math::tools::toms748_solve(
-        f,
-        lowerBracket,
-        upperBracket,
-        boost::math::tools::eps_tolerance<double>(40), // Bits of precision (double has 53 for ref)
-        maxIter
-    );
-
-    return 0.5 * (result.first + result.second);
-}
-
-
-double getRmax (const float sigma) {
-    /*Currently LJ specific, since it's dependent on sigma, though I believe it's better
-    than choosing an arbitrarily small force then using a root solver, for the LJ case at least.*/
-    return 3 * sigma;
-}
-
-
-// Clean up having to send x, y, and z if possible
-int getCellID(float x, float y, float z, int cellsPerSide, float boxLength) {
-    // (0, 0, 0) is center of box but cellID 0 still starts in negative most corner
-    // and increases first along +x, then +y, then +z
-    if (std::abs(x) > (1.5*boxLength) || std::abs(y) > (1.5*boxLength) || std::abs(z) > (1.5*boxLength))
-        throw std::runtime_error("Particle has left simulation box and periodic boundary conditions");
-
-    // Shift particle back to original box if in periodic boundary layer, boundary is half open for consistency
-    if (x >= boxLength / 2.0f) x -= boxLength;
-    if (x < -boxLength / 2.0f) x += boxLength;
-
-    if (y >= boxLength / 2.0f) y -= boxLength;
-    if (y < -boxLength / 2.0f) y += boxLength;
-
-    if (z >= boxLength / 2.0f) z -= boxLength;
-    if (z < -boxLength / 2.0f) z += boxLength;
-
-    // Shift center coordinates to corner before calculating cell index
-    float cellLength {boxLength / cellsPerSide};
-    int x_cell {static_cast<int>((x + boxLength / 2.0f) / cellLength)};
-    int y_cell {static_cast<int>((y + boxLength / 2.0f) / cellLength)};
-    int z_cell {static_cast<int>((z + boxLength / 2.0f) / cellLength)};
-
-    return x_cell + y_cell*cellsPerSide + z_cell*cellsPerSide*cellsPerSide;
-}
-
-
-void writePositions(const float* positionsXYZ, const int N, const int frame, const bool newFile) {
-    // Remember to try{} this, also will open in binary mode for during runtime
-    if (newFile) {
-        std::ofstream outfile{"positions.txt"};
-        // if (!outfile) {throw std::runtime_error("outfile could not be opened");}
-
-        for (int i{0}; i < N; i++) {
-            outfile << positionsXYZ[i] << ' ' << positionsXYZ[i + N] << ' ' << positionsXYZ[i + 2*N] << '\n';
-        }
-    }
-    else {
-        std::ofstream outfile{"positions.txt", std::ios::app};
-        // if (!outfile) {throw std::runtime_error("outfile could not be opened");}
-
-        for (int i{0}; i < N; i++) {
-            outfile << positionsXYZ[i] << ' ' << positionsXYZ[i + N] << ' ' << positionsXYZ[i + 2*N] << '\n';
-        }
-    }
-}
-
 
 Simulator::Simulator(const SimParams& Params, const PotentialFuncPtr potential) : // Using vector to hold all possible other args for now, will come back to this
         m_Params {Params},
-        m_Tables {N_TABLE_ELEMENTS, potential, Params.potentialArgs,
-                  MIN_FORCE_DISPLACEMENT, MAX_FORCE_DISPLACEMENT, Params.dt},
+        m_Tables {N_TABLE_ELEMENTS, potential, Params.potentialArgs, Params.kT},
         m_Particles {m_Params.N},
         m_Cells {m_Params.N, m_Params.boxLength, m_Tables.r_max}
         {
@@ -192,13 +97,26 @@ void Simulator::populateLattice() {
 
 
 void Simulator::populateRandom(float offset) {
-   // First filling the velocities randomly, will need normal dist later
-   popRandKernelWrap(m_Particles.velocitiesXYZ.data(), std::size(m_Particles.velocitiesXYZ), 2.0f);
+    /*Fills the velocity list with a normal dist with mean 0 and variance = sqrt(Theta/m*)
+    which is sqrt thermal energy divided by non-dimensional mass, the std of velocity components.*/
+   std::vector<float>& velocities {m_Particles.velocitiesXYZ};
+   rngKernelWrap(velocities.data(), std::size(velocities), false);
+   std::transform(velocities.begin(),
+                  velocities.end(),
+                  velocities.begin(),
+                  // Division by the non-dimensional mass currently 1
+                  [this](float x) {return x * std::sqrt(m_Params.kT);}
+                 );
 
    // Now filling randPositions to pull candidate positions from
    // Twice as big as necessary in case of overlap
    std::vector<float> randPositions(3 * m_Params.N * 2);
-   popRandKernelWrap(randPositions.data(), std::size(randPositions), m_Params.boxLength);
+   rngKernelWrap(randPositions.data(), std::size(randPositions), true);
+   std::transform(randPositions.begin(),
+                  randPositions.end(),
+                  randPositions.begin(),
+                  [this](float x) {return x * m_Params.boxLength - (m_Params.boxLength / 2);}
+                 );
 
    // Build out a dynamic temporary list
    std::vector<std::vector<int>> tempCellList(m_Cells.cellsTotal);
@@ -207,7 +125,12 @@ void Simulator::populateRandom(float offset) {
    for (int i {0}, j {0}; i < m_Params.N; j += 3) {
         // refill the random numbers if we run out
         if (j >= (3 * m_Params.N * 2)) {
-            popRandKernelWrap(randPositions.data(), std::size(randPositions), m_Params.boxLength);
+            rngKernelWrap(randPositions.data(), std::size(randPositions), true);
+            std::transform(randPositions.begin(),
+                           randPositions.end(),
+                           randPositions.begin(),
+                           [this](float x) {return x * m_Params.boxLength - (m_Params.boxLength / 2);}
+                          );
             j = 0;
         }
 
@@ -221,7 +144,7 @@ void Simulator::populateRandom(float offset) {
         pos[i + m_Params.N] = randPositions[j+1];
         pos[i + 2*m_Params.N] = randPositions[j+2];
 
-        // Need to clean up this fucking getCellID function it's ugly as shit
+        // Eventually make this function call with a float3 vector
         const int cellID {getCellID(pos[i], pos[i + m_Params.N], pos[i + 2*m_Params.N],
                                     m_Cells.cellsPerSide, m_Params.boxLength)};
         bool writePosition {true};
@@ -235,18 +158,43 @@ void Simulator::populateRandom(float offset) {
             }
             if (!writePosition) break;
         }
-        if (writePosition) {
+        if (writePosition) { 
             tempCellList[cellID].push_back(i);
             m_Particles.cellIDs[i] = cellID;
             i += 1;
         }
    }
+   // Both things that should happen automatically after initial population
    updateCellList();
+   zeroNetMomentum();
+}
+
+
+void Simulator::zeroNetMomentum() {
+    /*Zeroes out the net momentum of the system by subtracting mass-weighted average
+    velocity of N particles from each particle. (Currently mass=1, so just avg velocity)*/
+    float sumVx {0}, sumVy {0}, sumVz {0};
+    for (int i{0}; i < m_Params.N; ++i) {
+        sumVx += m_Particles.velocitiesXYZ[i];
+        sumVy += m_Particles.velocitiesXYZ[i + m_Params.N];
+        sumVz += m_Particles.velocitiesXYZ[i + 2*m_Params.N];
+    }
+
+    const float meanVx {sumVx / m_Params.N};
+    const float meanVy {sumVy / m_Params.N};
+    const float meanVz {sumVz / m_Params.N};
+    for (int i{0}; i < m_Params.N; ++i) {
+        m_Particles.velocitiesXYZ[i] -= meanVx;
+        m_Particles.velocitiesXYZ[i + m_Params.N] -= meanVy;
+        m_Particles.velocitiesXYZ[i + 2*m_Params.N] -= meanVz;
+    }
 }
 
 
 float Simulator::getDistance(int particleID1, int particleID2) const {
-    /*If the distance to the particle exceeds half the box length then it would be more
+    /*Closely intertwined with populateRandom, since it depends on the particles being
+    in the simulator data members, better design is to make it a pure function with float3
+    structs. If the distance to the particle exceeds half the box length then it would be more
     appropriate to consider the interaction through the periodic boundary condition.
     Also it's ok if the di's are negative since they get squared.*/
     const std::vector<float>& pos {m_Particles.positionsXYZ};
@@ -283,36 +231,30 @@ void Simulator::updateCellList() {
         // Writes a particle into the compact cell list according to the correct cell index
         m_Cells.cellList[writeOffsets[cellID]++] = particle;
     }
-
-    /* Useful pattern for accessing cell list
-    for (int i{0}; i < cells; ++i) {
-        std::cout << "Cell " << i << " has particles:" << '\n';
-        for (int j{m_cellIndex[i]}; j < m_cellIndex[i + 1]; ++j) {
-            std::cout << m_cellList[j] << '\n';
-        }
-    }
-    std::cout << cells << " total cells" << '\n';
-    */
 }
 
 
 void Simulator::fillLookupTables() {
-    // Remember, N equally space elements means a spacing of (range) / (N - 1)
+    /*Fills the force and energy tables from r_min to r_max inclusive, and shifts the force
+    and energy such that they go to zero at the cutoff r_max*/
     const float interval {(m_Tables.r_max - m_Tables.r_min) / (N_TABLE_ELEMENTS - 1)};
+    const auto [energyAtRMax, forceAtRMax] {
+        m_Tables.potential(m_Tables.r_max, m_Params.potentialArgs)
+    };
 
     for (int i{0}; i < N_TABLE_ELEMENTS; ++i) {
         const float r {(i * interval) + m_Tables.r_min};
         const std::array<float, 2> v_f {m_Tables.potential(r, m_Params.potentialArgs)};
-        m_Tables.forceEnergyTable[i] = v_f[1];
-        m_Tables.forceEnergyTable[i + N_TABLE_ELEMENTS] = v_f[0];
+        m_Tables.forceTable[i] = v_f[1] - forceAtRMax;
+        m_Tables.energyTable[i] = v_f[0] - energyAtRMax + (r - m_Tables.r_max) * forceAtRMax;
     }
 }
 
 
 void Simulator::fillNeighborList() {
-    /*Takes a cell ID and number of cells per dimension as input, and returns an array
-    of the 26 neighbor cell IDs + the cell ID passed, including the periodic boundary
-    conditions for cells on the edge of the simulation box.*/
+    /*Fills a flat list containing the 27 neighbor cells for each center cellID in order,
+    including the center cell, which is always the first in the corresponding list. Such
+    that the 27*ith element = i.*/
     const int cps {m_Cells.cellsPerSide};
     const int cellsPerLevel {cps * cps};
 
@@ -349,6 +291,6 @@ void Simulator::fillNeighborList() {
 }
 
 
-void Simulator::integrate() {
-    integrateKernelWrapper(this);
+void Simulator::integrate(const bool writeEnergy) {
+    integrateKernelWrapper(this, writeEnergy);
 }
