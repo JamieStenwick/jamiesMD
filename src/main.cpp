@@ -1,3 +1,4 @@
+/*This software contains source code provided by NVIDIA Corporation.*/
 #include <iostream>
 #include <stdexcept>
 #include <array>
