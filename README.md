@@ -77,21 +77,26 @@ All other units are derived from these, and the dimensional quantities can be re
 #### Example with drag
 $$
 \begin{aligned}
-[\gamma] &= \frac{\text{Mass}}{\text{Time}} \\
+\gamma &[=] \frac{\text{Mass}}{\text{Time}} \\
 \gamma^* &= \frac{\gamma}{\gamma_0} \\
 \gamma_0 &= \frac{M_0}{\tau_0}
 \end{aligned}
 $$
+
 Where $\tau_0$ is the derived time unit, which from dimensional analysis is
+
 $$
 \tau_0 = a\sqrt{\frac{\mu_0}{E_0}}
 $$
+
 To recover the dimensional drag coefficient for a given simulation, multiply the dimensionless quantity $\gamma^*$ passed to the simulator by the derived unit:
+
 $$
-\begin{aligned}
-\gamma=\gamma^*\gamma_0 \\
-\boxed{\gamma = \gamma^*\frac{\mu_0}{a\sqrt{\frac{\mu_0}{E_0}}}}
-\end{aligned}
+\gamma = \gamma^{*}\gamma_0
+$$
+
+$$
+\gamma = \gamma^{*}\frac{\mu_0}{a\sqrt{\frac{\mu_0}{E_0}}}
 $$
 
 ### Example Run
@@ -190,7 +195,7 @@ The following features and improvements are currently the most relevant next ste
 2. **More robust interaction cutoff determination**
    - Implement a more general way of determining $r_min$, for example when the potential goes monotonically to negative infinity rather than increasing to positive infinity like LJ
    - Implement an arbitrary $r_max$ cutoff, such as $F(r_max)=0.05$, since pair potentials will generally go to zero as separation goes to infinity
-   - For determining $r_min$, I could maybe find an $F(r_min)$ such that $\Deltav, \Deltax < \epsilon$ for a given time step, so that there's a maximum allowable effect the force can have on the trajectory for a given dt
+   - For determining $r_min$, I could maybe find an $F(r_min)$ such that $\Delta v, \Delta x < \epsilon$ for a given time step, so that there's a maximum allowable effect the force can have on the trajectory for a given dt
 
 3. **Kernel efficiency**
    - Implement an additional particle data structure that tracks all particles within the cutoff radius + $\Delta r$, using the cell list. This allows us to rebuild the cell list only when a particle has travelled more than $\Delta r/2$
