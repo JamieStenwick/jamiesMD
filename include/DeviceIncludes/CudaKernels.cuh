@@ -190,7 +190,7 @@ __global__ void forceSum(ParticleData          Particles,
                 const int idx {(offset + static_cast<int>(threadIdx.x)) % particlesPerCell};
                 const float3 otherPos {sharedPos[idx], sharedPos[idx + particlesPerCell], sharedPos[idx + 2*particlesPerCell]};
                 const float3 distance {getDistance(pos, otherPos, Params.boxLength)};
-                const float dr {distance.x*distance.x + distance.y*distance.y + distance.z*distance.z};
+                const float dr {sqrtf(distance.x*distance.x + distance.y*distance.y + distance.z*distance.z)};
 
                 if (dr < MIN_CENTER_CENTER_DISTANCE) {
                     atomicExch(errorFlag, 1);
@@ -243,7 +243,7 @@ __global__ void forceSum(ParticleData          Particles,
                 for (int i{0}; i < particlesPerCell; ++i) {
                     const float3 otherPos {sharedPos[i], sharedPos[i + particlesPerCell], sharedPos[i + 2*particlesPerCell]};
                     const float3 distance {getDistance(pos, otherPos, Params.boxLength)};
-                    const float dr {distance.x*distance.x + distance.y*distance.y + distance.z*distance.z};
+                    const float dr {sqrtf(distance.x*distance.x + distance.y*distance.y + distance.z*distance.z)};
 
                     if (dr < MIN_CENTER_CENTER_DISTANCE) {
                         atomicExch(errorFlag, 1);

@@ -31,7 +31,7 @@ int main(int argc, char* argv[]) {
         SimParams Params(argc, argv);
         Simulator Sim{Params, &lJonesPotential};
 
-        Sim.populateRandom(0.3f);
+        Sim.populateRandom(0.1f);
         Sim.integrate(true);
 
         return 0;
