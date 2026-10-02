@@ -193,9 +193,9 @@ The following features and improvements are currently the most relevant next ste
    - This works because each block is uniquely responsible for summing the particles forces in the center cells it's responsible for
 
 2. **More robust interaction cutoff determination**
-   - Implement a more general way of determining $r_min$, for example when the potential goes monotonically to negative infinity rather than increasing to positive infinity like LJ
-   - Implement an arbitrary $r_max$ cutoff, such as $F(r_max)=0.05$, since pair potentials will generally go to zero as separation goes to infinity
-   - For determining $r_min$, I could maybe find an $F(r_min)$ such that $\Delta v, \Delta x < \epsilon$ for a given time step, so that there's a maximum allowable effect the force can have on the trajectory for a given dt
+   - Implement a more general way of determining $r_{min}$, for example when the potential goes monotonically to negative infinity rather than increasing to positive infinity like LJ
+   - Implement an arbitrary $r_{max}$ cutoff, such as $F(r_{max})=0.05$, since pair potentials will generally go to zero as separation goes to infinity
+   - For determining $r_{min}$, I could maybe find an $F(r_{min})$ such that $\Delta v, \Delta x < \epsilon$ for a given time step, so that there's a maximum allowable effect the force can have on the trajectory for a given dt
 
 3. **Kernel efficiency**
    - Implement an additional particle data structure that tracks all particles within the cutoff radius + $\Delta r$, using the cell list. This allows us to rebuild the cell list only when a particle has travelled more than $\Delta r/2$
